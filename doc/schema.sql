@@ -1,0 +1,65 @@
+-- me aseguro de usar la bbdd correcta
+use wll8xcj0g5jv7pef;
+
+-- creacion de tablas iniciales
+create table if not exists rol (
+	id bigint auto_increment not null primary key,
+	nombre varchar(255) not null unique
+);
+
+create table if not exists empleado(
+	id bigint auto_increment not null primary key,
+	nombre varchar(255) not null,
+	username varchar(255) not null unique,
+	password varchar(255) not null,
+	id_rol bigint not null,
+	constraint fk_empleado_rol foreign key (id_rol) references rol(id)
+);
+
+create table if not exists categoria_producto (
+	id bigint auto_increment not null primary key,
+	nombre varchar(255) not null unique
+);
+
+create table if not exists orden_trabajo (
+	id bigint auto_increment not null primary key,
+	cliente_nombre varchar(255) not null,
+	cliente_telefono varchar(255) not null,
+	es_cuenta_corriente tinyint(1) not null default 0,
+	fecha_pedido date not null,
+	fecha_muestra date null,
+	fecha_entrega date not null,
+	hora_entrega varchar(255) null,
+	medio_pago varchar(255) null,
+	estado_pago varchar(255) not null,
+	estado_orden varchar(255) not null,
+	cantidad int not null default 1,
+	total double not null default 1,
+	abonado double not null default 0,
+	resta double not null default 1,
+	id_empleado bigint not null,
+	id_categoria bigint not null,
+	constraint fk_orden_empleado foreign key (id_empleado) references empleado(id),
+	constraint fk_orden_categoria foreign key (id_categoria) references categoria_producto(id)
+);
+
+-- insertar datos a las tablas iniciales
+insert into rol(nombre) values
+('ADMIN'),
+('DEV'),
+('EMPLEADO')
+on duplicate key update nombre = nombre;
+
+insert into empleado(nombre, username, password, id_rol) values
+('sol', 'solpm', 'tinta2025!', 1),
+('andrea', 'andreapm', 'tinta2025!', 1),
+('ben', 'benpm', 'BenYMar2605!', 2),
+('anto', 'antopm', 'tinta2025!', 3),
+('jose', 'josepm', 'tinta2025!', 3),
+('myrna', 'myrnapm', 'tinta2025!', 3),
+('meli', 'melipm', 'tinta2025!', 3),
+('mari', 'maripm', 'tinta2025!', 3);
+
+
+
+
