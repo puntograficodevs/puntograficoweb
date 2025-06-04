@@ -43,6 +43,22 @@ create table if not exists orden_trabajo (
 	constraint fk_orden_categoria foreign key (id_categoria) references categoria_producto(id)
 );
 
+create table if not exists sello_madera (
+	id bigint auto_increment not null primary key,
+	tamanio_sello_madera varchar(255) not null,
+	tamanio_personalizado varchar(255) null,
+	adicional_perilla tinyint(1) null,
+	texto_linea_uno varchar(255) not null,
+	texto_linea_dos varchar(255) null,
+	texto_linea_tres varchar(255) null,
+	texto_linea_cuatro varchar(255) null,
+	tipografia_linea_uno varchar(255) null,
+	archivo varchar(1000) null,
+	adicional_disenio tinyint(1) null,
+	id_orden_trabajo bigint not null unique,
+	constraint fk_sello_madera_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
+);
+
 -- insertar datos a las tablas iniciales
 insert into rol(nombre) values
 ('ADMIN'),
