@@ -151,6 +151,21 @@ create table if not exists sublimacion (
 	constraint fk_sublimacion_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
 );
 
+create table if not exists rotulacion (
+	id bigint auto_increment not null primary key,
+	tipo_rotulacion varchar(255) not null,
+	es_laminado tinyint(1) null,
+	tipo_corte varchar(255) not null,
+	horario_rotulacion varchar(255) null,
+	direccion_rotulacion varchar(255) null,
+	medida varchar(255) not null,
+	adicional_disenio tinyint(1) null,
+	archivo varchar(255) null,
+	detalle varchar(255) null,
+	id_orden_trabajo bigint not null unique,
+	constraint fk_rotulacion_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
+);
+
 -- insertar datos a las tablas iniciales
 insert into rol(nombre) values
 ('ADMIN'),
@@ -175,6 +190,7 @@ insert into categoria_producto(nombre) values
 ('TALONARIO'),
 ('TARJETA'),
 ('FOLLETO'),
-('SUBLIMACION');
+('SUBLIMACION'),
+('ROTULACION');
 
 
