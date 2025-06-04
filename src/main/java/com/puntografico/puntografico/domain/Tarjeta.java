@@ -7,39 +7,33 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "talonario")
+@Table(name = "tarjeta")
 @Getter @Setter
-public class Talonario {
+public class Tarjeta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private TipoTalonario tipoTalonario;
-
-    @Enumerated(EnumType.STRING)
-    private TipoTroqueladoTalonario tipoTroqueladoTalonario;
-
-    private boolean conNumerado;
-
-    private String detalleNumerado;
-
-    @Enumerated(EnumType.STRING)
-    private ModoTalonario modoTalonario;
-
-    private boolean esEncolado;
+    private TipoPapelTarjeta tipoPapelTarjeta;
 
     @Enumerated(EnumType.STRING)
     private TipoColor tipoColor;
 
     @Enumerated(EnumType.STRING)
-    private MedidaTalonario medidaTalonario;
+    private TipoFaz tipoFaz;
+
+    @Enumerated(EnumType.STRING)
+    private TipoLaminado tipoLaminado;
+
+    @Enumerated(EnumType.STRING)
+    private MedidaEstandarTarjeta medidaEstandarTarjeta;
 
     private String medidaPersonalizada;
 
     @Enumerated(EnumType.STRING)
-    private TipoPapelTalonario tipoPapelTalonario;
+    private CantidadEstandarTYF cantidadEstandarTYF;
 
     private boolean adicionalDisenio;
 
