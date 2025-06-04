@@ -125,6 +125,22 @@ create table if not exists tarjeta (
 	constraint fk_tarjeta_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
 );
 
+create table if not exists folleto (
+	id bigint auto_increment not null primary key,
+	tipo_papel_folleto varchar(255) not null,
+	tipo_color varchar(255) not null,
+	tipo_faz varchar(255) not null,
+	tamanio_hoja_folleto varchar(255) not null,
+	tipo_folleto varchar(255) not null,
+	cantidad_estandar_t_y_f varchar(255) not null,
+	con_plegado tinyint(1) null,
+	adicional_disenio tinyint(1) null,
+	archivo varchar(255) null,
+	detalle varchar(255) null,
+	id_orden_trabajo bigint not null unique,
+	constraint fk_folleto_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
+);
+
 -- insertar datos a las tablas iniciales
 insert into rol(nombre) values
 ('ADMIN'),
@@ -147,6 +163,7 @@ insert into categoria_producto(nombre) values
 ('SELLO_AUTOMATICO_ESCOLAR'),
 ('SELLO_AUTOMATICO'),
 ('TALONARIO'),
-('TARJETA');
+('TARJETA'),
+('FOLLETO');
 
 
