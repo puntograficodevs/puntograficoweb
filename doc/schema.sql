@@ -75,6 +75,21 @@ create table if not exists sello_automatico_escolar (
 	constraint fk_sello_automatico_escolar_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
 );
 
+create table if not exists sello_automatico (
+	id bigint auto_increment not null primary key,
+	es_profesional tinyint(1) null,
+	es_particular tinyint(1) null,
+	modelo_sello_automatico varchar(255) not null,
+	texto_linea_uno varchar(255) not null,
+	texto_linea_dos varchar(255) null,
+	texto_linea_tres varchar(255) null,
+	texto_linea_cuatro varchar(255) null,
+	tipografia_linea_uno varchar(255) null,
+	archivo varchar(255) null,
+	id_orden_trabajo bigint not null unique,
+	constraint fk_sello_automatico_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
+);
+
 -- insertar datos a las tablas iniciales
 insert into rol(nombre) values
 ('ADMIN'),
@@ -94,6 +109,7 @@ insert into empleado(nombre, username, password, id_rol) values
 
 insert into categoria_producto(nombre) values
 ('SELLO_MADERA'),
-('SELLO_AUTOMATICO_ESCOLAR');
+('SELLO_AUTOMATICO_ESCOLAR'),
+('SELLO_AUTOMATICO');
 
 
