@@ -90,6 +90,25 @@ create table if not exists sello_automatico (
 	constraint fk_sello_automatico_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
 );
 
+create table if not exists talonario (
+	id bigint auto_increment not null primary key,
+	tipo_talonario varchar(255) not null,
+	tipo_troquelado_talonario varchar(255) not null,
+	con_numerado tinyint(1) null,
+	detalle_numerado varchar(255) null,
+	modo_talonario varchar(255) null,
+	es_encolado tinyint(1) null,
+	tipo_color varchar(255) not null,
+	medida_talonario varchar(255) not null,
+	medida_personalizada varchar(255) null,
+	tipo_papel_talonario varchar(255) null,
+	adicional_disenio tinyint(1) null,
+	archivo varchar(255) null,
+	detalle varchar(255) null,
+	id_orden_trabajo bigint not null unique,
+	constraint fk_talonario_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
+);
+
 -- insertar datos a las tablas iniciales
 insert into rol(nombre) values
 ('ADMIN'),
@@ -110,6 +129,7 @@ insert into empleado(nombre, username, password, id_rol) values
 insert into categoria_producto(nombre) values
 ('SELLO_MADERA'),
 ('SELLO_AUTOMATICO_ESCOLAR'),
-('SELLO_AUTOMATICO');
+('SELLO_AUTOMATICO'),
+('TALONARIO');
 
 
