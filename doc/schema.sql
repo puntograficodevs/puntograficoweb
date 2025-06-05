@@ -359,6 +359,18 @@ create table if not exists agenda (
 	constraint fk_agenda_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
 );
 
+create table if not exists catalogo (
+	id bigint auto_increment not null primary key,
+	tipo_laminado varchar(255) not null,
+	tipo_papel_hojas varchar(255) not null,
+	tipo_faz varchar(255) not null,
+	adicional_disenio tinyint(1) null,
+	archivo varchar(255) null,
+	detalle varchar(255) null,
+	id_orden_trabajo bigint not null unique,
+	constraint fk_catalogo_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
+);
+
 -- insertar datos a las tablas iniciales
 insert into rol(nombre) values
 ('ADMIN'),
