@@ -206,6 +206,35 @@ create table if not exists vinilo_plastico_corrugado (
 	constraint fk_vinilo_plastico_corrugado_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
 );
 
+create table if not exists lona (
+	id bigint auto_increment not null primary key,
+	medida_estandar_lona_comun varchar(255) not null,
+	medida_personalizada varchar(255) null,
+	con_ojales tinyint(1) null,
+	con_ojales_con_refuerzo tinyint(1) null,
+	con_bolsillos tinyint(1) null,
+	con_demasia_para_tensado tinyint(1) null,
+	con_solapado tinyint(1) null,
+	tipo_lona varchar(255) not null,
+	adicional_disenio tinyint(1) null,
+	archivo varchar(255) null,
+	detalle varchar(255) null,
+	id_orden_trabajo bigint not null unique,
+	constraint fk_lona_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
+);
+
+create table if not exists lona_impresa (
+	id bigint auto_increment not null primary key,
+	medida_estandar_lona_impresa varchar(255) not null,
+	con_adicional_portabanner tinyint(1) null,
+	tipo_lona varchar(255) not null,
+	adicional_disenio tinyint(1) null,
+	archivo varchar(255) null,
+	detalle varchar(255) null,
+	id_orden_trabajo bigint not null unique,
+	constraint fk_lona_impresa_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
+);
+
 -- insertar datos a las tablas iniciales
 insert into rol(nombre) values
 ('ADMIN'),
@@ -234,6 +263,8 @@ insert into categoria_producto(nombre) values
 ('ROTULACION'),
 ('VINILO_DE_CORTE'),
 ('VINILO'),
-('VINILO_PLASTICO_CORRUGADO');
+('VINILO_PLASTICO_CORRUGADO'),
+('LONA'),
+('LONA_IMPRESA');
 
 
