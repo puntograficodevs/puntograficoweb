@@ -311,6 +311,18 @@ create table if not exists otros (
 	constraint fk_otros_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
 );
 
+create table if not exists cuaderno_anillado (
+	id bigint auto_increment not null primary key,
+	medida varchar(255) not null,
+	tipo_tapa varchar(255) not null,
+	cantidad_hojas int not null,
+	adicional_disenio tinyint(1) null,
+	archivo varchar(255) null,
+	detalle varchar(255) null,
+	id_orden_trabajo bigint not null unique,
+	constraint fk_cuaderno_anillado_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
+);
+
 -- insertar datos a las tablas iniciales
 insert into rol(nombre) values
 ('ADMIN'),
@@ -347,6 +359,7 @@ insert into categoria_producto(nombre) values
 ('SOBRE'),
 ('CIERRA_BOLSAS'),
 ('TURNERO'),
-('OTROS');
+('OTROS')
+('CUADERNO_ANILLADO');
 
 
