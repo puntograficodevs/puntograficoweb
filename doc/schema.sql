@@ -335,6 +335,18 @@ create table if not exists carpeta_con_solapa (
 	constraint fk_carpeta_con_solapa_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
 );
 
+create table if not exists anotador (
+	id bigint auto_increment not null primary key,
+	medida varchar(255) not null,
+	tipo_tapa varchar(255) not null,
+	cantidad_hojas int not null,
+	adicional_disenio tinyint(1) null,
+	archivo varchar(255) null,
+	detalle varchar(255) null,
+	id_orden_trabajo bigint not null unique,
+	constraint fk_anotador_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
+);
+
 -- insertar datos a las tablas iniciales
 insert into rol(nombre) values
 ('ADMIN'),
@@ -373,6 +385,7 @@ insert into categoria_producto(nombre) values
 ('TURNERO'),
 ('OTROS')
 ('CUADERNO_ANILLADO'),
-('CARPETA_CON_SOLAPA');
+('CARPETA_CON_SOLAPA'),
+('ANOTADOR');
 
 
