@@ -394,6 +394,18 @@ create table if not exists hojas_membreteadas (
 	constraint fk_hojas_membreteadas_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
 );
 
+create table if not exists combo (
+	id bigint auto_increment not null primary key,
+	tipo_combo varchar(255) not null,
+	descripcion_combo varchar(255) not null,
+	cantidades_combo_emprendedor varchar(255) null,
+	adicional_disenio tinyint(1) null,
+	archivo varchar(255) null,
+	detalle varchar(255) null,
+	id_orden_trabajo bigint not null unique,
+	constraint fk_combo_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
+);
+
 -- insertar datos a las tablas iniciales
 insert into rol(nombre) values
 ('ADMIN'),
@@ -437,6 +449,7 @@ insert into categoria_producto(nombre) values
 ('AGENDA'),
 ('CATALOGO'),
 ('IMPRESION'),
-('HOJAS_MEMBRETEADAS');
+('HOJAS_MEMBRETEADAS'),
+('COMBO');
 
 
