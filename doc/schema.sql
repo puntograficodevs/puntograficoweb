@@ -194,6 +194,18 @@ create table if not exists vinilo (
 	constraint fk_vinilo_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
 );
 
+create table if not exists vinilo_plastico_corrugado (
+	id bigint auto_increment not null primary key,
+	medida varchar(255) not null,
+	con_ojales tinyint(1) null,
+	cantidad_ojales int null,
+	adicional_disenio tinyint(1) null,
+	archivo varchar(255) null,
+	detalle varchar(255) null,
+	id_orden_trabajo bigint not null unique,
+	constraint fk_vinilo_plastico_corrugado_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
+);
+
 -- insertar datos a las tablas iniciales
 insert into rol(nombre) values
 ('ADMIN'),
@@ -221,6 +233,7 @@ insert into categoria_producto(nombre) values
 ('SUBLIMACION'),
 ('ROTULACION'),
 ('VINILO_DE_CORTE'),
-('VINILO');
+('VINILO'),
+('VINILO_PLASTICO_CORRUGADO');
 
 
