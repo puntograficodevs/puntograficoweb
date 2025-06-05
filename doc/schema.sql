@@ -371,6 +371,19 @@ create table if not exists catalogo (
 	constraint fk_catalogo_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
 );
 
+create table if not exists impresion (
+	id bigint auto_increment not null primary key,
+	tipo_color varchar(255) not null,
+	tamanio_hoja varchar(255) not null,
+	tipo_faz varchar(255) not null,
+	es_anillado tinyint(1) null,
+	tipo_papel varchar(255) not null,
+	archivo varchar(255) null,
+	detalle varchar(255) null,
+	id_orden_trabajo bigint not null unique,
+	constraint fk_impresion_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
+);
+
 -- insertar datos a las tablas iniciales
 insert into rol(nombre) values
 ('ADMIN'),
@@ -411,6 +424,8 @@ insert into categoria_producto(nombre) values
 ('CUADERNO_ANILLADO'),
 ('CARPETA_CON_SOLAPA'),
 ('ANOTADOR'),
-('AGENDA');
+('AGENDA'),
+('CATALOGO'),
+('IMPRESION');
 
 
