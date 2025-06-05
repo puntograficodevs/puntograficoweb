@@ -276,6 +276,19 @@ create table if not exists sobre (
 	constraint fk_sobre_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
 );
 
+create table if not exists cierra_bolsas (
+	id bigint auto_increment not null primary key,
+	es_troquelado tinyint(1) null,
+	tipo_troquelado varchar(255) null,
+	medida_estandar_cierra_bolsas varchar(255) null,
+	medida_personalizada varchar(255) null,
+	adicional_disenio tinyint(1) null,
+	archivo varchar(255) null,
+	detalle varchar(255) null,
+	id_orden_trabajo bigint not null unique,
+	constraint fk_cierra_bolsas_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
+);
+
 -- insertar datos a las tablas iniciales
 insert into rol(nombre) values
 ('ADMIN'),
@@ -309,6 +322,7 @@ insert into categoria_producto(nombre) values
 ('LONA_IMPRESA'),
 ('ETIQUETA'),
 ('STICKER'),
-('SOBRE');
+('SOBRE'),
+('CIERRA_BOLSAS');
 
 
