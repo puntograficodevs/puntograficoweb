@@ -264,6 +264,18 @@ create table if not exists sticker (
 	constraint fk_sticker_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
 );
 
+create table if not exists sobre (
+	id bigint auto_increment not null primary key,
+	medida_estandar_sobre varchar(255) not null,
+	medida_personalizada varchar(255) null,
+	tipo_color varchar(255) not null,
+	adicional_disenio tinyint(1) null,
+	archivo varchar(255) null,
+	detalle varchar(255) null,
+	id_orden_trabajo bigint not null unique,
+	constraint fk_sobre_orden foreign key (id_orden_trabajo) references orden_trabajo(id)
+);
+
 -- insertar datos a las tablas iniciales
 insert into rol(nombre) values
 ('ADMIN'),
@@ -296,6 +308,7 @@ insert into categoria_producto(nombre) values
 ('LONA'),
 ('LONA_IMPRESA'),
 ('ETIQUETA'),
-('STICKER');
+('STICKER'),
+('SOBRE');
 
 
