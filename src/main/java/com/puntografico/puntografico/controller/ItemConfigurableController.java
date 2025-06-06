@@ -24,6 +24,7 @@ public class ItemConfigurableController {
     public String crear(
             @ModelAttribute ItemConfigurable itemConfigurable,
             @RequestParam Long productoId,
+            @RequestParam String username,
             RedirectAttributes redirectAttributes
     ) {
         Producto producto = productoService.buscarPorId(productoId);
@@ -31,6 +32,8 @@ public class ItemConfigurableController {
 
         redirectAttributes.addFlashAttribute("productoId", productoId);
         redirectAttributes.addFlashAttribute("itemConfigurableId", itemConfigurableCreado.getId());
+        redirectAttributes.addAttribute("username", username);
+        redirectAttributes.addAttribute("producto", producto);
 
         return "redirect:/creacionProducto";
     }

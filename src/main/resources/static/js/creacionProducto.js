@@ -1,64 +1,103 @@
-document.addEventListener('DOMContentLoaded', function () {
-    function escucharBotonAgregar() {
-        document.getElementById('agregarItemConfigurable').addEventListener('click', function () {
-            agregarItemConfigurable();
-        });
-    }
+document.addEventListener("DOMContentLoaded", () => {
+    // Capturamos el ID del producto para asociarlo en los formularios siguientes
+    const productoId = document.getElementById("productoId")?.value;
+});
 
-    let indexItemConfigurable = 0;
+function agregarItemConfigurable() {
+    const container = document.getElementById("itemsContainer");
 
-    function agregarItemConfigurable() {
-        const itemsConfigurablesDiv = document.getElementById('itemsConfigurables');
+    const itemIndex = Date.now(); // Para hacer único cada bloque
+    const div = document.createElement("div");
+    div.className = "row g-2 align-items-center border rounded p-3";
+    div.innerHTML = `
+        <form action="/item-configurable/crear" method="post" class="row g-2 align-items-center">
+            <input type="hidden" name="productoId" value="${document.getElementById("productoId").value}" />
+            <input type="hidden" name="username" value="${username}" />
 
-        const template = document.createElement('div');
-        template.classList.add('mb-3');
-
-        // Usamos nombres compatibles con listas en Thymeleaf: itemConfigurables[0].nombre, itemConfigurables[0].opciones[0].valor
-        const currentIndex = indexItemConfigurable++;
-
-        template.innerHTML = `
-            <form method="post" action="/crear-item-configurable" class="border p-3 rounded">
-                <div class="row g-2">
-                    <div class="col">
-                        <input type="text" name="nombre" class="form-control" placeholder="Nombre" required>
-                    </div>
-                    <div class="col">
-                        <input type="text" name="tipo" class="form-control" placeholder="Tipo" required>
-                    </div>
-                    <div class="col-auto d-flex align-items-center">
-                        <label class="form-check-label me-2">¿Obligatorio?</label>
-                        <input type="checkbox" name="esObligatorio" class="form-check-input">
-                    </div>
-                </div>
-
-                <div class="mt-3" id="opcionesContainer-${currentIndex}">
-                    <!-- Opciones -->
-                </div>
-
-                <button type="button" class="btn btn-outline-secondary mt-2" onclick="agregarOpcion(${currentIndex})">+ Opción</button>
-                <button type="submit" class="btn btn-success mt-2 ms-2">✔</button>
-            </form>
-        `;
-
-        itemsConfigurablesDiv.appendChild(template);
-    }
-
-    window.agregarOpcion = function (index) {
-        const contenedorOpciones = document.getElementById(`opcionesContainer-${index}`);
-
-        const opcionHTML = `
-            <div class="row g-2 mt-2">
-                <div class="col">
-                    <input type="text" name="opciones[0].valor" class="form-control" placeholder="Valor" required>
-                </div>
-                <div class="col">
-                    <input type="number" step="0.01" name="opciones[0].precio" class="form-control" placeholder="Precio" required>
+            <div class="col-md-4">
+                <input type="text" name="nombre" class="form-control" placeholder="Nombre del ítem" required />
+            </div>
+            <div class="col-md-4">
+                <input type="text" name="tipo" class="form-control" placeholder="Tipo de ítem" required />
+            </div>
+            <div class="col-md-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="esObligatorio" id="obligatorio-${itemIndex}">
+                    <label class="form-check-label" for="obligatorio-${itemIndex}">Obligatorio</label>
                 </div>
             </div>
-        `;
+            <div class="col-md-2 d-grid">
+                <button type="submit" class="btn btn-success">✔</button>
+            </div>
+        </form>
 
-        contenedorOpciones.insertAdjacentHTML('beforeend', opcionHTML);
+        <div class="mt-3">
+            <button class="btn btn-sm btn-outline-primary" onclick="agregarOpcionItemConfigurable(this)">➕ Agregar opción</button>
+            <div class="opciones-container mt-2 d-flex flex-column gap-2"></div>
+        </div>
+    `;
+    container.appendChild(div);
+}
+
+function agregarOpcionItemConfigurable(button) {
+    const opcionesContainer = button.parentElement.querySelector(".opciones-container");
+
+    const itemConfigurableId = document.querySelector("input[name='itemConfigurableId']")?.value || "";
+
+    const form = document.createElement("form");
+    form.action = "/item-configurable-opcion/crear";
+    form.method = "post";
+    form.className = "row g-2 align-items-center";
+
+    form.innerHTML = `
+        <input type="hidden" name="itemConfigurableId" value="${itemConfigurableId}" />
+        <input type="hidden" name="username" value="${username}" />
+
+        <div class="col-md-4">
+            <input type="text" name="valor" class="form-control" placeholder="Valor" required />
+        </div>
+        <div class="col-md-4">
+            <input type="number" step="0.01" name="precio" class="form-control" placeholder="Precio" required />
+        </div>
+        <div class="col-md-2 d-grid">
+            <button type="submit" class="btn btn-success">✔</button>
+        </div>
+    `;
+
+    opcionesContainer.appendChild(form);
+}
+
+function agregarItemPersonalizable() {
+    const container = document.getElementById("itemsContainer");
+
+    const div = document.createElement("div");
+    div.className = "row g-2 align-items-center border rounded p-3";
+    div.innerHTML = `
+        <form action="/item-personalizable/crear" method="post" class="row g-2 align-items-center">
+            <input type="hidden" name="productoId" value="${document.getElementById("productoId").value}" />
+            <input type="hidden" name="username" value="${username}" />
+
+            <div class="col-md-4">
+                <input type="text" name="nombre" class="form-control" placeholder="Nombre del ítem" required />
+            </div>
+            <div class="col-md-4">
+                <input type="text" name="tipo" class="form-control" placeholder="Tipo" required />
+            </div>
+            <div class="col-md-2">
+                <input type="number" step="0.01" name="precio" class="form-control" placeholder="Precio" required />
+            </div>
+            <div class="col-md-2 d-grid">
+                <button type="submit" class="btn btn-success">✔</button>
+            </div>
+        </form>
+    `;
+
+    container.appendChild(div);
+}
+
+function finalizarProducto() {
+    if (confirm("¿Seguro que querés finalizar y limpiar todo?")) {
+        location.href = "/creacionProducto"; // Simple reload limpia los forms
     }
+}
 
-    escucharBotonAgregar();
-});

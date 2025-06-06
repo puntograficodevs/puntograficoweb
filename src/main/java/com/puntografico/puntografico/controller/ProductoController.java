@@ -34,10 +34,18 @@ public class ProductoController {
     }
 
     @PostMapping("/producto/crear")
-    public String crearProducto(@RequestParam String nombre, RedirectAttributes redirectAttributes) {
+    public String crearProducto(
+            @RequestParam String nombre,
+            @RequestParam String username,
+            RedirectAttributes redirectAttributes
+    ) {
         Producto producto = productoService.crear(nombre);
 
         redirectAttributes.addFlashAttribute("productoId", producto.getId());
+        redirectAttributes.addAttribute("producto", producto);
+        redirectAttributes.addAttribute("username", username);
+
         return "redirect:/creacionProducto";
     }
+
 }

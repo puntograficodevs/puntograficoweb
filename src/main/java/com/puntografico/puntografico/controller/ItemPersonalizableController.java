@@ -25,12 +25,15 @@ public class ItemPersonalizableController {
     public String crear(
             @ModelAttribute ItemPersonalizable itemPersonalizable,
             @RequestParam Long productoId,
+            @RequestParam String username,
             RedirectAttributes redirectAttributes
     ) {
         Producto producto = productoService.buscarPorId(productoId);
         itemPersonalizableService.crear(itemPersonalizable, producto);
 
         redirectAttributes.addFlashAttribute("productoId", productoId);
+        redirectAttributes.addAttribute("username", username);
+        redirectAttributes.addAttribute("producto", producto);
 
         return "redirect:/creacionProducto";
     }
