@@ -59,7 +59,8 @@ create table if not exists item_configurable_opcion (
 create table if not exists item_personalizable (
     id bigint auto_increment primary key,
     nombre varchar(255) not null,
-    tipo varchar(255) not null, -- Ej: "text", "number"
+    tipo varchar(255) not null, -- Ej: "text", "number",
+    precio double not null,
     id_producto bigint not null,
     constraint fk_item_personalizable_producto foreign key (id_producto) references producto(id)
 );

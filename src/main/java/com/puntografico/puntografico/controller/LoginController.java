@@ -1,5 +1,6 @@
 package com.puntografico.puntografico.controller;
 
+import com.puntografico.puntografico.domain.Empleado;
 import com.puntografico.puntografico.service.EmpleadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,10 @@ public class LoginController {
         boolean esEmpleadoValido = empleadoService.validarEmpleado(username, password);
 
         if (esEmpleadoValido) {
+            Empleado empleado = empleadoService.traerEmpleadoPorUsername(username);
+            if (empleado.getRol().getNombre().equalsIgnoreCase("dev")) {
+                return "redirect:/creacionProducto?username=" + username;
+            }
             return "redirect:/home?username=" + username;
         } else {
             model.addAttribute("error", true);
