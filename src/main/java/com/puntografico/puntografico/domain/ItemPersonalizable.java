@@ -18,6 +18,8 @@ public class ItemPersonalizable {
 
     private String tipo;
 
+    private double precio;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_producto")
     private Producto producto;
