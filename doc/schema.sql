@@ -24,14 +24,14 @@ insert into rol(nombre) values
 on duplicate key update nombre = nombre;
 
 insert into empleado(nombre, username, password, id_rol) values
-('sol', 'solpm', 'tinta2025!', 1),
-('andrea', 'andreapm', 'tinta2025!', 1),
-('ben', 'benpm', 'BenYMar2605!', 2),
-('anto', 'antopm', 'tinta2025!', 3),
-('jose', 'josepm', 'tinta2025!', 3),
-('myrna', 'myrnapm', 'tinta2025!', 3),
-('meli', 'melipm', 'tinta2025!', 3),
-('mari', 'maripm', 'tinta2025!', 3);
+('Sol', 'solpm', 'tinta2025!', 1),
+('Andrea', 'andreapm', 'tinta2025!', 1),
+('Ben', 'benpm', 'BenYMar2605!', 2),
+('Anto', 'antopm', 'tinta2025!', 3),
+('Jose', 'josepm', 'tinta2025!', 3),
+('Myrna', 'myrnapm', 'tinta2025!', 3),
+('Meli', 'melipm', 'tinta2025!', 3),
+('Mari', 'maripm', 'tinta2025!', 3);
 
 -- crear los configurables
 create table if not exists producto (
