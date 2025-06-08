@@ -352,14 +352,14 @@ insert into tipo_folleto(id, tipo) values
 
 create table if not exists cantidad_estandar_folletos (
     id bigint auto_increment not null primary key,
-    cantidad varchar(255) not null
+    cantidad int not null
 );
 
 insert into cantidad_estandar_folletos(id, cantidad) values
-(1, '100 UNIDADES'),
-(2, '200 UNIDADES'),
-(3, '500 UNIDADES'),
-(4, '1000 UNIDADES');
+(1, 100),
+(2, 200),
+(3, 500),
+(4, 1000);
 
 create table if not exists oferta_folleto (
     id bigint auto_increment not null primary key,
@@ -547,4 +547,238 @@ create table if not exists orden_lona (
     id_lona bigint not null,
     constraint fk_empleado_orden_lona foreign key (id_empleado) references empleado(id),
     constraint fk_lona_orden foreign key (id_lona) references lona(id)
+);
+
+-- TARJETA
+create table if not exists tipo_papel_tarjeta (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_papel_tarjeta(id, tipo) values
+(1, 'OPALINA 180GRS'),
+(2, 'OPALINA 210GRS'),
+(3, 'ILUSTRACION 250GRS'),
+(4, 'ILUSTRACION 300GRS');
+
+create table if not exists tipo_laminado (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_laminado(id, tipo) values
+(1, 'NINGUNO'),
+(2, 'BRILLANTE'),
+(3, 'MATE');
+
+create table if not exists cantidad_estandar_tarjeta (
+    id bigint auto_increment not null primary key,
+    cantidad int not null
+);
+
+insert into cantidad_estandar_tarjeta(id, cantidad) values
+(1, 50),
+(2, 100),
+(3, 200),
+(4, 500);
+
+create table if not exists oferta_tarjeta (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null default '9X5 CM',
+    precio int not null,
+    id_tipo_papel_tarjeta bigint not null,
+    id_tipo_color bigint not null,
+    id_tipo_faz bigint not null,
+    id_tipo_laminado bigint not null,
+    id_cantidad_estandar_tarjeta bigint not null,
+    constraint fk_papel_tarjeta_oferta foreign key (id_tipo_papel_tarjeta) references tipo_papel_tarjeta(id),
+    constraint fk_tipo_color_tarjeta foreign key (id_tipo_color) references tipo_color(id),
+    constraint fk_tipo_faz_tarjeta foreign key (id_tipo_faz) references tipo_faz(id),
+    constraint fk_tipo_laminado_oferta_tarjeta foreign key (id_tipo_laminado) references tipo_laminado(id),
+    constraint fk_cantidad_estandar_tarjeta foreign key (id_cantidad_estandar_tarjeta) references cantidad_estandar_tarjeta(id)
+);
+
+insert into oferta_tarjeta(id_tipo_papel_tarjeta, id_tipo_color, id_tipo_faz, id_tipo_laminado, id_cantidad_estandar_tarjeta, precio) values
+(3, 1, 1, 1, 1, 10290), -- ilus250, byn, simple, sin, 50
+(3, 2, 1, 1, 1, 10290), -- ilus250, color, simple, sin, 50
+(3, 1, 1, 2, 1, 12270), -- ilus250, byn, simple, bril, 50
+(3, 2, 1, 2, 1, 12270), -- ilus250, color, simple, bril, 50
+(3, 1, 1, 3, 1, 12820), -- ilus250, byn, simple, mate, 50
+(3, 2, 1, 3, 1, 12820), -- ilus250, color, simple, mate, 50
+(3, 1, 2, 1, 1, 11350), -- ilus250, byn, doble, sin, 50
+(3, 2, 2, 1, 1, 11350), -- ilus250, color, doble, sin, 50
+(3, 1, 2, 2, 1, 13330), -- ilus250, byn, doble, bril, 50
+(3, 2, 2, 2, 1, 13330), -- ilus250, color, doble, bril, 50
+(3, 1, 2, 3, 1, 13880), -- ilus250, byn, doble, mate, 50
+(3, 2, 2, 3, 1, 13880), -- ilus250, color, doble, mate, 50
+(3, 1, 1, 1, 2, 16500), -- ilus250, byn, simple, sin, 100
+(3, 2, 1, 1, 2, 16500), -- ilus250, color, simple, sin, 100
+(3, 1, 1, 2, 2, 19140), -- ilus250, byn, simple, bril, 100
+(3, 2, 1, 2, 2, 19140), -- ilus250, color, simple, bril, 100
+(3, 1, 1, 3, 2, 19800), -- ilus250, byn, simple, mate, 100
+(3, 2, 1, 3, 2, 19800), -- ilus250, color, simple, mate, 100
+(3, 1, 2, 1, 2, 19950), -- ilus250, byn, doble, sin, 100
+(3, 2, 2, 1, 2, 19950), -- ilus250, color, doble, sin, 100
+(3, 1, 2, 2, 2, 22590), -- ilus250, byn, doble, bril, 100
+(3, 2, 2, 2, 2, 22590), -- ilus250, color, doble, bril, 100
+(3, 1, 2, 3, 2, 23250), -- ilus250, byn, doble, mate, 100
+(3, 2, 2, 3, 2, 23250), -- ilus250, color, doble, mate, 100
+(3, 1, 1, 1, 2, 27560), -- ilus250, byn, simple, sin, 200
+(3, 2, 1, 1, 2, 27560), -- ilus250, color, simple, sin, 200
+(3, 1, 1, 2, 2, 32840), -- ilus250, byn, simple, bril, 200
+(3, 2, 1, 2, 2, 32840), -- ilus250, color, simple, bril, 200
+(3, 1, 1, 3, 2, 34160), -- ilus250, byn, simple, mate, 200
+(3, 2, 1, 3, 2, 34160), -- ilus250, color, simple, mate, 200
+(3, 1, 2, 1, 2, 31850), -- ilus250, byn, doble, sin, 200
+(3, 2, 2, 1, 2, 31850), -- ilus250, color, doble, sin, 200
+(3, 1, 2, 2, 2, 37130), -- ilus250, byn, doble, bril, 200
+(3, 2, 2, 2, 2, 37130), -- ilus250, color, doble, bril, 200
+(3, 1, 2, 3, 2, 38450), -- ilus250, byn, doble, mate, 200
+(3, 2, 2, 3, 2, 38450), -- ilus250, color, doble, mate, 200
+(3, 1, 1, 1, 2, 59100), -- ilus250, byn, simple, sin, 500
+(3, 2, 1, 1, 2, 59100), -- ilus250, color, simple, sin, 500
+(3, 1, 1, 2, 2, 72300), -- ilus250, byn, simple, bril, 500
+(3, 2, 1, 2, 2, 72300), -- ilus250, color, simple, bril, 500
+(3, 1, 1, 3, 2, 75600), -- ilus250, byn, simple, mate, 500
+(3, 2, 1, 3, 2, 75600), -- ilus250, color, simple, mate, 500
+(3, 1, 2, 1, 2, 69000), -- ilus250, byn, doble, sin, 500
+(3, 2, 2, 1, 2, 69000), -- ilus250, color, doble, sin, 500
+(3, 1, 2, 2, 2, 82200), -- ilus250, byn, doble, bril, 500
+(3, 2, 2, 2, 2, 82200), -- ilus250, color, doble, bril, 500
+(3, 1, 2, 3, 2, 85500), -- ilus250, byn, doble, mate, 500
+(3, 2, 2, 3, 2, 85500); -- ilus250, color, doble, mate, 500
+
+
+create table if not exists tarjeta_personalizada (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null default '8X5 CM',
+    cantidad int not null default 1,
+    precio int not null default 0,
+    id_tipo_papel_tarjeta bigint not null,
+    id_tipo_color bigint not null,
+    id_tipo_faz bigint not null,
+    id_tipo_laminado bigint not null,
+    constraint fk_papel_tarjeta_personalizada foreign key (id_tipo_papel_tarjeta) references tipo_papel_tarjeta(id),
+    constraint fk_tipo_color_tarjeta_personalizada foreign key (id_tipo_color) references tipo_color(id),
+    constraint fk_tipo_faz_tarjeta_personalizada foreign key (id_tipo_faz) references tipo_faz(id),
+    constraint fk_tipo_laminado_tarjeta_personalizada foreign key (id_tipo_laminado) references tipo_laminado(id),
+);
+
+create table if not exists tarjeta(
+    id bigint auto_increment not null primary key,
+    con_adicional_disenio tinyint(1) not null default 5000,
+    precio_adicional_disenio int not null default x,
+    id_oferta_tarjeta bigint null,
+    id_tarjeta_personalizada bigint null,
+    constraint fk_oferta_tarjeta foreign key (id_oferta_tarjeta) references oferta_tarjeta(id),
+    constraint fk_tarjeta_personalizada foreign key (id_tarjeta_personalizada) references tarjeta_personalizada(id)
+);
+
+create table if not exists orden_tarjeta (
+    id bigint auto_increment not null primary key,
+    nombre_cliente varchar(255) not null,
+    telefono_cliente varchar(255) not null,
+    es_cuenta_corriente tinyint(1) not null default 0,
+    fecha_pedido date not null,
+    fecha_muestra date null,
+    fecha_entrega date not null,
+    hora_entrega varchar(255) null,
+    cantidad_productos int not null default 1,
+    comentarios varchar(255) null,
+    necesita_factura tinyint(1) not null default 0,
+    medio_de_pago varchar(255) not null,
+    total int not null,
+    abonado int not null default 0,
+    resta int not null,
+    estado_pago varchar(255) not null,
+    estado_orden varchar(255) not null,
+    id_empleado bigint not null,
+    id_tarjeta bigint not null,
+    constraint fk_empleado_orden_lona foreign key (id_empleado) references empleado(id),
+    constraint fk_tarjeta_orden foreign key (id_tarjeta) references tarjeta(id)
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- TALONARIOS -- A REVISARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+create table if not exists tipo_talonario (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_talonario(id, tipo) values
+(1, 'RECIBO'),
+(2, 'PRESUPUESTO'),
+(3, 'X'),
+(4, 'RIFA - BONO CONTRIBUCIÓN'),
+(5, 'ENTRADAS');
+
+create table if not exists medida_estandar_talonario (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null
+);
+
+insert into medida_estandar_talonario(id, medida) values
+(1, '1/4 DE A4').
+(2, 'A4'),
+(3, 'A5'),
+(4, '1/2 DE A4'),
+(5, 'ENTRADA 17X6CM');
+
+create table if not exists tipo_troquelado_talonario (
+    id bigint auto_increment not null primar key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_troquelado_talonario(id, tipo) values
+(1, 'SIN TROQUELAR'),
+(2, 'UN TROQUEL'),
+(3, 'DOS TROQUELES');
+
+create table if not exists tipo_papel_talonario (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_papel_talonario(id, tipo) values
+(1, 'OBRA 75 GRS'),
+(2, 'ILUSTRACION 150 GRS');
+
+create table if not exists oferta_talonario (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    id_tipo_talonario bigint not null,
+    id_medida_estandar_talonario bigint not null,
+    id_tipo_troquelado_talonario bigint not null,
+    id_tipo_papel_talonario bigint not null,
+    constraint fk_tipo_talonario_oferta foreign key (id_tipo_talonario) references tipo_talonario(id),
+    constraint fk_medida_talonario_oferta foreign key (id_medida_estandar_talonario) references medida_estandar_talonario(id),
+    constraint fk_troquelado_oferta_talonario foreign key (id_tipo_troquelado_talonario) references tipo_troquelado_talonario(id),
+    constraint fk_papel_oferta_talonario foreign key (id_tipo_papel_talonario) references tipo_papel_talonario(id)
+);
+
+create table if not exists talonario (
+    id bigint auto_increment not null primary key,
+    con_original_duplicado tinyint(1) not null default 0
 );
