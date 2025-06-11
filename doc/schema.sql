@@ -306,6 +306,89 @@ create table if not exists entrada (
     constraint fk_tipo_producto_entrada foreign key (id_tipo_producto) references tipo_producto(id)
 );
 
+-- tipo papel etiqueta
+create table if not exists tipo_papel_etiqueta (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_papel_etiqueta(id, tipo) values
+(1, 'OPALINA 180GRS'),
+(2, 'OPALINA 210GRS'),
+(3, 'ILUSTRACIÓN 250GRS'),
+(4, 'KRAFT'),
+(5, 'ILUSTRACIÓN 220GRS');
+
+-- etiquetas
+create table if not exists tamanio_perforacion (
+    id bigint auto_increment not null primary key,
+    tamanio varchar(255) not null
+);
+
+insert into tamanio_perforacion(id, tamanio) values
+(1, 'CHICA'),
+(2, 'MEDIANA'),
+(3, 'GRANDE');
+
+create table if not exists precio_etiquetas (
+    id bigint auto_increment not null primary key,
+    con_perforacion tinyint(1) not null,
+    id_tipo_papel_etiqueta bigint not null,
+    id_tipo_faz bigint not null default 1,
+    cantidad int not null,
+    precio int not null,
+    constraint fk_tipo_papel_etiqueta foreign key (id_tipo_papel_etiqueta) references tipo_papel_etiqueta(id),
+    constraint fk_tipo_faz_etiqueta foreign key (id_tipo_faz) references tipo_faz(id)
+);
+
+insert into precio_etiquetas(id, con_perforacion, id_tipo_papel_etiqueta, id_tipo_faz, cantidad, precio) values
+(1, 0, 4, 1, 100, 9700),
+(2, 0, 4, 1, 200, 17050),
+(3, 0, 4, 1, 500, 40150),
+(4, 0, 4, 1, 1000, 70100),
+(5, 0, 4, 2, 100, 11150),
+(6, 0, 4, 2, 200, 19750),
+(7, 0, 4, 2, 500, 46200),
+(8, 0, 4, 2, 1000, 88250),
+(9, 0, 5, 1, 100, 9700),
+(10, 0, 5, 1, 200, 17050),
+(11, 0, 5, 1, 500, 40150),
+(12, 0, 5, 1, 1000, 70100),
+(13, 0, 5, 2, 100, 11150),
+(14, 0, 5, 2, 200, 19750),
+(15, 0, 5, 2, 500, 46200),
+(16, 0, 5, 2, 1000, 88250),
+(17, 0, x, 1, 100, 7950),
+(18, 0, x, 1, 200, 14100),
+(19, 0, x, 1, 500, 33200),
+(20, 0, x, 1, 1000, 59250),
+(21, 0, x, 2, 100, 9700),
+(22, 0, x, 2, 200, 17150),
+(23, 0, x, 2, 500, 40150),
+(24, 0, x, 2, 1000, 70100);
+
+create table if not exists etiqueta (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null default '7X5 CM',
+    con_perforacion tinyint(1) not null default 0,
+    con_marca_adicional tinyint(1) not null default 0,
+    con_adicional_disenio tinyint(1) not null default 3500,
+    precio int not null default 0,
+    cantidad int not null default 1,
+    enlace_archivo varchar(255) not null default '-',
+    informacion_adicional varchar(1000) not null default '-',
+    id_tipo_papel_etiqueta bigint not null,
+    id_tipo_laminado bigint not null default 3,
+    id_tamanio_perforacion bigint null,
+    id_tipo_faz bigint not null default 1,
+    id_tipo_producto bigint not null default 8,
+    constraint fk_tipo_papel_etiqueta foreign key (id_tipo_papel_etiqueta) references tipo_papel_etiqueta(id),
+    constraint fk_tipo_laminado_etiqueta foreign key (id_tipo_laminado) references tipo_laminado(id),
+    constraint fk_tamanio_perforacion_etiqueta foreign key (id_tamanio_perforacion) references tamanio_perforacion(id),
+    constraint fk_tipo_faz_etiqueta foreign key (id_tipo_faz) references tipo_faz(id),
+    constraint fk_tipo_producto_etiqueta foreign key (id_tipo_producto) references tipo_producto(id)
+);
+
 -- tablas para ordenes de trabajo
 create table if not exists medio_pago (
     id bigint auto_increment not null primary key,
