@@ -42,7 +42,7 @@ insert into tipo_producto(id, tipo) values
 (5, 'CIERRA BOLSAS'), -- listo
 (6, 'CUADERNOS ANILLADOS'), -- listo
 (7, 'ENTRADAS'), -- listo
-(8, 'ETIQUETAS'),
+(8, 'ETIQUETAS'), -- listo
 (9, 'FOLLETOS'),
 (10, 'HOJAS MEMBRETEADAS'),
 (11, 'IMPRESIONES'),
