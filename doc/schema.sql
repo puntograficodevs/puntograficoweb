@@ -151,7 +151,8 @@ create table if not exists carpeta_con_solapas (
 create table if not exists catalogo (
     id bigint auto_increment not null primary key,
     tipo_papel_hojas varchar(255) not null,
-    con_adicional_disenio tinyint(1) not null default 5000,
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
     precio int not null default 0,
     cantidad int not null default 1,
     enlace_archivo varchar(255) not null default '-',
@@ -193,7 +194,8 @@ create table if not exists cierra_bolsas (
     id bigint auto_increment not null primary key,
     con_troquelado tinyint(1) not null default 0,
     medida varchar(255) not null default '8X4 CM',
-    con_adicional_disenio tinyint(1) not null default 2500,
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 2500,
     precio int not null default 0,
     cantidad int not null default 1,
     enlace_archivo varchar(255) not null default '-',
@@ -210,7 +212,8 @@ create table if not exists cuaderno_anillado (
     medida varchar(255) not null,
     tipo_tapa varchar(255) not null,
     cantidad_hojas int not null,
-    con_adicional_disenio tinyint(1) not null default 5000,
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
     precio int not null default 0,
     cantidad int not null default 1,
     enlace_archivo varchar(255) not null default '-',
@@ -289,7 +292,8 @@ create table if not exists entrada (
     id bigint auto_increment not null primary key,
     medida varchar(255) not null default '17X6 CM',
     detalle_numerado varchar(255) not null default '-',
-    con_adicional_disenio tinyint(1) not null default 5000,
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
     precio int not null default 0,
     cantidad int not null default 1,
     enlace_archivo varchar(255) not null default '-',
@@ -372,7 +376,8 @@ create table if not exists etiqueta (
     medida varchar(255) not null default '7X5 CM',
     con_perforacion tinyint(1) not null default 0,
     con_marca_adicional tinyint(1) not null default 0,
-    con_adicional_disenio tinyint(1) not null default 3500,
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 3500,
     precio int not null default 0,
     cantidad int not null default 1,
     enlace_archivo varchar(255) not null default '-',
@@ -387,6 +392,120 @@ create table if not exists etiqueta (
     constraint fk_tamanio_perforacion_etiqueta foreign key (id_tamanio_perforacion) references tamanio_perforacion(id),
     constraint fk_tipo_faz_etiqueta foreign key (id_tipo_faz) references tipo_faz(id),
     constraint fk_tipo_producto_etiqueta foreign key (id_tipo_producto) references tipo_producto(id)
+);
+
+-- folletos
+create table if not exists tipo_papel_folleto (
+    id bigint auto_increment primary key not null,
+    tipo varchar(255) not null
+);
+
+insert into tipo_papel_folleto(id, tipo) values
+(1, 'OBRA 75 GRS'),
+(2, 'ILUSTRACION 115 GRS'),
+(3, 'ILUSTRACION 150 GRS');
+
+create table if not exists tamanio_hoja_folleto (
+    id bigint auto_increment not null primary key,
+    tamanio varchar(255) not null
+);
+
+insert into tamanio_hoja_folleto(id, tamanio) values
+(1, 'A4'),
+(2, 'A5'),
+(3, '1/4 DE A4'),
+(4, 'A3'),
+(5, 'OFICIO');
+
+create table if not exists tipo_folleto (
+    id  bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_folleto(id, tipo) values
+(1, 'COMÚN'),
+(2, 'DÍPTICO'),
+(3, 'TRÍPTICO');
+
+create table if not exists cantidad_folletos (
+    id bigint auto_increment not null primary key,
+    cantidad int not null
+);
+
+insert into cantidad_folletos(id, cantidad) values
+(1, 50),
+(2, 100),
+(3, 150),
+(4, 200),
+(5, 300),
+(6, 400),
+(7, 500),
+(8, 1000);
+
+create table if not exists precio_folletos(
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    id_tipo_papel_folleto bigint not null,
+    id_tipo_color_folleto bigint not null,
+    id_tamanio_hoja_folleto bigint not null,
+    id_cantidad_folletos bigint not null,
+    id_tipo_faz bigint not null,
+    constraint fk_tipo_papel_precio_folleto foreign key (id_tipo_papel_folleto) references tipo_papel_folleto(id),
+    constraint fk_tipo_color_precio_folleto foreign key (id_tipo_color_folleto) references tipo_color(id),
+    constraint fk_tamanio_hoja_precio_folleto foreign key (id_tamanio_hoja_folleto) references tamanio_hoja_folleto(id),
+    constraint fk_cantidad_precio_folletos foreign key (id_cantidad_folletos) references cantidad_folletos(id),
+    constraint fk_tipo_faz_precio_folletos foreign key (id_tipo_faz) references tipo_faz(id)
+);
+
+insert into precio_folletos(id, id_tipo_papel_folleto, id_tipo_color_folleto, id_tamanio_hoja_folleto, id_cantidad_folletos, id_tipo_faz, precio) values
+(1, 1, 1, 3, 2, 1, 6400),
+(2, 1, 1, 3, 2, 2, 7600),
+(3, 1, 1, 3, 4, 1, 9750),
+(4, 1, 1, 3, 4, 2, 13500),
+(5, 1, 1, 3, 7, 1, 21900),
+(6, 1, 1, 3, 7, 2, 27300),
+(7, 1, 1, 3, 8, 1, 41100),
+(8, 1, 1, 3, 8, 2, 47500),
+(9, 1, 2, 3, 2, 1, 14850),
+(10, 1, 2, 3, 2, 2, 16750),
+(11, 1, 2, 3, 4, 1, 26700),
+(12, 1, 2, 3, 4, 2, 29800),
+(13, 1, 2, 3, 7, 1, 64000),
+(14, 1, 2, 3, 7, 2, 77500),
+(15, 1, 2, 3, 8, 1, 111400),
+(16, 1, 2, 3, 8, 2, 139600),
+(17, 2, 2, 3, 2, 1, 18150),
+(18, 2, 2, 3, 2, 2, 21600),
+(19, 2, 2, 3, 4, 1, 31950),
+(20, 2, 2, 3, 4, 2, 36900),
+(21, 2, 2, 3, 7, 1, 77550),
+(22, 2, 2, 3, 7, 2, 87100),
+(23, 2, 2, 3, 8, 1, 140450),
+(24, 2, 2, 3, 8, 2, 159100);
+
+create table if not exists folleto (
+    id bigint auto_increment not null primary key,
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    con_plegado tinyint(1) not null default 0,
+    precio int not null default 0,
+    cantidad int not null default 1,
+    enlace_archivo varchar(255) not null default '-',
+    informacion_adicional varchar(1000) not null default '-',
+    id_tipo_papel_folleto bigint not null,
+    id_tipo_color bigint not null,
+    id_tipo_faz bigint not null,
+    id_tamanio_hoja_folleto bigint not null,
+    id_tipo_folleto bigint not null,
+    id_cantidad_folletos bigint not null,
+    id_tipo_producto bigint not null default 9,
+    constraint fk_tipo_papel_folleto foreign key (id_tipo_papel_folleto) references tipo_papel_folleto(id),
+    constraint fk_tipo_color_folleto foreign key (id_tipo_color) references tipo_color(id),
+    constraint fk_tipo_faz_folleto foreign key (id_tipo_faz) references tipo_faz(id),
+    constraint fk_tamanio_hoja_folleto foreign key (id_tamanio_hoja_folleto) references tamanio_hoja_folleto(id),
+    constraint fk_tipo_folleto foreign key (id_tipo_folleto) references tipo_folleto(id),
+    constraint fk_cantidad_folletos foreign key (id_cantidad_folletos) references cantidad_folletos(id),
+    constraint fk_tipo_producto_folleto foreign key (id_tipo_producto) references tipo_producto(id)
 );
 
 -- tablas para ordenes de trabajo
