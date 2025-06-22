@@ -1,7 +1,8 @@
 -- BASE DE PRODUCTOS
 create table if not exists PRODUCTO-NUEVO-PA (
     id bigint auto_increment not null primary key,
-    con_adicional_disenio tinyint(1) not null default 5000,
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
     precio int not null default 0,
     cantidad int not null default 1,
     enlace_archivo varchar(255) not null default '-',
