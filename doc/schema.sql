@@ -545,6 +545,104 @@ create table if not exists hojas_membreteadas (
     constraint fk_tipo_producto_hojas_membreteadas foreign key (id_tipo_producto) references tipo_producto(id)
 );
 
+-- impresiones
+create table if not exists tamanio_hoja_impresion (
+    id bigint auto_increment not null primary key,
+    tamanio varchar(255) not null
+);
+
+insert into tamanio_hoja_impresion(id, tamanio) values
+(1, 'A4'),
+(2, 'A5'),
+(3, 'OFICIO'),
+(4, 'A3');
+
+create table if not exists tipo_papel_impresion (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_papel_impresion(id, tipo) values
+(1, 'OBRA');
+
+create table if not exists cantidades_impresion (
+    id bigint auto_increment not null primary key,
+    cantidad_minima int not null,
+    cantidad_maxima int null
+);
+
+insert into cantidades_impresion(id, cantidad_minima, cantidad_maxima) values
+(1, 1, 10),
+(2, 11, 100),
+(3, 101, null);
+
+create table if not exists tipo_impresion (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_impresion(id, tipo) values
+(1, 'PARTICULAR'),
+(2, 'ESCOLAR');
+
+create table if not exists precio_impresion (
+    id bigint auto_increment not null primary key,
+    id_tipo_papel bigint not null,
+    id_tamanio_impresion bigint not null,
+    id_tipo_color bigint not null,
+    id_tipo_faz bigint not null,
+    id_cantidades_impresion bigint not null,
+    id_tipo_impresion bigint not null,
+    precio int not null,
+    constraint fk_precio_tipo_papel foreign key (id_tipo_papel) references tipo_papel_impresion(id),
+    constraint fk_precio_tamanio_hoja_impresion foreign key (id_tamanio_impresion) references tamanio_hoja_impresion(id),
+    constraint fk_precio_color_impresion foreign key (id_tipo_color) references tipo_color(id),
+    constraint fk_precio_faz_impresion foreign key (id_tipo_faz) references tipo_faz(id),
+    constraint fk_precio_cantidades_impresion foreign key (id_cantidades_impresion) references cantidades_impresion(id),
+    constraint fk_precio_tipo_impresion foreign key (id_tipo_impresion) references tipo_impresion(id)
+);
+
+insert into precio_impresion(id, id_tipo_papel, id_tamanio_impresion, id_tipo_color, id_tipo_faz, id_cantidades_impresion, id_tipo_impresion, precio) values
+(id, papel, tamanio, color, faz, cant, tipo, precio)
+(id, obra, a4/oficio, byn, simple, 1-10, part, precio)
+(1, 1, 1, 1, 1, 1, 1, 100),
+(2, 1, 1, 1, 1, 2, 1, 80),
+(3, 1, 1, 1, 1, 3, 1, 60),
+(4, 1, 1, 1, 2, 1, 1, 150),
+(5, 1, 1, 1, 2, 2, 1, 120),
+(6, 1, 1, 1, 2, 3, 1, 100),
+(7, 1, 3, 1, 1, 1, 1, 150),
+(8, 1, 3, 1, 1, 2, 1, 130),
+(9, 1, 3, 1, 1, 3, 1, 100),
+(10, 1, 3, 1, 2, 1, 1, 170),
+(11, 1, 3, 1, 2, 2, 1, 150),
+(12, 1, 3, 1, 2, 3, 1, 120);
+
+create table if not exists impresion (
+    id bigint auto_increment not null primary key,
+    es_anillado tinyint(1) not null default 0,
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int not null default 0,
+    cantidad int not null default 1,
+    enlace_archivo varchar(255) not null default '-',
+    informacion_adicional varchar(1000) not null default '-',
+    id_tipo_color bigint not null,
+    id_tamanio_hoja bigint not null,
+    id_tipo_faz bigint not null,
+    id_tipo_papel bigint not null,
+    id_cantidades_impresion bigint not null,
+    id_tipo_impresion bigint not null default 1,
+    id_tipo_producto bigint not null default 11,
+    constraint fk_color_impresion foreign key (id_tipo_color) references tipo_color(id),
+    constraint fk_tamanio_hoja_impresion foreign key (id_tamanio_hoja) references tamanio_hoja_impresion(id),
+    constraint fk_tipo_faz_impresion foreign key (id_tipo_faz) references tipo_faz(id),
+    constraint fk_tipo_papel_impresion foreign key (id_tipo_papel) references tipo_papel_impresion(id),
+    constraint fk_cantidades_impresion foreign key (id_cantidades_impresion) references cantidades_impresion(id),
+    constraint fk_tipo_impresion foreign key (id_tipo_impresion) references tipo_impresion(id),
+    constraint fk_tipo_producto_impresion foreign key (id_tipo_producto) references tipo_producto(id)
+);
+
 -- tablas para ordenes de trabajo
 create table if not exists medio_pago (
     id bigint auto_increment not null primary key,
