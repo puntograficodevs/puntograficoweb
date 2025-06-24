@@ -509,14 +509,39 @@ create table if not exists folleto (
 );
 
 -- hojas membreteadas
+create table if not exists precio_hojas_membreteadas (
+    id bigint auto_increment not null primary key,
+    con_encolado tinyint(1) not null,
+    cantidad_hojas int not null,
+    cantidad_talonarios int not null,
+    medida varchar(255) not null,
+    precio int not null,
+    id_tipo_color bigint not null,
+    constraint fk_color_hojas_membreteadas foreign key (id_tipo_color) references tipo_color(id),
+);
+
+insert into precio_hojas_membreteadas(id, con_encolado, cantidad_hojas, cantidad_talonarios, id_tipo_color, medida, precio) values
+(1, 1, 100, 1, 1, 'A4', 11900),
+(2, 1, 100, 2, 1, 'A4', 21550),
+(3, 1, 100, 4, 1, 'A4', 41000),
+(4, 1, 100, 1, 2, 'A4', 36150),
+(5, 1, 100, 2, 2, 'A4', 64200),
+(6, 1, 100, 4, 2, 'A4', 119900);
+
 create table if not exists hojas_membreteadas (
     id bigint auto_increment not null primary key,
     con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    con_encolado bigint tinyint(1) not null default 0,
+    cantidad_hojas int not null default 100,
+    medida varchar(255) not null,
     precio int not null default 0,
-    cantidad int not null default 1,
+    cantidad_talonarios int not null default 1,
     enlace_archivo varchar(255) not null default '-',
     informacion_adicional varchar(1000) not null default '-',
+    id_tipo_color bigint not null,
     id_tipo_producto bigint not null default 10,
+    constraint fk_color_hoja_membreteada foreign key (id_tipo_color) references tipo_color(id),
     constraint fk_tipo_producto_hojas_membreteadas foreign key (id_tipo_producto) references tipo_producto(id)
 );
 
