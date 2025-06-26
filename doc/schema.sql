@@ -555,7 +555,8 @@ insert into tamanio_hoja_impresion(id, tamanio) values
 (1, 'A4'),
 (2, 'A5'),
 (3, 'OFICIO'),
-(4, 'A3');
+(4, 'A3'),
+(5, 'A3+');
 
 create table if not exists tipo_papel_impresion (
     id bigint auto_increment not null primary key,
@@ -563,7 +564,19 @@ create table if not exists tipo_papel_impresion (
 );
 
 insert into tipo_papel_impresion(id, tipo) values
-(1, 'OBRA');
+(1, 'OBRA'),
+(2, 'ILUSTRACIÓN 90 GRS'),
+(3, 'ILUSTRACIÓN 115 GRS'),
+(4, 'ILUSTRACIÓN 150 GRS'),
+(5, 'ILUSTRACIÓN 200 GRS'),
+(6, 'ILUSTRACIÓN 220 GRS'),
+(7, 'ILUSTRACIÓN 250 GRS'),
+(8, 'ILUSTRACIÓN 300 GRS'),
+(9, 'OPALINA 150 GRS'),
+(10, 'OPALINA 180 GRS'),
+(11, 'OPALINA 210 GRS'),
+(12, 'KRAFT'),
+(13, 'OPALINA 200 GRS');
 
 create table if not exists cantidades_impresion (
     id bigint auto_increment not null primary key,
@@ -602,21 +615,331 @@ create table if not exists precio_impresion (
     constraint fk_precio_tipo_impresion foreign key (id_tipo_impresion) references tipo_impresion(id)
 );
 
-insert into precio_impresion(id, id_tipo_papel, id_tamanio_impresion, id_tipo_color, id_tipo_faz, id_cantidades_impresion, id_tipo_impresion, precio) values
-(id, papel, tamanio, color, faz, cant, tipo, precio)
-(id, obra, a4/oficio, byn, simple, 1-10, part, precio)
-(1, 1, 1, 1, 1, 1, 1, 100),
-(2, 1, 1, 1, 1, 2, 1, 80),
-(3, 1, 1, 1, 1, 3, 1, 60),
-(4, 1, 1, 1, 2, 1, 1, 150),
-(5, 1, 1, 1, 2, 2, 1, 120),
-(6, 1, 1, 1, 2, 3, 1, 100),
-(7, 1, 3, 1, 1, 1, 1, 150),
-(8, 1, 3, 1, 1, 2, 1, 130),
-(9, 1, 3, 1, 1, 3, 1, 100),
-(10, 1, 3, 1, 2, 1, 1, 170),
-(11, 1, 3, 1, 2, 2, 1, 150),
-(12, 1, 3, 1, 2, 3, 1, 120);
+insert into precio_impresion(id_tipo_papel, id_tamanio_impresion, id_tipo_color, id_tipo_faz, id_cantidades_impresion, id_tipo_impresion, precio) values
+(1, 1, 1, 1, 1, 1, 100),
+(1, 1, 1, 1, 2, 1, 80),
+(1, 1, 1, 1, 3, 1, 60),
+(1, 1, 1, 2, 1, 1, 150),
+(1, 1, 1, 2, 2, 1, 120),
+(1, 1, 1, 2, 3, 1, 100),
+(1, 3, 1, 1, 1, 1, 150),
+(1, 3, 1, 1, 2, 1, 130),
+(1, 3, 1, 1, 3, 1, 100),
+(1, 3, 1, 2, 1, 1, 170),
+(1, 3, 1, 2, 2, 1, 150),
+(1, 3, 1, 2, 3, 1, 120),
+(1, 1, 1, 1, 1, 2, 60),
+(1, 1, 1, 1, 2, 2, 60),
+(1, 1, 1, 1, 3, 2, 60),
+(1, 1, 1, 2, 1, 2, 80),
+(1, 1, 1, 2, 2, 2, 80),
+(1, 1, 1, 2, 3, 2, 80),
+(1, 3, 1, 1, 1, 2, 80),
+(1, 3, 1, 1, 2, 2, 80),
+(1, 3, 1, 1, 3, 2, 80),
+(1, 3, 1, 2, 1, 2, 100),
+(1, 3, 1, 2, 2, 2, 100),
+(1, 3, 1, 2, 3, 2, 100),
+(1, 1, 2, 1, 1, 2, 400),
+(1, 1, 2, 1, 2, 2, 400),
+(1, 1, 2, 1, 3, 2, 400),
+(1, 1, 2, 2, 1, 2, 650),
+(1, 1, 2, 2, 2, 2, 650),
+(1, 1, 2, 2, 3, 2, 650),
+(1, 3, 2, 1, 1, 2, 500),
+(1, 3, 2, 1, 2, 2, 500),
+(1, 3, 2, 1, 3, 2, 500),
+(1, 3, 2, 2, 1, 2, 750),
+(1, 3, 2, 2, 2, 2, 750),
+(1, 3, 2, 2, 3, 2, 750),
+(1, 1, 2, 1, 1, 1, 500),
+(1, 1, 2, 1, 2, 1, 500),
+(1, 1, 2, 1, 3, 1, 500),
+(1, 1, 2, 1, 1, 2, 500),
+(1, 1, 2, 1, 2, 2, 500),
+(1, 1, 2, 1, 3, 2, 500),
+(1, 1, 2, 2, 1, 1, 800),
+(1, 1, 2, 2, 2, 1, 800),
+(1, 1, 2, 2, 3, 1, 800),
+(1, 1, 2, 2, 1, 2, 800),
+(1, 1, 2, 2, 2, 2, 800),
+(1, 1, 2, 2, 3, 2, 800),
+(2, 1, 2, 1, 1, 1, 900), -- simple faz, 1-10, part
+(2, 1, 2, 1, 1, 2, 900), -- simple faz, 1-10, esc
+(2, 1, 2, 1, 2, 1, 900), -- simple faz, 10-100, part
+(2, 1, 2, 1, 2, 2, 900), -- simple faz, 10-100, esc
+(2, 1, 2, 1, 3, 1, 900), -- simple faz, 100+, part
+(2, 1, 2, 1, 3, 2, 900), -- simple faz, 100+, esc
+(2, 1, 2, 2, 1, 1, 900), -- doble faz, 1-10, part
+(2, 1, 2, 2, 1, 2, 900), -- doble faz, 1-10, esc
+(2, 1, 2, 2, 2, 1, 900), -- doble faz, 10-100, part
+(2, 1, 2, 2, 2, 2, 900), -- doble faz, 10-100, esc
+(2, 1, 2, 2, 3, 1, 900), -- doble faz, 100+, part
+(2, 1, 2, 2, 3, 2, 900), -- doble faz, 100+, esc
+(3, 1, 2, 1, 1, 1, 900), -- simple faz, 1-10, part
+(3, 1, 2, 1, 1, 2, 900), -- simple faz, 1-10, esc
+(3, 1, 2, 1, 2, 1, 900), -- simple faz, 10-100, part
+(3, 1, 2, 1, 2, 2, 900), -- simple faz, 10-100, esc
+(3, 1, 2, 1, 3, 1, 900), -- simple faz, 100+, part
+(3, 1, 2, 1, 3, 2, 900), -- simple faz, 100+, esc
+(3, 1, 2, 2, 1, 1, 900), -- doble faz, 1-10, part
+(3, 1, 2, 2, 1, 2, 900), -- doble faz, 1-10, esc
+(3, 1, 2, 2, 2, 1, 900), -- doble faz, 10-100, part
+(3, 1, 2, 2, 2, 2, 900), -- doble faz, 10-100, esc
+(3, 1, 2, 2, 3, 1, 900), -- doble faz, 100+, part
+(3, 1, 2, 2, 3, 2, 900), -- doble faz, 100+, esc
+(4, 1, 2, 1, 1, 1, 1100), -- simple faz, 1-10, part
+(4, 1, 2, 1, 1, 2, 1100), -- simple faz, 1-10, esc
+(4, 1, 2, 1, 2, 1, 1100), -- simple faz, 10-100, part
+(4, 1, 2, 1, 2, 2, 1100), -- simple faz, 10-100, esc
+(4, 1, 2, 1, 3, 1, 1100), -- simple faz, 100+, part
+(4, 1, 2, 1, 3, 2, 1100), -- simple faz, 100+, esc
+(4, 1, 2, 2, 1, 1, 1100), -- doble faz, 1-10, part
+(4, 1, 2, 2, 1, 2, 1100), -- doble faz, 1-10, esc
+(4, 1, 2, 2, 2, 1, 1100), -- doble faz, 10-100, part
+(4, 1, 2, 2, 2, 2, 1100), -- doble faz, 10-100, esc
+(4, 1, 2, 2, 3, 1, 1100), -- doble faz, 100+, part
+(4, 1, 2, 2, 3, 2, 1100), -- doble faz, 100+, esc
+(5, 1, 2, 1, 1, 1, 1350), -- simple faz, 1-10, part
+(5, 1, 2, 1, 1, 2, 1350), -- simple faz, 1-10, esc
+(5, 1, 2, 1, 2, 1, 1350), -- simple faz, 10-100, part
+(5, 1, 2, 1, 2, 2, 1350), -- simple faz, 10-100, esc
+(5, 1, 2, 1, 3, 1, 1350), -- simple faz, 100+, part
+(5, 1, 2, 1, 3, 2, 1350), -- simple faz, 100+, esc
+(5, 1, 2, 2, 1, 1, 1350), -- doble faz, 1-10, part
+(5, 1, 2, 2, 1, 2, 1350), -- doble faz, 1-10, esc
+(5, 1, 2, 2, 2, 1, 1350), -- doble faz, 10-100, part
+(5, 1, 2, 2, 2, 2, 1350), -- doble faz, 10-100, esc
+(5, 1, 2, 2, 3, 1, 1350), -- doble faz, 100+, part
+(5, 1, 2, 2, 3, 2, 1350), -- doble faz, 100+, esc
+(6, 1, 2, 1, 1, 1, 1350), -- simple faz, 1-10, part
+(6, 1, 2, 1, 1, 2, 1350), -- simple faz, 1-10, esc
+(6, 1, 2, 1, 2, 1, 1350), -- simple faz, 10-100, part
+(6, 1, 2, 1, 2, 2, 1350), -- simple faz, 10-100, esc
+(6, 1, 2, 1, 3, 1, 1350), -- simple faz, 100+, part
+(6, 1, 2, 1, 3, 2, 1350), -- simple faz, 100+, esc
+(6, 1, 2, 2, 1, 1, 1350), -- doble faz, 1-10, part
+(6, 1, 2, 2, 1, 2, 1350), -- doble faz, 1-10, esc
+(6, 1, 2, 2, 2, 1, 1350), -- doble faz, 10-100, part
+(6, 1, 2, 2, 2, 2, 1350), -- doble faz, 10-100, esc
+(6, 1, 2, 2, 3, 1, 1350), -- doble faz, 100+, part
+(6, 1, 2, 2, 3, 2, 1350), -- doble faz, 100+, esc
+(7, 1, 2, 1, 1, 1, 1500), -- simple faz, 1-10, part
+(7, 1, 2, 1, 1, 2, 1500), -- simple faz, 1-10, esc
+(7, 1, 2, 1, 2, 1, 1500), -- simple faz, 10-100, part
+(7, 1, 2, 1, 2, 2, 1500), -- simple faz, 10-100, esc
+(7, 1, 2, 1, 3, 1, 1500), -- simple faz, 100+, part
+(7, 1, 2, 1, 3, 2, 1500), -- simple faz, 100+, esc
+(7, 1, 2, 2, 1, 1, 1500), -- doble faz, 1-10, part
+(7, 1, 2, 2, 1, 2, 1500), -- doble faz, 1-10, esc
+(7, 1, 2, 2, 2, 1, 1500), -- doble faz, 10-100, part
+(7, 1, 2, 2, 2, 2, 1500), -- doble faz, 10-100, esc
+(7, 1, 2, 2, 3, 1, 1500), -- doble faz, 100+, part
+(7, 1, 2, 2, 3, 2, 1500), -- doble faz, 100+, esc
+(8, 1, 2, 1, 1, 1, 1700), -- simple faz, 1-10, part
+(8, 1, 2, 1, 1, 2, 1700), -- simple faz, 1-10, esc
+(8, 1, 2, 1, 2, 1, 1700), -- simple faz, 10-100, part
+(8, 1, 2, 1, 2, 2, 1700), -- simple faz, 10-100, esc
+(8, 1, 2, 1, 3, 1, 1700), -- simple faz, 100+, part
+(8, 1, 2, 1, 3, 2, 1700), -- simple faz, 100+, esc
+(8, 1, 2, 2, 1, 1, 1700), -- doble faz, 1-10, part
+(8, 1, 2, 2, 1, 2, 1700), -- doble faz, 1-10, esc
+(8, 1, 2, 2, 2, 1, 1700), -- doble faz, 10-100, part
+(8, 1, 2, 2, 2, 2, 1700), -- doble faz, 10-100, esc
+(8, 1, 2, 2, 3, 1, 1700), -- doble faz, 100+, part
+(8, 1, 2, 2, 3, 2, 1700), -- doble faz, 100+, esc
+(9, 1, 2, 1, 1, 1, 950), -- simple faz, 1-10, part
+(9, 1, 2, 1, 1, 2, 950), -- simple faz, 1-10, esc
+(9, 1, 2, 1, 2, 1, 950), -- simple faz, 10-100, part
+(9, 1, 2, 1, 2, 2, 950), -- simple faz, 10-100, esc
+(9, 1, 2, 1, 3, 1, 950), -- simple faz, 100+, part
+(9, 1, 2, 1, 3, 2, 950), -- simple faz, 100+, esc
+(9, 1, 2, 2, 1, 1, 950), -- doble faz, 1-10, part
+(9, 1, 2, 2, 1, 2, 950), -- doble faz, 1-10, esc
+(9, 1, 2, 2, 2, 1, 950), -- doble faz, 10-100, part
+(9, 1, 2, 2, 2, 2, 950), -- doble faz, 10-100, esc
+(9, 1, 2, 2, 3, 1, 950), -- doble faz, 100+, part
+(9, 1, 2, 2, 3, 2, 950), -- doble faz, 100+, esc
+(10, 1, 2, 1, 1, 1, 1200), -- simple faz, 1-10, part
+(10, 1, 2, 1, 1, 2, 1200), -- simple faz, 1-10, esc
+(10, 1, 2, 1, 2, 1, 1200), -- simple faz, 10-100, part
+(10, 1, 2, 1, 2, 2, 1200), -- simple faz, 10-100, esc
+(10, 1, 2, 1, 3, 1, 1200), -- simple faz, 100+, part
+(10, 1, 2, 1, 3, 2, 1200), -- simple faz, 100+, esc
+(10, 1, 2, 2, 1, 1, 1200), -- doble faz, 1-10, part
+(10, 1, 2, 2, 1, 2, 1200), -- doble faz, 1-10, esc
+(10, 1, 2, 2, 2, 1, 1200), -- doble faz, 10-100, part
+(10, 1, 2, 2, 2, 2, 1200), -- doble faz, 10-100, esc
+(10, 1, 2, 2, 3, 1, 1200), -- doble faz, 100+, part
+(10, 1, 2, 2, 3, 2, 1200), -- doble faz, 100+, esc
+(11, 1, 2, 1, 1, 1, 1350), -- simple faz, 1-10, part
+(11, 1, 2, 1, 1, 2, 1350), -- simple faz, 1-10, esc
+(11, 1, 2, 1, 2, 1, 1350), -- simple faz, 10-100, part
+(11, 1, 2, 1, 2, 2, 1350), -- simple faz, 10-100, esc
+(11, 1, 2, 1, 3, 1, 1350), -- simple faz, 100+, part
+(11, 1, 2, 1, 3, 2, 1350), -- simple faz, 100+, esc
+(11, 1, 2, 2, 1, 1, 1350), -- doble faz, 1-10, part
+(11, 1, 2, 2, 1, 2, 1350), -- doble faz, 1-10, esc
+(11, 1, 2, 2, 2, 1, 1350), -- doble faz, 10-100, part
+(11, 1, 2, 2, 2, 2, 1350), -- doble faz, 10-100, esc
+(11, 1, 2, 2, 3, 1, 1350), -- doble faz, 100+, part
+(11, 1, 2, 2, 3, 2, 1350), -- doble faz, 100+, esc
+(12, 1, 1, 1, 1, 1, 1400), -- simple faz, 1-10, part
+(12, 1, 1, 1, 1, 2, 1400), -- simple faz, 1-10, esc
+(12, 1, 1, 1, 2, 1, 1400), -- simple faz, 10-100, part
+(12, 1, 1, 1, 2, 2, 1400), -- simple faz, 10-100, esc
+(12, 1, 1, 1, 3, 1, 1400), -- simple faz, 100+, part
+(12, 1, 1, 1, 3, 2, 1400), -- simple faz, 100+, esc
+(12, 1, 1, 2, 1, 1, 1400), -- doble faz, 1-10, part
+(12, 1, 1, 2, 1, 2, 1400), -- doble faz, 1-10, esc
+(12, 1, 1, 2, 2, 1, 1400), -- doble faz, 10-100, part
+(12, 1, 1, 2, 2, 2, 1400), -- doble faz, 10-100, esc
+(12, 1, 1, 2, 3, 1, 1400), -- doble faz, 100+, part
+(12, 1, 1, 2, 3, 2, 1400), -- doble faz, 100+, esc
+(1, 4, 2, 1, 1, 1, 900),
+(1, 4, 2, 1, 2, 1, 900),
+(1, 4, 2, 1, 3, 1, 900),
+(1, 4, 2, 1, 1, 2, 900),
+(1, 4, 2, 1, 2, 2, 900),
+(1, 4, 2, 1, 3, 2, 900),
+(1, 4, 2, 2, 1, 1, 1100),
+(1, 4, 2, 2, 2, 1, 1100),
+(1, 4, 2, 2, 3, 1, 1100),
+(1, 4, 2, 2, 1, 2, 1100),
+(1, 4, 2, 2, 2, 2, 1100),
+(1, 4, 2, 2, 3, 2, 1100),
+(4, 4, 2, 1, 1, 1, 2100), -- simple faz, 1-10, part
+(4, 4, 2, 1, 1, 2, 2100), -- simple faz, 1-10, esc
+(4, 4, 2, 1, 2, 1, 2100), -- simple faz, 10-100, part
+(4, 4, 2, 1, 2, 2, 2100), -- simple faz, 10-100, esc
+(4, 4, 2, 1, 3, 1, 2100), -- simple faz, 100+, part
+(4, 4, 2, 1, 3, 2, 2100), -- simple faz, 100+, esc
+(4, 4, 2, 2, 1, 1, 2100), -- doble faz, 1-10, part
+(4, 4, 2, 2, 1, 2, 2100), -- doble faz, 1-10, esc
+(4, 4, 2, 2, 2, 1, 2100), -- doble faz, 10-100, part
+(4, 4, 2, 2, 2, 2, 2100), -- doble faz, 10-100, esc
+(4, 4, 2, 2, 3, 1, 2100), -- doble faz, 100+, part
+(4, 4, 2, 2, 3, 2, 2100), -- doble faz, 100+, esc
+(5, 4, 2, 1, 1, 1, 2300), -- simple faz, 1-10, part
+(5, 4, 2, 1, 1, 2, 2300), -- simple faz, 1-10, esc
+(5, 4, 2, 1, 2, 1, 2300), -- simple faz, 10-100, part
+(5, 4, 2, 1, 2, 2, 2300), -- simple faz, 10-100, esc
+(5, 4, 2, 1, 3, 1, 2300), -- simple faz, 100+, part
+(5, 4, 2, 1, 3, 2, 2300), -- simple faz, 100+, esc
+(5, 4, 2, 2, 1, 1, 2300), -- doble faz, 1-10, part
+(5, 4, 2, 2, 1, 2, 2300), -- doble faz, 1-10, esc
+(5, 4, 2, 2, 2, 1, 2300), -- doble faz, 10-100, part
+(5, 4, 2, 2, 2, 2, 2300), -- doble faz, 10-100, esc
+(5, 4, 2, 2, 3, 1, 2300), -- doble faz, 100+, part
+(5, 4, 2, 2, 3, 2, 2300), -- doble faz, 100+, esc
+(7, 4, 2, 1, 1, 1, 2500), -- simple faz, 1-10, part
+(7, 4, 2, 1, 1, 2, 2500), -- simple faz, 1-10, esc
+(7, 4, 2, 1, 2, 1, 2500), -- simple faz, 10-100, part
+(7, 4, 2, 1, 2, 2, 2500), -- simple faz, 10-100, esc
+(7, 4, 2, 1, 3, 1, 2500), -- simple faz, 100+, part
+(7, 4, 2, 1, 3, 2, 2500), -- simple faz, 100+, esc
+(7, 4, 2, 2, 1, 1, 2500), -- doble faz, 1-10, part
+(7, 4, 2, 2, 1, 2, 2500), -- doble faz, 1-10, esc
+(7, 4, 2, 2, 2, 1, 2500), -- doble faz, 10-100, part
+(7, 4, 2, 2, 2, 2, 2500), -- doble faz, 10-100, esc
+(7, 4, 2, 2, 3, 1, 2500), -- doble faz, 100+, part
+(7, 4, 2, 2, 3, 2, 2500), -- doble faz, 100+, esc
+(8, 4, 2, 1, 1, 1, 2800), -- simple faz, 1-10, part
+(8, 4, 2, 1, 1, 2, 2800), -- simple faz, 1-10, esc
+(8, 4, 2, 1, 2, 1, 2800), -- simple faz, 10-100, part
+(8, 4, 2, 1, 2, 2, 2800), -- simple faz, 10-100, esc
+(8, 4, 2, 1, 3, 1, 2800), -- simple faz, 100+, part
+(8, 4, 2, 1, 3, 2, 2800), -- simple faz, 100+, esc
+(8, 4, 2, 2, 1, 1, 2800), -- doble faz, 1-10, part
+(8, 4, 2, 2, 1, 2, 2800), -- doble faz, 1-10, esc
+(8, 4, 2, 2, 2, 1, 2800), -- doble faz, 10-100, part
+(8, 4, 2, 2, 2, 2, 2800), -- doble faz, 10-100, esc
+(8, 4, 2, 2, 3, 1, 2800), -- doble faz, 100+, part
+(8, 4, 2, 2, 3, 2, 2800), -- doble faz, 100+, esc
+(9, 4, 2, 1, 1, 1, 1900), -- simple faz, 1-10, part
+(9, 4, 2, 1, 1, 2, 1900), -- simple faz, 1-10, esc
+(9, 4, 2, 1, 2, 1, 1900), -- simple faz, 10-100, part
+(9, 4, 2, 1, 2, 2, 1900), -- simple faz, 10-100, esc
+(9, 4, 2, 1, 3, 1, 1900), -- simple faz, 100+, part
+(9, 4, 2, 1, 3, 2, 1900), -- simple faz, 100+, esc
+(9, 4, 2, 2, 1, 1, 1900), -- doble faz, 1-10, part
+(9, 4, 2, 2, 1, 2, 1900), -- doble faz, 1-10, esc
+(9, 4, 2, 2, 2, 1, 1900), -- doble faz, 10-100, part
+(9, 4, 2, 2, 2, 2, 1900), -- doble faz, 10-100, esc
+(9, 4, 2, 2, 3, 1, 1900), -- doble faz, 100+, part
+(9, 4, 2, 2, 3, 2, 1900), -- doble faz, 100+, esc
+(10, 4, 2, 1, 1, 1, 2100), -- simple faz, 1-10, part
+(10, 4, 2, 1, 1, 2, 2100), -- simple faz, 1-10, esc
+(10, 4, 2, 1, 2, 1, 2100), -- simple faz, 10-100, part
+(10, 4, 2, 1, 2, 2, 2100), -- simple faz, 10-100, esc
+(10, 4, 2, 1, 3, 1, 2100), -- simple faz, 100+, part
+(10, 4, 2, 1, 3, 2, 2100), -- simple faz, 100+, esc
+(10, 4, 2, 2, 1, 1, 2100), -- doble faz, 1-10, part
+(10, 4, 2, 2, 1, 2, 2100), -- doble faz, 1-10, esc
+(10, 4, 2, 2, 2, 1, 2100), -- doble faz, 10-100, part
+(10, 4, 2, 2, 2, 2, 2100), -- doble faz, 10-100, esc
+(10, 4, 2, 2, 3, 1, 2100), -- doble faz, 100+, part
+(10, 4, 2, 2, 3, 2, 2100), -- doble faz, 100+, esc
+(13, 4, 2, 1, 1, 1, 2300), -- simple faz, 1-10, part
+(13, 4, 2, 1, 1, 2, 2300), -- simple faz, 1-10, esc
+(13, 4, 2, 1, 2, 1, 2300), -- simple faz, 10-100, part
+(13, 4, 2, 1, 2, 2, 2300), -- simple faz, 10-100, esc
+(13, 4, 2, 1, 3, 1, 2300), -- simple faz, 100+, part
+(13, 4, 2, 1, 3, 2, 2300), -- simple faz, 100+, esc
+(13, 4, 2, 2, 1, 1, 2300), -- doble faz, 1-10, part
+(13, 4, 2, 2, 1, 2, 2300), -- doble faz, 1-10, esc
+(13, 4, 2, 2, 2, 1, 2300), -- doble faz, 10-100, part
+(13, 4, 2, 2, 2, 2, 2300), -- doble faz, 10-100, esc
+(13, 4, 2, 2, 3, 1, 2300), -- doble faz, 100+, part
+(13, 4, 2, 2, 3, 2, 2300), -- doble faz, 100+, esc
+(12, 4, 1, 1, 1, 1, 2300), -- simple faz, 1-10, part
+(12, 4, 1, 1, 1, 2, 2300), -- simple faz, 1-10, esc
+(12, 4, 1, 1, 2, 1, 2300), -- simple faz, 10-100, part
+(12, 4, 1, 1, 2, 2, 2300), -- simple faz, 10-100, esc
+(12, 4, 1, 1, 3, 1, 2300), -- simple faz, 100+, part
+(12, 4, 1, 1, 3, 2, 2300), -- simple faz, 100+, esc
+(12, 4, 1, 2, 1, 1, 2300), -- doble faz, 1-10, part
+(12, 4, 1, 2, 1, 2, 2300), -- doble faz, 1-10, esc
+(12, 4, 1, 2, 2, 1, 2300), -- doble faz, 10-100, part
+(12, 4, 1, 2, 2, 2, 2300), -- doble faz, 10-100, esc
+(12, 4, 1, 2, 3, 1, 2300), -- doble faz, 100+, part
+(12, 4, 1, 2, 3, 2, 2300), -- doble faz, 100+, esc
+(4, 5, 2, 1, 1, 1, 2600), -- simple faz, 1-10, part
+(4, 5, 2, 1, 1, 2, 2600), -- simple faz, 1-10, esc
+(4, 5, 2, 1, 2, 1, 2600), -- simple faz, 10-100, part
+(4, 5, 2, 1, 2, 2, 2600), -- simple faz, 10-100, esc
+(4, 5, 2, 1, 3, 1, 2600), -- simple faz, 100+, part
+(4, 5, 2, 1, 3, 2, 2600), -- simple faz, 100+, esc
+(4, 5, 2, 2, 1, 1, 2600), -- doble faz, 1-10, part
+(4, 5, 2, 2, 1, 2, 2600), -- doble faz, 1-10, esc
+(4, 5, 2, 2, 2, 1, 2600), -- doble faz, 10-100, part
+(4, 5, 2, 2, 2, 2, 2600), -- doble faz, 10-100, esc
+(4, 5, 2, 2, 3, 1, 2600), -- doble faz, 100+, part
+(4, 5, 2, 2, 3, 2, 2600), -- doble faz, 100+, esc
+(5, 5, 2, 1, 1, 1, 2800), -- simple faz, 1-10, part
+(5, 5, 2, 1, 1, 2, 2800), -- simple faz, 1-10, esc
+(5, 5, 2, 1, 2, 1, 2800), -- simple faz, 10-100, part
+(5, 5, 2, 1, 2, 2, 2800), -- simple faz, 10-100, esc
+(5, 5, 2, 1, 3, 1, 2800), -- simple faz, 100+, part
+(5, 5, 2, 1, 3, 2, 2800), -- simple faz, 100+, esc
+(5, 5, 2, 2, 1, 1, 2800), -- doble faz, 1-10, part
+(5, 5, 2, 2, 1, 2, 2800), -- doble faz, 1-10, esc
+(5, 5, 2, 2, 2, 1, 2800), -- doble faz, 10-100, part
+(5, 5, 2, 2, 2, 2, 2800), -- doble faz, 10-100, esc
+(5, 5, 2, 2, 3, 1, 2800), -- doble faz, 100+, part
+(5, 5, 2, 2, 3, 2, 2800), -- doble faz, 100+, esc
+(7, 5, 2, 1, 1, 1, 3000), -- simple faz, 1-10, part
+(7, 5, 2, 1, 1, 2, 3000), -- simple faz, 1-10, esc
+(7, 5, 2, 1, 2, 1, 3000), -- simple faz, 10-100, part
+(7, 5, 2, 1, 2, 2, 3000), -- simple faz, 10-100, esc
+(7, 5, 2, 1, 3, 1, 3000), -- simple faz, 100+, part
+(7, 5, 2, 1, 3, 2, 3000), -- simple faz, 100+, esc
+(7, 5, 2, 2, 1, 1, 3000), -- doble faz, 1-10, part
+(7, 5, 2, 2, 1, 2, 3000), -- doble faz, 1-10, esc
+(7, 5, 2, 2, 2, 1, 3000), -- doble faz, 10-100, part
+(7, 5, 2, 2, 2, 2, 3000), -- doble faz, 10-100, esc
+(7, 5, 2, 2, 3, 1, 3000), -- doble faz, 100+, part
+(7, 5, 2, 2, 3, 2, 3000); -- doble faz, 100+, esc
 
 create table if not exists impresion (
     id bigint auto_increment not null primary key,
