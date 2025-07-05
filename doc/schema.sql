@@ -43,9 +43,9 @@ insert into tipo_producto(id, tipo) values
 (6, 'CUADERNOS ANILLADOS'), -- listo
 (7, 'ENTRADAS'), -- listo
 (8, 'ETIQUETAS'), -- listo
-(9, 'FOLLETOS'),
-(10, 'HOJAS MEMBRETEADAS'),
-(11, 'IMPRESIONES'),
+(9, 'FOLLETOS'), -- listo
+(10, 'HOJAS MEMBRETEADAS'), -- listo
+(11, 'IMPRESIONES'), -- listo
 (12, 'LONAS'),
 (13, 'LONAS PUBLICITARIAS'),
 (14, 'RIFAS/BONOS CONTRIBUCIÓN'),
@@ -964,6 +964,71 @@ create table if not exists impresion (
     constraint fk_cantidades_impresion foreign key (id_cantidades_impresion) references cantidades_impresion(id),
     constraint fk_tipo_impresion foreign key (id_tipo_impresion) references tipo_impresion(id),
     constraint fk_tipo_producto_impresion foreign key (id_tipo_producto) references tipo_producto(id)
+);
+
+-- lona
+create table if not exists medida_lona_comun (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null
+);
+
+insert into medida_lona_comun (id, medida) values
+(1, '40X60 CM'),
+(2, '60X90 CM'),
+(3, '70X100 CM'),
+(4, '90X120 CM')
+(5, 'OTRA');
+
+create table if not exists tipo_lona (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_lona(id, tipo) values
+(1, 'LONA FRONT'),
+(2, 'LONA BACK LIGHT'),
+(3, 'LONA BLOCKOUT');
+
+create table if not exists precio_lona (
+    id bigint auto_increment not null primary key,
+    con_ojales tinyint(1) not null,
+    con_ojales_con_refuerzo tinyint(1) not null,
+    con_bolsillos tinyint(1) not null,
+    con_demasia_para_tensado tinyint(1) not null,
+    con_solapado tinyint(1) not null,
+    id_medida_lona_comun bigint not null,
+    id_tipo_lona bigint not null,
+    precio int not null,
+    constraint fk_medida_lona_precio foreign key (id_medida_lona_comun) references medida_lona_comun(id),
+    constraint fk_tipo_lona_precio foreign key (id_tipo_lona) references tipo_lona(id)
+);
+
+insert into precio_lona(con_ojales, con_ojales_refuerzo, con_bolsillos, con_demasiada_para_tensado, con_solapado, id_medida_lona_comun, id_tipo_lona, precio) values
+(0, 0, 1, 0, 0, 1, 1, 20440),
+(0, 0, 1, 0, 0, 2, 1, 23600),
+(0, 0, 1, 0, 0, 3, 1, 27650),
+(0, 0, 1, 0, 0, 4, 1, 29930);
+
+create table if not exists lona (
+    id bigint auto_increment not null primary key,
+    medida_personalizada varchar(255) null,
+    con_ojales tinyint(1) not null default 0,
+    con_ojales_con_refuerzo tinyint(1) not null default 0,
+    con_bolsillos tinyint(1) not null default 0,
+    con_demasia_para_tensado tinyint(1) not null default 0,
+    con_solapado tinyint(1) not null default 0,
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int not null default 0,
+    cantidad int not null default 1,
+    enlace_archivo varchar(255) not null default '-',
+    informacion_adicional varchar(1000) not null default '-',
+    id_medida_lona_comun bigint not null,
+    id_tipo_lona bigint not null,
+    id_tipo_producto bigint not null default 12,
+    constraint fk_medida_lona foreign key (id_medida_lona_comun) references medida_lona_comun(id),
+    constraint fk_tipo_lona foreign key (id_tipo_lona) references tipo_lona(id),
+    constraint fk_tipo_producto_lona foreign key (id_tipo_producto) references tipo_producto(id)
 );
 
 -- tablas para ordenes de trabajo
