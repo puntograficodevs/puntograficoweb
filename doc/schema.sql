@@ -47,7 +47,7 @@ insert into tipo_producto(id, tipo) values
 (10, 'HOJAS MEMBRETEADAS'), -- listo
 (11, 'IMPRESIONES'), -- listo
 (12, 'LONAS'), -- listo
-(13, 'LONAS PUBLICITARIAS'),
+(13, 'LONAS PUBLICITARIAS'), -- listo
 (14, 'RIFAS/BONOS CONTRIBUCIÓN'),
 (15, 'ROTULACIONES'),
 (16, 'SELLOS AUTOMÁTICOS'),
@@ -1087,6 +1087,29 @@ create table if not exists lona_publicitaria (
     constraint fk_medida_lona_publicitaria foreign key (id_medida_lona) references medida_lona_publicitaria(1),
     constraint fk_tipo_lona_publicitaria foreign key (id_tipo_lona) references tipo_lona(id),
     constraint fk_tipo_producto_lona_publicitaria foreign key (id_tipo_producto) references tipo_producto(id)
+);
+
+-- rifas / bonos contribución
+create table if not exists rifa_bono_contribucion (
+    id bigint auto_increment not null primary key,
+    con_numerado tinyint(1) not null default 0,
+    detalle_numerado varchar(255) null,
+    es_encolado tinyint(1) not null default 0,
+    medida varchar(255) not null,
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int not null default 0,
+    cantidad int not null default 1,
+    enlace_archivo varchar(255) not null default '-',
+    informacion_adicional varchar(1000) not null default '-',
+    id_tipo_troquelado bigint not null,
+    id_tipo_color bigint not null,
+    id_tipo_papel bigint not null,
+    id_tipo_producto bigint not null default 14,
+    constraint fk_tipo_troquelado_rifas foreign key (id_tipo_troquelado) references tipo_troquelado_talonario(id),
+    constraint fk_tipo_color_rifas foreign key (id_tipo_color) references tipo_color(id),
+    constraint fk_tipo_papel_rifas foreign key (id_tipo_papel) references tipo_papel_talonario(id),
+    constraint fk_tipo_producto_rifa_bono_contribucion foreign key (id_tipo_producto) references tipo_producto(id)
 );
 
 -- tablas para ordenes de trabajo
