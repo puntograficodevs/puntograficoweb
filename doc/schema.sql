@@ -48,7 +48,7 @@ insert into tipo_producto(id, tipo) values
 (11, 'IMPRESIONES'), -- listo
 (12, 'LONAS'), -- listo
 (13, 'LONAS PUBLICITARIAS'), -- listo
-(14, 'RIFAS/BONOS CONTRIBUCIÓN'),
+(14, 'RIFAS/BONOS CONTRIBUCIÓN'), -- listo
 (15, 'ROTULACIONES'),
 (16, 'SELLOS AUTOMÁTICOS'),
 (17, 'SELLOS AUTOMÁTICOS ESCOLARES'),
