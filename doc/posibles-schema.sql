@@ -181,12 +181,12 @@ insert into tamanio_hoja_folleto(id, tamanio) values
 (4, 'A3'),
 (5, 'OFICIO');
 
-create table if not exists cantidad_estandar_folleto (
+create table if not exists cantidad_folleto (
     id bigint auto_increment not null primary key,
     cantidad varchar(255) not null
 );
 
-insert into cantidad_estandar_folleto(id, cantidad) values
+insert into cantidad_folleto(id, cantidad) values
 (1, '50'),
 (2, '100'),
 (3, '150'),
@@ -225,6 +225,29 @@ create table if not exists tipo_faz_folleto (
 insert into tipo_faz_folleto(id, tipo) values
 (1, 'SIMPLE FAZ'),
 (2, 'DOBLE FAZ');
+
+create table if not exists folleto (
+    id bigint auto_increment not null primary key,
+    cantidad_personalizada varchar(255) null,
+    con_plegado tinyint(1) not null default 0,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_tipo_papel_folleto bigint not null,
+    id_tipo_color_folleto bigint not null,
+    id_tipo_faz_folleto bigint not null,
+    id_tamanio_hoja_folleto bigint not null,
+    id_tipo_folleto bigint not null,
+    id_cantidad_folleto bigint not null,
+    constraint fk_tipo_papel_folleto foreign key(id_tipo_papel_folleto) references tipo_papel_folleto(id),
+    constraint fk_tipo_color_folleto foreign key(id_tipo_color_folleto) references tipo_color_folleto(id),
+    constraint fk_tipo_faz_folleto foreign key(id_tipo_faz_folleto) references tipo_faz_folleto(id),
+    constraint fk_tamanio_hoja_folleto foreign key(id_tamanio_hoja_folleto) references tamanio_hoja_folleto(id),
+    constraint fk_tipo_folleto foreign key(id_tipo_folleto) references tipo_folleto(id),
+    constraint fk_cantidad_folleto foreign key(id_cantidad_folleto) references cantidad_folleto(id)
+);
 
 -- hojas membreteadas
 
@@ -615,12 +638,12 @@ insert into medida_tarjeta(id, medida) values
 (1, '9X5 CM'),
 (2, 'OTRA');
 
-create table if not exists cantidad_estandar_tarjeta (
+create table if not exists cantidad_tarjeta (
     id bigint auto_increment not null primary key,
     cantidad varchar(255) not null
 );
 
-insert into cantidad_estandar_tarjeta(id, cantidad) values
+insert into cantidad_tarjeta(id, cantidad) values
 (1, '50'),
 (2, '100'),
 (3, '150'),
@@ -649,6 +672,29 @@ create table if not exists tipo_faz_tarjeta (
 insert into tipo_faz_tarjeta(id, tipo) values
 (1, 'SIMPLE FAZ'),
 (2, 'DOBLE FAZ');
+
+create table if not exists tarjeta (
+    id bigint auto_increment not null primary key,
+    medida_personalizada varchar(255) null,
+    cantidad_personalizada int null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null
+    id_tipo_papel_tarjeta bigint not null,
+    id_tipo_color_tarjeta bigint not null,
+    id_tipo_faz_tarjeta bigint not null,
+    id_tipo_laminado_tarjeta bigint not null,
+    id_medida_tarjeta bigint not null,
+    id_cantidad_tarjeta bigint not null,
+    constraint fk_tipo_papel_tarjeta foreign key(id_tipo_papel_tarjeta) references tipo_papel_tarjeta(id),
+    constraint fk_tipo_color_tarjeta foreign key(id_tipo_color_tarjeta) references tipo_color_tarjeta(id),
+    constraint fk_tipo_faz_tarjeta foreign key(id_tipo_faz_tarjeta) references tipo_faz_tarjeta(id),
+    constraint fk_tipo_laminado_tarjeta foreign key(id_tipo_laminado_tarjeta) references tipo_laminado_tarjeta(id),
+    constraint fk_medida_tarjeta foreign key(id_medida_tarjeta) references medida_tarjeta(id),
+    constraint fk_cantidad_tarjeta foreign key(id_cantidad_tarjeta) references cantidad_tarjeta(id)
+);
 
 -- turneros / r.p
 create table if not exists tipo_color_turnero (
