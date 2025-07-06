@@ -353,6 +353,23 @@ insert into tipo_corte_rotulacion(id, tipo) values
 (3, 'TROQUELADO CON CORTE INDIVIDUAL'),
 (4, 'PLANCHA IMPRESA');
 
+create table if not exists rotulacion (
+    id bigint auto_increment not null primary key,
+    es_laminado tinyint(1) not null default 0,
+    horario_rotulacion varchar(255) not null default '-',
+    direccion_rotulacion varchar(255) not null default '-',
+    medida varchar(255) not null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_tipo_rotulacion bigint not null,
+    id_tipo_corte_rotulacion bigint not null,
+    constraint fk_tipo_rotulacion foreign key(id_tipo_rotulacion) references tipo_rotulacion(id),
+    constraint fk_tipo_corte_rotulacion foreign key(id_tipo_corte_rotulacion) references tipo_corte_rotulacion(id)
+);
+
 -- sellos automáticos
 create table if not exists modelo_sello_automatico (
     id bigint auto_increment not null primary key,
@@ -520,6 +537,17 @@ insert into material_sublimacion(id, material) values
 (12, 'LLAVERO CORTO LANYARD'),
 (13, 'LLAVERO LARGO LANYARD'),
 (14, 'MOUSEPAD');
+
+create table if not exists sublimacion (
+    id bigint auto_increment not null primary key,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_material_sublimacion bigint not null,
+    constraint fk_material_sublimacion foreign key(id_material_sublimacion) references material_sublimacion(id)
+);
 
 -- talonarios (presupuestos, x, recibos)
 create table if not exists modo_talonario (
@@ -739,6 +767,22 @@ insert into tipo_vinilo(id, tipo) values
 (3, 'CLEAR'),
 (4, 'MICROPERFORADO');
 
+create table if not exists vinilo (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_tipo_vinilo bigint not null,
+    id_tipo_adicional_vinilo bigint not null,
+    id_tipo_corte_vinilo bigint not null,
+    constraint fk_tipo_vinilo foreign key(id_tipo_vinilo) references tipo_vinilo(id),
+    constraint fk_tipo_adicioal_vinilo foreign key(id_tipo_adicional_vinilo) references tipo_adicional_vinilo(id),
+    constraint fk_tipo_corte_vinilo foreign key(id_tipo_corte_vinilo) references tipo_corte_vinilo(id)
+);
+
 -- vinilos + plástico corrugado
 
 -- vinilos de corte
@@ -751,6 +795,22 @@ insert into trae_material_vinilo(id, material) values
 (1, 'PARA SOLO CORTE'),
 (2, 'CORTE PELADO TRANSFER'),
 (3, 'NO APLICA');
+
+create table if not exists vinilo_de_corte (
+    id bigint auto_increment not null primary key,
+    es_promocional tinyint(1) not null default 0,
+    es_oracal tinyint(1) not null default 0,
+    codigo_color varchar(255) not null default '-',
+    con_colocacion tinyint(1) not null default 0,
+    medida varchar(255) not null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_trae_material_vinilo bigint not null,
+    constraint fk_trae_material_vinilo foreign key(id_trae_material_vinilo) references trae_material_vinilo(id)
+);
 
 -- otros
 create table if not exists tipo_color_otro (
