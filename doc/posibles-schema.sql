@@ -352,6 +352,24 @@ insert into modelo_sello_automatico(id, modelo) values
 (13, 'PRINTER R30'),
 (13, 'PRINTER R40');
 
+create table if not exists sello_automatico (
+    id bigint auto_increment not null primary key,
+    es_profesional tinyint(1) not null default 0,
+    es_particular tinyint(1) not null default 0,
+    texto_linea_uno varchar(255) not null,
+    texto_linea_dos varchar(255) not null default '-',
+    texto_linea_tres varchar(255) not null default '-',
+    texto_linea_cuatro varchar(255) not null default '-',
+    tipografia_linea_uno varchar(255) not null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_modelo_sello_automatico bigint not null,
+    constraint fk_modelo_sello_automatico foreign key(id_modelo_sello_automatico) references modelo_sello_automatico(id)
+);
+
 -- sellos automáticos escolares
 create table if not exists modelo_sello_automatico_escolar (
     id bigint auto_increment not null primary key,
@@ -361,6 +379,22 @@ create table if not exists modelo_sello_automatico_escolar (
 insert into modelo_sello_automatico_escolar(id, modelo) values
 (1, '10X27 MM - 10 COLOP'),
 (2, '14X38 MM - 20 COLOP');
+
+create table if not exists sello_automatico_escolar (
+    id bigint auto_increment not null primary key,
+    texto_linea_uno varchar(255) not null,
+    texto_linea_dos varchar(255) not null default '-',
+    texto_linea_tres varchar(255) not null default '-',
+    tipografia varchar(255) not null,
+    dibujo varchar(255) not null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_modelo_sello_automatico_escolar bigint not null,
+    constraint fk_modelo_sello_automatico_escolar foreign key(id_modelo_sello_automatico_escolar) references modelo_sello_automatico_escolar(id)
+);
 
 -- sellos de madera
 create table if not exists tamanio_sello_madera (
@@ -472,7 +506,8 @@ create table if not exists modo_talonario (
 
 insert into modo_talonario(id, modo) values
 (1, 'ORIGINAL'),
-(2, 'ORIGINAL DUPLICADO');
+(2, 'ORIGINAL DUPLICADO'),
+(3, 'N/A');
 
 create table if not exists tipo_talonario (
     id bigint auto_increment not null primary key,
@@ -482,7 +517,8 @@ create table if not exists tipo_talonario (
 insert into tipo_talonario(id, tipo) values
 (1, 'RECIBO'),
 (2, 'PRESUPUESTO'),
-(3, 'X');
+(3, 'X'),
+(4, 'OTRO');
 
 create table if not exists tipo_papel_talonario (
     id bigint auto_increment not null primary key,
@@ -523,6 +559,31 @@ create table if not exists tipo_color_talonario (
 insert into tipo_color_talonario(id, tipo) values
 (1, 'BLANCO Y NEGRO'),
 (2, 'A COLOR');
+
+create table if not exists talonario (
+    id bigint auto_increment not null primary key,
+    con_numerado tinyint(1) not null default 0,
+    detalle_numerado varchar(255) null,
+    es_encolado tinyint(1) not null default 0,
+    medida_personalizada varchar(255) null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_tipo_talonario bigint not null,
+    id_tipo_troquelado_talonario bigint not null,
+    id_modo_talonario bigint not null,
+    id_tipo_color_talonario bigint not null,
+    id_medida_talonario bigint not null,
+    id_tipo_papel_talonario bigint not null,
+    constraint fk_tipo_talonario foreign key(id_tipo_talonario) references tipo_talonario(id),
+    constraint fk_tipo_troquelado_talonario foreign key(id_tipo_troquelado_talonario) references tipo_troquelado_talonario(id),
+    constraint fk_modo_talonario foreign key(id_modo_talonario) references modo_talonario(id),
+    constraint fk_tipo_color_talonario foreign key(id_tipo_color_talonario) references tipo_color_talonario(id),
+    constraint fk_medida_talonario foreign key(id_medida_talonario) references medida_talonario(id),
+    constraint fk_tipo_papel_talonario foreign key(id_tipo_papel_talonario) references tipo_papel_talonario(id)
+);
 
 -- tarjetas
 create table if not exists tipo_color_tarjeta (
