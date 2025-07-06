@@ -146,9 +146,10 @@ create table if not exists tamanio_perforacion (
 );
 
 insert into tamanio_perforacion(id, tamanio) values
-(1, 'CHICA'),
-(2, 'MEDIANA'),
-(3, 'GRANDE');
+(1, 'NINGUNA'),
+(2, 'CHICA'),
+(3, 'MEDIANA'),
+(4, 'GRANDE');
 
 create table if not exists tipo_faz_etiqueta (
     id bigint auto_increment not null primary key,
@@ -158,6 +159,26 @@ create table if not exists tipo_faz_etiqueta (
 insert into tipo_faz_etiqueta(id, tipo) values
 (1, 'SIMPLE FAZ'),
 (2, 'DOBLE FAZ');
+
+create table if not exists etiqueta (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null,
+    con_perforacion_adicional tinyint(1) not null default 0,
+    con_marca_adicional tinyint(1) not null default 0,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_tipo_papel_etiqueta bigint not null,
+    id_tipo_laminado_etiqueta bigint not null,
+    id_tamanio_perforacion bigint not null,
+    id_tipo_faz_etiqueta bigint not null,
+    constraint fk_tipo_papel_etiqueta foreign key(id_tipo_papel_etiqueta) references tipo_papel_etiqueta(id),
+    constraint fk_tipo_laminado_etiqueta foreign key(id_tipo_laminado_etiqueta) references tipo_laminado_etiqueta(id),
+    constraint fk_tamanio_perforacion foreign key(id_tamanio_perforacion) references tamanio_perforacion(id),
+    constraint fk_tipo_faz_etiqueta foreign key(id_tipo_faz_etiqueta) references tipo_faz_etiqueta(id)
+);
 
 -- folletos
 create table if not exists tipo_color_folleto (
@@ -305,6 +326,25 @@ insert into tipo_lona_comun(id, tipo) values
 (2, 'LONA BACK LIGHT'),
 (3, 'LONA BLOCKOUT');
 
+create table if not exists lona_comun (
+    id bigint auto_increment not null primary key,
+    medida_personalizada varchar(255) null,
+    con_ojales tinyint(1) not null default 0,
+    con_ojales_con_refuerzo tinyint(1) not null default 0,
+    con_bolsillos tinyint(1) not null default 0,
+    con_demasia_para_tensado tinyint(1) not null default 0,
+    con_solapado tinyint(1) not null default 0,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_medida_lona_comun bigint not null,
+    id_tipo_lona_comun bigint not null,
+    constraint fk_medida_lona_comun foreign key(id_medida_lona_comun) references medida_lona_comun(id),
+    constraint fk_tipo_lona_comun foreign key(id_tipo_lona_comun) references tipo_lona_comun(id)
+);
+
 -- lonas publicitarias
 create table if not exists tipo_lona_publicitaria (
     id bigint auto_increment not null primary key,
@@ -326,6 +366,20 @@ insert into medida_lona_publicitaria(id, medida) values
 (2, '90X190 CM'),
 (3, '85X200 CM'),
 (4, 'A3 MINI - 25X42 CM');
+
+create table if not exists lona_publicitaria (
+    id bigint auto_increment not null primary key,
+    con_adicional_portabanner tinyint(1) not null default 0,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_medida_lona_publicitaria bigint not null,
+    id_tipo_lona_publicitaria bigint not null,
+    constraint fk_medida_lona_publicitaria foreign key(id_medida_lona_publicitaria) references medida_lona_publicitaria(id),
+    constraint fk_tipo_lona_publicitaria foreign key(id_tipo_lona_publicitaria) references tipo_lona_publicitaria(id)
+);
 
 -- rifas / bonos contribución
 
@@ -784,6 +838,17 @@ create table if not exists vinilo (
 );
 
 -- vinilos + plástico corrugado
+create table if not exists vinilo_plastico_corrugado (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null,
+    con_ojales tinyint(1) not null default 0,
+    cantidad_ojales int not null default 0,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null
+);
 
 -- vinilos de corte
 create table if not exists trae_material_vinilo (
