@@ -1112,6 +1112,45 @@ create table if not exists rifa_bono_contribucion (
     constraint fk_tipo_producto_rifa_bono_contribucion foreign key (id_tipo_producto) references tipo_producto(id)
 );
 
+-- rotulaciones
+create table if not exists tipo_rotulacion (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_rotulacion(id, tipo) values
+(1, 'ARLON  BRILLANTE'),
+(2, 'ARLON MATE'),
+(3, 'CLEAR'),
+(4, 'MICROPERFORADO'),
+(5, 'VINILO DE CORTE');
+
+create table if not exists tipo_corte_rotulacion (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_corte_rotulacion(id, tipo) values
+(1, 'MANUAL'),
+(2, 'TROQUELADO'),
+(3, 'TROQUELADO CON CORTE INDIVIDUAL'),
+(4, 'PLANCHA IMPRESA');
+
+create table if not exists rotulacion (
+    id bigint auto_increment not null primary key,
+    es_laminado tinyint(1) not null default 0,
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int not null default 0,
+    cantidad int not null default 1,
+    enlace_archivo varchar(255) not null default '-',
+    informacion_adicional varchar(1000) not null default '-',
+    id_tipo_rotulacion bigint not null,
+    id_tipo_producto bigint not null default 15,
+    constraint fk_tipo_rotulacion foreign key (id_tipo_rotulacion) references tipo_rotulacion(id),
+    constraint fk_tipo_producto_rotulacion foreign key (id_tipo_producto) references tipo_producto(id)
+);
+
 -- tablas para ordenes de trabajo
 create table if not exists medio_pago (
     id bigint auto_increment not null primary key,
