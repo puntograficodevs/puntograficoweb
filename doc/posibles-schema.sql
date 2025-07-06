@@ -394,6 +394,21 @@ insert into tamanio_sello_madera(id, tamanio) values
 (23, '10X15 CM'),
 (24, 'OTRO');
 
+create table if not exists sello_madera (
+    id bigint auto_increment not null primary key,
+    tamanio_personalizado varchar(255) null,
+    con_adicional_perilla tinyint(1) not null default 0,
+    detalle_sello varchar(255) not null default '-',
+    tipografia_linea_uno varchar(255) not null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_tamanio_sello_madera bigint not null,
+    constraint fk_tamanio_sello_madera foreign key(id_tamanio_sello_madera) references tamanio_sello_madera(id)
+);
+
 -- sobres
 create table if not exists tipo_color_sobre (
     id bigint auto_increment not null primary key,
