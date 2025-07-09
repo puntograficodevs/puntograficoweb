@@ -29,8 +29,30 @@ insert into empleado(nombre, username, password, id_rol) values
 ('Mari', 'maripm', 'tinta2025!', 3);
 
 -- agendas
+create table if not exists agenda (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null,
+    tipo_tapa varchar(255) not null,
+    cantidad_hojas int not null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null
+);
 
 -- anotadores
+create table if not exists anotador (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null,
+    tipo_tapa varchar(255) not null,
+    cantidad_hojas int not null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null
+);
 
 -- carpetas con solapas
 create table if not exists tipo_laminado_carpeta_solapa (
@@ -52,6 +74,20 @@ insert into tipo_faz_carpeta_solapa(id, tipo) values
 (1, 'SIMPLE FAZ'),
 (2, 'DOBLE FAZ');
 
+create table if not exists carpeta_solapa (
+    id bigint auto_increment not null primary key,
+    tipo_papel varchar(255) not null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_tipo_laminado_carpeta_solapa bigint not null,
+    id_tipo_faz_carpeta_solapa bigint not null,
+    constraint fk_tipo_laminado_carpeta_solapa foreign key(id_tipo_laminado_carpeta_solapa) references tipo_laminado_carpeta_solapa(id),
+    constraint fk_tipo_faz_carpeta_solapa foreign key(id_tipo_faz_carpeta_solapa) references tipo_faz_carpeta_solapa(id)
+);
+
 -- catálogos
 create table if not exists tipo_laminado_catalogo (
     id bigint auto_increment not null primary key,
@@ -72,6 +108,20 @@ insert into tipo_faz_catalogo(id, tipo) values
 (1, 'SIMPLE FAZ'),
 (2, 'DOBLE FAZ');
 
+create table if not exists catalogo (
+    id bigint auto_increment not null primary key,
+    tipo_papel varchar(255) not null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_tipo_laminado_catalogo bigint not null,
+    id_tipo_faz_catalogo bigint not null,
+    constraint fk_tipo_laminado_catalogo foreign key(id_tipo_laminado_catalogo) references tipo_laminado_catalogo(id),
+    constraint fk_tipo_faz_catalogo foreign key(id_tipo_faz_catalogo) references tipo_faz_catalogo(id)
+);
+
 -- cierra bolsas
 create table if not exists tipo_troquelado_cierra_bolsas (
     id bigint auto_increment not null primary key,
@@ -82,7 +132,8 @@ insert into tipo_troquelado_cierra_bolsas(id, tipo) values
 (1, 'CUADRADO'),
 (2, 'CIRCULAR'),
 (3, 'POR EL CONTORNO'),
-(4, 'CORTE INDIVIDUAL');
+(4, 'CORTE INDIVIDUAL'),
+(5, 'SIN TROQUELAR');
 
 create table if not exists medida_cierra_bolsas (
     id bigint auto_increment not null primary key,
@@ -93,7 +144,32 @@ insert into medida_cierra_bolsas(id, medida) values
 (1, '8X4 CM'),
 (2, 'OTRA');
 
+create table if not exists cierra_bolsas (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_tipo_troquelado_cierra_bolsas bigint not null,
+    id_medida_cierra_bolsas bigint not null,
+    constraint fk_tipo_troquelado_cierra_bolsas foreign key(id_tipo_troquelado_cierra_bolsas) references tipo_troquelado_cierra_bolsas(id),
+    constraint fk_medida_cierra_bolsas foreign key(id_medida_cierra_bolsas) references medida_cierra_bolsas(id)
+);
+
 -- cuadernos anillados
+create table if not exists cuaderno_anillado (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null,
+    tipo_tapa varchar(255) not null,
+    cantidad_hojas int not null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null
+);
 
 -- combos
 create table if not exists tipo_combo (
@@ -116,7 +192,66 @@ insert into cantidad_combo(id, cantidad) values
 (2, 200),
 (3, 500);
 
+create table if not exists combo (
+    id bigint auto_increment not null primary key,
+    descripcion_combo varchar(1000) not null default '-',
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_tipo_combo bigint not null,
+    id_cantidad_combo bigint not null,
+    constraint fk_tipo_combo foreign key(id_tipo_combo) references tipo_combo(id),
+    constraint fk_cantidad_combo foreign key(id_cantidad_combo) references cantidad_combo(id)
+);
+
 -- entradas
+create table if not exists tipo_papel_entrada (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_papel_entrada(id, tipo) values
+(1, 'OBRA 75 GRS'),
+(2, 'ILUSTRACIÓN 150 GRS');
+
+create table if not exists tipo_color_entrada (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_color_entrada(id, tipo) values
+(1, 'BLANCO Y NEGRO'),
+(2, 'A COLOR');
+
+create table if not exists tipo_troquelado_entrada (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_troquelado_entrada(id, tipo) values
+(1, 'SIN TROQUELAR'),
+(2, 'TROQUELADO SIMPLE'),
+(3, 'TROQUELADO DOBLE');
+
+create table if not exists entrada (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null default '17X6 CM',
+    con_numerado tinyint(1) not null default 0,
+    detalle_numerado varchar(255) null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_tipo_papel_entrada bigint not null,
+    id_tipo_color_entrada bigint not null,
+    id_tipo_troquelado_entrada bigint not null,
+    constraint fk_tipo_papel_entrada foreign key(id_tipo_papel_entrada) references tipo_papel_entrada(id),
+    constraint fk_tipo_color_entrada foreign key(id_tipo_color_entrada) references tipo_color_entrada(id),
+    constraint fk_tipo_troquelado_entrada foreign key(id_tipo_troquelado_entrada) references tipo_troquelado_entrada(id)
+);
 
 -- etiquetas
 create table if not exists tipo_papel_etiqueta (
@@ -271,6 +406,15 @@ create table if not exists folleto (
 );
 
 -- hojas membreteadas
+create table if not exists hojas_membreteadas (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null
+);
 
 -- impresiones
 create table if not exists tipo_color_impresion (
@@ -282,12 +426,12 @@ insert into tipo_color_impresion(id, tipo) values
 (1, 'BLANCO Y NEGRO'),
 (2, 'A COLOR');
 
-create table if not exists tamanio_hoja (
+create table if not exists tamanio_hoja_impresion (
     id bigint auto_increment not null primary key,
     tamanio varchar(255) not null
 );
 
-insert into tamanio_hoja(id, tamanio) values
+insert into tamanio_hoja_impresion(id, tamanio) values
 (1, 'A4'),
 (2, 'A5'),
 (3, 'OFICIO'),
@@ -302,6 +446,27 @@ create table if not exists tipo_faz_impresion (
 insert into tipo_faz_impresion(id, tipo) values
 (1, 'SIMPLE FAZ'),
 (2, 'DOBLE FAZ');
+
+create table if not exists tipo_papel_impresion (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+create table if not exists impresion (
+    id bigint auto_increment not null primary key,
+    es_anillado tinyint(1) not null default 0,
+    enlace_archivo varchar(255) not null default '-',
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_tipo_color_impresion bigint not null,
+    id_tamanio_hoja_impresion bigint not null,
+    id_tipo_faz_impresion bigint not null,
+    id_tipo_papel_impresion bigint not null,
+    constraint fk_tipo_color_impresion foreign key(id_tipo_color_impresion) references tipo_color_impresion(id),
+    constraint fk_tamanio_hoja_impresion foreign key(id_tamanio_hoja_impresion) references tamanio_hoja_impresion(id),
+    constraint fk_tipo_faz_impresion foreign key(id_tipo_faz_impresion) references tipo_faz_impresion(id),
+    constraint fk_tipo_papel_impresion foreign key(id_tipo_papel_impresion) references tipo_papel_impresion(id)
+);
 
 -- lonas
 create table if not exists medida_lona_comun (
@@ -382,7 +547,52 @@ create table if not exists lona_publicitaria (
 );
 
 -- rifas / bonos contribución
+create table if not exists tipo_papel_rifa (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
 
+insert into tipo_papel_rifa(id, tipo) values
+(1, 'OBRA 75 GRS'),
+(2, 'ILUSTRACIÓN 150 GRS');
+
+create table if not exists tipo_troquelado_rifa (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_troquelado_rifa(id, tipo) values
+(1, 'SIN TROQUELAR'),
+(2, 'TROQUELADO SIMPLE'),
+(3, 'TROQUELADO DOBLE');
+
+create table if not exists tipo_color_rifa (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_color_rifa(id, tipo) values
+(1, 'BLANCO Y NEGRO'),
+(2, 'A COLOR');
+
+create table if not exists rifas_bonos_contribucion (
+    id bigint auto_increment not null primary key,
+    con_numerado tinyint(1) not null default 0,
+    detalle_numerado varchar(255) null,
+    con_encolado tinyint(1) not null default 0,
+    medida varchar(255) not null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_tipo_papel_rifa bigint not null,
+    id_tipo_troquelado_rifa bigint not null,
+    id_tipo_color_rifa bigint not null,
+    constraint fk_tipo_papel_rifa foreign key(id_tipo_papel_rifa) references tipo_papel_rifa(id),
+    constraint fk_tipo_troquelado_rifa foreign key(id_tipo_troquelado_rifa) references tipo_troquelado_rifa(id),
+    constraint fk_tipo_color_rifa foreign key(id_tipo_color_rifa) references tipo_color_rifa(id)
+);
 -- rotulaciones
 create table if not exists tipo_rotulacion (
     id bigint auto_increment not null primary key,
@@ -558,6 +768,20 @@ insert into medida_sobre(id, medida) values
 (3, 'OFICIO INGLÉS'),
 (4, 'OTRA');
 
+create table if not exists sobre (
+    id bigint auto_increment not null primary key,
+    medida_personalizada varchar(255) null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_medida_sobre bigint not null,
+    id_tipo_color_sobre bigint not null,
+    constraint fk_medida_sobre foreign key(id_medida_sobre) references medida_sobre(id),
+    constraint fk_tipo_color_sobre foreign key(id_tipo_color_sobre) references tipo_color_sobre(id)
+);
+
 -- stickers
 create table if not exists tipo_troquelado_sticker (
     id bigint auto_increment not null primary key,
@@ -568,7 +792,20 @@ insert into tipo_troquelado_sticker(id, tipo) values
 (1, 'CUADRADO'),
 (2, 'CIRCULAR'),
 (3, 'POR EL CONTORNO'),
-(4, 'CORTE INDIVIDUAL');
+(4, 'CORTE INDIVIDUAL'),
+(5, 'SIN TROQUELAR');
+
+create table if not exists sticker (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_tipo_troquelado_sticker bigint not null,
+    constraint fk_tipo_troquelado_sticker foreign key(id_tipo_troquelado_sticker) references tipo_troquelado_sticker(id)
+);
 
 -- sublimaciones
 create table if not exists material_sublimacion (
@@ -788,6 +1025,18 @@ insert into tipo_color_turnero(id, tipo) values
 (1, 'BLANCO Y NEGRO'),
 (2, 'A COLOR');
 
+create table if not exists turnero (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_tipo_color_turnero bigint not null,
+    constraint fk_tipo_color_turnero foreign key(id_tipo_color_turnero) references tipo_color_turnero(id)
+);
+
 -- vinilos
 create table if not exists tipo_corte_vinilo (
     id bigint auto_increment not null primary key,
@@ -886,3 +1135,332 @@ create table if not exists tipo_color_otro (
 insert into tipo_color_otro(id, tipo) values
 (1, 'BLANCO Y NEGRO'),
 (2, 'A COLOR');
+
+create table if not exists otro (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_tipo_color_otro bigint not null,
+    constraint fk_tipo_color_otro foreign key(id_tipo_color_otro) references tipo_color_otro(id)
+);
+
+-- ordenes de trabajo
+create table if not exists medio_pago (
+    id bigint auto_increment not null primary key,
+    medio_de_pago varchar(255) not null
+);
+
+insert into medio_pago(id, medio_de_pago) values
+(1, 'DÉBITO'),
+(2, 'CRÉDITO'),
+(3, 'TRANSFERENCIA'),
+(4, 'EFECTIVO');
+
+create table if not exists estado_pago (
+    id bigint auto_increment not null primary key,
+    estado_de_pago varchar(255) not null
+);
+
+insert into estado_pago(id, estado_de_pago) values
+(1, 'SIN PAGAR'),
+(2, 'SEÑADO'),
+(3, 'PAGADO');
+
+create table if not exists estado_orden (
+    id bigint auto_increment not null primary key,
+    estado_de_orden varchar(255) not null
+);
+
+insert into estado_orden(id, estado_de_orden) values
+(1, 'TOMADA'),
+(2, 'EN PROCESO'),
+(3, 'LISTA PARA RETIRAR'),
+(4, 'RETIRADA');
+
+create table if not exists orden_trabajo (
+    id bigint auto_increment not null primary key,
+    nombre_cliente varchar(255) not null,
+    telefono_cliente varchar(255) not null,
+    es_cuenta_corriente tinyint(1) not null default 0,
+    fecha_pedido date not null,
+    fecha_muestra date null,
+    fecha_entrega date not null,
+    hora_entrega varchar(255) null,
+    necesita_factura tinyint(1) not null default 0,
+    total int not null,
+    abonado int not null default 0,
+    resta int not null,
+    id_medio_pago bigint null,
+    id_estado_pago bigint not null default 1,
+    id_estado_orden bigint not null default 1,
+    id_empleado bigint not null,
+    constraint fk_medio_pago_orden foreign key (id_medio_pago) references medio_pago(id),
+    constraint fk_estado_pago_orden foreign key (id_estado_pago) references estado_pago(id),
+    constraint fk_estado_orden foreign key (id_estado_orden) references estado_orden(id),
+    constraint fk_empleado_orden foreign key (id_empleado) references empleado(id)
+);
+
+-- tablas puente
+create table if not exists orden_agenda (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_agenda bigint not null,
+    constraint fk_orden_agenda foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_agenda foreign key(id_agenda) references agenda(id)
+);
+
+create table if not exists orden_anotador (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_anotador bigint not null,
+    constraint fk_orden_anotador foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_anotador foreign key(id_anotador) references anotador(id)
+);
+
+create table if not exists orden_carpeta_solapa (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_carpeta_solapa bigint not null,
+    constraint fk_orden_carpeta_solapa foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_carpeta_solapa foreign key(id_carpeta_solapa) references carpeta_solapa(id)
+);
+
+create table if not exists orden_catalogo (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_catalogo bigint not null,
+    constraint fk_orden_catalogo foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_catalogo foreign key(id_catalogo) references catalogo(id)
+);
+
+create table if not exists orden_cierra_bolsas (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_cierra_bolsas bigint not null,
+    constraint fk_orden_cierra_bolsas foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_cierra_bolsas foreign key(id_cierra_bolsas) references cierra_bolsas(id)
+);
+
+create table if not exists orden_cuaderno_anillado (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_cuaderno_anillado bigint not null,
+    constraint fk_orden_cuaderno_anillado foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_cuaderno_anillado foreign key(id_cuaderno_anillado) references cuaderno_anillado(id)
+);
+
+create table if not exists orden_combo (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_combo bigint not null,
+    constraint fk_orden_combo foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_combo foreign key(id_combo) references combo(id)
+);
+
+create table if not exists orden_entrada (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_entrada bigint not null,
+    constraint fk_orden_entrada foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_entrada foreign key(id_entrada) references entrada(id)
+);
+
+create table if not exists orden_etiqueta (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_etiqueta bigint not null,
+    constraint fk_orden_etiqueta foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_etiqueta foreign key(id_etiqueta) references etiqueta(id)
+);
+
+create table if not exists orden_folleto (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_folleto bigint not null,
+    constraint fk_orden_folleto foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_folleto foreign key(id_folleto) references folleto(id)
+);
+
+create table if not exists orden_hojas_membreteadas (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_hojas_membreteadas bigint not null,
+    constraint fk_orden_hojas_membreteadas foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_hojas_membreteadas foreign key(id_hojas_membreteadas) references hojas_membreteadas(id)
+);
+
+create table if not exists orden_impresion (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_impresion bigint not null,
+    constraint fk_orden_impresion foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_impresion foreign key(id_impresion) references impresion(id)
+);
+
+create table if not exists orden_lona_comun (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_lona_comun bigint not null,
+    constraint fk_orden_lona_comun foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_lona_comun foreign key(id_lona_comun) references lona_comun(id)
+);
+
+create table if not exists orden_lona_publicitaria(
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_lona_publicitaria bigint not null,
+    constraint fk_orden_lona_publicitaria foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_lona_publicitaria foreign key(id_lona_publicitaria) references lona_publicitaria(id)
+);
+
+create table if not exists orden_rifas_bonos_contribucion (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_rifas_bonos_contribucion bigint not null,
+    constraint fk_orden_rifas_bonos_contribucion foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_rifas_bonos_contribucion foreign key(id_rifas_bonos_contribucion) references rifas_bonos_contribucion(id)
+);
+
+create table if not exists orden_rotulacion (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_rotulacion bigint not null,
+    constraint fk_orden_rotulacion foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_rotulacion foreign key(id_rotulacion) references rotulacion(id)
+);
+
+create table if not exists orden_sello_automatico (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_sello_automatico bigint not null,
+    constraint fk_orden_sello_automatico foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_sello_automatico foreign key(id_sello_automatico) references sello_automatico(id)
+);
+
+create table if not exists orden_sello_automatico_escolar (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_sello_automatico_escolar bigint not null,
+    constraint fk_orden_sello_automatico_escolar foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_sello_automatico_escolar foreign key(id_sello_automatico_escolar) references sello_automatico_escolar(id)
+);
+
+create table if not exists orden_sello_madera (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_sello_madera bigint not null,
+    constraint fk_orden_sello_madera foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_sello_madera foreign key(id_sello_madera) references sello_madera(id)
+);
+
+create table if not exists orden_sobre (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_sobre bigint not null,
+    constraint fk_orden_sobre foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_sobre foreign key(id_sobre) references sobre(id)
+);
+
+create table if not exists orden_sticker (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_sticker bigint not null,
+    constraint fk_orden_sticker foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_sticker foreign key(id_sticker) references sticker(id)
+);
+
+create table if not exists orden_sublimacion (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_sublimacion bigint not null,
+    constraint fk_orden_sublimacion foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_sublimacion foreign key(id_sublimacion) references sublimacion(id)
+);
+
+create table if not exists orden_talonario (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_talonario bigint not null,
+    constraint fk_orden_talonario foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_talonario foreign key(id_talonario) references talonario(id)
+);
+
+create table if not exists orden_tarjeta (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_tarjeta bigint not null,
+    constraint fk_orden_tarjeta foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_tarjeta foreign key(id_tarjeta) references tarjeta(id)
+);
+
+create table if not exists orden_turnero (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_turnero bigint not null,
+    constraint fk_orden_turnero foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_turnero foreign key(id_turnero) references turnero(id)
+);
+
+create table if not exists orden_vinilo (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_vinilo bigint not null,
+    constraint fk_orden_vinilo foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_vinilo foreign key(id_vinilo) references vinilo(id)
+);
+
+create table if not exists orden_vinilo_plastico_corrugado (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_vinilo_plastico_corrugado bigint not null,
+    constraint fk_orden_vinilo_plastico_corrugado foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_vinilo_plastico_corrugado foreign key(id_vinilo_plastico_corrugado) references vinilo_plastico_corrugado(id)
+);
+
+create table if not exists orden_vinilo_de_corte (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_vinilo_de_corte bigint not null,
+    constraint fk_orden_vinilo_de_corte foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_vinilo_de_corte foreign key(id_vinilo_de_corte) references vinilo_de_corte(id)
+);
+create table if not exists orden_otro (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_otro bigint not null,
+    constraint fk_orden_otro foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_otro foreign key(id_otro) references otro(id)
+);
