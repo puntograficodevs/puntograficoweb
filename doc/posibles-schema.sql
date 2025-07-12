@@ -1516,13 +1516,14 @@ create table if not exists medida_turnero (
 insert into medida_turnero(id, medida) values
 (1, '1/4 DE A4'),
 (2, '13X18 CM')
-(3, 'OTRA');
+(3, '7X8,5 CM')
+(4, 'OTRA');
 
 create table if not exists turnero (
     id bigint auto_increment not null primary key,
     cantidad_personalizada int null,
     medida_personalizada varchar(255) null,
-    cantidad_hojas int not null,
+    cantidad_hojas int null,
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
     precio_adicional_disenio int not null default 5000,
@@ -1539,7 +1540,7 @@ create table if not exists turnero (
 create table if not exists plantilla_turnero (
     id bigint auto_increment not null primary key,
     precio int not null,
-    cantidad_hojas int not null,
+    cantidad_hojas int null,
     id_tipo_color_turnero bigint not null,
     id_cantidad_turnero bigint not null,
     id_medida_turnero bigint not null,
@@ -1562,7 +1563,13 @@ insert into plantilla_turnero(cantidad_hojas, id_tipo_color_turnero, id_cantidad
 (100, 2, 1, 2, 25400),  -- 100 hojas, color, 2, 13x18
 (100, 2, 2, 2, 46700),  -- 100 hojas, color, 4, 13x18
 (100, 2, 3, 2, 89300),  -- 100 hojas, color, 8, 13x18
-(100, 2, 4, 2, 125600); -- 100 hojas, color, 12, 13x18
+(100, 2, 4, 2, 125600), -- 100 hojas, color, 12, 13x18
+(null, 1, 2, 3, 15850), -- null, byn, 4, 7x8,5
+(null, 1, 3, 3, 27650), -- null, byn, 8, 7x8,5
+(null, 1, 4, 3, 35900), -- null, byn, 12, 7x8,5
+(null, 2, 2, 3, 19850), -- null, color, 4, 7x8,5
+(null, 2, 3, 3, 33700), -- null, color, 8, 7x8,5
+(null, 2, 4, 3, 45700); -- null, color, 12, 7x8,5
 
 -- vinilos
 create table if not exists tipo_corte_vinilo (
