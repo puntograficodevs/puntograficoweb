@@ -365,7 +365,8 @@ insert into tipo_papel_etiqueta(id, tipo) values
 (1, 'OPALINA 180 GRS'),
 (2, 'OPALINA 210 GRS'),
 (3, 'ILUSTRACIÓN 250 GRS'),
-(4, 'KRAFT');
+(4, 'KRAFT'),
+(5, 'ILUSTRACIÓN 2250 GRS');
 
 create table if not exists tipo_laminado_etiqueta (
     id bigint auto_increment not null primary key,
@@ -397,25 +398,91 @@ insert into tipo_faz_etiqueta(id, tipo) values
 (1, 'SIMPLE FAZ'),
 (2, 'DOBLE FAZ');
 
+create table if not exists cantidad_etiqueta (
+    id bigint auto_increment not null primary key,
+    cantidad varchar(255) not null
+);
+
+insert into cantidad_etiqueta(id, cantidad) values
+(1, '100'),
+(2, '200'),
+(3, '500'),
+(4, '1000'),
+(5, 'OTRA');
+
+create table if not exists medida_etiqueta (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null
+);
+
+insert into medida_etiqueta(id, medida) values
+(1, '7X5 CM'),
+(2, 'OTRA')
+
 create table if not exists etiqueta (
     id bigint auto_increment not null primary key,
-    medida varchar(255) not null,
+    medida_personalizada varchar(255) not null,
     con_perforacion_adicional tinyint(1) not null default 0,
     con_marca_adicional tinyint(1) not null default 0,
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
-    precio_adicional_disenio int not null default 5000,
+    precio_adicional_disenio int not null default 3500,
     precio int null,
     informacion_adicional varchar(255) null,
     id_tipo_papel_etiqueta bigint not null,
     id_tipo_laminado_etiqueta bigint not null,
-    id_tamanio_perforacion bigint not null,
+    id_tamanio_perforacion bigint null,
     id_tipo_faz_etiqueta bigint not null,
+    id_cantidad_etiqueta bigint not null,
+    id_medida_etiqueta bigint not null,
     constraint fk_tipo_papel_etiqueta foreign key(id_tipo_papel_etiqueta) references tipo_papel_etiqueta(id),
     constraint fk_tipo_laminado_etiqueta foreign key(id_tipo_laminado_etiqueta) references tipo_laminado_etiqueta(id),
     constraint fk_tamanio_perforacion foreign key(id_tamanio_perforacion) references tamanio_perforacion(id),
-    constraint fk_tipo_faz_etiqueta foreign key(id_tipo_faz_etiqueta) references tipo_faz_etiqueta(id)
+    constraint fk_tipo_faz_etiqueta foreign key(id_tipo_faz_etiqueta) references tipo_faz_etiqueta(id),
+    constraint fk_cantidad_etiqueta foreign key(id_cantidad_etiqueta) references cantidad_etiqueta(id),
+    constraint fk_medida_etiqueta foreign key(id_medida_etiqueta) references medida_etiqueta(id)
 );
+
+create table if not exists plantilla_etiqueta (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    id_tipo_papel_etiqueta bigint not null,
+    id_tipo_laminado_etiqueta bigint not null,
+    id_tipo_faz_etiqueta bigint not null,
+    id_cantidad_etiqueta bigint not null,
+    id_medida_etiqueta bigint not null,
+    constraint fk_plantilla_tipo_papel_etiqueta foreign key(id_tipo_papel_etiqueta) references tipo_papel_etiqueta(id),
+    constraint fk_plantilla_tipo_laminado_etiqueta foreign key(id_tipo_laminado_etiqueta) references tipo_laminado_etiqueta(id),
+    constraint fk_plantilla_tipo_faz_etiqueta foreign key(id_tipo_faz_etiqueta) references tipo_faz_etiqueta(id),
+    constraint fk_plantilla_cantidad_etiqueta foreign key(id_cantidad_etiqueta) references cantidad_etiqueta(id),
+    constraint fk_plantilla_medida_etiqueta foreign key(id_medida_etiqueta) references medida_etiqueta(id)
+);
+
+insert into plantilla_etiqueta(id_tipo_papel_etiqueta, id_tipo_laminado_etiqueta, id_tipo_faz_etiqueta, id_cantidad_etiqueta, id_medida_etiqueta, precio) values
+(4, 3, 1, 1, 1, 9700),  -- kraft, sin laminar, simple, 100, 7x5
+(4, 3, 1, 2, 1, 17050), -- kraft, sin laminar, simple, 200, 7x5
+(4, 3, 1, 3, 1, 40150), -- kraft, sin laminar, simple, 500, 7x5
+(4, 3, 1, 4, 1, 70100), -- kraft, sin laminar, simple, 1000, 7x5
+(4, 3, 2, 1, 1, 11150), -- kraft, sin laminar, doble, 100, 7x5
+(4, 3, 2, 2, 1, 19750), -- kraft, sin laminar, doble, 200, 7x5
+(4, 3, 2, 3, 1, 46200), -- kraft, sin laminar, doble, 500, 7x5
+(4, 3, 2, 4, 1, 88250), -- kraft, sin laminar, doble, 1000, 7x5
+(5, 3, 1, 1, 1, 9700),  -- 220 grs, sin laminar, simple, 100, 7x5
+(5, 3, 1, 2, 1, 17050), -- 220 grs, sin laminar, simple, 200, 7x5
+(5, 3, 1, 3, 1, 40150), -- 220 grs, sin laminar, simple, 500, 7x5
+(5, 3, 1, 4, 1, 70100), -- 220 grs, sin laminar, simple, 1000, 7x5
+(5, 3, 2, 1, 1, 11150), -- 220 grs, sin laminar, doble, 100, 7x5
+(5, 3, 2, 2, 1, 19750), -- 220 grs, sin laminar, doble, 200, 7x5
+(5, 3, 2, 3, 1, 46200), -- 220 grs, sin laminar, doble, 500, 7x5
+(5, 3, 2, 4, 1, 88250), -- 220 grs, sin laminar, doble, 1000, 7x5
+(1, 3, 1, 1, 1, 7950),  -- opalina 180, sin laminar, simple, 100, 7x5
+(1, 3, 1, 2, 1, 14100), -- opalina 180, sin laminar, simple, 200, 7x5
+(1, 3, 1, 3, 1, 33200), -- opalina 180, sin laminar, simple, 500, 7x5
+(1, 3, 1, 4, 1, 59250), -- opalina 180, sin laminar, simple, 1000, 7x5
+(1, 3, 2, 1, 1, 9700),  -- opalina 180, sin laminar, doble, 100, 7x5
+(1, 3, 2, 2, 1, 17150), -- opalina 180, sin laminar, doble, 200, 7x5
+(1, 3, 2, 3, 1, 40150), -- opalina 180, sin laminar, doble, 500, 7x5
+(1, 3, 2, 4, 1, 70100); -- opalina 180, sin laminar, doble, 1000, 7x5
 
 -- folletos
 create table if not exists tipo_color_folleto (
