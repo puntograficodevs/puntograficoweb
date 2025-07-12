@@ -1087,7 +1087,18 @@ create table if not exists medida_sobre (
 insert into medida_sobre(id, medida) values
 (1, 'BOLSA A4 - 27X37 CM'),
 (2, 'BOLSA A5 - 19X24 CM'),
-(3, 'OFICIO INGLÉS'),
+(3, 'OFICIO INGLÉS - 23,5X12 CM'),
+(4, 'OTRA');
+
+create table if not exists cantidad_sobre (
+    id bigint auto_increment not null primary key,
+    cantidad varchar(255) not null
+);
+
+insert into cantidad_sobre(id, cantidad) values
+(1, '100'),
+(2, '200'),
+(3, '400'),
 (4, 'OTRA');
 
 create table if not exists sobre (
@@ -1100,9 +1111,39 @@ create table if not exists sobre (
     informacion_adicional varchar(255) null,
     id_medida_sobre bigint not null,
     id_tipo_color_sobre bigint not null,
+    id_cantidad_sobre bigint not null,
     constraint fk_medida_sobre foreign key(id_medida_sobre) references medida_sobre(id),
-    constraint fk_tipo_color_sobre foreign key(id_tipo_color_sobre) references tipo_color_sobre(id)
+    constraint fk_tipo_color_sobre foreign key(id_tipo_color_sobre) references tipo_color_sobre(id),
+    constraint fk_cantidad_sobre foreign key(id_cantidad_sobre) references id_cantidad_sobre(id)
 );
+
+create table if not exists plantilla_sobre (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    id_medida_sobre bigint not null,
+    id_tipo_color_sobre bigint not null,
+    id_cantidad_sobre bigint not null,
+    constraint fk_medida_sobre foreign key(id_medida_sobre) references medida_sobre(id),
+    constraint fk_tipo_color_sobre foreign key(id_tipo_color_sobre) references tipo_color_sobre(id),
+    constraint fk_cantidad_sobre foreign key(id_cantidad_sobre) references id_cantidad_sobre(id)
+);
+
+insert into plantilla_sobre(id_medida_sobre, id_tipo_color_sobre, id_cantidad_sobre, precio) values
+(3, 1, 1, 55350),  -- oficio inglés, byn, 100
+(3, 1, 2, 99750),  -- oficio inglés, byn, 200
+(3, 1, 3, 182800), -- oficio inglés, byn, 400
+(1, 1, 1, 65950),  -- bolsa A4, byn, 100
+(1, 1, 2, 107050), -- bolsa A4, byn, 200
+(1, 1, 3, 195600), -- bolsa A4, byn, 400
+(1, 2, 1, 122800),  -- bolsa A4, color, 100
+(1, 2, 2, 182000), -- bolsa A4, color, 200
+(1, 2, 3, 385700), -- bolsa A4, color, 400
+(2, 1, 1, 33000),  -- bolsa A5, byn, 100
+(2, 1, 2, 53600), -- bolsa A5, byn, 200
+(2, 1, 3, 97800), -- bolsa A5, byn, 400
+(2, 2, 1, 61500),  -- bolsa A5, color, 100
+(2, 2, 2, 91150), -- bolsa A5, color, 200
+(2, 2, 3, 192950); -- bolsa A5, color, 400
 
 -- stickers
 create table if not exists tipo_troquelado_sticker (
