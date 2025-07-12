@@ -1268,6 +1268,49 @@ create table if not exists tarjeta (
     constraint fk_cantidad_tarjeta foreign key(id_cantidad_tarjeta) references cantidad_tarjeta(id)
 );
 
+create table if not exists plantilla_tarjeta (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    id_tipo_papel_tarjeta bigint not null,
+    id_tipo_color_tarjeta bigint not null,
+    id_tipo_faz_tarjeta bigint not null,
+    id_tipo_laminado_tarjeta bigint not null,
+    id_medida_tarjeta bigint not null,
+    id_cantidad_tarjeta bigint not null,
+    constraint fk_plantilla_tipo_papel_tarjeta foreign key(id_tipo_papel_tarjeta) references tipo_papel_tarjeta(id),
+    constraint fk_plantilla_tipo_color_tarjeta foreign key(id_tipo_color_tarjeta) references tipo_color_tarjeta(id),
+    constraint fk_plantilla_tipo_faz_tarjeta foreign key(id_tipo_faz_tarjeta) references tipo_faz_tarjeta(id),
+    constraint fk_plantilla_tipo_laminado_tarjeta foreign key(id_tipo_laminado_tarjeta) references tipo_laminado_tarjeta(id),
+    constraint fk_plantilla_medida_tarjeta foreign key(id_medida_tarjeta) references medida_tarjeta(id),
+    constraint fk_plantilla_cantidad_tarjeta foreign key(id_cantidad_tarjeta) references cantidad_tarjeta(id)
+);
+
+insert into plantilla_tarjeta(id_tipo_papel_tarjeta, id_tipo_color_tarjeta, id_tipo_faz_tarjeta, id_tipo_laminado_tarjeta, id_medida_tarjeta, id_cantidad_tarjeta, precio) values
+(3, 2, 1, 3, 1, 1, 10290), -- 250 grs, color, simple, sin laminar, 9x5, 50
+(3, 2, 2, 3, 1, 1, 11350), -- 250 grs, color, doble, sin laminar, 9x5, 50
+(3, 2, 1, 2, 1, 1, 12820), -- 250 grs, color, simple, mate, 9x5, 50
+(3, 2, 2, 2, 1, 1, 13880), -- 250 grs, color, doble, mate, 9x5, 50
+(3, 2, 1, 1, 1, 1, 12270), -- 250 grs, color, simple, brillante, 9x5, 50
+(3, 2, 2, 1, 1, 1, 13330), -- 250 grs, color, doble, brillante, 9x5, 50
+(3, 2, 1, 3, 1, 2, 16500), -- 250 grs, color, simple, sin laminar, 9x5, 100
+(3, 2, 2, 3, 1, 2, 19950), -- 250 grs, color, doble, sin laminar, 9x5, 100
+(3, 2, 1, 2, 1, 2, 19800), -- 250 grs, color, simple, mate, 9x5, 100
+(3, 2, 2, 2, 1, 2, 23250), -- 250 grs, color, doble, mate, 9x5, 100
+(3, 2, 1, 1, 1, 2, 19140), -- 250 grs, color, simple, brillante, 9x5, 100
+(3, 2, 2, 1, 1, 2, 22590), -- 250 grs, color, doble, brillante, 9x5, 100
+(3, 2, 1, 3, 1, 4, 27560), -- 250 grs, color, simple, sin laminar, 9x5, 200
+(3, 2, 2, 3, 1, 4, 31850), -- 250 grs, color, doble, sin laminar, 9x5, 200
+(3, 2, 1, 2, 1, 4, 34160), -- 250 grs, color, simple, mate, 9x5, 200
+(3, 2, 2, 2, 1, 4, 38450), -- 250 grs, color, doble, mate, 9x5, 200
+(3, 2, 1, 1, 1, 4, 32840), -- 250 grs, color, simple, brillante, 9x5, 200
+(3, 2, 2, 1, 1, 4, 37130), -- 250 grs, color, doble, brillante, 9x5, 200
+(3, 2, 1, 3, 1, 7, 59100), -- 250 grs, color, simple, sin laminar, 9x5, 500
+(3, 2, 2, 3, 1, 7, 69000), -- 250 grs, color, doble, sin laminar, 9x5, 500
+(3, 2, 1, 2, 1, 7, 75600), -- 250 grs, color, simple, mate, 9x5, 500
+(3, 2, 2, 2, 1, 7, 85500), -- 250 grs, color, doble, mate, 9x5, 500
+(3, 2, 1, 1, 1, 7, 72300), -- 250 grs, color, simple, brillante, 9x5, 500
+(3, 2, 2, 1, 1, 7, 82200); -- 250 grs, color, doble, brillante, 9x5, 500
+
 -- turneros / r.p
 create table if not exists tipo_color_turnero (
     id bigint auto_increment not null primary key,
