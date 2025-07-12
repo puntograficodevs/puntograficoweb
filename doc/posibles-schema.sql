@@ -628,15 +628,72 @@ insert into plantilla_folleto(id_tipo_papel_folleto, id_tipo_color_folleto, id_t
 (2, 2, 2, 3, 1, 8, 159100); -- 115, color, doble faz, 1/4 de a4, común, 1000
 
 -- hojas membreteadas
+create table if not exists medida_hojas_membreteadas (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null
+);
+
+insert into medida_hojas_membreteadas(id, medida) values
+(1, 'A4'),
+(2, 'OTRA');
+
+create table if not exists tipo_color_hojas_membreteadas (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_color_hojas_membreteadas(id, tipo) values
+(1, 'BLANCO Y NEGRO'),
+(2, 'A COLOR');
+
+create table if not exists cantidad_hojas_membreteadas (
+    id bigint auto_increment not null primary key,
+    cantidad varchar(255) not null,
+);
+
+insert into cantidad_hojas_membreteadas(id, cantidad) values
+(1, '1'),
+(2, '2'),
+(3, '4'),
+(4, 'OTRA');
+
 create table if not exists hojas_membreteadas (
     id bigint auto_increment not null primary key,
-    medida varchar(255) not null,
+    medida_personalizada varchar(255) null,
+    cantidad_personalizada varchar(255) null,
+    cantidad_hojas int not null,
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
     precio_adicional_disenio int not null default 5000,
     precio int null,
-    informacion_adicional varchar(255) null
+    informacion_adicional varchar(255) null,
+    id_medida_hojas_membreteadas bigint not null,
+    id_tipo_color_hojas_membreteadas bigint not null,
+    id_cantidad_hojas_membreteadas bigint not null,
+    constraint fk_medida_hojas_membreteadas foreign key(id_medida_hojas_membreteadas) references medida_hojas_membreteadas(id),
+    constraint fk_tipo_color_hojas_membreteadas foreign key(id_tipo_color_hojas_membreteadas) references tipo_color_hojas_membreteadas(id),
+    constraint fk_cantidad_hojas_membreteadas foreign key(id_cantidad_hojas_membreteadas) references cantidad_hojas_membreteadas(id)
 );
+
+create table if not exists plantilla_hojas_membreteadas (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    cantidad_hojas int not null,
+    id_medida_hojas_membreteadas bigint not null,
+    id_tipo_color_hojas_membreteadas bigint not null,
+    id_cantidad_hojas_membreteadas bigint not null,
+    constraint fk_plantilla_medida_hojas_membreteadas foreign key(id_medida_hojas_membreteadas) references medida_hojas_membreteadas(id),
+    constraint fk_plantilla_tipo_color_hojas_membreteadas foreign key(id_tipo_color_hojas_membreteadas) references tipo_color_hojas_membreteadas(id),
+    constraint fk_plantilla_cantidad_hojas_membreteadas foreign key(id_cantidad_hojas_membreteadas) references cantidad_hojas_membreteadas(id)
+);
+
+insert into plantilla_hojas_membreteadas(cantidad_hojas, id_medida_hojas_membreteadas, id_tipo_color_hojas_membreteadas, id_cantidad_hojas_membreteadas, precio) values
+(100, 1, 1, 1, 11900),  -- 100, A4, byn, 1 u.
+(100, 1, 1, 2, 21550),  -- 100, A4, byn, 2 u.
+(100, 1, 1, 3, 41000),  -- 100, A4, byn, 4 u.
+(100, 1, 2, 1, 36150),  -- 100, A4, color, 1 u.
+(100, 1, 2, 2, 64300),  -- 100, A4, color, 2 u.
+(100, 1, 2, 3, 119900); -- 100, A4, color, 4 u.
 
 -- impresiones
 create table if not exists tipo_color_impresion (
@@ -1404,10 +1461,11 @@ create table if not exists cantidad_turnero (
 );
 
 insert into cantidad_turnero(id, cantidad) values
-(1, '4'),
-(2, '8'),
-(3, '12'),
-(4, 'OTRA');
+(1, '2'),
+(2, '4'),
+(3, '8'),
+(4, '12'),
+(5, 'OTRA');
 
 create table if not exists medida_turnero (
     id bigint auto_increment not null primary key,
@@ -1416,7 +1474,8 @@ create table if not exists medida_turnero (
 
 insert into medida_turnero(id, medida) values
 (1, '1/4 DE A4'),
-(2, 'OTRA');
+(2, '13X18 CM')
+(3, 'OTRA');
 
 create table if not exists turnero (
     id bigint auto_increment not null primary key,
@@ -1449,12 +1508,20 @@ create table if not exists plantilla_turnero (
 );
 
 insert into plantilla_turnero(cantidad_hojas, id_tipo_color_turnero, id_cantidad_turnero, id_medida_turnero, precio) values
-(100, 1, 1, 1, 29300), -- 100 hojas, byn, 4, 1/4 de a4
-(100, 1, 2, 1, 48000), -- 100 hojas, byn, 8, 1/4 de a4
-(100, 1, 3, 1, 63950), -- 100 hojas, byn, 12, 1/4 de a4
-(100, 2, 1, 1, 38600), -- 100 hojas, color, 4, 1/4 de a4
-(100, 2, 2, 1, 69150), -- 100 hojas, color, 8, 1/4 de a4
-(100, 2, 3, 1, 96100), -- 100 hojas, color, 12, 1/4 de a4
+(100, 1, 2, 1, 29300),  -- 100 hojas, byn, 4, 1/4 de a4
+(100, 1, 3, 1, 48000),  -- 100 hojas, byn, 8, 1/4 de a4
+(100, 1, 4, 1, 63950),  -- 100 hojas, byn, 12, 1/4 de a4
+(100, 2, 2, 1, 38600),  -- 100 hojas, color, 4, 1/4 de a4
+(100, 2, 3, 1, 69150),  -- 100 hojas, color, 8, 1/4 de a4
+(100, 2, 4, 1, 96100),  -- 100 hojas, color, 12, 1/4 de a4
+(100, 1, 1, 2, 22150),  -- 100 hojas, byn, 2, 13x18
+(100, 1, 2, 2, 42000),  -- 100 hojas, byn, 4, 13x18
+(100, 1, 3, 2, 79150),  -- 100 hojas, byn, 8, 13x18
+(100, 1, 4, 2, 112150), -- 100 hojas, byn, 12, 13x18
+(100, 2, 1, 2, 25400),  -- 100 hojas, color, 2, 13x18
+(100, 2, 2, 2, 46700),  -- 100 hojas, color, 4, 13x18
+(100, 2, 3, 2, 89300),  -- 100 hojas, color, 8, 13x18
+(100, 2, 4, 2, 125600); -- 100 hojas, color, 12, 13x18
 
 -- vinilos
 create table if not exists tipo_corte_vinilo (
