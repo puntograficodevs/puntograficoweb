@@ -1398,17 +1398,63 @@ insert into tipo_color_turnero(id, tipo) values
 (1, 'BLANCO Y NEGRO'),
 (2, 'A COLOR');
 
+create table if not exists cantidad_turnero (
+    id bigint auto_increment not null primary key,
+    cantidad varchar(255) not null
+);
+
+insert into cantidad_turnero(id, cantidad) values
+(1, '4'),
+(2, '8'),
+(3, '12'),
+(4, 'OTRA');
+
+create table if not exists medida_turnero (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null
+);
+
+insert into medida_turnero(id, medida) values
+(1, '1/4 DE A4'),
+(2, 'OTRA');
+
 create table if not exists turnero (
     id bigint auto_increment not null primary key,
-    medida varchar(255) not null,
+    cantidad_personalizada int null,
+    medida_personalizada varchar(255) null,
+    cantidad_hojas int not null,
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
     precio_adicional_disenio int not null default 5000,
     precio int null,
     informacion_adicional varchar(255) null,
     id_tipo_color_turnero bigint not null,
-    constraint fk_tipo_color_turnero foreign key(id_tipo_color_turnero) references tipo_color_turnero(id)
+    id_cantidad_turnero bigint not null,
+    id_medida_turnero bigint not null,
+    constraint fk_tipo_color_turnero foreign key(id_tipo_color_turnero) references tipo_color_turnero(id),
+    constraint fk_cantidad_turnero foreign key(id_cantidad_turnero) references cantidad_turnero(id),
+    constraint fk_medida_turnero foreign key(id_medida_turnero) references medida_turnero(id)
 );
+
+create table if not exists plantilla_turnero (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    cantidad_hojas int not null,
+    id_tipo_color_turnero bigint not null,
+    id_cantidad_turnero bigint not null,
+    id_medida_turnero bigint not null,
+    constraint fk_plantilla_tipo_color_turnero foreign key(id_tipo_color_turnero) references tipo_color_turnero(id),
+    constraint fk_plantilla_cantidad_turnero foreign key(id_cantidad_turnero) references cantidad_turnero(id),
+    constraint fk_plantilla_medida_turnero foreign key(id_medida_turnero) references medida_turnero(id)
+);
+
+insert into plantilla_turnero(cantidad_hojas, id_tipo_color_turnero, id_cantidad_turnero, id_medida_turnero, precio) values
+(100, 1, 1, 1, 29300), -- 100 hojas, byn, 4, 1/4 de a4
+(100, 1, 2, 1, 48000), -- 100 hojas, byn, 8, 1/4 de a4
+(100, 1, 3, 1, 63950), -- 100 hojas, byn, 12, 1/4 de a4
+(100, 2, 1, 1, 38600), -- 100 hojas, color, 4, 1/4 de a4
+(100, 2, 2, 1, 69150), -- 100 hojas, color, 8, 1/4 de a4
+(100, 2, 3, 1, 96100), -- 100 hojas, color, 12, 1/4 de a4
 
 -- vinilos
 create table if not exists tipo_corte_vinilo (
