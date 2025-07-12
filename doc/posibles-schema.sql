@@ -281,18 +281,15 @@ create table if not exists tipo_combo (
 
 insert into tipo_combo(id, tipo) values
 (1, 'OFICINA'),
-(2, 'EMPRENDEDOR'),
-(3, 'PROFESIONAL');
+(2, 'PROFESIONAL'),
+(3, 'EMPRENDEDOR X100'),
+(4, 'EMPRENDEDOR X200'),
+(5, 'EMPRENDEDOR X500');
 
 create table if not exists cantidad_combo (
     id bigint auto_increment not null primary key,
     cantidad int not null
 );
-
-insert into cantidad_combo(id, cantidad) values
-(1, 100),
-(2, 200),
-(3, 500);
 
 create table if not exists combo (
     id bigint auto_increment not null primary key,
@@ -303,10 +300,23 @@ create table if not exists combo (
     precio int null,
     informacion_adicional varchar(255) null,
     id_tipo_combo bigint not null,
-    id_cantidad_combo bigint not null,
-    constraint fk_tipo_combo foreign key(id_tipo_combo) references tipo_combo(id),
-    constraint fk_cantidad_combo foreign key(id_cantidad_combo) references cantidad_combo(id)
+    constraint fk_tipo_combo foreign key(id_tipo_combo) references tipo_combo(id)
 );
+
+create table if not exists plantilla_combo (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    descripcion_combo varchar(1000) not null,
+    id_tipo_combo bigint not null,
+    constraint fk_plantilla_tipo_combo foreign key(id_tipo_combo) references tipo_combo(id)
+);
+
+insert into plantilla_combo(id_tipo_combo, descripcion_combo, precio) values
+(3, '100 cierra bolsas (8x4 cm), 100 etiquetas colgantes (7x5 cm), 100 circulares troqueladas (5 cm)', 22500), -- emprendedor 100
+(4, '200 cierra bolsas (8x4 cm), 200 eitquetas colgantes (7x5 cm), 200 circulares troqueladas (5 cm)', 38250), -- emprendedor 200
+(5, '500 cierra bolsas (8x4 cm), 500 etiquetas colgamtes (7x5 cm), 500 circulares troqueladas (5 cm)', 78400), -- emprendedor 500
+(2, '100 tarjetas simple faz, 100 sobres oficio inglés, 2 talonarios RP blanco y negro (13x18 cm)', 75800),    -- profesional
+(1, '100 tarjetas simple faz, 100 sobres oficio inglés, 1 talonario A4 a color con membrete', 101300);         -- oficina
 
 -- entradas
 create table if not exists tipo_papel_entrada (
