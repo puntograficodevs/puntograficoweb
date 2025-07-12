@@ -405,6 +405,49 @@ create table if not exists folleto (
     constraint fk_cantidad_folleto foreign key(id_cantidad_folleto) references cantidad_folleto(id)
 );
 
+create table if not exists plantilla_folleto (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    id_tipo_papel_folleto bigint not null,
+    id_tipo_color_folleto bigint not null,
+    id_tipo_faz_folleto bigint not null,
+    id_tamanio_hoja_folleto bigint not null,
+    id_tipo_folleto bigint not null,
+    id_cantidad_folleto bigint not null,
+    constraint fk_plantilla_tipo_papel_folleto foreign key(id_tipo_papel_folleto) references tipo_papel_folleto(id),
+    constraint fk_plantilla_tipo_color_folleto foreign key(id_tipo_color_folleto) references tipo_color_folleto(id),
+    constraint fk_plantilla_tipo_faz_folleto foreign key(id_tipo_faz_folleto) references tipo_faz_folleto(id),
+    constraint fk_plantilla_tamanio_hoja_folleto foreign key(id_tamanio_hoja_folleto) references tamanio_hoja_folleto(id),
+    constraint fk_plantilla_tipo_folleto foreign key(id_tipo_folleto) references tipo_folleto(id),
+    constraint fk_plantilla_cantidad_folleto foreign key(id_cantidad_folleto) references cantidad_folleto(id)
+);
+
+insert into plantilla_folleto(id_tipo_papel_folleto, id_tipo_color_folleto, id_tipo_faz_folleto, id_tamanio_hoja_folleto, id_tipo_folleto, id_cantidad_folleto, precio) values
+(1, 1, 1, 3, 1, 2, 6400), -- obra, byn, simple faz, 1/4 de a4, común, 100
+(1, 1, 2, 3, 1, 2, 7600), -- obra, byn, doble faz, 1/4 de a4, común, 100
+(1, 1, 1, 3, 1, 4, 9750), -- obra, byn, simple faz, 1/4 de a4, común, 200
+(1, 1, 2, 3, 1, 4, 13500), -- obra, byn, doble faz, 1/4 de a4, común, 200
+(1, 1, 1, 3, 1, 7, 21900), -- obra, byn, simple faz, 1/4 de a4, común, 500
+(1, 1, 2, 3, 1, 7, 27300), -- obra, byn, doble faz, 1/4 de a4, común, 500
+(1, 1, 1, 3, 1, 8, 41100), -- obra, byn, simple faz, 1/4 de a4, común, 1000
+(1, 1, 2, 3, 1, 8, 47500), -- obra, byn, doble faz, 1/4 de a4, común, 1000
+(1, 2, 1, 3, 1, 2, 14850), -- obra, color, simple faz, 1/4 de a4, común, 100
+(1, 2, 2, 3, 1, 2, 16750), -- obra, color, doble faz, 1/4 de a4, común, 100
+(1, 2, 1, 3, 1, 4, 26700), -- obra, color, simple faz, 1/4 de a4, común, 200
+(1, 2, 2, 3, 1, 4, 29800), -- obra, color, doble faz, 1/4 de a4, común, 200
+(1, 2, 1, 3, 1, 7, 64000), -- obra, color, simple faz, 1/4 de a4, común, 500
+(1, 2, 2, 3, 1, 7, 77500), -- obra, color, doble faz, 1/4 de a4, común, 500
+(1, 2, 1, 3, 1, 8, 111400), -- obra, color, simple faz, 1/4 de a4, común, 1000
+(1, 2, 2, 3, 1, 8, 139600), -- obra, color, doble faz, 1/4 de a4, común, 1000
+(2, 2, 1, 3, 1, 2, 18150), -- 115, color, simple faz, 1/4 de a4, común, 100
+(2, 2, 2, 3, 1, 2, 21600), -- 115, color, doble faz, 1/4 de a4, común, 100
+(2, 2, 1, 3, 1, 4, 31950), -- 115, color, simple faz, 1/4 de a4, común, 200
+(2, 2, 2, 3, 1, 4, 36900), -- 115, color, doble faz, 1/4 de a4, común, 200
+(2, 2, 1, 3, 1, 7, 77550), -- 115, color, simple faz, 1/4 de a4, común, 500
+(2, 2, 2, 3, 1, 7, 87100), -- 115, color, doble faz, 1/4 de a4, común, 500
+(2, 2, 1, 3, 1, 8, 140450), -- 115, color, simple faz, 1/4 de a4, común, 1000
+(2, 2, 2, 3, 1, 8, 159100); -- 115, color, doble faz, 1/4 de a4, común, 1000
+
 -- hojas membreteadas
 create table if not exists hojas_membreteadas (
     id bigint auto_increment not null primary key,
@@ -699,6 +742,17 @@ create table if not exists sello_automatico_escolar (
     id_modelo_sello_automatico_escolar bigint not null,
     constraint fk_modelo_sello_automatico_escolar foreign key(id_modelo_sello_automatico_escolar) references modelo_sello_automatico_escolar(id)
 );
+
+create table if not exists plantilla_sello_automatico_escolar (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    id_modelo_sello_automatico_escolar bigint not null,
+    constraint fk_plantilla_modelo_sello_automatico_escolar foreign key(id_modelo_sello_automatico_escolar) references modelo_sello_automatico_escolar(id)
+);
+
+insert into plantilla_sello_automatico_escolar(id_modelo_sello_automatico_escolar, precio) values
+(1, 15800),
+(2, 18850);
 
 -- sellos de madera
 create table if not exists tamanio_sello_madera (
@@ -1456,6 +1510,7 @@ create table if not exists orden_vinilo_de_corte (
     constraint fk_orden_vinilo_de_corte foreign key(id_orden_trabajo) references orden_trabajo(id),
     constraint fk_vinilo_de_corte foreign key(id_vinilo_de_corte) references vinilo_de_corte(id)
 );
+
 create table if not exists orden_otro (
     id bigint auto_increment not null primary key,
     cantidad int not null default 1,
