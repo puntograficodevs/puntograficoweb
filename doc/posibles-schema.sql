@@ -553,6 +553,22 @@ create table if not exists lona_comun (
     constraint fk_tipo_lona_comun foreign key(id_tipo_lona_comun) references tipo_lona_comun(id)
 );
 
+create table if not exists plantilla_lona_comun (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    con_bolsillos tinyint(1) not null,
+    id_medida_lona_comun bigint not null,
+    id_tipo_lona_comun bigint not null,
+    constraint fk_plantilla_medida_lona_comun foreign key(id_medida_lona_comun) references medida_lona_comun(id),
+    constraint fk_plantilla_tipo_lona_comun foreign key(id_tipo_lona_comun) references tipo_lona_comun(id)
+);
+
+insert into plantilla_lona_comun(con_bolsillos, id_medida_lona_comun, id_tipo_lona_comun, precio) values
+(1, 1, 1, 20440), -- con bolsillos, 40x60, front
+(1, 2, 1, 23600), -- con bolsillos, 60x90, front
+(1, 3, 1, 27650), -- con bolsillos, 70x100, front
+(1, 4, 1, 29930); -- con bolsillos, 90x120, front
+
 -- lonas publicitarias
 create table if not exists tipo_lona_publicitaria (
     id bigint auto_increment not null primary key,
@@ -588,6 +604,22 @@ create table if not exists lona_publicitaria (
     constraint fk_medida_lona_publicitaria foreign key(id_medida_lona_publicitaria) references medida_lona_publicitaria(id),
     constraint fk_tipo_lona_publicitaria foreign key(id_tipo_lona_publicitaria) references tipo_lona_publicitaria(id)
 );
+
+create table if not exists plantilla_lona_publicitaria (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    con_adicional_portabanner tinyint(1) not null,
+    id_medida_lona_publicitaria bigint not null,
+    id_tipo_lona_publicitaria bigint not null,
+    constraint fk_plantilla_medida_lona_publicitaria foreign key(id_medida_lona_publicitaria) references medida_lona_publicitaria(id),
+    constraint fk_plantilla_tipo_lona_publicitaria foreign key(id_tipo_lona_publicitaria) references tipo_lona_publicitaria(id)
+);
+
+insert into plantilla_lona_publicitaria(con_adicional_portabanner, id_medida_lona_publicitaria, id_tipo_lona_publicitaria, precio) values
+(1, 4, 1, 19500), -- con portabanner, 25x42, front
+(1, 1, 1, 56016), -- con portabanner 60x160, front
+(1, 2, 1, 81480), -- con portabanner, 90x190, front
+(1, 3, 1, 85510); -- con portabanner, 85x200, front
 
 -- rifas / bonos contribución
 create table if not exists tipo_papel_rifa (
