@@ -179,19 +179,49 @@ insert into medida_cierra_bolsas(id, medida) values
 (1, '8X4 CM'),
 (2, 'OTRA');
 
+create table if not exists cantidad_cierra_bolsas (
+    id bigint auto_increment not null primary key,
+    cantidad varchar(255) not null
+);
+
+insert into cantidad_cierra_bolsas(id, cantidad) values
+(1, '100'),
+(2, '200'),
+(3, '500'),
+(4, 'OTRA');
+
 create table if not exists cierra_bolsas (
     id bigint auto_increment not null primary key,
-    medida varchar(255) null,
+    medida_personalizada varchar(255) null,
+    cantidad_personalizada varchar(255) null
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
-    precio_adicional_disenio int not null default 5000,
+    precio_adicional_disenio int not null default 2500,
     precio int null,
     informacion_adicional varchar(255) null,
     id_tipo_troquelado_cierra_bolsas bigint not null,
     id_medida_cierra_bolsas bigint not null,
+    id_cantidad_cierra_bolsas bigint not null,
     constraint fk_tipo_troquelado_cierra_bolsas foreign key(id_tipo_troquelado_cierra_bolsas) references tipo_troquelado_cierra_bolsas(id),
-    constraint fk_medida_cierra_bolsas foreign key(id_medida_cierra_bolsas) references medida_cierra_bolsas(id)
+    constraint fk_medida_cierra_bolsas foreign key(id_medida_cierra_bolsas) references medida_cierra_bolsas(id),
+    constraint fk_cantidad_cierra_bolsas foreign key(id_cantidad_cierra_bolsas) references cantidad_cierra_bolsas(id)
 );
+
+create table if not exists plantilla_cierra_bolsas (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    id_tipo_troquelado_cierra_bolsas bigint not null,
+    id_medida_cierra_bolsas bigint not null,
+    id_cantidad_cierra_bolsas bigint not null,
+    constraint fk_plantilla_tipo_troquelado_cierra_bolsas foreign key(id_tipo_troquelado_cierra_bolsas) references tipo_troquelado_cierra_bolsas(id),
+    constraint fk_plantilla_medida_cierra_bolsas foreign key(id_medida_cierra_bolsas) references medida_cierra_bolsas(id),
+    constraint fk_plantilla_cantidad_cierra_bolsas foreign key(id_cantidad_cierra_bolsas) references cantidad_cierra_bolsas(id)
+);
+
+insert into plantilla_cierra_bolsas(id_tipo_troquelado_cierra_bolsas, id_medida_cierra_bolsas, id_cantidad_cierra_bolsas, precio) values
+(4, 1, 1, 9850), -- corte individual, 8x4, 100
+(4, 1, 2, 18600), -- corte individual 8x4, 200
+(4, 1, 3, 43600); -- corte individual, 8x4, 500
 
 -- cuadernos anillados
 create table if not exists tipo_tapa_cuaderno_anillado (
