@@ -29,17 +29,52 @@ insert into empleado(nombre, username, password, id_rol) values
 ('Mari', 'maripm', 'tinta2025!', 3);
 
 -- agendas
+create table if not exists tipo_tapa_agenda (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_tapa_agenda(id, tipo) values
+(1, 'TAPA DURA'),
+(2, 'OTRA');
+
+create table if not exists tipo_color_agenda (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null,
+);
+
+insert into tipo_color_agenda(id, tipo) values
+(1, 'BLANCO Y NEGRO'),
+(2, 'A COLOR');
+
 create table if not exists agenda (
     id bigint auto_increment not null primary key,
     medida varchar(255) not null,
-    tipo_tapa varchar(255) not null,
+    tipo_tapa_personalizada varchar(255) null,
     cantidad_hojas int not null,
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
     precio_adicional_disenio int not null default 5000,
     precio int null,
-    informacion_adicional varchar(255) null
+    informacion_adicional varchar(255) null,
+    id_tipo_tapa_agenda bigint not null,
+    id_tipo_color_agenda bigint not null,
+    constraint fk_tipo_tapa_agenda foreign key(id_tipo_tapa_agenda) references tipo_tapa_agenda(id),
+    constraint fk_tipo_color_agenda foreign key(id_tipo_color_agenda) references tipo_color_agenda(id)
 );
+
+create table if not exists plantilla_agenda (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    cantidad_hojas int not null,
+    id_tipo_tapa_agenda bigint not null,
+    id_tipo_color_agenda bigint not null,
+    constraint fk_plantilla_tipo_tapa_agenda foreign key(id_tipo_tapa_agenda) references tipo_tapa_agenda(id),
+    constraint fk_plantilla_tipo_color_agenda foreign key(id_tipo_color_agenda) references tipo_color_agenda(id)
+);
+
+insert into plantilla_agenda(cantidad_hojas, id_tipo_tapa_agenda, id_tipo_color_agenda, precio) values
+(90, 1, 1, 24850); -- 90 hojas, tapa dura, blanco y negro
 
 -- anotadores
 create table if not exists anotador (
@@ -159,17 +194,54 @@ create table if not exists cierra_bolsas (
 );
 
 -- cuadernos anillados
+create table if not exists tipo_tapa_cuaderno_anillado (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_tapa_cuaderno_anillado(id, tipo) values
+(1, 'TAPA DURA'),
+(2, 'OTRA');
+
+create table if not exists medida_cuaderno_anillado (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null
+);
+
+insert into medida_cuaderno_anillado(id, medida) values
+(1, 'A4'),
+(2, 'A5'),
+(3, 'OTRA');
+
 create table if not exists cuaderno_anillado (
     id bigint auto_increment not null primary key,
-    medida varchar(255) not null,
-    tipo_tapa varchar(255) not null,
+    medida_personalizada varchar(255) null,
+    tipo_tapa_personalizada varchar(255) null,
     cantidad_hojas int not null,
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
     precio_adicional_disenio int not null default 5000,
     precio int null,
-    informacion_adicional varchar(255) null
+    informacion_adicional varchar(255) null,
+    id_tipo_tapa_cuaderno_anillado bigint not null,
+    id_medida_cuaderno_anillado bigint not null,
+    constraint fk_tipo_tapa_cuaderno_anillado foreign key(id_tipo_tapa_cuaderno_anillado) references tipo_tapa_cuaderno_anillado(id),
+    constraint fk_medida_cuaderno_anillado foreign key(id_medida_cuaderno_anillado) references medida_cuaderno_anillado(id)
 );
+
+create table if not exists plantilla_cuaderno_anillado (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    cantidad_hojas int not null,
+    id_tipo_tapa_cuaderno_anillado bigint not null,
+    id_medida_cuaderno_anillado bigint not null,
+    constraint fk_plantilla_tipo_tapa_cuaderno_anillado foreign key(id_tipo_tapa_cuaderno_anillado) references tipo_tapa_cuaderno_anillado(id),
+    constraint fk_plantilla_medida_cuaderno_anillado foreign key(id_medida_cuaderno_anillado) references medida_cuaderno_anillado(id)
+);
+
+insert into plantilla_cuaderno_anillado(cantidad_hojas, id_tipo_tapa_cuaderno_anillado, id_medida_cuaderno_anillado, precio) values
+(80, 1, 1, 28950), -- 80 hojas, tapa dura, a4
+(80, 1, 2, 22650); -- 80 hojas, tapa dura, a5
 
 -- combos
 create table if not exists tipo_combo (
@@ -881,17 +953,64 @@ insert into tipo_troquelado_sticker(id, tipo) values
 (4, 'CORTE INDIVIDUAL'),
 (5, 'SIN TROQUELAR');
 
+create table if not exists medida_sticker (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null
+);
+
+insert into medida_sticker(id, medida) values
+(1, '5 CM'),
+(2, '7 CM'),
+(3, '10 CM');
+
+create table if not exists cantidad_sticker (
+    id bigint auto_increment not null primary key,
+    cantidad int not null
+);
+
+insert into cantidad_sticker(id, cantidad) values
+(1, 100),
+(2, 200),
+(3, 500);
+
 create table if not exists sticker (
     id bigint auto_increment not null primary key,
-    medida varchar(255) not null,
+    medida_personalizada varchar(255) null,
+    cantidad_personalizada int null,
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
-    precio_adicional_disenio int not null default 5000,
+    precio_adicional_disenio int not null default 2000,
     precio int null,
     informacion_adicional varchar(255) null,
     id_tipo_troquelado_sticker bigint not null,
-    constraint fk_tipo_troquelado_sticker foreign key(id_tipo_troquelado_sticker) references tipo_troquelado_sticker(id)
+    id_cantidad_sticker bigint not null,
+    id_medida_sticker bigint not null,
+    constraint fk_tipo_troquelado_sticker foreign key(id_tipo_troquelado_sticker) references tipo_troquelado_sticker(id),
+    constraint fk_cantidad_sticker foreign key(id_cantidad_sticker) references cantidad_sticker(id),
+    constraint fk_medida_sticker foreign key(id_medida_sticker) references medida_sticker(id)
 );
+
+create table if not exists plantilla_sticker (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    id_tipo_troquelado_sticker bigint not null,
+    id_cantidad_sticker bigint not null,
+    id_medida_sticker bigint not null,
+    constraint fk_plantilla_tipo_troquelado_sticker foreign key(id_tipo_troquelado_sticker) references tipo_troquelado_sticker(id),
+    constraint fk_plantilla_cantidad_sticker foreign key(id_cantidad_sticker) references cantidad_sticker(id),
+    constraint fk_plantilla_medida_sticker foreign key(id_medida_sticker) references medida_sticker(id)
+);
+
+insert into plantilla_sticker(id_tipo_troquelado_sticker, id_cantidad_sticker, id_medida_sticker, precio) values
+(3, 1, 1, 9850), -- por el contorno, 100, 5 cm
+(3, 2, 1, 18600), -- por el contorno, 200, 5 cm
+(3, 3, 1, 43600), -- por el contorno, 500, 5 cm
+(3, 1, 2, 18000), -- por el contorno, 100, 7 cm
+(3, 2, 2, 30850), -- por el contorno, 200, 7 cm
+(3, 3, 2, 75150), -- por el contorno, 500, 7 cm
+(3, 1, 3, 23700), -- por el contorno, 100, 10 cm
+(3, 2, 3, 42300), -- por el contorno, 200, 10 cm
+(3, 3, 3, 94650); -- por el contorno, 500, 10 cm
 
 -- sublimaciones
 create table if not exists material_sublimacion (
@@ -925,6 +1044,24 @@ create table if not exists sublimacion (
     id_material_sublimacion bigint not null,
     constraint fk_material_sublimacion foreign key(id_material_sublimacion) references material_sublimacion(id)
 );
+
+create table if not exists plantilla_sublimacion (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    id_material_sublimacion bigint not null,
+    constraint fk_plantilla_material_sublimacion foreign key(id_material_sublimacion) references material_sublimacion(id)
+);
+
+insert into plantilla_sublimacion(id_material_sublimacion, precio) values
+(3, 15450), -- taza de cerámica
+(2, 11600), -- taza de polímero
+(5, 19500), -- taza mágica
+(4, 26400), -- taza con glitter
+(8, 15450), -- mate de cerámica
+(7, 12400), -- mate de polímero
+(9, 13900), -- jarro de café
+(10, 6750), -- lapicero de polímero
+(14, 11050); -- mousepad
 
 -- talonarios (presupuestos, x, recibos)
 create table if not exists modo_talonario (
