@@ -959,13 +959,20 @@ insert into modelo_sello_automatico(id, modelo) values
 (5, 'PRINTER C30 - 18X47 MM'),
 (6, 'PRINTER 45 - 82X25 MM'),
 (7, 'PRINTER C50 - 30X69 MM'),
-(8, 'PRINTER 55 DATER - 40X60 MM'),
-(9, 'PRINTER C60 - 76X37 MM'),
-(10, 'S260 - 45X24 MM'),
-(11, 'MINI DATER S120 - 40X45 MM'),
-(12, 'MINI DATER S160 - 40X20 MM'),
-(13, 'PRINTER R30'),
-(13, 'PRINTER R40');
+(8, 'PRINTER 55 - 40X60 MM'),
+(9, 'PRINTER 55 DATER - 40X60 MM'),
+(10, 'PRINTER C60 - 76X37 MM'),
+(11, 'S260 - 45X24 MM'),
+(12, 'MINI DATER S120 - 40X45 MM'),
+(13, 'MINI DATER S160 - 40X20 MM'),
+(14, 'PRINTER R30'),
+(15, 'PRINTER R40'),
+(16, 'PRINTER R24'),
+(17, 'PRINTER R17'),
+(18, 'PRINTER 52 DATER'),
+(19, 'PRINTER S120 MINI DATER'),
+(20, 'PRINTER 53'),
+(21, 'PRINTER Q24 DATER');
 
 create table if not exists sello_automatico (
     id bigint auto_increment not null primary key,
@@ -984,6 +991,36 @@ create table if not exists sello_automatico (
     id_modelo_sello_automatico bigint not null,
     constraint fk_modelo_sello_automatico foreign key(id_modelo_sello_automatico) references modelo_sello_automatico(id)
 );
+
+create table if not exists plantilla_sello_automatico (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    id_modelo_sello_automatico bigint not null,
+    constraint fk_plantilla_modelo_sello_automatico foreign key(id_modelo_sello_automatico) references modelo_sello_automatico(id)
+);
+
+insert into plantilla_sello_automatico(id_modelo_sello_automatico, precio) values
+(1, 22850),   -- mouse stamp 20
+(2, 22250),   -- pocket 20
+(3, 18850),   -- aut 20
+(4, 15800),   -- aut 10
+(5, 30000),   -- printer c30
+(6, 44400),   -- printer 45
+(7, 42900),   -- printer c50
+(8, 44800),   -- printer 55
+(9, 51900),   -- printer 55 dater
+(10, 46500),  -- printer c60
+(11, ¿48200?), -- printer s 260
+(12, 43050),  -- mini dater s120
+(13, 27350),  -- mini dater s160
+(14, 40500),  -- printer r30
+(15, 43450),  -- printer r40
+(16, 25900),  -- printer r24
+(17, 18500),  -- printer r17
+(18, 49900),  -- printer 52 dater
+(19, 17900),  -- s120 mini dater
+(20, 31900),  -- printer 53
+(21, 49700);  -- printer q24 dater
 
 -- sellos automáticos escolares
 create table if not exists modelo_sello_automatico_escolar (
@@ -1058,16 +1095,49 @@ create table if not exists sello_madera (
     id bigint auto_increment not null primary key,
     tamanio_personalizado varchar(255) null,
     con_adicional_perilla tinyint(1) not null default 0,
+    precio_adicional_perilla int not null default 2800,
     detalle_sello varchar(255) not null default '-',
     tipografia_linea_uno varchar(255) not null,
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
-    precio_adicional_disenio int not null default 5000,
+    precio_adicional_disenio int not null default 6000,
     precio int null,
     informacion_adicional varchar(255) null,
     id_tamanio_sello_madera bigint not null,
     constraint fk_tamanio_sello_madera foreign key(id_tamanio_sello_madera) references tamanio_sello_madera(id)
 );
+
+create table if not exists plantilla_sello_madera (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    id_tamanio_sello_madera bigint not null,
+    constraint fk_plantilla_tamanio_sello_madera foreign key(id_tamanio_sello_madera) references tamanio_sello_madera(id)
+);
+
+insert into plantilla_sello_madera(id_tamanio_sello_madera, precio) values
+(1, 16200),  -- 6x3
+(2, 17850),  -- 6x4
+(3, 19750),  -- 6x5
+(4, 20650),  -- 6x7
+(5, 21750),  -- 6x8
+(6, 17850),  -- 7x3
+(7, 21750),  -- 7x5
+(8, 8100),   -- 1x1
+(9, 8800),   -- 2x2
+(10, 10550), -- 3x3
+(11, 11650), -- 4x4
+(12, 12450), -- 5x5
+(13, 16200), -- 6x6
+(14, 19350), -- 7x7
+(15, 22800), -- 8x8
+(16, 28000), -- 9x9
+(17, 30350), -- 10x10
+(18, 32650), -- 11x11
+(19, 38850), -- 12x12
+(20, 44400), -- 13x13
+(21, 52500), -- 14x14
+(22, 56600), -- 15x15
+(23, 47800); -- 10x15
 
 -- sobres
 create table if not exists tipo_color_sobre (
@@ -1239,6 +1309,16 @@ insert into material_sublimacion(id, material) values
 (13, 'LLAVERO LARGO LANYARD'),
 (14, 'MOUSEPAD');
 
+create table if not exists cantidad_sublimacion (
+    id bigint auto_increment not null primary key
+    cantidad varchar(255) not null
+);
+
+insert into cantidad_sublimacion(id, cantidad) values
+(1, '50'),
+(2, '100'),
+(3, '150');
+
 create table if not exists sublimacion (
     id bigint auto_increment not null primary key,
     enlace_archivo varchar(255) not null default '-',
@@ -1247,26 +1327,33 @@ create table if not exists sublimacion (
     precio int null,
     informacion_adicional varchar(255) null,
     id_material_sublimacion bigint not null,
-    constraint fk_material_sublimacion foreign key(id_material_sublimacion) references material_sublimacion(id)
+    id_cantidad_sublimacion bigint null,
+    constraint fk_material_sublimacion foreign key(id_material_sublimacion) references material_sublimacion(id),
+    constraint fk_cantidad_sublimacion foreign key(id_cantidad_sublimacion) references cantidad_sublimacion(id)
 );
 
 create table if not exists plantilla_sublimacion (
     id bigint auto_increment not null primary key,
     precio int not null,
     id_material_sublimacion bigint not null,
-    constraint fk_plantilla_material_sublimacion foreign key(id_material_sublimacion) references material_sublimacion(id)
+    id_cantidad_sublimacion bigint null,
+    constraint fk_plantilla_material_sublimacion foreign key(id_material_sublimacion) references material_sublimacion(id),
+    constraint fk_plantilla_cantidad_sublimacion foreign key(id_cantidad_sublimacion) references cantidad_sublimacion(id)
 );
 
-insert into plantilla_sublimacion(id_material_sublimacion, precio) values
-(3, 15450), -- taza de cerámica
-(2, 11600), -- taza de polímero
-(5, 19500), -- taza mágica
-(4, 26400), -- taza con glitter
-(8, 15450), -- mate de cerámica
-(7, 12400), -- mate de polímero
-(9, 13900), -- jarro de café
-(10, 6750), -- lapicero de polímero
-(14, 11050); -- mousepad
+insert into plantilla_sublimacion(id_material_sublimacion, id_cantidad_sublimacion, precio) values
+(3, null, 15450),  -- taza de cerámica
+(2, null, 11600),  -- taza de polímero
+(5, null, 19500),  -- taza mágica
+(4, null, 26400),  -- taza con glitter
+(8, null, 15450),  -- mate de cerámica
+(7, null, 12400),  -- mate de polímero
+(9, null, 13900),  -- jarro de café
+(10, null, 6750),  -- lapicero de polímero
+(14, null, 11050), -- mousepad
+(1, 1, 53000),     -- birome, 50 u
+(1, 2, 90150),     -- birome, 100 u
+(1, 3, 106100);    -- birome, 150 u
 
 -- talonarios (presupuestos, x, recibos)
 create table if not exists modo_talonario (
@@ -1276,7 +1363,7 @@ create table if not exists modo_talonario (
 
 insert into modo_talonario(id, modo) values
 (1, 'ORIGINAL'),
-(2, 'ORIGINAL DUPLICADO'),
+(2, 'ORIGINAL + DUPLICADO'),
 (3, 'N/A');
 
 create table if not exists tipo_talonario (
@@ -1309,7 +1396,8 @@ insert into medida_talonario(id, medida) values
 (2, 'A4'),
 (3, 'A5'),
 (4, '1/2 DE A4'),
-(5, 'OTRA');
+(5, '13X18 CM')
+(6, 'OTRA');
 
 create table if not exists tipo_troquelado_talonario (
     id bigint auto_increment not null primary key,
@@ -1330,9 +1418,22 @@ insert into tipo_color_talonario(id, tipo) values
 (1, 'BLANCO Y NEGRO'),
 (2, 'A COLOR');
 
+create table if not exists cantidad_talonario (
+    id bigint auto_increment not null primary key,
+    cantidad varchar(255) not null
+);
+
+insert into cantidad_talonario(id, cantidad) values
+(1, '1'),
+(2, '2'),
+(3, '4'),
+(4, '8'),
+(5, 'OTRA');
+
 create table if not exists talonario (
     id bigint auto_increment not null primary key,
     con_numerado tinyint(1) not null default 0,
+    cantidad_hojas int not null,
     detalle_numerado varchar(255) null,
     es_encolado tinyint(1) not null default 0,
     medida_personalizada varchar(255) null,
@@ -1347,13 +1448,50 @@ create table if not exists talonario (
     id_tipo_color_talonario bigint not null,
     id_medida_talonario bigint not null,
     id_tipo_papel_talonario bigint not null,
+    id_cantidad_talonario bigint not null,
     constraint fk_tipo_talonario foreign key(id_tipo_talonario) references tipo_talonario(id),
     constraint fk_tipo_troquelado_talonario foreign key(id_tipo_troquelado_talonario) references tipo_troquelado_talonario(id),
     constraint fk_modo_talonario foreign key(id_modo_talonario) references modo_talonario(id),
     constraint fk_tipo_color_talonario foreign key(id_tipo_color_talonario) references tipo_color_talonario(id),
     constraint fk_medida_talonario foreign key(id_medida_talonario) references medida_talonario(id),
-    constraint fk_tipo_papel_talonario foreign key(id_tipo_papel_talonario) references tipo_papel_talonario(id)
+    constraint fk_tipo_papel_talonario foreign key(id_tipo_papel_talonario) references tipo_papel_talonario(id),
+    constraint fk_cantidad_talonario foreign key(id_cantidad_talonario) references cantidad_talonario(id)
 );
+
+create table if not exists plantilla_talonario (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    cantidad_hojas int not null,
+    con_numerado tinyint(1) not null,
+    id_tipo_talonario bigint not null,
+    id_tipo_troquelado_talonario bigint not null,
+    id_modo_talonario bigint not null,
+    id_tipo_color_talonario bigint not null,
+    id_medida_talonario bigint not null,
+    id_tipo_papel_talonario bigint not null,
+    id_cantidad_talonario bigint not null,
+    constraint fk_plantilla_tipo_talonario foreign key(id_tipo_talonario) references tipo_talonario(id),
+    constraint fk_plantilla_tipo_troquelado_talonario foreign key(id_tipo_troquelado_talonario) references tipo_troquelado_talonario(id),
+    constraint fk_plantilla_modo_talonario foreign key(id_modo_talonario) references modo_talonario(id),
+    constraint fk_plantilla_tipo_color_talonario foreign key(id_tipo_color_talonario) references tipo_color_talonario(id),
+    constraint fk_plantilla_medida_talonario foreign key(id_medida_talonario) references medida_talonario(id),
+    constraint fk_plantilla_tipo_papel_talonario foreign key(id_tipo_papel_talonario) references tipo_papel_talonario(id),
+    constraint fk_plantilla_cantidad_talonario foreign key(id_cantidad_talonario) references cantidad_talonario(id)
+);
+
+insert into plantilla_talonario(cantidad_hojas, con_numerado, id_tipo_talonario, id_tipo_troquelado_talonario, id_modo_talonario, id_tipo_color_talonario, id_medida_talonario, id_tipo_papel_talonario, id_cantidad_talonario, precio) values
+(50, 1, 2, 2, 2, 1, 3, 1, 1, 13100),  -- 50 hojas, numerado, presupuesto, troquelado, or + 2, byn, a5, obra, 1 u
+(50, 1, 2, 2, 2, 1, 3, 1, 2, 23100),  -- 50 hojas, numerado, presupuesto, troquelado, or + 2, byn, a5, obra, 2 u
+(50, 1, 2, 2, 2, 1, 3, 1, 3, 41800),  -- 50 hojas, numerado, preuspuesto, troquelado, or + 2, byn, a5, obra, 4 u
+(100, 1, 2, 2, 1, 1, 3, 1, 1, 13100), -- 100 hojas, numerado, presupuesto, troquelado, or, byn, a5, obra, 1 u
+(100, 1, 2, 2, 1, 1, 3, 1, 2, 23100), -- 100 hojas, numerado, presupuesto, troquelado, or, byn, a5, obra, 2 u
+(100, 1, 2, 2, 1, 1, 3, 1, 3, 41800), -- 100 hojas, numerado, presupuesto, troquelado, or, byn, a5, obra, 4 u
+(50, 1, 2, 2, 2, 1, 5, 1, 2, 22500),  -- 50 hojas, numerado, presupuesto, troquelado, or + 2, byn, 13x18, obra, 2 u
+(50, 1, 2, 2, 2, 1, 5, 1, 3, 38000),  -- 50 hojas, numerado, presupuesto, troquelado, or + 2, byn, 13x18, obra, 4 u
+(50, 1, 2, 2, 2, 1, 5, 1, 4, 72500),  -- 50 hojas, numerado, presupuesto, troquelado, or + 2, byn, 13x18, obra, 8 u
+(100, 1, 2, 2, 1, 1, 5, 1, 2, 22500), -- 100 hojas, numerado, presupuesto, troquelado, or, byn, 13x18, obra, 2 u
+(100, 1, 2, 2, 1, 1, 5, 1, 3, 38000), -- 100 hojas, numerado, presupuesto, troquelado, or, byn, 13x18, obra, 4 u
+(100, 1, 2, 2, 1, 1. 5, 1, 4, 72500); -- 100 hojas, numerado, presupuesto, troquelado, or, byn, 13x18, obra, 8 u
 
 -- tarjetas
 create table if not exists tipo_color_tarjeta (
