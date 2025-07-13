@@ -494,7 +494,86 @@ insert into plantilla_etiqueta(id_tipo_papel_etiqueta, id_tipo_laminado_etiqueta
 (1, 3, 2, 3, 1, 40150), -- opalina 180, sin laminar, doble, 500, 7x5
 (1, 3, 2, 4, 1, 70100); -- opalina 180, sin laminar, doble, 1000, 7x5
 
--- flybanner
+-- flybanners
+create table if not exists tipo_faz_flybanner (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_faz_flybanner(id, tipo) values
+(1, 'SIMPLE FAZ'),
+(2, 'DOBLE FAZ');
+
+create table if not exists altura_flybanner (
+    id bigint auto_increment not null primary key,
+    altura varchar(255) not null
+);
+
+insert into altura_flybanner(id, altura) values
+(1, '240 CM'),
+(2, '190 CM');
+
+create table if not exists bandera_flybanner (
+    id bigint auto_increment not null primary key,
+    bandera varchar(255) not null
+);
+
+insert into bandera_flybanner(id, bandera) values
+(1, '70X145 CM');
+
+create table if not exists tipo_base_flybanner (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_base_flybanner(id, tipo) values
+(1, 'SIN BASE'),
+(2, 'BASE CRUZ'),
+(3, 'ESTACA ECO');
+
+create table if not exists flybanner (
+    id bigint auto_increment not null primary key,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_tipo_faz_flybanner bigint not null,
+    id_altura_flybanner bigint not null,
+    id_bandera_flybanner bigint not null,
+    id_tipo_base_flybanner bigint not null,
+    constraint fk_tipo_faz_flybanner foreign key(id_tipo_faz_flybanner) references tipo_faz_flybanner(id),
+    constraint fk_altura_flybanner foreign key(id_altura_flybanner) references altura_flybanner(id),
+    constraint fk_bandera_flybanner foreign key(id_bandera_flybanner) references bandera_flybanner(id),
+    constraint fk_tipo_base_flybanner foreign key(id_tipo_base_flybanner) references tipo_base_flybanner(id)
+);
+
+create table if not exists plantilla_flybanner (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    id_tipo_faz_flybanner bigint not null,
+    id_altura_flybanner bigint not null,
+    id_bandera_flybanner bigint not null,
+    id_tipo_base_flybanner bigint not null,
+    constraint fk_plantilla_tipo_faz_flybanner foreign key(id_tipo_faz_flybanner) references tipo_faz_flybanner(id),
+    constraint fk_plantilla_altura_flybanner foreign key(id_altura_flybanner) references altura_flybanner(id),
+    constraint fk_plantilla_bandera_flybanner foreign key(id_bandera_flybanner) references bandera_flybanner(id),
+    constraint fk_plantilla_tipo_base_flybanner foreign key(id_tipo_base_flybanner) references tipo_base_flybanner(id)
+);
+
+insert into plantilla_flybanner(id_tipo_faz_flybanner, id_altura_flybanner, id_bandera_flybanner, id_tipo_base_flybanner, precio) values
+(2, 1, 1, 1, 106200), -- doble, 240, 70x145, sin base
+(2, 1, 1, 2, 134400), -- doble, 240, 70x145, base cruz
+(2, 1, 1, 3, 123950), -- doble, 240, 70x145, estaca eco
+(1, 1, 1, 1, 97000),  -- simple, 240, 70x145, sin base
+(1, 1, 1, 2, 125200), -- simple, 240, 70x145, base cruz
+(1, 1, 1, 3, 114750), -- simple, 240, 70x145, estaca eco
+(2, 2, 1, 1, 88200),  -- doble, 190, 70x145, sin base
+(2, 2, 1, 2, 116400), -- doble, 190, 70x145, base cruz
+(2, 2, 1, 3, 105950), -- doble, 190, 70x145, estaca eco
+(1, 2, 1, 1, 79000),  -- simple, 190, 70x145, sin base
+(1, 2, 1, 2, 107200), -- simple, 190, 70x145, base cruz
+(1, 2, 1, 3, 96750);  -- simple, 190, 70x145, estaca eco
 
 -- folletos
 create table if not exists tipo_color_folleto (
@@ -2166,6 +2245,15 @@ create table if not exists orden_etiqueta (
     id_etiqueta bigint not null,
     constraint fk_orden_etiqueta foreign key(id_orden_trabajo) references orden_trabajo(id),
     constraint fk_etiqueta foreign key(id_etiqueta) references etiqueta(id)
+);
+
+create table if not exists orden_flybanner (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_flybanner bigint not null,
+    constraint fk_orden_flybanner foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_flyabner foreign key(id_flybanner) references flybanner(id)
 );
 
 create table if not exists orden_folleto (
