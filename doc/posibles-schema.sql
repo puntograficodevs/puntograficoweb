@@ -947,7 +947,15 @@ insert into plantilla_impresion(id_tipo_color_impresion, id_tamanio_hoja_impresi
 (2, 5, 1, 6, 4, 1, 2800),  -- color, a3+, simple, ilu. 200, indistinto, particular
 (2, 5, 2, 6, 4, 1, 2800),  -- color, a3+, doble, ilu. 200, indistinto, particular
 (2, 5, 1, 8, 4, 1, 3000),  -- color, a3+, simple, ilu. 250, indistinto, particular
-(2, 5, 2, 8, 4, 1, 3000);  -- color, a3+, doble, ilu. 250, indistinto, particular
+(2, 5, 2, 8, 4, 1, 3000),  -- color, a3+, doble, ilu. 250, indistinto, particular
+(1, 1, 1, 1, 4, 2, 60), -- byn, a4, simple, copia, indistinto, escolar
+(1, 1, 2, 1, 4, 2, 40), -- byn, a4, doble, copia, indistinto, escolar
+(1, 3, 1, 1, 4, 2, 80), -- byn, oficio, simple, copia, indistinto, escolar
+(1, 3, 2, 1, 4, 2, 50), -- byn, oficio, doble, copia, indistinto, escolar
+(2, 1, 1, 1, 4, 2, 400), -- color, a4, simple, copia, indistinto, escolar
+(2, 1, 2, 1, 4, 2, 325), -- color, a4, doble, copia, indistinto, escolar
+(2, 3, 1, 1, 4, 2, 500), -- color, oficio, simple, copia, indistinto, escolar
+(2, 3, 2, 1, 4, 2, 375); -- color, oficio, doble, copia, indistinto, escolar
 
 -- lonas
 create table if not exists medida_lona_comun (
@@ -1032,9 +1040,14 @@ insert into medida_lona_publicitaria(id, medida) values
 create table if not exists lona_publicitaria (
     id bigint auto_increment not null primary key,
     con_adicional_portabanner tinyint(1) not null default 0,
+    con_ojales tinyint(1) not null default 0,
+    con_ojales_con_refuerzo tinyint(1) not null default 0,
+    con_bolsillos tinyint(1) not null default 0,
+    con_demasia_para_tensado tinyint(1) not null default 0,
+    con_solapado tinyint(1) not null default 0,
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
-    precio_adicional_disenio int not null default 5000,
+    precio_adicional_disenio int not null default 8000,
     precio int null,
     informacion_adicional varchar(255) null,
     id_medida_lona_publicitaria bigint not null,
@@ -1047,17 +1060,26 @@ create table if not exists plantilla_lona_publicitaria (
     id bigint auto_increment not null primary key,
     precio int not null,
     con_adicional_portabanner tinyint(1) not null,
+    con_ojales tinyint(1) not null default 0,
+    con_ojales_con_refuerzo tinyint(1) not null default 0,
+    con_bolsillos tinyint(1) not null default 0,
+    con_demasia_para_tensado tinyint(1) not null default 0,
+    con_solapado tinyint(1) not null default 0,
     id_medida_lona_publicitaria bigint not null,
     id_tipo_lona_publicitaria bigint not null,
     constraint fk_plantilla_medida_lona_publicitaria foreign key(id_medida_lona_publicitaria) references medida_lona_publicitaria(id),
     constraint fk_plantilla_tipo_lona_publicitaria foreign key(id_tipo_lona_publicitaria) references tipo_lona_publicitaria(id)
 );
 
-insert into plantilla_lona_publicitaria(con_adicional_portabanner, id_medida_lona_publicitaria, id_tipo_lona_publicitaria, precio) values
-(1, 4, 1, 19500), -- con portabanner, 25x42, front
-(1, 1, 1, 56016), -- con portabanner 60x160, front
-(1, 2, 1, 81480), -- con portabanner, 90x190, front
-(1, 3, 1, 85510); -- con portabanner, 85x200, front
+insert into plantilla_lona_publicitaria(con_adicional_portabanner, con_ojales, con_ojales_con_refuerzo, con_bolsillos, con_demasia_para_tensado, con_solapado, id_medida_lona_publicitaria, id_tipo_lona_publicitaria, precio) values
+(1, 0, 0, 0, 0, 0, 4, 1, 19500), -- con portabanner, sin ojales, sin bolsillos, sin demasia, sin solapado, 25x42, front
+(1, 0, 0, 0, 0, 0, 1, 1, 56016), -- con portabanner sin ojales, sin bolsillos, sin demasia, sin solapado, 60x160, front
+(1, 0, 0, 0, 0, 0, 2, 1, 81480), -- con portabanner, sin ojales, sin bolsillos, sin demasia, sin solapado, 90x190, front
+(1, 0, 0, 0, 0, 0, 3, 1, 85510), -- con portabanner, sin ojales, sin bolsillos, sin demasia, sin solapado, 85x200, front
+(0, 0, 1, 0, 0, 0, 4, 1, 15900), -- sin portabanner, con ojales met., sin bolsillos, sin demasia, sin solapado, 25x42, front
+(0, 0, 1, 0, 0, 0, 1, 1, 29800), -- sin portabanner, con ojales met., sin bolsillos, sin demasia, sin solapado, 60x160, front
+(0, 0, 0, 1, 0, 0, 2, 1, 39800), -- sin portabanner, sin ojales, con bolsillos, sin demasia, sin solapado, 90x190, front
+(0, 0, 0, 0, 1, 0, 3, 1, 42200); -- sin portabanner, sin ojales, sin bolsillos, con demasia, sin solapado, 85x200, front
 
 -- rifas / bonos contribución
 create table if not exists tipo_papel_rifa (
@@ -1944,21 +1966,88 @@ insert into tipo_vinilo(id, tipo) values
 (3, 'CLEAR'),
 (4, 'MICROPERFORADO');
 
+create table if not exists medida_vinilo (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null
+);
+
+insert into medida_vinilo(id, medida) values
+(1, '5CM'),
+(2, '6CM'),
+(3, '7CM'),
+(4, 'OTRA');
+
+create table if not exists cantidad_vinilo (
+    id bigint auto_increment not null primary key,
+    cantidad varchar(255) not null
+);
+
+insert into cantidad_vinilo(id, cantidad) values
+(1, '50'),
+(2, '100'),
+(3, 'OTRA');
+
 create table if not exists vinilo (
     id bigint auto_increment not null primary key,
-    medida varchar(255) not null,
+    medida_personalizada varchar(255) null,
+    cantidad_personalizada varchar(255) null,
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
     precio_adicional_disenio int not null default 5000,
     precio int null,
     informacion_adicional varchar(255) null,
-    id_tipo_vinilo bigint not null,
+    id_tipo_vinilo bigint null,
     id_tipo_adicional_vinilo bigint not null,
     id_tipo_corte_vinilo bigint not null,
+    id_medida_vinilo bigint not null,
+    id_cantidad_vinilo bigint not null,
     constraint fk_tipo_vinilo foreign key(id_tipo_vinilo) references tipo_vinilo(id),
     constraint fk_tipo_adicioal_vinilo foreign key(id_tipo_adicional_vinilo) references tipo_adicional_vinilo(id),
-    constraint fk_tipo_corte_vinilo foreign key(id_tipo_corte_vinilo) references tipo_corte_vinilo(id)
+    constraint fk_tipo_corte_vinilo foreign key(id_tipo_corte_vinilo) references tipo_corte_vinilo(id),
+    constraint fk_medida_vinilo foreign key(id_medida_vinilo) references medida_vinilo(id),
+    constraint fk_cantidad_vinilo foreign key(id_cantidad_vinilo) references cantidad_vinilo(id)
 );
+
+create table if not exists plantilla_vinilo (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    id_tipo_vinilo bigint null,
+    id_tipo_adicional_vinilo bigint not null,
+    id_tipo_corte_vinilo bigint not null,
+    id_medida_vinilo bigint not null,
+    id_cantidad_vinilo bigint not null,
+    constraint fk_plantilla_tipo_vinilo foreign key(id_tipo_vinilo) references tipo_vinilo(id),
+    constraint fk_plantilla_tipo_adicioal_vinilo foreign key(id_tipo_adicional_vinilo) references tipo_adicional_vinilo(id),
+    constraint fk_plantilla_tipo_corte_vinilo foreign key(id_tipo_corte_vinilo) references tipo_corte_vinilo(id),
+    constraint fk_plantilla_medida_vinilo foreign key(id_medida_vinilo) references medida_vinilo(id),
+    constraint fk_plantilla_cantidad_vinilo foreign key(id_cantidad_vinilo) references cantidad_vinilo(id)
+);
+
+insert into plantilla_vinilo(id_tipo_vinilo, id_tipo_adicional_vinilo, id_tipo_corte_vinilo, id_medida_vinilo, id_cantidad_vinilo, precio) values
+(null, 3, 1, 1, 1, 29800), -- null, sin laminar, manual, 5cm, 50 u
+(null, 3, 2, 1, 1, 29800), -- null, sin laminar, troquelado, 5cm, 50 u
+(null, 3, 3, 1, 1, 29800), -- null, sin laminar, troquelado + corte, 5 cm, 50 u
+(null, 3, 4, 1, 1, 29800), -- null, sin laminar, plancha, 5cm, 50 u
+(null, 3, 1, 2, 1, 32500), -- null, sin laminar, manual, 6cm, 50 u
+(null, 3, 2, 2, 1, 32500), -- null, sin laminar, troquelado, 6cm, 50 u
+(null, 3, 3, 2, 1, 32500), -- null, sin laminar, troquelado + corte, 6 cm, 50 u
+(null, 3, 4, 2, 1, 32500), -- null, sin laminar, plancha, 6cm, 50 u
+(null, 3, 1, 3, 1, 38200), -- null, sin laminar, manual, 7cm, 50 u
+(null, 3, 2, 3, 1, 38200), -- null, sin laminar, troquelado, 7cm, 50 u
+(null, 3, 3, 3, 1, 38200), -- null, sin laminar, troquelado + corte, 7 cm, 50 u
+(null, 3, 4, 3, 1, 38200), -- null, sin laminar, plancha, 7cm, 50 u
+(null, 3, 1, 1, 2, 39700), -- null, sin laminar, manual, 5cm, 100 u
+(null, 3, 2, 1, 2, 39700), -- null, sin laminar, troquelado, 5cm, 100 u
+(null, 3, 3, 1, 2, 39700), -- null, sin laminar, troquelado + corte, 5 cm, 100 u
+(null, 3, 4, 1, 2, 39700), -- null, sin laminar, plancha, 5cm, 100 u
+(null, 3, 1, 2, 2, 47300), -- null, sin laminar, manual, 6cm, 100 u
+(null, 3, 2, 2, 2, 47300), -- null, sin laminar, troquelado, 6cm, 100 u
+(null, 3, 3, 2, 2, 47300), -- null, sin laminar, troquelado + corte, 6 cm, 100 u
+(null, 3, 4, 2, 2, 47300), -- null, sin laminar, plancha, 6cm, 100 u
+(null, 3, 1, 3, 2, 57500), -- null, sin laminar, manual, 7cm, 100 u
+(null, 3, 2, 3, 2, 57500), -- null, sin laminar, troquelado, 7cm, 100 u
+(null, 3, 3, 3, 2, 57500), -- null, sin laminar, troquelado + corte, 7 cm, 100 u
+(null, 3, 4, 3, 2, 57500); -- null, sin laminar, plancha, 7cm, 100 u
 
 -- vinilos + plástico corrugado
 create table if not exists vinilo_plastico_corrugado (
