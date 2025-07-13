@@ -365,93 +365,6 @@ create table if not exists entrada (
     constraint fk_tipo_troquelado_entrada foreign key(id_tipo_troquelado_entrada) references tipo_troquelado_entrada(id)
 );
 
--- vouchers
-create table if not exists medida_voucher (
-    id bigint auto_increment not null primary key,
-    medida varchar(255) not null
-);
-
-insert into medida_voucher(id, medida) values
-(1, '1/4 DE A4'),
-(2, 'OTRA');
-
-create table if not exists tipo_papel_voucher (
-    id bigint auto_increment not null primary key,
-    tipo varchar(255) not null
-);
-
-insert into tipo_papel_voucher(id, tipo) values
-(1, 'OPALINA 180 GRS'),
-(2, 'ILUSTRACIÓN 200 GRS'),
-(3, 'OTRO');
-
-create table if not exists tipo_faz_voucher (
-    id bigint auto_increment not null primary key,
-    tipo varchar(255) not null
-);
-
-insert into tipo_faz_voucher(id, tipo) values
-(1, 'SIMPLE FAZ'),
-(2, 'DOBLE FAZ');
-
-create table if not exists cantidad_voucher (
-    id bigint auto_increment not null primary key,
-    cantidad varchar(255) not null
-);
-
-insert into cantidad_voucher(id, cantidad) values
-(1, '50'),
-(2, '100'),
-(3, '150'),
-(4, 'OTRA');
-
-create table if not exists voucher (
-    id bigint auto_increment not null primary key,
-    tipo_papel_personalizado varchar(255) null,
-    cantidad_personalizada varchar(255) null,
-    medida_personalizada varchar(255) null,
-    enlace_archivo varchar(255) not null default '-',
-    con_adicional_disenio tinyint(1) not null default 0,
-    precio_adicional_disenio int not null default 5000,
-    precio int null,
-    informacion_adicional varchar(255) null,
-    id_medida_voucher bigint not null,
-    id_tipo_papel_voucher bigint not null,
-    id_tipo_faz_voucher bigint not null,
-    id_cantidad_voucher bigint not null,
-    constraint fk_medida_voucher foreign key(id_medida_voucher) references medida_voucher(id),
-    constraint fk_tipo_papel_voucher foreign key(id_tipo_papel_voucher) references tipo_papel_voucher(id),
-    constraint fk_tipo_faz_voucher foreign key(id_tipo_faz_voucher) references tipo_faz_voucher(id),
-    constraint fk_cantidad_voucher foreign key(id_cantidad_voucher) references cantidad_voucher(id)
-);
-
-create table if not exists plantilla_voucher (
-    id bigint auto_increment not null primary key,
-    precio int not null,
-    id_medida_voucher bigint not null,
-    id_tipo_papel_voucher bigint not null,
-    id_tipo_faz_voucher bigint not null,
-    id_cantidad_voucher bigint not null,
-    constraint fk_plantilla_medida_voucher foreign key(id_medida_voucher) references medida_voucher(id),
-    constraint fk_plantilla_tipo_papel_voucher foreign key(id_tipo_papel_voucher) references tipo_papel_voucher(id),
-    constraint fk_plantilla_tipo_faz_voucher foreign key(id_tipo_faz_voucher) references tipo_faz_voucher(id),
-    constraint fk_plantilla_cantidad_voucher foreign key(id_cantidad_voucher) references cantidad_voucher(id)
-);
-
-insert into plantilla_voucher(id_medida_voucher, id_tipo_papel_voucher, id_tipo_faz_voucher, id_cantidad_voucher, precio) values
-(1, 1, 1, 1, 20050), -- 1/4 de a4, opa. 180, simple, 50 u
-(1, 1, 1, 2, 33000), -- 1/4 de a4, opa. 180, simple, 100 u
-(1, 1, 1, 3, 47800), -- 1/4 de a4, opa. 180, simple, 150 u
-(1, 1, 2, 1, 25800), -- 1/4 de a4, opa. 180, doble, 50 u
-(1, 1, 2, 2, 39500), -- 1/4 de a4, opa. 180, doble, 100 u
-(1, 1, 2, 3, 52200), -- 1/4 de a4, opa. 180, doble, 150 u
-(1, 2, 1, 1, 23800), -- 1/4 de a4, ilu. 200, simple, 50 u
-(1, 2, 1, 2, 39250), -- 1/4 de a4, ilu. 200, simple, 100 u
-(1, 2, 1, 3, 54600), -- 1/4 de a4, ilu. 200, simple, 150 u
-(1, 2, 2, 1, 32300), -- 1/4 de a4, ilu. 200, doble, 50 u
-(1, 2, 2, 2, 45150), -- 1/4 de a4, ilu. 200, doble, 100 u
-(1, 2, 2, 3, 58350); -- 1/4 de a4, ilu. 200, doble, 150 u
-
 -- etiquetas
 create table if not exists tipo_papel_etiqueta (
     id bigint auto_increment not null primary key,
@@ -2006,6 +1919,93 @@ create table if not exists vinilo_de_corte (
     constraint fk_trae_material_vinilo foreign key(id_trae_material_vinilo) references trae_material_vinilo(id)
 );
 
+-- vouchers
+create table if not exists medida_voucher (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null
+);
+
+insert into medida_voucher(id, medida) values
+(1, '1/4 DE A4'),
+(2, 'OTRA');
+
+create table if not exists tipo_papel_voucher (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_papel_voucher(id, tipo) values
+(1, 'OPALINA 180 GRS'),
+(2, 'ILUSTRACIÓN 200 GRS'),
+(3, 'OTRO');
+
+create table if not exists tipo_faz_voucher (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_faz_voucher(id, tipo) values
+(1, 'SIMPLE FAZ'),
+(2, 'DOBLE FAZ');
+
+create table if not exists cantidad_voucher (
+    id bigint auto_increment not null primary key,
+    cantidad varchar(255) not null
+);
+
+insert into cantidad_voucher(id, cantidad) values
+(1, '50'),
+(2, '100'),
+(3, '150'),
+(4, 'OTRA');
+
+create table if not exists voucher (
+    id bigint auto_increment not null primary key,
+    tipo_papel_personalizado varchar(255) null,
+    cantidad_personalizada varchar(255) null,
+    medida_personalizada varchar(255) null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_medida_voucher bigint not null,
+    id_tipo_papel_voucher bigint not null,
+    id_tipo_faz_voucher bigint not null,
+    id_cantidad_voucher bigint not null,
+    constraint fk_medida_voucher foreign key(id_medida_voucher) references medida_voucher(id),
+    constraint fk_tipo_papel_voucher foreign key(id_tipo_papel_voucher) references tipo_papel_voucher(id),
+    constraint fk_tipo_faz_voucher foreign key(id_tipo_faz_voucher) references tipo_faz_voucher(id),
+    constraint fk_cantidad_voucher foreign key(id_cantidad_voucher) references cantidad_voucher(id)
+);
+
+create table if not exists plantilla_voucher (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    id_medida_voucher bigint not null,
+    id_tipo_papel_voucher bigint not null,
+    id_tipo_faz_voucher bigint not null,
+    id_cantidad_voucher bigint not null,
+    constraint fk_plantilla_medida_voucher foreign key(id_medida_voucher) references medida_voucher(id),
+    constraint fk_plantilla_tipo_papel_voucher foreign key(id_tipo_papel_voucher) references tipo_papel_voucher(id),
+    constraint fk_plantilla_tipo_faz_voucher foreign key(id_tipo_faz_voucher) references tipo_faz_voucher(id),
+    constraint fk_plantilla_cantidad_voucher foreign key(id_cantidad_voucher) references cantidad_voucher(id)
+);
+
+insert into plantilla_voucher(id_medida_voucher, id_tipo_papel_voucher, id_tipo_faz_voucher, id_cantidad_voucher, precio) values
+(1, 1, 1, 1, 20050), -- 1/4 de a4, opa. 180, simple, 50 u
+(1, 1, 1, 2, 33000), -- 1/4 de a4, opa. 180, simple, 100 u
+(1, 1, 1, 3, 47800), -- 1/4 de a4, opa. 180, simple, 150 u
+(1, 1, 2, 1, 25800), -- 1/4 de a4, opa. 180, doble, 50 u
+(1, 1, 2, 2, 39500), -- 1/4 de a4, opa. 180, doble, 100 u
+(1, 1, 2, 3, 52200), -- 1/4 de a4, opa. 180, doble, 150 u
+(1, 2, 1, 1, 23800), -- 1/4 de a4, ilu. 200, simple, 50 u
+(1, 2, 1, 2, 39250), -- 1/4 de a4, ilu. 200, simple, 100 u
+(1, 2, 1, 3, 54600), -- 1/4 de a4, ilu. 200, simple, 150 u
+(1, 2, 2, 1, 32300), -- 1/4 de a4, ilu. 200, doble, 50 u
+(1, 2, 2, 2, 45150), -- 1/4 de a4, ilu. 200, doble, 100 u
+(1, 2, 2, 3, 58350); -- 1/4 de a4, ilu. 200, doble, 150 u
+
 -- otros
 create table if not exists tipo_color_otro (
     id bigint auto_increment not null primary key,
@@ -2335,6 +2335,15 @@ create table if not exists orden_vinilo_de_corte (
     id_vinilo_de_corte bigint not null,
     constraint fk_orden_vinilo_de_corte foreign key(id_orden_trabajo) references orden_trabajo(id),
     constraint fk_vinilo_de_corte foreign key(id_vinilo_de_corte) references vinilo_de_corte(id)
+);
+
+create table if not exists orden_voucher (
+    id bigint auto_increment not null primary key,
+    cantidad int not null default 1,
+    id_orden_trabajo bigint not null,
+    id_voucher bigint not null,
+    constraint fk_orden_voucher foreign key(id_orden_trabajo) references orden_trabajo(id),
+    constraint fk_voucher foreign key(id_voucher) references voucher(id)
 );
 
 create table if not exists orden_otro (
