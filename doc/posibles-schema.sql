@@ -365,6 +365,93 @@ create table if not exists entrada (
     constraint fk_tipo_troquelado_entrada foreign key(id_tipo_troquelado_entrada) references tipo_troquelado_entrada(id)
 );
 
+-- vouchers
+create table if not exists medida_voucher (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null
+);
+
+insert into medida_voucher(id, medida) values
+(1, '1/4 DE A4'),
+(2, 'OTRA');
+
+create table if not exists tipo_papel_voucher (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_papel_voucher(id, tipo) values
+(1, 'OPALINA 180 GRS'),
+(2, 'ILUSTRACIÓN 200 GRS'),
+(3, 'OTRO');
+
+create table if not exists tipo_faz_voucher (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_faz_voucher(id, tipo) values
+(1, 'SIMPLE FAZ'),
+(2, 'DOBLE FAZ');
+
+create table if not exists cantidad_voucher (
+    id bigint auto_increment not null primary key,
+    cantidad varchar(255) not null
+);
+
+insert into cantidad_voucher(id, cantidad) values
+(1, '50'),
+(2, '100'),
+(3, '150'),
+(4, 'OTRA');
+
+create table if not exists voucher (
+    id bigint auto_increment not null primary key,
+    tipo_papel_personalizado varchar(255) null,
+    cantidad_personalizada varchar(255) null,
+    medida_personalizada varchar(255) null,
+    enlace_archivo varchar(255) not null default '-',
+    con_adicional_disenio tinyint(1) not null default 0,
+    precio_adicional_disenio int not null default 5000,
+    precio int null,
+    informacion_adicional varchar(255) null,
+    id_medida_voucher bigint not null,
+    id_tipo_papel_voucher bigint not null,
+    id_tipo_faz_voucher bigint not null,
+    id_cantidad_voucher bigint not null,
+    constraint fk_medida_voucher foreign key(id_medida_voucher) references medida_voucher(id),
+    constraint fk_tipo_papel_voucher foreign key(id_tipo_papel_voucher) references tipo_papel_voucher(id),
+    constraint fk_tipo_faz_voucher foreign key(id_tipo_faz_voucher) references tipo_faz_voucher(id),
+    constraint fk_cantidad_voucher foreign key(id_cantidad_voucher) references cantidad_voucher(id)
+);
+
+create table if not exists plantilla_voucher (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    id_medida_voucher bigint not null,
+    id_tipo_papel_voucher bigint not null,
+    id_tipo_faz_voucher bigint not null,
+    id_cantidad_voucher bigint not null,
+    constraint fk_plantilla_medida_voucher foreign key(id_medida_voucher) references medida_voucher(id),
+    constraint fk_plantilla_tipo_papel_voucher foreign key(id_tipo_papel_voucher) references tipo_papel_voucher(id),
+    constraint fk_plantilla_tipo_faz_voucher foreign key(id_tipo_faz_voucher) references tipo_faz_voucher(id),
+    constraint fk_plantilla_cantidad_voucher foreign key(id_cantidad_voucher) references cantidad_voucher(id)
+);
+
+insert into plantilla_voucher(id_medida_voucher, id_tipo_papel_voucher, id_tipo_faz_voucher, id_cantidad_voucher, precio) values
+(1, 1, 1, 1, 20050), -- 1/4 de a4, opa. 180, simple, 50 u
+(1, 1, 1, 2, 33000), -- 1/4 de a4, opa. 180, simple, 100 u
+(1, 1, 1, 3, 47800), -- 1/4 de a4, opa. 180, simple, 150 u
+(1, 1, 2, 1, 25800), -- 1/4 de a4, opa. 180, doble, 50 u
+(1, 1, 2, 2, 39500), -- 1/4 de a4, opa. 180, doble, 100 u
+(1, 1, 2, 3, 52200), -- 1/4 de a4, opa. 180, doble, 150 u
+(1, 2, 1, 1, 23800), -- 1/4 de a4, ilu. 200, simple, 50 u
+(1, 2, 1, 2, 39250), -- 1/4 de a4, ilu. 200, simple, 100 u
+(1, 2, 1, 3, 54600), -- 1/4 de a4, ilu. 200, simple, 150 u
+(1, 2, 2, 1, 32300), -- 1/4 de a4, ilu. 200, doble, 50 u
+(1, 2, 2, 2, 45150), -- 1/4 de a4, ilu. 200, doble, 100 u
+(1, 2, 2, 3, 58350); -- 1/4 de a4, ilu. 200, doble, 150 u
+
 -- etiquetas
 create table if not exists tipo_papel_etiqueta (
     id bigint auto_increment not null primary key,
@@ -715,7 +802,8 @@ insert into tamanio_hoja_impresion(id, tamanio) values
 (2, 'A5'),
 (3, 'OFICIO'),
 (4, 'A3'),
-(5, 'OTRO');
+(5, 'A3+')
+(6, 'OTRO');
 
 create table if not exists tipo_faz_impresion (
     id bigint auto_increment not null primary key,
@@ -731,9 +819,46 @@ create table if not exists tipo_papel_impresion (
     tipo varchar(255) not null
 );
 
+insert into tipo_papel_impresion(id, tipo) values
+(1, 'COPIA COMÚN'),
+(2, 'OBRA 75 GRS'),
+(3, 'ILUSTRACIÓN 90 GRS'),
+(4, 'ILUSTRACIÓN 115 GRS'),
+(5, 'ILUSTRACIÓN 150 GRS'),
+(6, 'ILUSTRACIÓN 200 GRS'),
+(7, 'ILUSTRACIÓN 220 GRS'),
+(8, 'ILUSTRACIÓN 250 GRS'),
+(9, 'ILUSTRACIÓN 300 GRS'),
+(10, 'OPALINA 150 GRS'),
+(11, 'OPALINA 180 GRS'),
+(12, 'OPALINA 210 GRS'),
+(13, 'KRAFT 200 GRS'),
+(14, 'OPALINA 200 GRS');
+
+create table if not exists cantidad_impresion (
+    id bigint auto_increment not null primary key,
+    cantidad varchar(255) not null
+);
+
+insert into cantidad_impresion(id, cantidad) values
+(1, '1 - 10'),
+(2, '11 - 100'),
+(3, '+100'),
+(4, 'INDISTINTO');
+
+create table if not exists tipo_impresion (
+    id bigint auto_increment not null primary key,
+    tipo varchar(255) not null
+);
+
+insert into tipo_impresion(id, tipo) values
+(1, 'PARTICULAR'),
+(2, 'ESCOLAR/UNIVERSITARIO');
+
 create table if not exists impresion (
     id bigint auto_increment not null primary key,
     es_anillado tinyint(1) not null default 0,
+    cantidad_detalle int null,
     enlace_archivo varchar(255) not null default '-',
     precio int null,
     informacion_adicional varchar(255) null,
@@ -741,11 +866,94 @@ create table if not exists impresion (
     id_tamanio_hoja_impresion bigint not null,
     id_tipo_faz_impresion bigint not null,
     id_tipo_papel_impresion bigint not null,
+    id_cantidad_impresion bigint not null,
+    id_tipo_impresion bigint not null,
     constraint fk_tipo_color_impresion foreign key(id_tipo_color_impresion) references tipo_color_impresion(id),
     constraint fk_tamanio_hoja_impresion foreign key(id_tamanio_hoja_impresion) references tamanio_hoja_impresion(id),
     constraint fk_tipo_faz_impresion foreign key(id_tipo_faz_impresion) references tipo_faz_impresion(id),
-    constraint fk_tipo_papel_impresion foreign key(id_tipo_papel_impresion) references tipo_papel_impresion(id)
+    constraint fk_tipo_papel_impresion foreign key(id_tipo_papel_impresion) references tipo_papel_impresion(id),
+    constraint fk_cantidad_impresion foreign key(id_cantidad_impresion) references cantidad_impresion(id),
+    constraint fk_tipo_impresion foreign key(id_tipo_impresion) references tipo_impresion(id)
 );
+
+create table if not exists plantilla_impresion (
+    id bigint auto_increment not null primary key,
+    precio int not null, -- por página (si la hoja doble faz está a 150, puse 75)
+    id_tipo_color_impresion bigint not null,
+    id_tamanio_hoja_impresion bigint not null,
+    id_tipo_faz_impresion bigint not null,
+    id_tipo_papel_impresion bigint not null,
+    id_cantidad_impresion bigint not null,
+    id_tipo_impresion bigint not null,
+    constraint fk_plantilla_tipo_color_impresion foreign key(id_tipo_color_impresion) references tipo_color_impresion(id),
+    constraint fk_plantilla_tamanio_hoja_impresion foreign key(id_tamanio_hoja_impresion) references tamanio_hoja_impresion(id),
+    constraint fk_plantilla_tipo_faz_impresion foreign key(id_tipo_faz_impresion) references tipo_faz_impresion(id),
+    constraint fk_plantilla_tipo_papel_impresion foreign key(id_tipo_papel_impresion) references tipo_papel_impresion(id),
+    constraint fk_plantilla_cantidad_impresion foreign key(id_cantidad_impresion) references cantidad_impresion(id),
+    constraint fk_plantilla_tipo_impresion foreign key(id_tipo_impresion) references tipo_impresion(id)
+);
+
+insert into plantilla_impresion(id_tipo_color_impresion, id_tamanio_hoja_impresion, id_tipo_faz_impresion, id_tipo_papel_impresion, id_cantidad_impresion, id_tipo_impresion, precio) values
+(1, 1, 1, 1, 1, 1, 100),   -- byn, a4, simple, copia, 1-10, particular
+(1, 1, 1, 1, 2, 1, 80),    -- byn, a4, simple, copia, 11-100, particular
+(1, 1, 1, 1, 3, 1, 60),    -- byn, a4, simple, copia, +100, particular
+(1, 1, 2, 1, 1, 1, 75),    -- byn, a4, doble, copia, 1-10, particular
+(1, 1, 2, 1, 2, 1, 60),    -- byn, a4, doble, copia, 11-100, particular
+(1, 1, 2, 1, 3, 1, 50),    -- byn, a4, doble, copia, +100, particular
+(1, 3, 1, 1, 1, 1, 150),   -- byn, oficio, simple, copia, 1-10, particular
+(1, 3, 1, 1, 2, 1, 130),   -- byn, oficio, simple, copia, 11-100, particular
+(1, 3, 1, 1, 3, 1, 100),   -- byn, oficio, simple, copia, +100, particular
+(1, 3, 2, 1, 1, 1, 85),    -- byn, oficio, doble, copia, 1-10, particular
+(1, 3, 2, 1, 2, 1, 75),    -- byn, oficio, doble, copia, 11-100, particular
+(1, 3, 2, 1, 3, 1, 60),    -- byn, oficio, doble, copia, +100, particular
+(2, 1, 1, 2, 4, 1, 500),   -- color, a4, simple, obra, indistinto, particular
+(2, 1, 2, 2, 4, 1, 800),   -- color, a4, doble, obra, indistinto, particular
+(2, 1, 1, 3, 4, 1, 900),   -- color, a4, simple, ilu. 90, indistinto, particular
+(2, 1, 2, 3, 4, 1, 900),   -- color, a4, doble, ilu. 90, indistinto, particular
+(2, 1, 1, 4, 4, 1, 900),   -- color, a4, simple, ilu. 115, indistinto particular
+(2, 1, 2, 4, 4, 1, 900),   -- color, a4, doble, ilu. 115, indistinto, particular
+(2, 1, 1, 5, 4, 1, 1100),  -- color, a4, simple, ilu. 150, indistinto, particular
+(2, 1, 2, 5, 4, 1, 1100),  -- color, a4, doble, ilu. 150, indistinto, particular
+(2, 1, 1, 6, 4, 1, 1350),  -- color, a4, simple, ilu. 200, indistinto, particular
+(2, 1, 2, 6, 4, 1, 1350),  -- color, a4, doble, ilu. 200, indistinto, particular
+(2, 1, 1, 7, 4, 1, 1350),  -- color, a4, simple, ilu. 220, indistinto, particular
+(2, 1, 2, 7, 4, 1, 1350),  -- color, a4, doble, ilu. 220, indistinto, particular
+(2, 1, 1, 8, 4, 1, 1500),  -- color, a4, simple, ilu. 250, indistinto, particular
+(2, 1, 2, 8, 4, 1, 1500),  -- color, a4, doble, ilu. 250, indistinto, particular
+(2, 1, 1, 9, 4, 1, 1700),  -- color, a4, simple, ilu. 300, indistinto, particular
+(2, 1, 2, 9, 4, 1, 1700),  -- color, a4, doble, ilu. 300, indistinto, particular
+(2, 1, 1, 10, 4, 1, 950),  -- color, a4, simple, opa. 150, indistinto, particular
+(2, 1, 2, 10, 4, 1, 950),  -- color, a4, doble, opa. 150, indistinto, particular
+(2, 1, 1, 11, 4, 1, 1200), -- color, a4, simple, opa. 180, indistinto, particular
+(2, 1, 2, 11, 4, 1, 1200), -- color, a4, doble, opa. 180, indistinto, particular
+(2, 1, 1, 12, 4, 1, 1350), -- color, a4, simple, opa. 210, indistinto, particular
+(2, 1, 2, 12, 4, 1, 1350), -- color, a4, doble, opa. 210, indistinto, particular
+(1, 1, 1, 13, 4, 1, 1400), -- byn, a4, simple, kraft, indistinto, particular
+(1, 1, 2, 13, 4, 1, 1400), -- byn, a4, doble, kraft, indistinto, particular
+(2, 4, 1, 2, 4, 1, 900),   -- color, a3, simple, obra, indistinto, particular
+(2, 4, 2, 2, 4, 1, 1100),  -- color, a3, doble, obra, indistinto, particular
+(2, 4, 1, 5, 4, 1, 2100),  -- color, a3, simple, ilu. 150, indistinto, particular
+(2, 4, 2, 5, 4, 1, 2100),  -- color, a3, doble, ilu. 150, indistinto, particular
+(2, 4, 1, 6, 4, 1, 2300),  -- color, a3, simple, ilu. 200, indistinto, particular
+(2, 4, 2, 6, 4, 1, 2300),  -- color, a3, doble, ilu. 200, indistinto, particular
+(2, 4, 1, 8, 4, 1, 2500),  -- color, a3, simple, ilu. 250, indistinto, particular
+(2, 4, 2, 8, 4, 1, 2500),  -- color, a3, doble, ilu. 250, indistinto, particular
+(2, 4, 1, 9, 4, 1, 2800),  -- color, a3, simple, ilu. 300, indistinto, particular
+(2, 4, 2, 9, 4, 1, 2800),  -- color, a3, doble, ilu. 300, indistinto, particular
+(2, 4, 1, 10, 4, 1, 1900), -- color, a3, simple, opa. 150, indistinto, particular
+(2, 4, 2, 10, 4, 1, 1900), -- color, a3, doble, opa. 150, indistinto, particular
+(2, 4, 1, 11, 4, 1, 2100), -- color, a3, simple, opa. 180, indistinto, particular
+(2, 4, 2, 11, 4, 1, 2100), -- color, a3, doble, opa. 180, indistinto, particular
+(2, 4, 1, 14, 4, 1, 2300), -- color, a3, simple, opa. 200, indistinto, particular
+(2, 4, 2, 14, 4, 1, 2300), -- color, a3, doble, opa. 200, indistinto, particular
+(1, 4, 1, 13, 4, 1, 2300), -- byn, a3, simple, kraft, indistinto, particular
+(1, 4, 2, 13, 4, 1, 2300), -- byn, a3, doble, kraft, indistinto, particular
+(2, 5, 1, 5, 4, 1, 2600),  -- color, a3+, simple, ilu. 150, indistinto, particular
+(2, 5, 2, 5, 4, 1, 2600),  -- color, a3+, doble, ilu. 150, indistinto, particular
+(2, 5, 1, 6, 4, 1, 2800),  -- color, a3+, simple, ilu. 200, indistinto, particular
+(2, 5, 2, 6, 4, 1, 2800),  -- color, a3+, doble, ilu. 200, indistinto, particular
+(2, 5, 1, 8, 4, 1, 3000),  -- color, a3+, simple, ilu. 250, indistinto, particular
+(2, 5, 2, 8, 4, 1, 3000);  -- color, a3+, doble, ilu. 250, indistinto, particular
 
 -- lonas
 create table if not exists medida_lona_comun (
