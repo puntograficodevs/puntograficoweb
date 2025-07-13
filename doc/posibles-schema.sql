@@ -322,11 +322,6 @@ insert into tipo_combo(id, tipo) values
 (4, 'EMPRENDEDOR X200'),
 (5, 'EMPRENDEDOR X500');
 
-create table if not exists cantidad_combo (
-    id bigint auto_increment not null primary key,
-    cantidad int not null
-);
-
 create table if not exists combo (
     id bigint auto_increment not null primary key,
     descripcion_combo varchar(1000) not null default '-',
@@ -556,6 +551,7 @@ insert into medida_etiqueta(id, medida) values
 create table if not exists etiqueta (
     id bigint auto_increment not null primary key,
     medida_personalizada varchar(255) not null,
+    cantidad_personalizada varchar(255) not null,
     con_perforacion_adicional tinyint(1) not null default 0,
     con_marca_adicional tinyint(1) not null default 0,
     enlace_archivo varchar(255) not null default '-',
@@ -1358,7 +1354,7 @@ insert into plantilla_sello_automatico(id_modelo_sello_automatico, precio) value
 (8, 44800),   -- printer 55
 (9, 51900),   -- printer 55 dater
 (10, 46500),  -- printer c60
-(11, ¿48200?), -- printer s 260
+(11, 48200), -- printer s 260
 (12, 43050),  -- mini dater s120
 (13, 27350),  -- mini dater s160
 (14, 40500),  -- printer r30
@@ -1522,6 +1518,7 @@ insert into cantidad_sobre(id, cantidad) values
 create table if not exists sobre (
     id bigint auto_increment not null primary key,
     medida_personalizada varchar(255) null,
+    cantidad_personalizada varchar(255) null,
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
     precio_adicional_disenio int not null default 5000,
@@ -1584,22 +1581,24 @@ create table if not exists medida_sticker (
 insert into medida_sticker(id, medida) values
 (1, '5 CM'),
 (2, '7 CM'),
-(3, '10 CM');
+(3, '10 CM'),
+(4, 'OTRA');
 
 create table if not exists cantidad_sticker (
     id bigint auto_increment not null primary key,
-    cantidad int not null
+    cantidad varchar(255) not null
 );
 
 insert into cantidad_sticker(id, cantidad) values
-(1, 100),
-(2, 200),
-(3, 500);
+(1, '100'),
+(2, '200'),
+(3, '500')
+(4, 'OTRA');
 
 create table if not exists sticker (
     id bigint auto_increment not null primary key,
     medida_personalizada varchar(255) null,
-    cantidad_personalizada int null,
+    cantidad_personalizada varchar(255) null,
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
     precio_adicional_disenio int not null default 2000,
@@ -1665,10 +1664,12 @@ create table if not exists cantidad_sublimacion (
 insert into cantidad_sublimacion(id, cantidad) values
 (1, '50'),
 (2, '100'),
-(3, '150');
+(3, '150'),
+(4, 'OTRA');
 
 create table if not exists sublimacion (
     id bigint auto_increment not null primary key,
+    cantidad_personalizada varchar(255) null,
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
     precio_adicional_disenio int not null default 5000,
@@ -1785,6 +1786,7 @@ create table if not exists talonario (
     detalle_numerado varchar(255) null,
     es_encolado tinyint(1) not null default 0,
     medida_personalizada varchar(255) null,
+    cantidad_personalizada varchar(255) null,
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
     precio_adicional_disenio int not null default 5000,
@@ -1909,7 +1911,7 @@ insert into tipo_faz_tarjeta(id, tipo) values
 create table if not exists tarjeta (
     id bigint auto_increment not null primary key,
     medida_personalizada varchar(255) null,
-    cantidad_personalizada int null,
+    cantidad_personalizada varchar(255) null,
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
     precio_adicional_disenio int not null default 5000,
@@ -2007,7 +2009,7 @@ insert into medida_turnero(id, medida) values
 
 create table if not exists turnero (
     id bigint auto_increment not null primary key,
-    cantidad_personalizada int null,
+    cantidad_personalizada varchar(255) null,
     medida_personalizada varchar(255) null,
     cantidad_hojas int null,
     enlace_archivo varchar(255) not null default '-',
