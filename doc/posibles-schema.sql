@@ -494,6 +494,8 @@ insert into plantilla_etiqueta(id_tipo_papel_etiqueta, id_tipo_laminado_etiqueta
 (1, 3, 2, 3, 1, 40150), -- opalina 180, sin laminar, doble, 500, 7x5
 (1, 3, 2, 4, 1, 70100); -- opalina 180, sin laminar, doble, 1000, 7x5
 
+-- flybanner
+
 -- folletos
 create table if not exists tipo_color_folleto (
     id bigint auto_increment not null primary key,
