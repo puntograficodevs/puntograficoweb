@@ -109,9 +109,22 @@ insert into tipo_faz_carpeta_solapa(id, tipo) values
 (1, 'SIMPLE FAZ'),
 (2, 'DOBLE FAZ');
 
+create table if not exists cantidad_carpeta_solapa (
+    id bigint auto_increment not null primary key,
+    cantidad varchar(255) not null
+);
+
+insert into cantidad_carpeta_solapa(id, cantidad) values
+(1, '1-49'),
+(2, '50'),
+(3, '100'),
+(4, '150'),
+(5, 'OTRA');
+
 create table if not exists carpeta_solapa (
     id bigint auto_increment not null primary key,
     tipo_papel varchar(255) not null,
+    cantidad_personalizada varchar(255) null,
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
     precio_adicional_disenio int not null default 5000,
@@ -119,9 +132,32 @@ create table if not exists carpeta_solapa (
     informacion_adicional varchar(255) null,
     id_tipo_laminado_carpeta_solapa bigint not null,
     id_tipo_faz_carpeta_solapa bigint not null,
+    id_cantidad_carpeta_solapa bigint not null,
     constraint fk_tipo_laminado_carpeta_solapa foreign key(id_tipo_laminado_carpeta_solapa) references tipo_laminado_carpeta_solapa(id),
-    constraint fk_tipo_faz_carpeta_solapa foreign key(id_tipo_faz_carpeta_solapa) references tipo_faz_carpeta_solapa(id)
+    constraint fk_tipo_faz_carpeta_solapa foreign key(id_tipo_faz_carpeta_solapa) references tipo_faz_carpeta_solapa(id),
+    constraint fk_cantidad_carpeta_solapa foreign key(id_cantidad_carpeta_solapa) references cantidad_carpeta_solapa(id)
 );
+
+create table if not exists plantilla_carpeta_solapa (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    id_tipo_laminado_carpeta_solapa bigint not null,
+    id_tipo_faz_carpeta_solapa bigint not null,
+    id_cantidad_carpeta_solapa bigint not null,
+    constraint fk_plantilla_tipo_laminado_carpeta_solapa foreign key(id_tipo_laminado_carpeta_solapa) references tipo_laminado_carpeta_solapa(id),
+    constraint fk_plantilla_tipo_faz_carpeta_solapa foreign key(id_tipo_faz_carpeta_solapa) references tipo_faz_carpeta_solapa(id),
+    constraint fk_plantilla_cantidad_carpeta_solapa foreign key(id_cantidad_carpeta_solapa) references cantidad_carpeta_solapa(id)
+);
+
+insert into plantilla_carpeta_solapa(id_tipo_laminado_carpeta_solapa, id_tipo_faz_carpeta_solapa, id_cantidad_carpeta_solapa, precio) values
+(3, 1, 1, 2850), -- sin laminar, simple, 1-49 -- precio por u.
+(3, 2, 1, 2850), -- sin laminar, doble, 1-49 -- precio por u.
+(3, 1, 2, 121000), -- sin laminar, simple, 50
+(3, 2, 2, 121000), -- sin laminar, doble, 50
+(3, 1, 3, 217800), -- sin laminar, simple, 100
+(3, 2, 3, 217800), -- sin laminar, doble, 100
+(3, 1, 4, 293700), -- sin laminar, simple, 150
+(3, 2, 4, 293700); -- sin laminar, doble, 150
 
 -- catálogos
 create table if not exists tipo_laminado_catalogo (
@@ -347,11 +383,52 @@ insert into tipo_troquelado_entrada(id, tipo) values
 (2, 'TROQUELADO SIMPLE'),
 (3, 'TROQUELADO DOBLE');
 
+create table if not exists medida_entrada (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null
+);
+
+insert into medida_entrada(id, medida) values
+(1, '17X6 CM'),
+(2, 'OTRA');
+
+create table if not exists cantidad_entrada (
+    id bigint auto_increment not null primary key,
+    cantidad varchar(255) not null
+);
+
+insert into cantidad_entrada(id, cantidad) values
+(1, '100'),
+(2, '150'),
+(3, '200'),
+(4, '300'),
+(5, '500'),
+(6, '1000'),
+(7, 'OTRA');
+
+create table if not exists numerado_entrada (
+    id bigint auto_increment not null primary key,
+    numerado varchar(255) not null
+);
+
+insert into numerado_entrada(id, numerado) values
+(1, 'SIN NUMERADO'),
+(2, 'NUMERADO SIMPLE'),
+(3, 'NUMERADO DOBLE');
+
+create table if not exists terminacion_entrada (
+    id bigint auto_increment not null primary key,
+    terminacion varchar(255) not null
+);
+
+insert into terminacion_entrada(id, terminacion) values
+(1, 'NINGUNA'),
+(2, 'CON BROCHE Y TAPA');
+
 create table if not exists entrada (
     id bigint auto_increment not null primary key,
-    medida varchar(255) not null default '17X6 CM',
-    con_numerado tinyint(1) not null default 0,
-    detalle_numerado varchar(255) null,
+    medida_personalizada varchar(255) null,
+    cantidad_personalizada varchar(255) null,
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
     precio_adicional_disenio int not null default 5000,
@@ -360,10 +437,57 @@ create table if not exists entrada (
     id_tipo_papel_entrada bigint not null,
     id_tipo_color_entrada bigint not null,
     id_tipo_troquelado_entrada bigint not null,
+    id_medida_entrada bigint not null,
+    id_cantidad_entrada bigint not null,
+    id_numerado_entrada bigint not null,
+    id_terminacion_entrada bigint not null,
     constraint fk_tipo_papel_entrada foreign key(id_tipo_papel_entrada) references tipo_papel_entrada(id),
     constraint fk_tipo_color_entrada foreign key(id_tipo_color_entrada) references tipo_color_entrada(id),
-    constraint fk_tipo_troquelado_entrada foreign key(id_tipo_troquelado_entrada) references tipo_troquelado_entrada(id)
+    constraint fk_tipo_troquelado_entrada foreign key(id_tipo_troquelado_entrada) references tipo_troquelado_entrada(id),
+    constraint fk_medida_entrada foreign key(id_medida_entrada) references medida_entrada(id),
+    constraint fk_cantidad_entrada foreign key(id_cantidad_entrada) references cantidad_entrada(id),
+    constraint fk_numerado_entrada foreign key(id_numerado_entrada) references numerado_entrada(id),
+    constraint fk_terminacion_entrada foreign key(id_terminacion_entrada) references terminacion_entrada(id)
 );
+
+create table if not exists plantilla_entrada (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    id_tipo_papel_entrada bigint not null,
+    id_tipo_color_entrada bigint not null,
+    id_tipo_troquelado_entrada bigint not null,
+    id_medida_entrada bigint not null,
+    id_cantidad_entrada bigint not null,
+    id_numerado_entrada bigint not null,
+    id_terminacion_entrada bigint not null,
+    constraint fk_plantilla_tipo_papel_entrada foreign key(id_tipo_papel_entrada) references tipo_papel_entrada(id),
+    constraint fk_plantilla_tipo_color_entrada foreign key(id_tipo_color_entrada) references tipo_color_entrada(id),
+    constraint fk_plantilla_tipo_troquelado_entrada foreign key(id_tipo_troquelado_entrada) references tipo_troquelado_entrada(id),
+    constraint fk_plantilla_medida_entrada foreign key(id_medida_entrada) references medida_entrada(id),
+    constraint fk_plantilla_cantidad_entrada foreign key(id_cantidad_entrada) references cantidad_entrada(id),
+    constraint fk_plantilla_numerado_entrada foreign key(id_numerado_entrada) references numerado_entrada(id),
+    constraint fk_plantilla_terminacion_entrada foreign key(id_terminacion_entrada) references terminacion_entrada(id)
+);
+
+insert into plantilla_entrada(id_tipo_papel_entrada, id_tipo_color_entrada, id_tipo_troquelado_entrada, id_medida_entrada, id_cantidad_entrada, id_numerado_entrada, id_terminacion_entrada, precio) values
+(1, 2, 3, 1, 1, 3, 2, 16900),  -- obra 75, color, doble troquel, 17x6, 100 u, doble num, broche y tapa
+(1, 2, 3, 1, 2, 3, 2, 23200),  -- obra 75, color, doble troquel, 17x6, 150 u, doble num, broche y tapa
+(1, 2, 3, 1, 3, 3, 2, 29800),  -- obra 75, color, doble troquel, 17x6, 200 u, doble num, broche y tapa
+(1, 2, 3, 1, 4, 3, 2, 44500),  -- obra 75, color, doble troquel, 17x6, 300 u, doble num, broche y tapa
+(1, 2, 3, 1, 5, 3, 2, 73200),  -- obra 75, color, doble troquel, 17x6, 500 u, doble num, broche y tapa
+(1, 2, 3, 1, 6, 3, 2, 138700), -- obra 75, color, doble troquel, 17x6, 1000 u, doble num, broche y tapa
+(2, 2, 3, 1, 1, 3, 2, 29800),  -- ilu. 150, color, doble troquel, 17x6, 100 u, doble num, broche y tapa
+(2, 2, 3, 1, 2, 3, 2, 43200),  -- ilu. 150, color, doble troquel, 17x6, 150 u, doble num, broche y tapa
+(2, 2, 3, 1, 3, 3, 2, 58900),  -- ilu. 150, color, doble troquel, 17x6, 200 u, doble num, broche y tapa
+(2, 2, 3, 1, 4, 3, 2, 82500),  -- ilu. 150, color, doble troquel, 17x6, 300 u, doble num, broche y tapa
+(2, 2, 3, 1, 5, 3, 2, 138700), -- ilu. 150, color, doble troquel, 17x6, 500 u, doble num, broche y tapa
+(2, 2, 3, 1, 6, 3, 2, 255000), -- ilu. 150, color, doble troquel, 17x6, 1000 u, doble num, broche y tapa
+(1, 1, 3, 1, 1, 3, 2, 9200),   -- obra 75, byn, doble troquel, 17x6, 100 u, doble num, broche y tapa
+(1, 1, 3, 1, 2, 3, 2, 13500),  -- obra 75, byn, doble troquel, 17x6, 150 u, doble num, broche y tapa
+(1, 1, 3, 1, 3, 3, 2, 17800),  -- obra 75, byn, doble troquel, 17x6, 200 u, doble num, broche y tapa
+(1, 1, 3, 1, 4, 3, 2, 24900),  -- obra 75, byn, doble troquel, 17x6, 300 u, doble num, broche y tapa
+(1, 1, 3, 1, 5, 3, 2, 39800),  -- obra 75, byn, doble troquel, 17x6, 500 u, doble num, broche y tapa
+(1, 1, 3, 1, 6, 3, 2, 75600);  -- obra 75, byn, doble troquel, 17x6, 1000 u, doble num, broche y tapa
 
 -- etiquetas
 create table if not exists tipo_papel_etiqueta (
@@ -2050,17 +2174,46 @@ insert into plantilla_vinilo(id_tipo_vinilo, id_tipo_adicional_vinilo, id_tipo_c
 (null, 3, 4, 3, 2, 57500); -- null, sin laminar, plancha, 7cm, 100 u
 
 -- vinilos + plástico corrugado
+create table if not exists medida_vinilo_plastico_corrugado (
+    id bigint auto_increment not null primary key,
+    medida varchar(255) not null
+);
+
+insert into medida_vinilo_plastico_corrugado(id, medida) values
+(1, '120X90 CM'),
+(2, '100X70 CM'),
+(3, '70X53 CM'),
+(4, '60X40 CM'),
+(5, '30X40 CM'),
+(6, 'OTRA');
+
 create table if not exists vinilo_plastico_corrugado (
     id bigint auto_increment not null primary key,
-    medida varchar(255) not null,
+    medida_personalizada varchar(255) null,
     con_ojales tinyint(1) not null default 0,
-    cantidad_ojales int not null default 0,
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
-    precio_adicional_disenio int not null default 5000,
+    precio_adicional_disenio int not null default 0,
     precio int null,
-    informacion_adicional varchar(255) null
+    informacion_adicional varchar(255) null,
+    id_medida_vinilo_plastico_corrugado bigint not null,
+    constraint fk_medida_vinilo_plastico_corrugado foreign key(id_medida_vinilo_plastico_corrugado) references medida_vinilo_plastico_corrugado(id)
 );
+
+create table if not exists plantilla_vinilo_plastico_corrugado (
+    id bigint auto_increment not null primary key,
+    precio int not null,
+    con_ojales tinyint(1) not null,
+    id_medida_vinilo_plastico_corrugado bigint not null,
+    constraint fk_plantilla_medida_vinilo_plastico_corrugado foreign key(id_medida_vinilo_plastico_corrugado) references medida_vinilo_plastico_corrugado(id)
+);
+
+insert into plantilla_vinilo_plastico_corrugado(con_ojales, id_medida_vinilo_plastico_corrugado, precio) values
+(1, 1, 32500), -- con ojales, 120x90
+(1, 2, 29700), -- con ojales, 100x70
+(1, 3, 19500), -- con ojales, 70x53
+(1, 4, 17900), -- con ojales, 60x40
+(1, 5, 15600); -- con ojales, 30x40
 
 -- vinilos de corte
 create table if not exists trae_material_vinilo (
