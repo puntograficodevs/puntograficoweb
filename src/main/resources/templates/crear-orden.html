@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/home.css}"/>
+    <title>Login - Punto Gráfico</title>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<form method="post">
+    <div class="mb-3">
+
+        <label for="categoria" class="form-label">¿Qué tipo de producto es?</label>
+        <select class="form-select" id="categoria" required>
+            <option value="" disabled selected>Seleccionar categoría</option>
+            <option value="AGENDA">Agenda</option>
+            <option value="ANOTADOR">Anotador</option>
+            <option value="CARPETA_CON_SOLAPA">Carpeta con solapa</option>
+            <option value="CATALOGO">Catálogo</option>
+            <option value="CIERRA_BOLSAS">Cierra bolsas</option>
+            <option value="CUADERNO_ANILLADO">Cuaderno anillado</option>
+            <option value="COMBO">Combo</option>
+            <option value="ENTRADA">Entrada</option>
+            <option value="ETIQUETA">Etiqueta</option>
+            <option value="FLYBANNER">Flybanner</option>
+            <option value="FOLLETO">Folleto</option>
+            <option value="HOJAS_MEMBRETEADAS">Hojas membreteadas</option>
+            <option value="IMPRESION">Impresión</option>
+            <option value="LONA">Lona</option>
+            <option value="LONA_PUBLICITARIA">Lona publicitaria</option>
+            <option value="RIFAS_O_BONOS_CONTRIBUCION">Rifas o bonos contribución</option>
+            <option value="ROTULACION">Rotulación</option>
+            <option value="SELLO_AUTOMATICO">Sello automático</option>
+            <option value="SELLO_AUTOMATICO_ESCOLAR">Sello automático escolar</option>
+            <option value="SELLO_DE_MADERA">Sello de madera</option>
+            <option value="SOBRE">Sobre</option>
+            <option value="STICKER">Sticker</option>
+            <option value="SUBLIMACION">Sublimación</option>
+            <option value="TALONARIO">Talonario</option>
+            <option value="TARJETA">Tarjeta</option>
+            <option value="TURNERO_O_RP">Turnero o RP</option>
+            <option value="VINILO">Vinilo</option>
+            <option value="VINILO_DE_CORTE">Vinilo de corte</option>
+            <option value="VINILO_PLASTICO_CORRUGADO">Vinilo plástico corrugado</option>
+            <option value="VOUCHER">Voucher</option>
+            <option value="OTRO">Otro</option>
+        </select>
+
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+
+</body>
+</html>
