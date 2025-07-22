@@ -1,0 +1,42 @@
+package com.puntografico.puntografico.domain;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "agenda")
+@Getter @Setter
+public class Agenda {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String medida;
+
+    private String tipoTapaPersonalizada;
+
+    @Column(nullable = false)
+    private int cantidadHojas;
+
+    private String enlaceArchivo;
+
+    private boolean conAdicionalDisenio;
+
+    private int precioAdicionalDisenio;
+
+    private int precio;
+
+    private String informacionAdicional;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_tipo_tapa_agenda")
+    private TipoTapaAgenda tipoTapaAgenda;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_tipo_color_agenda")
+    private TipoColorAgenda tipoColorAgenda;
+}
