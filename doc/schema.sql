@@ -40,12 +40,12 @@ insert into tipo_tapa_agenda(id, tipo) values
 
 create table if not exists tipo_color_agenda (
     id bigint auto_increment not null primary key,
-    tipo varchar(255) not null,
+    tipo varchar(255) not null
 );
 
-insert into tipo_color_agenda(id, tipo) values
-(1, 'BLANCO Y NEGRO'),
-(2, 'A COLOR');
+insert into tipo_color_agenda(tipo) values
+('BLANCO Y NEGRO'),
+('A COLOR');
 
 create table if not exists agenda (
     id bigint auto_increment not null primary key,
@@ -95,31 +95,31 @@ create table if not exists tipo_laminado_carpeta_solapa (
     laminado varchar(255) not null
 );
 
-insert into tipo_laminado_carpeta_solapa(id, laminado) values
-(1, 'BRILLANTE'),
-(2, 'MATE'),
-(3, 'NINGUNO');
+insert into tipo_laminado_carpeta_solapa(laminado) values
+('BRILLANTE'),
+('MATE'),
+('NINGUNO');
 
 create table if not exists tipo_faz_carpeta_solapa (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_faz_carpeta_solapa(id, tipo) values
-(1, 'SIMPLE FAZ'),
-(2, 'DOBLE FAZ');
+insert into tipo_faz_carpeta_solapa(tipo) values
+('SIMPLE FAZ'),
+('DOBLE FAZ');
 
 create table if not exists cantidad_carpeta_solapa (
     id bigint auto_increment not null primary key,
     cantidad varchar(255) not null
 );
 
-insert into cantidad_carpeta_solapa(id, cantidad) values
-(1, '1-49'),
-(2, '50'),
-(3, '100'),
-(4, '150'),
-(5, 'OTRA');
+insert into cantidad_carpeta_solapa(cantidad) values
+('1-49'),
+('50'),
+('100'),
+('150'),
+('OTRA');
 
 create table if not exists carpeta_solapa (
     id bigint auto_increment not null primary key,
@@ -165,19 +165,19 @@ create table if not exists tipo_laminado_catalogo (
     laminado varchar(255) not null
 );
 
-insert into tipo_laminado_catalogo(id, laminado) values
-(1, 'BRILLANTE'),
-(2, 'MATE'),
-(3, 'NINGUNO');
+insert into tipo_laminado_catalogo(laminado) values
+('BRILLANTE'),
+('MATE'),
+('NINGUNO');
 
 create table if not exists tipo_faz_catalogo (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_faz_catalogo(id, tipo) values
-(1, 'SIMPLE FAZ'),
-(2, 'DOBLE FAZ');
+insert into tipo_faz_catalogo(tipo) values
+('SIMPLE FAZ'),
+('DOBLE FAZ');
 
 create table if not exists catalogo (
     id bigint auto_increment not null primary key,
@@ -199,32 +199,32 @@ create table if not exists tipo_troquelado_cierra_bolsas (
     tipo varchar(255) not null
 );
 
-insert into tipo_troquelado_cierra_bolsas(id, tipo) values
-(1, 'CUADRADO'),
-(2, 'CIRCULAR'),
-(3, 'POR EL CONTORNO'),
-(4, 'CORTE INDIVIDUAL'),
-(5, 'SIN TROQUELAR');
+insert into tipo_troquelado_cierra_bolsas(tipo) values
+('CUADRADO'),
+('CIRCULAR'),
+('POR EL CONTORNO'),
+('CORTE INDIVIDUAL'),
+('SIN TROQUELAR');
 
 create table if not exists medida_cierra_bolsas (
     id bigint auto_increment not null primary key,
     medida varchar(255) not null
 );
 
-insert into medida_cierra_bolsas(id, medida) values
-(1, '8X4 CM'),
-(2, 'OTRA');
+insert into medida_cierra_bolsas(medida) values
+('8X4 CM'),
+('OTRA');
 
 create table if not exists cantidad_cierra_bolsas (
     id bigint auto_increment not null primary key,
     cantidad varchar(255) not null
 );
 
-insert into cantidad_cierra_bolsas(id, cantidad) values
-(1, '100'),
-(2, '200'),
-(3, '500'),
-(4, 'OTRA');
+insert into cantidad_cierra_bolsas(cantidad) values
+('100'),
+('200'),
+('500'),
+('OTRA');
 
 create table if not exists cierra_bolsas (
     id bigint auto_increment not null primary key,
@@ -265,19 +265,19 @@ create table if not exists tipo_tapa_cuaderno_anillado (
     tipo varchar(255) not null
 );
 
-insert into tipo_tapa_cuaderno_anillado(id, tipo) values
-(1, 'TAPA DURA'),
-(2, 'OTRA');
+insert into tipo_tapa_cuaderno_anillado(tipo) values
+('TAPA DURA'),
+('OTRA');
 
 create table if not exists medida_cuaderno_anillado (
     id bigint auto_increment not null primary key,
     medida varchar(255) not null
 );
 
-insert into medida_cuaderno_anillado(id, medida) values
-(1, 'A4'),
-(2, 'A5'),
-(3, 'OTRA');
+insert into medida_cuaderno_anillado(medida) values
+('A4'),
+('A5'),
+('OTRA');
 
 create table if not exists cuaderno_anillado (
     id bigint auto_increment not null primary key,
@@ -315,12 +315,12 @@ create table if not exists tipo_combo (
     tipo varchar(255) not null
 );
 
-insert into tipo_combo(id, tipo) values
-(1, 'OFICINA'),
-(2, 'PROFESIONAL'),
-(3, 'EMPRENDEDOR X100'),
-(4, 'EMPRENDEDOR X200'),
-(5, 'EMPRENDEDOR X500');
+insert into tipo_combo(tipo) values
+('OFICINA'),
+('PROFESIONAL'),
+('EMPRENDEDOR X100'),
+('EMPRENDEDOR X200'),
+('EMPRENDEDOR X500');
 
 create table if not exists combo (
     id bigint auto_increment not null primary key,
@@ -355,70 +355,70 @@ create table if not exists tipo_papel_entrada (
     tipo varchar(255) not null
 );
 
-insert into tipo_papel_entrada(id, tipo) values
-(1, 'OBRA 75 GRS'),
-(2, 'ILUSTRACIÓN 150 GRS');
+insert into tipo_papel_entrada(tipo) values
+('OBRA 75 GRS'),
+('ILUSTRACIÓN 150 GRS');
 
 create table if not exists tipo_color_entrada (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_color_entrada(id, tipo) values
-(1, 'BLANCO Y NEGRO'),
-(2, 'A COLOR');
+insert into tipo_color_entrada(tipo) values
+('BLANCO Y NEGRO'),
+('A COLOR');
 
 create table if not exists tipo_troquelado_entrada (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_troquelado_entrada(id, tipo) values
-(1, 'SIN TROQUELAR'),
-(2, 'TROQUELADO SIMPLE'),
-(3, 'TROQUELADO DOBLE');
+insert into tipo_troquelado_entrada(tipo) values
+('SIN TROQUELAR'),
+('TROQUELADO SIMPLE'),
+('TROQUELADO DOBLE');
 
 create table if not exists medida_entrada (
     id bigint auto_increment not null primary key,
     medida varchar(255) not null
 );
 
-insert into medida_entrada(id, medida) values
-(1, '17X6 CM'),
-(2, 'OTRA');
+insert into medida_entrada(medida) values
+('17X6 CM'),
+('OTRA');
 
 create table if not exists cantidad_entrada (
     id bigint auto_increment not null primary key,
     cantidad varchar(255) not null
 );
 
-insert into cantidad_entrada(id, cantidad) values
-(1, '100'),
-(2, '150'),
-(3, '200'),
-(4, '300'),
-(5, '500'),
-(6, '1000'),
-(7, 'OTRA');
+insert into cantidad_entrada(cantidad) values
+('100'),
+('150'),
+('200'),
+('300'),
+('500'),
+('1000'),
+('OTRA');
 
 create table if not exists numerado_entrada (
     id bigint auto_increment not null primary key,
     numerado varchar(255) not null
 );
 
-insert into numerado_entrada(id, numerado) values
-(1, 'SIN NUMERADO'),
-(2, 'NUMERADO SIMPLE'),
-(3, 'NUMERADO DOBLE');
+insert into numerado_entrada(numerado) values
+('SIN NUMERADO'),
+('NUMERADO SIMPLE'),
+('NUMERADO DOBLE');
 
 create table if not exists terminacion_entrada (
     id bigint auto_increment not null primary key,
     terminacion varchar(255) not null
 );
 
-insert into terminacion_entrada(id, terminacion) values
-(1, 'NINGUNA'),
-(2, 'CON BROCHE Y TAPA');
+insert into terminacion_entrada(terminacion) values
+('NINGUNA'),
+('CON BROCHE Y TAPA');
 
 create table if not exists entrada (
     id bigint auto_increment not null primary key,
@@ -490,63 +490,63 @@ create table if not exists tipo_papel_etiqueta (
     tipo varchar(255) not null
 );
 
-insert into tipo_papel_etiqueta(id, tipo) values
-(1, 'OPALINA 180 GRS'),
-(2, 'OPALINA 210 GRS'),
-(3, 'ILUSTRACIÓN 250 GRS'),
-(4, 'KRAFT'),
-(5, 'ILUSTRACIÓN 2250 GRS');
+insert into tipo_papel_etiqueta(tipo) values
+('OPALINA 180 GRS'),
+('OPALINA 210 GRS'),
+('ILUSTRACIÓN 250 GRS'),
+('KRAFT'),
+('ILUSTRACIÓN 2250 GRS');
 
 create table if not exists tipo_laminado_etiqueta (
     id bigint auto_increment not null primary key,
     laminado varchar(255) not null
 );
 
-insert into tipo_laminado_etiqueta(id, laminado) values
-(1, 'BRILLANTE'),
-(2, 'MATE'),
-(3, 'NINGUNO');
+insert into tipo_laminado_etiqueta(laminado) values
+('BRILLANTE'),
+('MATE'),
+('NINGUNO');
 
 create table if not exists tamanio_perforacion (
     id bigint auto_increment not null primary key,
     tamanio varchar(255) not null
 );
 
-insert into tamanio_perforacion(id, tamanio) values
-(1, 'NINGUNA'),
-(2, 'CHICA'),
-(3, 'MEDIANA'),
-(4, 'GRANDE');
+insert into tamanio_perforacion(tamanio) values
+('NINGUNA'),
+('CHICA'),
+('MEDIANA'),
+('GRANDE');
 
 create table if not exists tipo_faz_etiqueta (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_faz_etiqueta(id, tipo) values
-(1, 'SIMPLE FAZ'),
-(2, 'DOBLE FAZ');
+insert into tipo_faz_etiqueta(tipo) values
+('SIMPLE FAZ'),
+('DOBLE FAZ');
 
 create table if not exists cantidad_etiqueta (
     id bigint auto_increment not null primary key,
     cantidad varchar(255) not null
 );
 
-insert into cantidad_etiqueta(id, cantidad) values
-(1, '100'),
-(2, '200'),
-(3, '500'),
-(4, '1000'),
-(5, 'OTRA');
+insert into cantidad_etiqueta(cantidad) values
+('100'),
+('200'),
+('500'),
+('1000'),
+('OTRA');
 
 create table if not exists medida_etiqueta (
     id bigint auto_increment not null primary key,
     medida varchar(255) not null
 );
 
-insert into medida_etiqueta(id, medida) values
-(1, '7X5 CM'),
-(2, 'OTRA')
+insert into medida_etiqueta(medida) values
+('7X5 CM'),
+('OTRA')
 
 create table if not exists etiqueta (
     id bigint auto_increment not null primary key,
@@ -620,36 +620,36 @@ create table if not exists tipo_faz_flybanner (
     tipo varchar(255) not null
 );
 
-insert into tipo_faz_flybanner(id, tipo) values
-(1, 'SIMPLE FAZ'),
-(2, 'DOBLE FAZ');
+insert into tipo_faz_flybanner(tipo) values
+('SIMPLE FAZ'),
+('DOBLE FAZ');
 
 create table if not exists altura_flybanner (
     id bigint auto_increment not null primary key,
     altura varchar(255) not null
 );
 
-insert into altura_flybanner(id, altura) values
-(1, '240 CM'),
-(2, '190 CM');
+insert into altura_flybanner(altura) values
+('240 CM'),
+('190 CM');
 
 create table if not exists bandera_flybanner (
     id bigint auto_increment not null primary key,
     bandera varchar(255) not null
 );
 
-insert into bandera_flybanner(id, bandera) values
-(1, '70X145 CM');
+insert into bandera_flybanner(bandera) values
+('70X145 CM');
 
 create table if not exists tipo_base_flybanner (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_base_flybanner(id, tipo) values
-(1, 'SIN BASE'),
-(2, 'BASE CRUZ'),
-(3, 'ESTACA ECO');
+insert into tipo_base_flybanner(tipo) values
+('SIN BASE'),
+('BASE CRUZ'),
+('ESTACA ECO');
 
 create table if not exists flybanner (
     id bigint auto_increment not null primary key,
@@ -701,66 +701,66 @@ create table if not exists tipo_color_folleto (
     tipo varchar(255) not null
 );
 
-insert into tipo_color_folleto(id, tipo) values
-(1, 'BLANCO Y NEGRO'),
-(2, 'A COLOR');
+insert into tipo_color_folleto(tipo) values
+('BLANCO Y NEGRO'),
+('A COLOR');
 
 create table if not exists tamanio_hoja_folleto (
     id bigint auto_increment not null primary key,
     tamanio varchar(255) not null
 );
 
-insert into tamanio_hoja_folleto(id, tamanio) values
-(1, 'A4'),
-(2, 'A5'),
-(3, '1/4 DE A4'),
-(4, 'A3'),
-(5, 'OFICIO');
+insert into tamanio_hoja_folleto(tamanio) values
+('A4'),
+('A5'),
+('1/4 DE A4'),
+('A3'),
+('OFICIO');
 
 create table if not exists cantidad_folleto (
     id bigint auto_increment not null primary key,
     cantidad varchar(255) not null
 );
 
-insert into cantidad_folleto(id, cantidad) values
-(1, '50'),
-(2, '100'),
-(3, '150'),
-(4, '200'),
-(5, '300'),
-(6, '400'),
-(7, '500'),
-(8, '1000'),
-(9, 'OTRA');
+insert into cantidad_folleto(cantidad) values
+('50'),
+('100'),
+('150'),
+('200'),
+('300'),
+('400'),
+('500'),
+('1000'),
+('OTRA');
 
 create table if not exists tipo_papel_folleto (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_papel_folleto(id, tipo) values
-(1, 'OBRA 75 GRS'),
-(2, 'ILUSTRACIÓN 115 GRS'),
-(3, 'ILUSTRACIÓN 150 GRS');
+insert into tipo_papel_folleto(tipo) values
+('OBRA 75 GRS'),
+('ILUSTRACIÓN 115 GRS'),
+('ILUSTRACIÓN 150 GRS');
 
 create table if not exists tipo_folleto (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_folleto(id, tipo) values
-(1, 'COMÚN'),
-(2, 'DÍPTICO'),
-(3, 'TRÍPTICO');
+insert into tipo_folleto(tipo) values
+('COMÚN'),
+('DÍPTICO'),
+('TRÍPTICO');
 
 create table if not exists tipo_faz_folleto (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_faz_folleto(id, tipo) values
-(1, 'SIMPLE FAZ'),
-(2, 'DOBLE FAZ');
+insert into tipo_faz_folleto(tipo) values
+('SIMPLE FAZ'),
+('DOBLE FAZ');
 
 create table if not exists folleto (
     id bigint auto_increment not null primary key,
@@ -834,29 +834,29 @@ create table if not exists medida_hojas_membreteadas (
     medida varchar(255) not null
 );
 
-insert into medida_hojas_membreteadas(id, medida) values
-(1, 'A4'),
-(2, 'OTRA');
+insert into medida_hojas_membreteadas(medida) values
+('A4'),
+('OTRA');
 
 create table if not exists tipo_color_hojas_membreteadas (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_color_hojas_membreteadas(id, tipo) values
-(1, 'BLANCO Y NEGRO'),
-(2, 'A COLOR');
+insert into tipo_color_hojas_membreteadas(tipo) values
+('BLANCO Y NEGRO'),
+('A COLOR');
 
 create table if not exists cantidad_hojas_membreteadas (
     id bigint auto_increment not null primary key,
     cantidad varchar(255) not null,
 );
 
-insert into cantidad_hojas_membreteadas(id, cantidad) values
-(1, '1'),
-(2, '2'),
-(3, '4'),
-(4, 'OTRA');
+insert into cantidad_hojas_membreteadas(cantidad) values
+('1'),
+('2'),
+('4'),
+('OTRA');
 
 create table if not exists hojas_membreteadas (
     id bigint auto_increment not null primary key,
@@ -902,72 +902,72 @@ create table if not exists tipo_color_impresion (
     tipo varchar(255) not null
 );
 
-insert into tipo_color_impresion(id, tipo) values
-(1, 'BLANCO Y NEGRO'),
-(2, 'A COLOR');
+insert into tipo_color_impresion(tipo) values
+('BLANCO Y NEGRO'),
+('A COLOR');
 
 create table if not exists tamanio_hoja_impresion (
     id bigint auto_increment not null primary key,
     tamanio varchar(255) not null
 );
 
-insert into tamanio_hoja_impresion(id, tamanio) values
-(1, 'A4'),
-(2, 'A5'),
-(3, 'OFICIO'),
-(4, 'A3'),
-(5, 'A3+')
-(6, 'OTRO');
+insert into tamanio_hoja_impresion(tamanio) values
+('A4'),
+('A5'),
+('OFICIO'),
+('A3'),
+('A3+'),
+('OTRO');
 
 create table if not exists tipo_faz_impresion (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_faz_impresion(id, tipo) values
-(1, 'SIMPLE FAZ'),
-(2, 'DOBLE FAZ');
+insert into tipo_faz_impresion(tipo) values
+('SIMPLE FAZ'),
+('DOBLE FAZ');
 
 create table if not exists tipo_papel_impresion (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_papel_impresion(id, tipo) values
-(1, 'COPIA COMÚN'),
-(2, 'OBRA 75 GRS'),
-(3, 'ILUSTRACIÓN 90 GRS'),
-(4, 'ILUSTRACIÓN 115 GRS'),
-(5, 'ILUSTRACIÓN 150 GRS'),
-(6, 'ILUSTRACIÓN 200 GRS'),
-(7, 'ILUSTRACIÓN 220 GRS'),
-(8, 'ILUSTRACIÓN 250 GRS'),
-(9, 'ILUSTRACIÓN 300 GRS'),
-(10, 'OPALINA 150 GRS'),
-(11, 'OPALINA 180 GRS'),
-(12, 'OPALINA 210 GRS'),
-(13, 'KRAFT 200 GRS'),
-(14, 'OPALINA 200 GRS');
+insert into tipo_papel_impresion(tipo) values
+('COPIA COMÚN'),
+('OBRA 75 GRS'),
+('ILUSTRACIÓN 90 GRS'),
+('ILUSTRACIÓN 115 GRS'),
+('ILUSTRACIÓN 150 GRS'),
+('ILUSTRACIÓN 200 GRS'),
+('ILUSTRACIÓN 220 GRS'),
+('ILUSTRACIÓN 250 GRS'),
+('ILUSTRACIÓN 300 GRS'),
+('OPALINA 150 GRS'),
+('OPALINA 180 GRS'),
+('OPALINA 210 GRS'),
+('KRAFT 200 GRS'),
+('OPALINA 200 GRS');
 
 create table if not exists cantidad_impresion (
     id bigint auto_increment not null primary key,
     cantidad varchar(255) not null
 );
 
-insert into cantidad_impresion(id, cantidad) values
-(1, '1 - 10'),
-(2, '11 - 100'),
-(3, '+100'),
-(4, 'INDISTINTO');
+insert into cantidad_impresion(cantidad) values
+('1 - 10'),
+('11 - 100'),
+('+100'),
+('INDISTINTO');
 
 create table if not exists tipo_impresion (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_impresion(id, tipo) values
-(1, 'PARTICULAR'),
-(2, 'ESCOLAR/UNIVERSITARIO');
+insert into tipo_impresion(tipo) values
+('PARTICULAR'),
+('ESCOLAR/UNIVERSITARIO');
 
 create table if not exists impresion (
     id bigint auto_increment not null primary key,
@@ -1083,22 +1083,22 @@ create table if not exists medida_lona_comun (
     medida varchar(255) not null
 );
 
-insert into medida_lona_comun(id, medida) values
-(1, '40X60 CM'),
-(2, '60X90 CM'),
-(3, '70X100 CM'),
-(4, '90X120 CM'),
-(5, 'OTRA');
+insert into medida_lona_comun(medida) values
+('40X60 CM'),
+('60X90 CM'),
+('70X100 CM'),
+('90X120 CM'),
+('OTRA');
 
 create table if not exists tipo_lona_comun (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_lona_comun(id, tipo) values
-(1, 'LONA FRONT'),
-(2, 'LONA BACK LIGHT'),
-(3, 'LONA BLOCKOUT');
+insert into tipo_lona_comun(tipo) values
+('LONA FRONT'),
+('LONA BACK LIGHT'),
+('LONA BLOCKOUT');
 
 create table if not exists lona_comun (
     id bigint auto_increment not null primary key,
@@ -1141,21 +1141,21 @@ create table if not exists tipo_lona_publicitaria (
     tipo varchar(255) not null
 );
 
-insert into tipo_lona_publicitaria(id, tipo) values
-(1, 'LONA FRONT'),
-(2, 'LONA BACK LIGHT'),
-(3, 'LONA BLOCKOUT');
+insert into tipo_lona_publicitaria(tipo) values
+('LONA FRONT'),
+('LONA BACK LIGHT'),
+('LONA BLOCKOUT');
 
 create table if not exists medida_lona_publicitaria (
     id bigint auto_increment not null primary key,
     medida varchar(255) not null
 );
 
-insert into medida_lona_publicitaria(id, medida) values
-(1, '60X160 CM'),
-(2, '90X190 CM'),
-(3, '85X200 CM'),
-(4, 'A3 MINI - 25X42 CM');
+insert into medida_lona_publicitaria(medida) values
+('60X160 CM'),
+('90X190 CM'),
+('85X200 CM'),
+('A3 MINI - 25X42 CM');
 
 create table if not exists lona_publicitaria (
     id bigint auto_increment not null primary key,
@@ -1207,28 +1207,28 @@ create table if not exists tipo_papel_rifa (
     tipo varchar(255) not null
 );
 
-insert into tipo_papel_rifa(id, tipo) values
-(1, 'OBRA 75 GRS'),
-(2, 'ILUSTRACIÓN 150 GRS');
+insert into tipo_papel_rifa(tipo) values
+('OBRA 75 GRS'),
+('ILUSTRACIÓN 150 GRS');
 
 create table if not exists tipo_troquelado_rifa (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_troquelado_rifa(id, tipo) values
-(1, 'SIN TROQUELAR'),
-(2, 'TROQUELADO SIMPLE'),
-(3, 'TROQUELADO DOBLE');
+insert into tipo_troquelado_rifa(tipo) values
+('SIN TROQUELAR'),
+('TROQUELADO SIMPLE'),
+('TROQUELADO DOBLE');
 
 create table if not exists tipo_color_rifa (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_color_rifa(id, tipo) values
-(1, 'BLANCO Y NEGRO'),
-(2, 'A COLOR');
+insert into tipo_color_rifa(tipo) values
+('BLANCO Y NEGRO'),
+('A COLOR');
 
 create table if not exists rifas_bonos_contribucion (
     id bigint auto_increment not null primary key,
@@ -1248,29 +1248,30 @@ create table if not exists rifas_bonos_contribucion (
     constraint fk_tipo_troquelado_rifa foreign key(id_tipo_troquelado_rifa) references tipo_troquelado_rifa(id),
     constraint fk_tipo_color_rifa foreign key(id_tipo_color_rifa) references tipo_color_rifa(id)
 );
+
 -- rotulaciones
 create table if not exists tipo_rotulacion (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_rotulacion(id, tipo) values
-(1, 'ARLON BRILLANTE'),
-(2, 'ARLON MATE'),
-(3, 'CLEAR'),
-(4, 'MICROPERFORADO'),
-(5, 'VINILO DE CORTE');
+insert into tipo_rotulacion(tipo) values
+('ARLON BRILLANTE'),
+('ARLON MATE'),
+('CLEAR'),
+('MICROPERFORADO'),
+('VINILO DE CORTE');
 
 create table if not exists tipo_corte_rotulacion (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_corte_rotulacion(id, tipo) values
-(1, 'MANUAL'),
-(2, 'TROQUELADO'),
-(3, 'TROQUELADO CON CORTE INDIVIDUAL'),
-(4, 'PLANCHA IMPRESA');
+insert into tipo_corte_rotulacion(tipo) values
+('MANUAL'),
+('TROQUELADO'),
+('TROQUELADO CON CORTE INDIVIDUAL'),
+('PLANCHA IMPRESA');
 
 create table if not exists rotulacion (
     id bigint auto_increment not null primary key,
@@ -1295,28 +1296,28 @@ create table if not exists modelo_sello_automatico (
     modelo varchar(255) not null
 );
 
-insert into modelo_sello_automatico(id, modelo) values
-(1, 'MOUSE STAMP 20 COLOP - 14X38 MM'),
-(2, 'POCKET 20 COLOP - 14X38 MM'),
-(3, 'AUT 20 COLOP - 14X38 MM'),
-(4, 'AUT 10 COLOP - 10X27 MM'),
-(5, 'PRINTER C30 - 18X47 MM'),
-(6, 'PRINTER 45 - 82X25 MM'),
-(7, 'PRINTER C50 - 30X69 MM'),
-(8, 'PRINTER 55 - 40X60 MM'),
-(9, 'PRINTER 55 DATER - 40X60 MM'),
-(10, 'PRINTER C60 - 76X37 MM'),
-(11, 'S260 - 45X24 MM'),
-(12, 'MINI DATER S120 - 40X45 MM'),
-(13, 'MINI DATER S160 - 40X20 MM'),
-(14, 'PRINTER R30'),
-(15, 'PRINTER R40'),
-(16, 'PRINTER R24'),
-(17, 'PRINTER R17'),
-(18, 'PRINTER 52 DATER'),
-(19, 'PRINTER S120 MINI DATER'),
-(20, 'PRINTER 53'),
-(21, 'PRINTER Q24 DATER');
+insert into modelo_sello_automatico(modelo) values
+('MOUSE STAMP 20 COLOP - 14X38 MM'),
+('POCKET 20 COLOP - 14X38 MM'),
+('AUT 20 COLOP - 14X38 MM'),
+('AUT 10 COLOP - 10X27 MM'),
+('PRINTER C30 - 18X47 MM'),
+('PRINTER 45 - 82X25 MM'),
+('PRINTER C50 - 30X69 MM'),
+('PRINTER 55 - 40X60 MM'),
+('PRINTER 55 DATER - 40X60 MM'),
+('PRINTER C60 - 76X37 MM'),
+('S260 - 45X24 MM'),
+('MINI DATER S120 - 40X45 MM'),
+('MINI DATER S160 - 40X20 MM'),
+('PRINTER R30'),
+('PRINTER R40'),
+('PRINTER R24'),
+('PRINTER R17'),
+('PRINTER 52 DATER'),
+('PRINTER S120 MINI DATER'),
+('PRINTER 53'),
+('PRINTER Q24 DATER');
 
 create table if not exists sello_automatico (
     id bigint auto_increment not null primary key,
@@ -1372,9 +1373,9 @@ create table if not exists modelo_sello_automatico_escolar (
     modelo varchar(255) not null
 );
 
-insert into modelo_sello_automatico_escolar(id, modelo) values
-(1, '10X27 MM - 10 COLOP'),
-(2, '14X38 MM - 20 COLOP');
+insert into modelo_sello_automatico_escolar(modelo) values
+('10X27 MM - 10 COLOP'),
+('14X38 MM - 20 COLOP');
 
 create table if not exists sello_automatico_escolar (
     id bigint auto_increment not null primary key,
@@ -1409,31 +1410,31 @@ create table if not exists tamanio_sello_madera (
     tamanio varchar(255) not null
 );
 
-insert into tamanio_sello_madera(id, tamanio) values
-(1, '6X3 CM'),
-(2, '6X4 CM'),
-(3, '6X5 CM'),
-(4, '6X7 CM'),
-(5, '6X8 CM'),
-(6, '7X3 CM'),
-(7, '7X5 CM'),
-(8, '1X1 CM'),
-(9, '2X2 CM'),
-(10, '3X3 CM'),
-(11, '4X4 CM'),
-(12, '5X5 CM'),
-(13, '6X6 CM'),
-(14, '7X7 CM'),
-(15, '8X8 CM'),
-(16, '9X9 CM'),
-(17, '10X10 CM'),
-(18, '11X11 CM'),
-(19, '12X12 CM'),
-(20, '13X13 CM'),
-(21, '14X14 CM'),
-(22, '15X15 CM'),
-(23, '10X15 CM'),
-(24, 'OTRO');
+insert into tamanio_sello_madera(tamanio) values
+('6X3 CM'),
+('6X4 CM'),
+('6X5 CM'),
+('6X7 CM'),
+('6X8 CM'),
+('7X3 CM'),
+('7X5 CM'),
+('1X1 CM'),
+('2X2 CM'),
+('3X3 CM'),
+('4X4 CM'),
+('5X5 CM'),
+('6X6 CM'),
+('7X7 CM'),
+('8X8 CM'),
+('9X9 CM'),
+('10X10 CM'),
+('11X11 CM'),
+('12X12 CM'),
+('13X13 CM'),
+('14X14 CM'),
+('15X15 CM'),
+('10X15 CM'),
+('OTRO');
 
 create table if not exists sello_madera (
     id bigint auto_increment not null primary key,
@@ -1489,31 +1490,31 @@ create table if not exists tipo_color_sobre (
     tipo varchar(255) not null
 );
 
-insert into tipo_color_sobre(id, tipo) values
-(1, 'BLANCO Y NEGRO'),
-(2, 'A COLOR');
+insert into tipo_color_sobre(tipo) values
+('BLANCO Y NEGRO'),
+('A COLOR');
 
 create table if not exists medida_sobre (
     id bigint auto_increment not null primary key,
     medida varchar(255) not null
 );
 
-insert into medida_sobre(id, medida) values
-(1, 'BOLSA A4 - 27X37 CM'),
-(2, 'BOLSA A5 - 19X24 CM'),
-(3, 'OFICIO INGLÉS - 23,5X12 CM'),
-(4, 'OTRA');
+insert into medida_sobre(medida) values
+('BOLSA A4 - 27X37 CM'),
+('BOLSA A5 - 19X24 CM'),
+('OFICIO INGLÉS - 23,5X12 CM'),
+('OTRA');
 
 create table if not exists cantidad_sobre (
     id bigint auto_increment not null primary key,
     cantidad varchar(255) not null
 );
 
-insert into cantidad_sobre(id, cantidad) values
-(1, '100'),
-(2, '200'),
-(3, '400'),
-(4, 'OTRA');
+insert into cantidad_sobre(cantidad) values
+('100'),
+('200'),
+('400'),
+('OTRA');
 
 create table if not exists sobre (
     id bigint auto_increment not null primary key,
@@ -1529,7 +1530,7 @@ create table if not exists sobre (
     id_cantidad_sobre bigint not null,
     constraint fk_medida_sobre foreign key(id_medida_sobre) references medida_sobre(id),
     constraint fk_tipo_color_sobre foreign key(id_tipo_color_sobre) references tipo_color_sobre(id),
-    constraint fk_cantidad_sobre foreign key(id_cantidad_sobre) references id_cantidad_sobre(id)
+    constraint fk_cantidad_sobre foreign key(id_cantidad_sobre) references cantidad_sobre(id)
 );
 
 create table if not exists plantilla_sobre (
@@ -1538,9 +1539,9 @@ create table if not exists plantilla_sobre (
     id_medida_sobre bigint not null,
     id_tipo_color_sobre bigint not null,
     id_cantidad_sobre bigint not null,
-    constraint fk_medida_sobre foreign key(id_medida_sobre) references medida_sobre(id),
-    constraint fk_tipo_color_sobre foreign key(id_tipo_color_sobre) references tipo_color_sobre(id),
-    constraint fk_cantidad_sobre foreign key(id_cantidad_sobre) references id_cantidad_sobre(id)
+    constraint fk_plantilla_medida_sobre foreign key(id_medida_sobre) references medida_sobre(id),
+    constraint fk_plantilla_tipo_color_sobre foreign key(id_tipo_color_sobre) references tipo_color_sobre(id),
+    constraint fk_plantilla_cantidad_sobre foreign key(id_cantidad_sobre) references cantidad_sobre(id)
 );
 
 insert into plantilla_sobre(id_medida_sobre, id_tipo_color_sobre, id_cantidad_sobre, precio) values
@@ -1566,34 +1567,34 @@ create table if not exists tipo_troquelado_sticker (
     tipo varchar(255) not null
 );
 
-insert into tipo_troquelado_sticker(id, tipo) values
-(1, 'CUADRADO'),
-(2, 'CIRCULAR'),
-(3, 'POR EL CONTORNO'),
-(4, 'CORTE INDIVIDUAL'),
-(5, 'SIN TROQUELAR');
+insert into tipo_troquelado_sticker(tipo) values
+('CUADRADO'),
+('CIRCULAR'),
+('POR EL CONTORNO'),
+('CORTE INDIVIDUAL'),
+('SIN TROQUELAR');
 
 create table if not exists medida_sticker (
     id bigint auto_increment not null primary key,
     medida varchar(255) not null
 );
 
-insert into medida_sticker(id, medida) values
-(1, '5 CM'),
-(2, '7 CM'),
-(3, '10 CM'),
-(4, 'OTRA');
+insert into medida_sticker(medida) values
+('5 CM'),
+('7 CM'),
+('10 CM'),
+('OTRA');
 
 create table if not exists cantidad_sticker (
     id bigint auto_increment not null primary key,
     cantidad varchar(255) not null
 );
 
-insert into cantidad_sticker(id, cantidad) values
-(1, '100'),
-(2, '200'),
-(3, '500')
-(4, 'OTRA');
+insert into cantidad_sticker(cantidad) values
+('100'),
+('200'),
+('500'),
+('OTRA');
 
 create table if not exists sticker (
     id bigint auto_increment not null primary key,
@@ -1640,32 +1641,32 @@ create table if not exists material_sublimacion (
     material varchar(255) not null
 );
 
-insert into material_sublimacion(id, material) values
-(1, 'BIROME'),
-(2, 'TAZA DE POLÍMERO'),
-(3, 'TAZA DE CERÁMICA'),
-(4, 'TAZA DE CERÁMICA CON DETALLE'),
-(5, 'TAZA MÁGICA'),
-(6, 'TELA'),
-(7, 'MATE DE POLÍMERO'),
-(8, 'MATE DE CERÁMICA'),
-(9, 'JARRO DE CAFÉ DE POLÍMERO'),
-(10, 'LAPICERO DE POLÍMERO'),
-(11, 'CINTA FALLETINA'),
-(12, 'LLAVERO CORTO LANYARD'),
-(13, 'LLAVERO LARGO LANYARD'),
-(14, 'MOUSEPAD');
+insert into material_sublimacion(material) values
+('BIROME'),
+('TAZA DE POLÍMERO'),
+('TAZA DE CERÁMICA'),
+('TAZA DE CERÁMICA CON DETALLE'),
+('TAZA MÁGICA'),
+('TELA'),
+('MATE DE POLÍMERO'),
+('MATE DE CERÁMICA'),
+('JARRO DE CAFÉ DE POLÍMERO'),
+('LAPICERO DE POLÍMERO'),
+('CINTA FALLETINA'),
+('LLAVERO CORTO LANYARD'),
+('LLAVERO LARGO LANYARD'),
+('MOUSEPAD');
 
 create table if not exists cantidad_sublimacion (
-    id bigint auto_increment not null primary key
+    id bigint auto_increment not null primary key,
     cantidad varchar(255) not null
 );
 
-insert into cantidad_sublimacion(id, cantidad) values
-(1, '50'),
-(2, '100'),
-(3, '150'),
-(4, 'OTRA');
+insert into cantidad_sublimacion(cantidad) values
+('50'),
+('100'),
+('150'),
+('OTRA');
 
 create table if not exists sublimacion (
     id bigint auto_increment not null primary key,
@@ -1710,74 +1711,74 @@ create table if not exists modo_talonario (
     modo varchar(255) not null
 );
 
-insert into modo_talonario(id, modo) values
-(1, 'ORIGINAL'),
-(2, 'ORIGINAL + DUPLICADO'),
-(3, 'N/A');
+insert into modo_talonario(modo) values
+('ORIGINAL'),
+('ORIGINAL + DUPLICADO'),
+('N/A');
 
 create table if not exists tipo_talonario (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_talonario(id, tipo) values
-(1, 'RECIBO'),
-(2, 'PRESUPUESTO'),
-(3, 'X'),
-(4, 'OTRO');
+insert into tipo_talonario(tipo) values
+('RECIBO'),
+('PRESUPUESTO'),
+('X'),
+('OTRO');
 
 create table if not exists tipo_papel_talonario (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_papel_talonario(id, tipo) values
-(1, 'OBRA 75 GRS'),
-(2, 'ILUSTRACIÓN 150 GRS');
+insert into tipo_papel_talonario(tipo) values
+('OBRA 75 GRS'),
+('ILUSTRACIÓN 150 GRS');
 
 create table if not exists medida_talonario (
     id bigint auto_increment not null primary key,
     medida varchar(255) not null
 );
 
-insert into medida_talonario(id, medida) values
-(1, '1/4 DE A4'),
-(2, 'A4'),
-(3, 'A5'),
-(4, '1/2 DE A4'),
-(5, '13X18 CM')
-(6, 'OTRA');
+insert into medida_talonario(medida) values
+('1/4 DE A4'),
+('A4'),
+('A5'),
+('1/2 DE A4'),
+('13X18 CM'),
+('OTRA');
 
 create table if not exists tipo_troquelado_talonario (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_troquelado_talonario(id, tipo) values
-(1, 'SIN TROQUELAR'),
-(2, 'TROQUELADO SIMPLE'),
-(3, 'TROQUELADO DOBLE');
+insert into tipo_troquelado_talonario(tipo) values
+('SIN TROQUELAR'),
+('TROQUELADO SIMPLE'),
+('TROQUELADO DOBLE');
 
 create table if not exists tipo_color_talonario (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_color_talonario(id, tipo) values
-(1, 'BLANCO Y NEGRO'),
-(2, 'A COLOR');
+insert into tipo_color_talonario(tipo) values
+('BLANCO Y NEGRO'),
+('A COLOR');
 
 create table if not exists cantidad_talonario (
     id bigint auto_increment not null primary key,
     cantidad varchar(255) not null
 );
 
-insert into cantidad_talonario(id, cantidad) values
-(1, '1'),
-(2, '2'),
-(3, '4'),
-(4, '8'),
-(5, 'OTRA');
+insert into cantidad_talonario(cantidad) values
+('1'),
+('2'),
+('4'),
+('8'),
+('OTRA');
 
 create table if not exists talonario (
     id bigint auto_increment not null primary key,
@@ -1841,7 +1842,7 @@ insert into plantilla_talonario(cantidad_hojas, con_numerado, id_tipo_talonario,
 (50, 1, 2, 2, 2, 1, 5, 1, 4, 72500),  -- 50 hojas, numerado, presupuesto, troquelado, or + 2, byn, 13x18, obra, 8 u
 (100, 1, 2, 2, 1, 1, 5, 1, 2, 22500), -- 100 hojas, numerado, presupuesto, troquelado, or, byn, 13x18, obra, 2 u
 (100, 1, 2, 2, 1, 1, 5, 1, 3, 38000), -- 100 hojas, numerado, presupuesto, troquelado, or, byn, 13x18, obra, 4 u
-(100, 1, 2, 2, 1, 1. 5, 1, 4, 72500); -- 100 hojas, numerado, presupuesto, troquelado, or, byn, 13x18, obra, 8 u
+(100, 1, 2, 2, 1, 1, 5, 1, 4, 72500); -- 100 hojas, numerado, presupuesto, troquelado, or, byn, 13x18, obra, 8 u
 
 -- tarjetas
 create table if not exists tipo_color_tarjeta (
@@ -1849,64 +1850,64 @@ create table if not exists tipo_color_tarjeta (
     tipo varchar(255) not null
 );
 
-insert into tipo_color_tarjeta(id, tipo) values
-(1, 'BLANCO Y NEGRO'),
-(2, 'A COLOR');
+insert into tipo_color_tarjeta(tipo) values
+('BLANCO Y NEGRO'),
+('A COLOR');
 
 create table if not exists tipo_papel_tarjeta (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_papel_tarjeta(id, tipo) values
-(1, 'OPALINA 180 GRS'),
-(2, 'OPALINA 210 GRS'),
-(3, 'ILUSTRACIÓN 250 GRS'),
-(4, 'ILUSTRACIÓN 300 GRS');
+insert into tipo_papel_tarjeta(tipo) values
+('OPALINA 180 GRS'),
+('OPALINA 210 GRS'),
+('ILUSTRACIÓN 250 GRS'),
+('ILUSTRACIÓN 300 GRS');
 
 create table if not exists medida_tarjeta (
     id bigint auto_increment not null primary key,
     medida varchar(255) not null
 );
 
-insert into medida_tarjeta(id, medida) values
-(1, '9X5 CM'),
-(2, 'OTRA');
+insert into medida_tarjeta(medida) values
+('9X5 CM'),
+('OTRA');
 
 create table if not exists cantidad_tarjeta (
     id bigint auto_increment not null primary key,
     cantidad varchar(255) not null
 );
 
-insert into cantidad_tarjeta(id, cantidad) values
-(1, '50'),
-(2, '100'),
-(3, '150'),
-(4, '200'),
-(5, '300'),
-(6, '400'),
-(7, '500'),
-(8, '1000'),
-(9, 'OTRA');
+insert into cantidad_tarjeta(cantidad) values
+('50'),
+('100'),
+('150'),
+('200'),
+('300'),
+('400'),
+('500'),
+('1000'),
+('OTRA');
 
 create table if not exists tipo_laminado_tarjeta (
     id bigint auto_increment not null primary key,
     laminado varchar(255) not null
 );
 
-insert into tipo_laminado_tarjeta(id, laminado) values
-(1, 'BRILLANTE'),
-(2, 'MATE'),
-(3, 'NINGUNO');
+insert into tipo_laminado_tarjeta(laminado) values
+('BRILLANTE'),
+('MATE'),
+('NINGUNO');
 
 create table if not exists tipo_faz_tarjeta (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_faz_tarjeta(id, tipo) values
-(1, 'SIMPLE FAZ'),
-(2, 'DOBLE FAZ');
+insert into tipo_faz_tarjeta(tipo) values
+('SIMPLE FAZ'),
+('DOBLE FAZ');
 
 create table if not exists tarjeta (
     id bigint auto_increment not null primary key,
@@ -1980,32 +1981,32 @@ create table if not exists tipo_color_turnero (
     tipo varchar(255) not null
 );
 
-insert into tipo_color_turnero(id, tipo) values
-(1, 'BLANCO Y NEGRO'),
-(2, 'A COLOR');
+insert into tipo_color_turnero(tipo) values
+('BLANCO Y NEGRO'),
+('A COLOR');
 
 create table if not exists cantidad_turnero (
     id bigint auto_increment not null primary key,
     cantidad varchar(255) not null
 );
 
-insert into cantidad_turnero(id, cantidad) values
-(1, '2'),
-(2, '4'),
-(3, '8'),
-(4, '12'),
-(5, 'OTRA');
+insert into cantidad_turnero(cantidad) values
+('2'),
+('4'),
+('8'),
+('12'),
+('OTRA');
 
 create table if not exists medida_turnero (
     id bigint auto_increment not null primary key,
     medida varchar(255) not null
 );
 
-insert into medida_turnero(id, medida) values
-(1, '1/4 DE A4'),
-(2, '13X18 CM')
-(3, '7X8,5 CM')
-(4, 'OTRA');
+insert into medida_turnero(medida) values
+('1/4 DE A4'),
+('13X18 CM'),
+('7X8,5 CM'),
+('OTRA');
 
 create table if not exists turnero (
     id bigint auto_increment not null primary key,
@@ -2065,53 +2066,53 @@ create table if not exists tipo_corte_vinilo (
     tipo varchar(255) not null
 );
 
-insert into tipo_corte_vinilo(id, tipo) values
-(1, 'MANUAL'),
-(2, 'TROQUELADO'),
-(3, 'TROQUELADO CON CORTE INDIVIDUAL'),
-(4, 'PLANCHA IMPRESA');
+insert into tipo_corte_vinilo(tipo) values
+('MANUAL'),
+('TROQUELADO'),
+('TROQUELADO CON CORTE INDIVIDUAL'),
+('PLANCHA IMPRESA');
 
 create table if not exists tipo_adicional_vinilo (
     id bigint auto_increment not null primary key,
     adicional varchar(255) not null
 );
 
-insert into tipo_adicional_vinilo(id, adicional) values
-(1, 'LAMINADO'),
-(2, 'IMÁN'),
-(3, 'NINGUNO');
+insert into tipo_adicional_vinilo(adicional) values
+('LAMINADO'),
+('IMÁN'),
+('NINGUNO');
 
 create table if not exists tipo_vinilo (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_vinilo(id, tipo) values
-(1, 'ARLON BRILLANTE'),
-(2, 'ARLON MATE'),
-(3, 'CLEAR'),
-(4, 'MICROPERFORADO');
+insert into tipo_vinilo(tipo) values
+('ARLON BRILLANTE'),
+('ARLON MATE'),
+('CLEAR'),
+('MICROPERFORADO');
 
 create table if not exists medida_vinilo (
     id bigint auto_increment not null primary key,
     medida varchar(255) not null
 );
 
-insert into medida_vinilo(id, medida) values
-(1, '5CM'),
-(2, '6CM'),
-(3, '7CM'),
-(4, 'OTRA');
+insert into medida_vinilo(medida) values
+('5CM'),
+('6CM'),
+('7CM'),
+('OTRA');
 
 create table if not exists cantidad_vinilo (
     id bigint auto_increment not null primary key,
     cantidad varchar(255) not null
 );
 
-insert into cantidad_vinilo(id, cantidad) values
-(1, '50'),
-(2, '100'),
-(3, 'OTRA');
+insert into cantidad_vinilo(cantidad) values
+('50'),
+('100'),
+('OTRA');
 
 create table if not exists vinilo (
     id bigint auto_increment not null primary key,
@@ -2181,13 +2182,13 @@ create table if not exists medida_vinilo_plastico_corrugado (
     medida varchar(255) not null
 );
 
-insert into medida_vinilo_plastico_corrugado(id, medida) values
-(1, '120X90 CM'),
-(2, '100X70 CM'),
-(3, '70X53 CM'),
-(4, '60X40 CM'),
-(5, '30X40 CM'),
-(6, 'OTRA');
+insert into medida_vinilo_plastico_corrugado(medida) values
+('120X90 CM'),
+('100X70 CM'),
+('70X53 CM'),
+('60X40 CM'),
+('30X40 CM'),
+('OTRA');
 
 create table if not exists vinilo_plastico_corrugado (
     id bigint auto_increment not null primary key,
@@ -2223,10 +2224,10 @@ create table if not exists trae_material_vinilo (
     material varchar(255) not null
 );
 
-insert into trae_material_vinilo(id, material) values
-(1, 'PARA SOLO CORTE'),
-(2, 'CORTE PELADO TRANSFER'),
-(3, 'NO APLICA');
+insert into trae_material_vinilo(material) values
+('PARA SOLO CORTE'),
+('CORTE PELADO TRANSFER'),
+('NO APLICA');
 
 create table if not exists vinilo_de_corte (
     id bigint auto_increment not null primary key,
@@ -2250,39 +2251,39 @@ create table if not exists medida_voucher (
     medida varchar(255) not null
 );
 
-insert into medida_voucher(id, medida) values
-(1, '1/4 DE A4'),
-(2, 'OTRA');
+insert into medida_voucher(medida) values
+('1/4 DE A4'),
+('OTRA');
 
 create table if not exists tipo_papel_voucher (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_papel_voucher(id, tipo) values
-(1, 'OPALINA 180 GRS'),
-(2, 'ILUSTRACIÓN 200 GRS'),
-(3, 'OTRO');
+insert into tipo_papel_voucher(tipo) values
+('OPALINA 180 GRS'),
+('ILUSTRACIÓN 200 GRS'),
+('OTRO');
 
 create table if not exists tipo_faz_voucher (
     id bigint auto_increment not null primary key,
     tipo varchar(255) not null
 );
 
-insert into tipo_faz_voucher(id, tipo) values
-(1, 'SIMPLE FAZ'),
-(2, 'DOBLE FAZ');
+insert into tipo_faz_voucher(tipo) values
+('SIMPLE FAZ'),
+('DOBLE FAZ');
 
 create table if not exists cantidad_voucher (
     id bigint auto_increment not null primary key,
     cantidad varchar(255) not null
 );
 
-insert into cantidad_voucher(id, cantidad) values
-(1, '50'),
-(2, '100'),
-(3, '150'),
-(4, 'OTRA');
+insert into cantidad_voucher(cantidad) values
+('50'),
+('100'),
+('150'),
+('OTRA');
 
 create table if not exists voucher (
     id bigint auto_increment not null primary key,
@@ -2337,9 +2338,9 @@ create table if not exists tipo_color_otro (
     tipo varchar(255) not null
 );
 
-insert into tipo_color_otro(id, tipo) values
-(1, 'BLANCO Y NEGRO'),
-(2, 'A COLOR');
+insert into tipo_color_otro(tipo) values
+('BLANCO Y NEGRO'),
+('A COLOR');
 
 create table if not exists otro (
     id bigint auto_increment not null primary key,
@@ -2359,32 +2360,32 @@ create table if not exists medio_pago (
     medio_de_pago varchar(255) not null
 );
 
-insert into medio_pago(id, medio_de_pago) values
-(1, 'DÉBITO'),
-(2, 'CRÉDITO'),
-(3, 'TRANSFERENCIA'),
-(4, 'EFECTIVO');
+insert into medio_pago(medio_de_pago) values
+('DÉBITO'),
+('CRÉDITO'),
+('TRANSFERENCIA'),
+('EFECTIVO');
 
 create table if not exists estado_pago (
     id bigint auto_increment not null primary key,
     estado_de_pago varchar(255) not null
 );
 
-insert into estado_pago(id, estado_de_pago) values
-(1, 'SIN PAGAR'),
-(2, 'SEÑADO'),
-(3, 'PAGADO');
+insert into estado_pago(estado_de_pago) values
+('SIN PAGAR'),
+('SEÑADO'),
+('PAGADO');
 
 create table if not exists estado_orden (
     id bigint auto_increment not null primary key,
     estado_de_orden varchar(255) not null
 );
 
-insert into estado_orden(id, estado_de_orden) values
-(1, 'TOMADA'),
-(2, 'EN PROCESO'),
-(3, 'LISTA PARA RETIRAR'),
-(4, 'RETIRADA');
+insert into estado_orden(estado_de_orden) values
+('TOMADA'),
+('EN PROCESO'),
+('LISTA PARA RETIRAR'),
+('RETIRADA');
 
 create table if not exists orden_trabajo (
     id bigint auto_increment not null primary key,
