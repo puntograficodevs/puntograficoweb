@@ -1,55 +1,78 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const selectTipoTapa = document.getElementById('agenda-tipo-tapa');
-  const divPersonalizada = document.querySelector('.mb-3.d-none, .mb-3.d-block');
-  const cantidadHojas = document.getElementById('agenda-cantidad-hojas');
-  const tipoColor = document.getElementById('agenda-tipo-color');
-  const precioInput = document.getElementById('agenda-precio');
-  const adicionalCheck = document.getElementById('agenda-con-adicional-disenio');
+    const cantidadInput = document.getElementById('agenda-cantidad-hojas');
+    const tipoTapaSelect = document.getElementById('agenda-tipo-tapa');
+    const tipoColorSelect = document.getElementById('agenda-tipo-color');
+    const precioInput = document.getElementById('agenda-precio');
+    const totalInput = document.getElementById('total');
+    const abonadoInput = document.getElementById('abonado');
+    const restaInput = document.getElementById('resta');
 
-  // Mostrar/ocultar campo tipo tapa personalizada
-  selectTipoTapa.addEventListener('change', () => {
-    const opcion = selectTipoTapa.options[selectTipoTapa.selectedIndex].text.trim().toUpperCase();
+    const adicionalCheckbox = document.getElementById('agenda-con-adicional-disenio');
+    totalInput.readOnly = true;
 
-    if (opcion === 'OTRA') {
-      divPersonalizada.classList.remove('d-none');
-      divPersonalizada.classList.add('d-block');
-    } else {
-      divPersonalizada.classList.remove('d-block');
-      divPersonalizada.classList.add('d-none');
+    async function actualizarPrecio() {
+        const cantidad = cantidadInput.value;
+        const tipoTapaId = tipoTapaSelect.value;
+        const tipoColorId = tipoColorSelect.value;
+
+        if (!cantidad || !tipoTapaId || !tipoColorId) {
+            precioInput.value = '';
+            totalInput.value = '';
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/plantilla-agenda/precio?cantidadHojas=${cantidad}&tipoTapaId=${tipoTapaId}&tipoColorId=${tipoColorId}`);
+            if (response.ok) {
+                let precio = await response.json();
+
+                // Si está marcado el adicional sumamos 5000
+                if(adicionalCheckbox.checked) {
+                    precio += 5000;
+                }
+
+                precioInput.value = precio;
+                totalInput.value = precio;
+
+                actualizarResta();
+            } else if (response.status === 204) {
+                precioInput.value = '';
+                totalInput.value = '';
+                actualizarResta();
+            } else {
+                console.error('Error al obtener precio');
+            }
+        } catch (error) {
+            console.error('Error en la conexión:', error);
+        }
     }
 
-    buscarYSetearPrecio();
-  });
+    // Agregamos listener al checkbox para que actualice el precio cuando cambie
+    adicionalCheckbox.addEventListener('change', actualizarPrecio);
 
-  cantidadHojas.addEventListener('input', buscarYSetearPrecio);
-  tipoColor.addEventListener('change', buscarYSetearPrecio);
-  adicionalCheck.addEventListener('change', buscarYSetearPrecio);
+    function actualizarResta() {
+        const total = parseFloat(totalInput.value) || 0;
+        const abonado = parseFloat(abonadoInput.value) || 0;
+        const resta = total - abonado;
 
-  async function buscarYSetearPrecio() {
-    const hojas = parseInt(cantidadHojas.value);
-    const tapaId = selectTipoTapa.value;
-    const colorId = tipoColor.value;
-    const conAdicional = adicionalCheck.checked;
-
-    if (!hojas || hojas <= 0 || !tapaId || !colorId) {
-      precioInput.value = '';
-      return;
+        // Mostrar resultado y poner signo rojo si resta negativa
+        restaInput.value = Math.abs(resta);
+        if (resta < 0) {
+            restaInput.style.color = 'red';
+            restaInput.value = '-' + restaInput.value;
+        } else {
+            restaInput.style.color = 'black';
+        }
     }
 
-    try {
-      const response = await fetch(`/api/plantilla-agenda/precio?cantidadHojas=${hojas}&tipoTapaId=${tapaId}&tipoColorId=${colorId}`);
+    // Listeners
+    cantidadInput.addEventListener('input', actualizarPrecio);
+    tipoTapaSelect.addEventListener('change', actualizarPrecio);
+    tipoColorSelect.addEventListener('change', actualizarPrecio);
 
-      if (response.ok) {
-        let precio = parseInt(await response.text()) || 0;
-        if (conAdicional) precio += 5000;
-        precioInput.value = precio;
-      } else if (response.status === 204) { // No existe precio para esa combinación
-        precioInput.value = '';
-      } else {
-        alert('Error al obtener el precio');
-      }
-    } catch (error) {
-      alert('Error en la conexión: ' + error);
-    }
-  }
+    abonadoInput.addEventListener('input', actualizarResta);
+
+    // Inicializo por si ya hay datos
+    actualizarPrecio();
+    actualizarResta();
 });

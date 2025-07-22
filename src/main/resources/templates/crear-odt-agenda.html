@@ -14,75 +14,123 @@
     <h2>Crear Orden de Trabajo - Agenda</h2>
 
     <form method="post" action="/api/creacion-agenda">
-        <!-- Medida -->
+        <!-- DATOS DEL CLIENTE -->
+        <h4 class="mt-4">Datos del Cliente</h4>
+
+        <div class="mb-3">
+            <label for="nombreCliente" class="form-label">Nombre del cliente *</label>
+            <input type="text" class="form-control" name="nombreCliente" id="nombreCliente" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="telefonoCliente" class="form-label">Teléfono del cliente *</label>
+            <input type="text" class="form-control" name="telefonoCliente" id="telefonoCliente" required>
+        </div>
+
+        <div class="form-check mb-3">
+            <input type="checkbox" class="form-check-input" name="esCuentaCorriente" id="esCuentaCorriente">
+            <label class="form-check-label" for="esCuentaCorriente">¿Es cuenta corriente?</label>
+        </div>
+
+        <div class="mb-3">
+            <label for="fechaMuestra" class="form-label">Fecha de muestra</label>
+            <input type="date" class="form-control" name="fechaMuestra" id="fechaMuestra">
+        </div>
+
+        <div class="mb-3">
+            <label for="fechaEntrega" class="form-label">Fecha de entrega *</label>
+            <input type="date" class="form-control" name="fechaEntrega" id="fechaEntrega" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="horaEntrega" class="form-label">Hora de entrega</label>
+            <input type="text" class="form-control" name="horaEntrega" id="horaEntrega">
+        </div>
+
+        <!-- DATOS DE LA AGENDA -->
+        <h4 class="mt-4">Datos de la Agenda</h4>
+
         <div class="mb-3">
             <label for="agenda-medida" class="form-label">Medida *</label>
             <input type="text" class="form-control" id="agenda-medida" name="medida" required placeholder="Ingresar medida">
         </div>
 
-        <!-- Cantidad de hojas -->
         <div class="mb-3">
             <label for="agenda-cantidad-hojas" class="form-label">Cantidad de Hojas *</label>
             <input type="number" name="cantidadHojas" class="form-control" id="agenda-cantidad-hojas" required min="1" placeholder="Ingresar cantidad">
         </div>
 
-        <!-- Select tipo tapa -->
         <div class="mb-3">
             <label for="agenda-tipo-tapa" class="form-label">Tipo de tapa *</label>
             <select class="form-select" id="agenda-tipo-tapa" name="tipoTapaAgenda.id" required>
                 <option value="" selected disabled>Elegir una opción</option>
-                <option th:each="tapa : ${listaTipoTapaAgenda}"
-                        th:value="${tapa.id}"
-                        th:text="${tapa.tipo}">
-                </option>
+                <option th:each="tapa : ${listaTipoTapaAgenda}" th:value="${tapa.id}" th:text="${tapa.tipo}"></option>
             </select>
         </div>
 
-        <!-- Tipo tapa personalizada -->
         <div class="mb-3 d-none">
             <label for="agenda-tipo-tapa-personalizada" class="form-label">Tipo de tapa personalizada</label>
             <input type="text" name="tipoTapaPersonalizada" class="form-control" id="agenda-tipo-tapa-personalizada" placeholder="Ingresar tipo de tapa">
         </div>
 
-        <!-- Select tipo color -->
         <div class="mb-3">
             <label for="agenda-tipo-color" class="form-label">Tipo de color *</label>
             <select class="form-select" id="agenda-tipo-color" name="tipoColorAgenda.id" required>
                 <option value="" selected disabled>Elegir una opción</option>
-                <option th:each="color : ${listaTipoColorAgenda}"
-                        th:value="${color.id}"
-                        th:text="${color.tipo}">
-                </option>
+                <option th:each="color : ${listaTipoColorAgenda}" th:value="${color.id}" th:text="${color.tipo}"></option>
             </select>
         </div>
 
-        <!-- ¿Con adicional diseño? -->
         <div class="form-check mb-3">
             <input class="form-check-input" name="conAdicionalDisenio" type="checkbox" id="agenda-con-adicional-disenio">
             <label class="form-check-label" for="agenda-con-adicional-disenio">Con adicional de diseño</label>
         </div>
 
-        <!-- Enlace archivo -->
         <div class="mb-3">
-            <label for="agenda-enlace-archivo" class="form-label">Enlace del Archivo (Drive, etc)</label>
+            <label for="agenda-enlace-archivo" class="form-label">Enlace del Archivo</label>
             <input type="url" class="form-control" name="enlaceArchivo" id="agenda-enlace-archivo">
         </div>
 
-        <!-- Información adicional -->
         <div class="mb-3">
             <label for="agenda-informacion-adicional" class="form-label">Información adicional</label>
             <textarea class="form-control" name="informacionAdicional" id="agenda-informacion-adicional" rows="3"></textarea>
         </div>
 
-        <!-- Precio total -->
+        <!-- Campo oculto para precio -->
+        <input type="hidden" id="agenda-precio" name="precio">
+
+        <!-- DATOS DE PAGO -->
+        <h4 class="mt-4">Datos de Pago</h4>
+
         <div class="mb-3">
-            <label for="agenda-precio" class="form-label">Precio total *</label>
-            <input type="number" name="precio" id="agenda-precio" required min="0" placeholder="Ingresar precio">
+            <label for="total" class="form-label">Total *</label>
+            <input type="number" class="form-control" name="total" id="total" required>
         </div>
 
-        <!-- Submit -->
-        <button type="submit" class="btn btn-primary">Crear Agenda</button>
+        <div class="mb-3">
+            <label for="abonado" class="form-label">Abonado *</label>
+            <input type="number" class="form-control" name="abonado" id="abonado" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="resta" class="form-label">Resta</label>
+            <input type="number" class="form-control" name="resta" id="resta" readonly>
+        </div>
+
+        <div class="mb-3">
+            <label for="medioPago" class="form-label">Medio de pago *</label>
+            <select name="medioPago.id" id="medioPago" class="form-select" required>
+                <option value="" disabled selected>Elegir medio de pago</option>
+                <option th:each="medio : ${listaMediosDePago}" th:value="${medio.id}" th:text="${medio.medioDePago}"></option>
+            </select>
+        </div>
+
+        <!-- SUBMIT -->
+        <button type="submit" class="btn btn-primary mt-3">Crear Orden de Trabajo</button>
     </form>
+
+
+
 </div>
 
 
