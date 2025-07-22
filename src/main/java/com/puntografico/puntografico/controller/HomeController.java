@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class HomeController {
 
@@ -15,12 +17,12 @@ public class HomeController {
     private EmpleadoService empleadoService;
 
     @GetMapping("/home")
-    public String home(@RequestParam String username, Model model) {
-        if(username == null || username.isEmpty()) {
-            return "redirect:/";
-        }
+    public String home(HttpSession session, Model model) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
-        Empleado empleado = empleadoService.traerEmpleadoPorUsername(username);
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
 
         model.addAttribute("empleado", empleado);
         return "home";

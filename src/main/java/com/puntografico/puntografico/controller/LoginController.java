@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class LoginController {
 
@@ -21,15 +23,22 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String ingresar(@RequestParam String username, @RequestParam String password, Model model) {
+    public String ingresar(@RequestParam String username, @RequestParam String password, Model model, HttpSession session) {
         boolean esEmpleadoValido = empleadoService.validarEmpleado(username, password);
 
         if (esEmpleadoValido) {
             Empleado empleado = empleadoService.traerEmpleadoPorUsername(username);
-            return "redirect:/home?username=" + username;
+            session.setAttribute("empleadoLogueado", empleado); // ← lo guardás en sesión
+            return "redirect:/home";
         } else {
             model.addAttribute("error", true);
             return "login";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
     }
 }

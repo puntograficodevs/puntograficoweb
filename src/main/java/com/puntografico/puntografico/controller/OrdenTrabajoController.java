@@ -20,10 +20,4 @@ public class OrdenTrabajoController {
         model.addAttribute("ordenTrabajo", new OrdenTrabajo());
         return "crear-orden";
     }
-
-    @PostMapping("/api/nueva-orden")
-    public String crear(@ModelAttribute OrdenTrabajo ordenTrabajo) {
-        ordenTrabajoService.crear(ordenTrabajo);
-        return "redirect:/home";
-    }
 }
