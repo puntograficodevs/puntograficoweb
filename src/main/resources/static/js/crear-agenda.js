@@ -1,19 +1,41 @@
 document.addEventListener('DOMContentLoaded', () => {
     const cantidadInput = document.getElementById('agenda-cantidad-hojas');
-    const tipoTapaSelect = document.getElementById('agenda-tipo-tapa');
-    const tipoColorSelect = document.getElementById('agenda-tipo-color');
     const precioInput = document.getElementById('agenda-precio');
     const totalInput = document.getElementById('total');
     const abonadoInput = document.getElementById('abonado');
     const restaInput = document.getElementById('resta');
-
+    const toggleFechaMuestra = document.getElementById('toggleFechaMuestra');
+    const fechaRow = document.getElementById('fechaMuestraRow');
     const adicionalCheckbox = document.getElementById('agenda-con-adicional-disenio');
-    totalInput.readOnly = true;
+    const tapaInputRow = document.getElementById('inputTapaPersonalizadaRow');
+
+    // Inputs dinámicos tipoTapa y tipoColor (radios)
+    const tapaRadios = document.querySelectorAll('input[name="tipoTapaAgenda.id"]');
+    const colorRadios = document.querySelectorAll('input[name="tipoColorAgenda.id"]');
+
+    let tipoTapaSeleccionada = null;
+    let tipoColorSeleccionado = null;
+
+    tapaRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            tipoTapaSeleccionada = radio.value;
+            const esOtra = radio.labels[0]?.textContent.trim().toLowerCase() === 'otra';
+            tapaInputRow.classList.toggle('d-none', !esOtra);
+            actualizarPrecio();
+        });
+    });
+
+    colorRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            tipoColorSeleccionado = radio.value;
+            actualizarPrecio();
+        });
+    });
 
     async function actualizarPrecio() {
         const cantidad = cantidadInput.value;
-        const tipoTapaId = tipoTapaSelect.value;
-        const tipoColorId = tipoColorSelect.value;
+        const tipoTapaId = tipoTapaSeleccionada;
+        const tipoColorId = tipoColorSeleccionado;
 
         if (!cantidad || !tipoTapaId || !tipoColorId) {
             precioInput.value = '';
@@ -26,13 +48,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok) {
                 let precio = await response.json();
 
-                // Si está marcado el adicional sumamos 5000
-                if(adicionalCheckbox.checked) {
+                if (adicionalCheckbox.checked) {
                     precio += 5000;
                 }
 
                 precioInput.value = precio;
-                totalInput.value = precio;
+
+                // Solo actualizar el total si está vacío o coincide con el precio anterior
+                if (!totalInput.value || parseFloat(totalInput.value) === parseFloat(precio)) {
+                    totalInput.value = precio;
+                }
 
                 actualizarResta();
             } else if (response.status === 204) {
@@ -47,32 +72,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Agregamos listener al checkbox para que actualice el precio cuando cambie
-    adicionalCheckbox.addEventListener('change', actualizarPrecio);
-
     function actualizarResta() {
         const total = parseFloat(totalInput.value) || 0;
         const abonado = parseFloat(abonadoInput.value) || 0;
         const resta = total - abonado;
 
-        // Mostrar resultado y poner signo rojo si resta negativa
         restaInput.value = Math.abs(resta);
+        restaInput.style.color = resta < 0 ? 'red' : 'black';
         if (resta < 0) {
-            restaInput.style.color = 'red';
             restaInput.value = '-' + restaInput.value;
-        } else {
-            restaInput.style.color = 'black';
         }
+    }
+
+    function bindearInputFechaMuestra() {
+        fechaRow.classList.toggle('d-none', !this.checked);
     }
 
     // Listeners
     cantidadInput.addEventListener('input', actualizarPrecio);
-    tipoTapaSelect.addEventListener('change', actualizarPrecio);
-    tipoColorSelect.addEventListener('change', actualizarPrecio);
-
+    adicionalCheckbox.addEventListener('change', actualizarPrecio);
     abonadoInput.addEventListener('input', actualizarResta);
+    toggleFechaMuestra.addEventListener('change', bindearInputFechaMuestra);
 
-    // Inicializo por si ya hay datos
-    actualizarPrecio();
+    // Inicializar con valores actuales
+    tapaRadios.forEach(radio => {
+        if (radio.checked) radio.dispatchEvent(new Event('change'));
+    });
+    colorRadios.forEach(radio => {
+        if (radio.checked) radio.dispatchEvent(new Event('change'));
+    });
+
     actualizarResta();
 });
