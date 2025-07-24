@@ -22,13 +22,13 @@ public class Agenda {
     @Column(nullable = false)
     private int cantidadHojas;
 
+    private int cantidad;
+
     private String enlaceArchivo;
 
     private boolean conAdicionalDisenio;
 
     private int precioAdicionalDisenio;
-
-    private int precio;
 
     private String informacionAdicional;
 

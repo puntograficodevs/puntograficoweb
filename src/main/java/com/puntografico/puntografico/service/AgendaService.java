@@ -1,6 +1,8 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.Agenda;
+import com.puntografico.puntografico.domain.TipoColorAgenda;
+import com.puntografico.puntografico.domain.TipoTapaAgenda;
 import com.puntografico.puntografico.repository.AgendaRepository;
 import com.puntografico.puntografico.repository.TipoColorAgendaRepository;
 import com.puntografico.puntografico.repository.TipoTapaAgendaRepository;
@@ -25,40 +27,29 @@ public class AgendaService {
     private TipoColorAgendaRepository tipoColorAgendaRepository;
 
     public Agenda crear(HttpServletRequest request) {
+        String cantidadHojas = request.getParameter("cantidadHojas");
+        String tipoTapa = request.getParameter("tipoTapaAgenda.id");
+        TipoTapaAgenda tipoTapaAgenda = tipoTapaAgendaRepository.findById(Long.parseLong(tipoTapa)).get();
+        String tipoColor = request.getParameter("tipoColorAgenda.id");
+        TipoColorAgenda tipoColorAgenda = tipoColorAgendaRepository.findById(Long.parseLong(tipoColor)).get();
+        String cantidad = request.getParameter("cantidad");
+
+        Assert.notNull(cantidadHojas, "La cantidad de hojas es un dato obligatorio.");
+        Assert.notNull(tipoTapa, "El tipo de tapa es un dato obligatorio.");
+        Assert.notNull(tipoColor, "El tipo de color es un dato obligatorio.");
+        Assert.notNull(cantidad, "La cantidad es un dato obligatorio.");
+
+
         Agenda agenda = new Agenda();
-
+        agenda.setCantidadHojas(Integer.parseInt(cantidadHojas));
         agenda.setMedida(request.getParameter("medida"));
-
-        String cantHojasStr = request.getParameter("cantidadHojas");
-        agenda.setCantidadHojas(cantHojasStr != null ? Integer.parseInt(cantHojasStr) : 0);
-
-        String tipoTapaIdStr = request.getParameter("tipoTapaAgenda.id");
-        if (tipoTapaIdStr != null && !tipoTapaIdStr.isBlank()) {
-            Long tipoTapaId = Long.parseLong(tipoTapaIdStr);
-            agenda.setTipoTapaAgenda(tipoTapaAgendaRepository.findById(tipoTapaId)
-                    .orElseThrow(() -> new RuntimeException("Tipo tapa agenda no encontrado")));
-        } else {
-            throw new RuntimeException("Tipo tapa agenda es obligatorio");
-        }
-
+        agenda.setTipoTapaAgenda(tipoTapaAgenda);
         agenda.setTipoTapaPersonalizada(request.getParameter("tipoTapaPersonalizada"));
-
-        String tipoColorIdStr = request.getParameter("tipoColorAgenda.id");
-        if (tipoColorIdStr != null && !tipoColorIdStr.isBlank()) {
-            Long tipoColorId = Long.parseLong(tipoColorIdStr);
-            agenda.setTipoColorAgenda(tipoColorAgendaRepository.findById(tipoColorId)
-                    .orElseThrow(() -> new RuntimeException("Tipo color agenda no encontrado")));
-        } else {
-            throw new RuntimeException("Tipo color agenda es obligatorio");
-        }
-
+        agenda.setTipoColorAgenda(tipoColorAgenda);
         agenda.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
-
         agenda.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
         agenda.setInformacionAdicional(request.getParameter("informacionAdicional"));
-
-        String precioStr = request.getParameter("precio");
-        agenda.setPrecio(precioStr != null ? Integer.parseInt(precioStr) : 0);
+        agenda.setCantidad(Integer.parseInt(cantidad));
 
         return agendaRepository.save(agenda);
     }

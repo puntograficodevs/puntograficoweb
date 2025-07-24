@@ -1,16 +1,11 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
-import com.puntografico.puntografico.service.AgendaService;
-import com.puntografico.puntografico.service.MedioPagoService;
-import com.puntografico.puntografico.service.OpcionesAgendaService;
-import com.puntografico.puntografico.service.OrdenTrabajoService;
+import com.puntografico.puntografico.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -30,6 +25,9 @@ public class AgendaController {
     @Autowired
     private OrdenTrabajoService ordenTrabajoService;
 
+    @Autowired
+    private OrdenAgendaService ordenAgendaService;
+
     @GetMapping("/crear-odt-agenda")
     public String verCrearOdtAgenda(Model model) {
         List<TipoTapaAgenda> listaTipoTapaAgenda = opcionesAgendaService.buscarTodosTipoTapaAgenda();
@@ -44,10 +42,22 @@ public class AgendaController {
         return "crear-odt-agenda";
     }
 
+    @GetMapping("/mostrar-odt-agenda/{ordenAgendaId}")
+    public String verOrdenAgenda(@PathVariable("ordenAgendaId") Long ordenAgendaId, Model model) {
+        OrdenAgenda ordenAgenda = ordenAgendaService.buscarPorId(ordenAgendaId);
+
+        model.addAttribute("ordenAgenda", ordenAgenda);
+
+        return "mostrar-odt-agenda";
+    }
+
     @PostMapping("/api/creacion-agenda")
     public String creacionAgenda(HttpServletRequest request) {
-        ordenTrabajoService.crear(request);
-        agendaService.crear(request);
-        return "redirect:/home"; // O donde quieras redirigir
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        Agenda agenda = agendaService.crear(request);
+        OrdenAgenda ordenAgenda = ordenAgendaService.crear(ordenTrabajo, agenda);
+        return "redirect:/mostrar-odt-agenda/" + ordenAgenda.getId();
     }
+
+
 }

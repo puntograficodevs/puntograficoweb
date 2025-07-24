@@ -117,7 +117,7 @@
         </div>
 
         <div class="row mb-3">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label for="agenda-enlace-archivo" class="form-label">Enlace del Archivo</label>
                 <input type="url" class="form-control" name="enlaceArchivo" id="agenda-enlace-archivo">
             </div>
@@ -125,27 +125,14 @@
                 <label for="agenda-informacion-adicional" class="form-label">Información adicional</label>
                 <textarea class="form-control" name="informacionAdicional" id="agenda-informacion-adicional" rows="1"></textarea>
             </div>
+            <div class="col-md-2">
+                <label for="agenda-cantidad" class="form-label">Cantidad *</label>
+                <input type="number" class="form-control" id="agenda-cantidad" name="cantidad" required placeholder="0">
+            </div>
         </div>
-
-        <input type="hidden" id="agenda-precio" name="precio">
 
         <!-- DATOS DE PAGO -->
         <h5 class="mt-4">Datos de Pago</h5>
-
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <label for="total" class="form-label">Total *</label>
-                <input type="number" class="form-control" name="total" id="total" required>
-            </div>
-            <div class="col-md-4">
-                <label for="abonado" class="form-label">Abonado *</label>
-                <input type="number" class="form-control" name="abonado" id="abonado" required>
-            </div>
-            <div class="col-md-4">
-                <label for="resta" class="form-label">Resta</label>
-                <input type="number" class="form-control" name="resta" id="resta" readonly>
-            </div>
-        </div>
 
         <div class="row mb-3">
             <div class="col-md-6">
@@ -166,6 +153,21 @@
                     <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura">
                     <label class="form-check-label" for="necesitaFactura">¿Necesita factura?</label>
                 </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="total" class="form-label">Total *</label>
+                <input type="number" class="form-control" name="total" id="total" required>
+            </div>
+            <div class="col-md-4">
+                <label for="abonado" class="form-label">Abonado *</label>
+                <input type="number" class="form-control" name="abonado" id="abonado" required>
+            </div>
+            <div class="col-md-4">
+                <label for="resta" class="form-label">Resta</label>
+                <input type="number" class="form-control" name="resta" id="resta" readonly>
             </div>
         </div>
 

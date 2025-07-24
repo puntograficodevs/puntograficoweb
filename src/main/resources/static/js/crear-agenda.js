@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const cantidadInput = document.getElementById('agenda-cantidad-hojas');
-    const precioInput = document.getElementById('agenda-precio');
+    const cantidadHojasInput = document.getElementById('agenda-cantidad-hojas');
+    const cantidadAgendasInput = document.getElementById('agenda-cantidad');
     const totalInput = document.getElementById('total');
     const abonadoInput = document.getElementById('abonado');
     const restaInput = document.getElementById('resta');
@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const adicionalCheckbox = document.getElementById('agenda-con-adicional-disenio');
     const tapaInputRow = document.getElementById('inputTapaPersonalizadaRow');
 
-    // Inputs dinámicos tipoTapa y tipoColor (radios)
     const tapaRadios = document.querySelectorAll('input[name="tipoTapaAgenda.id"]');
     const colorRadios = document.querySelectorAll('input[name="tipoColorAgenda.id"]');
 
@@ -21,51 +20,46 @@ document.addEventListener('DOMContentLoaded', () => {
             tipoTapaSeleccionada = radio.value;
             const esOtra = radio.labels[0]?.textContent.trim().toLowerCase() === 'otra';
             tapaInputRow.classList.toggle('d-none', !esOtra);
-            actualizarPrecio();
+            actualizarTotal();
         });
     });
 
     colorRadios.forEach(radio => {
         radio.addEventListener('change', () => {
             tipoColorSeleccionado = radio.value;
-            actualizarPrecio();
+            actualizarTotal();
         });
     });
 
-    async function actualizarPrecio() {
-        const cantidad = cantidadInput.value;
+    async function actualizarTotal() {
+        const cantidadHojas = cantidadHojasInput.value;
+        const cantidadAgendas = parseInt(cantidadAgendasInput.value) || 1;
         const tipoTapaId = tipoTapaSeleccionada;
         const tipoColorId = tipoColorSeleccionado;
 
-        if (!cantidad || !tipoTapaId || !tipoColorId) {
-            precioInput.value = '';
+        if (!cantidadHojas || !tipoTapaId || !tipoColorId) {
             totalInput.value = '';
             return;
         }
 
         try {
-            const response = await fetch(`/api/plantilla-agenda/precio?cantidadHojas=${cantidad}&tipoTapaId=${tipoTapaId}&tipoColorId=${tipoColorId}`);
+            const response = await fetch(`/api/plantilla-agenda/precio?cantidadHojas=${cantidadHojas}&tipoTapaId=${tipoTapaId}&tipoColorId=${tipoColorId}`);
             if (response.ok) {
-                let precio = await response.json();
+                let precioUnitario = await response.json();
 
                 if (adicionalCheckbox.checked) {
-                    precio += 5000;
+                    precioUnitario += 5000;
                 }
 
-                precioInput.value = precio;
-
-                // Solo actualizar el total si está vacío o coincide con el precio anterior
-                if (!totalInput.value || parseFloat(totalInput.value) === parseFloat(precio)) {
-                    totalInput.value = precio;
-                }
+                const totalCalculado = precioUnitario * cantidadAgendas;
+                totalInput.value = totalCalculado;
 
                 actualizarResta();
             } else if (response.status === 204) {
-                precioInput.value = '';
                 totalInput.value = '';
                 actualizarResta();
             } else {
-                console.error('Error al obtener precio');
+                console.error('Error al obtener precio base');
             }
         } catch (error) {
             console.error('Error en la conexión:', error);
@@ -88,13 +82,14 @@ document.addEventListener('DOMContentLoaded', () => {
         fechaRow.classList.toggle('d-none', !this.checked);
     }
 
-    // Listeners
-    cantidadInput.addEventListener('input', actualizarPrecio);
-    adicionalCheckbox.addEventListener('change', actualizarPrecio);
+    // Bindings
+    cantidadHojasInput.addEventListener('input', actualizarTotal);
+    cantidadAgendasInput.addEventListener('input', actualizarTotal);
+    adicionalCheckbox.addEventListener('change', actualizarTotal);
     abonadoInput.addEventListener('input', actualizarResta);
     toggleFechaMuestra.addEventListener('change', bindearInputFechaMuestra);
 
-    // Inicializar con valores actuales
+    // Inicialización
     tapaRadios.forEach(radio => {
         if (radio.checked) radio.dispatchEvent(new Event('change'));
     });
