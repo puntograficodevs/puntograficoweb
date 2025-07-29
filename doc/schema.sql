@@ -55,7 +55,6 @@ create table if not exists agenda (
     enlace_archivo varchar(255) not null default '-',
     con_adicional_disenio tinyint(1) not null default 0,
     precio_adicional_disenio int not null default 5000,
-    precio int null,
     informacion_adicional varchar(255) null,
     id_tipo_tapa_agenda bigint not null,
     id_tipo_color_agenda bigint not null,

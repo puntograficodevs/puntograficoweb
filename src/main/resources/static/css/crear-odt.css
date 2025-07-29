@@ -37,3 +37,7 @@ h5 {
     color: white;
     transition: background-color 0.3s ease;
 }
+
+.btn-crear-odt:hover {
+    background-color: #e52987;
+}

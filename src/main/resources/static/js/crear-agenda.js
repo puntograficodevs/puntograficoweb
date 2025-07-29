@@ -11,14 +11,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const tapaRadios = document.querySelectorAll('input[name="tipoTapaAgenda.id"]');
     const colorRadios = document.querySelectorAll('input[name="tipoColorAgenda.id"]');
+    const medioPagoRadios = document.querySelectorAll('input[name="medioPago.id"]');
 
     let tipoTapaSeleccionada = null;
     let tipoColorSeleccionado = null;
+    let esCredito = false;
 
     tapaRadios.forEach(radio => {
         radio.addEventListener('change', () => {
             tipoTapaSeleccionada = radio.value;
-            const esOtra = radio.labels[0]?.textContent.trim().toLowerCase() === 'otra';
+            const label = document.querySelector(`label[for="${radio.id}"]`);
+            const esOtra = label?.textContent.trim().toLowerCase() === 'otra';
             tapaInputRow.classList.toggle('d-none', !esOtra);
             actualizarTotal();
         });
@@ -27,6 +30,16 @@ document.addEventListener('DOMContentLoaded', () => {
     colorRadios.forEach(radio => {
         radio.addEventListener('change', () => {
             tipoColorSeleccionado = radio.value;
+            actualizarTotal();
+        });
+    });
+
+    medioPagoRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            const label = document.querySelector(`label[for="${radio.id}"]`);
+            const texto = label?.textContent.trim().toUpperCase();
+
+            esCredito = texto === 'CRÉDITO'; // comparamos con el valor exacto
             actualizarTotal();
         });
     });
@@ -51,9 +64,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     precioUnitario += 5000;
                 }
 
-                const totalCalculado = precioUnitario * cantidadAgendas;
-                totalInput.value = totalCalculado;
+                let totalCalculado = precioUnitario * cantidadAgendas;
 
+                if (esCredito) {
+                    totalCalculado *= 1.1;
+                }
+
+                totalInput.value = Math.round(totalCalculado);
                 actualizarResta();
             } else if (response.status === 204) {
                 totalInput.value = '';
@@ -73,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         restaInput.value = Math.abs(resta);
         restaInput.style.color = resta < 0 ? 'red' : 'black';
+
         if (resta < 0) {
             restaInput.value = '-' + restaInput.value;
         }
@@ -89,11 +107,14 @@ document.addEventListener('DOMContentLoaded', () => {
     abonadoInput.addEventListener('input', actualizarResta);
     toggleFechaMuestra.addEventListener('change', bindearInputFechaMuestra);
 
-    // Inicialización
+    // Inicialización de radios ya marcados al cargar
     tapaRadios.forEach(radio => {
         if (radio.checked) radio.dispatchEvent(new Event('change'));
     });
     colorRadios.forEach(radio => {
+        if (radio.checked) radio.dispatchEvent(new Event('change'));
+    });
+    medioPagoRadios.forEach(radio => {
         if (radio.checked) radio.dispatchEvent(new Event('change'));
     });
 
