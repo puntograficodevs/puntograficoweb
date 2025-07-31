@@ -16,6 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let tipoTapaSeleccionada = null;
     let tipoColorSeleccionado = null;
     let esCredito = false;
+    let totalManualBase = null; // Base original escrita por el usuario
+    let totalCalculadoBase = null; // Base traída del backend
+
+    // Inicialización por defecto
+    if (!cantidadAgendasInput.value) cantidadAgendasInput.value = 1;
+    if (!abonadoInput.value) abonadoInput.value = 0;
 
     tapaRadios.forEach(radio => {
         radio.addEventListener('change', () => {
@@ -38,10 +44,36 @@ document.addEventListener('DOMContentLoaded', () => {
         radio.addEventListener('change', () => {
             const label = document.querySelector(`label[for="${radio.id}"]`);
             const texto = label?.textContent.trim().toUpperCase();
+            const nuevoEsCredito = texto === 'CRÉDITO';
 
-            esCredito = texto === 'CRÉDITO'; // comparamos con el valor exacto
-            actualizarTotal();
+            const base = totalManualBase ?? totalCalculadoBase;
+
+            if (base != null) {
+                let nuevoTotal = base;
+
+                if (adicionalCheckbox.checked) nuevoTotal += 5000;
+                if (nuevoEsCredito) nuevoTotal *= 1.1;
+
+                totalInput.value = Math.round(nuevoTotal);
+            }
+
+            esCredito = nuevoEsCredito;
+            actualizarResta();
         });
+    });
+
+    adicionalCheckbox.addEventListener('change', () => {
+        const base = totalManualBase ?? totalCalculadoBase;
+
+        if (base != null) {
+            let nuevoTotal = base;
+
+            if (adicionalCheckbox.checked) nuevoTotal += 5000;
+            if (esCredito) nuevoTotal *= 1.1;
+
+            totalInput.value = Math.round(nuevoTotal);
+            actualizarResta();
+        }
     });
 
     async function actualizarTotal() {
@@ -60,17 +92,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok) {
                 let precioUnitario = await response.json();
 
-                if (adicionalCheckbox.checked) {
-                    precioUnitario += 5000;
-                }
+                let totalBase = precioUnitario * cantidadAgendas;
+                totalCalculadoBase = totalBase;
+                totalManualBase = null;
 
-                let totalCalculado = precioUnitario * cantidadAgendas;
+                let nuevoTotal = totalBase;
 
-                if (esCredito) {
-                    totalCalculado *= 1.1;
-                }
+                if (adicionalCheckbox.checked) nuevoTotal += 5000;
+                if (esCredito) nuevoTotal *= 1.1;
 
-                totalInput.value = Math.round(totalCalculado);
+                totalInput.value = Math.round(nuevoTotal);
                 actualizarResta();
             } else if (response.status === 204) {
                 totalInput.value = '';
@@ -100,14 +131,35 @@ document.addEventListener('DOMContentLoaded', () => {
         fechaRow.classList.toggle('d-none', !this.checked);
     }
 
-    // Bindings
+    // Detectar escritura manual de total
+    totalInput.addEventListener('input', () => {
+        const base = parseFloat(totalInput.value);
+        if (!isNaN(base)) {
+            totalManualBase = base;
+            totalCalculadoBase = null;
+            actualizarDesdeBaseManual();
+        }
+    });
+
+    function actualizarDesdeBaseManual() {
+        if (totalManualBase != null) {
+            let nuevoTotal = totalManualBase;
+
+            if (adicionalCheckbox.checked) nuevoTotal += 5000;
+            if (esCredito) nuevoTotal *= 1.1;
+
+            totalInput.value = Math.round(nuevoTotal);
+            actualizarResta();
+        }
+    }
+
+    // Bindings generales
     cantidadHojasInput.addEventListener('input', actualizarTotal);
     cantidadAgendasInput.addEventListener('input', actualizarTotal);
-    adicionalCheckbox.addEventListener('change', actualizarTotal);
     abonadoInput.addEventListener('input', actualizarResta);
     toggleFechaMuestra.addEventListener('change', bindearInputFechaMuestra);
 
-    // Inicialización de radios ya marcados al cargar
+    // Inicializar radios marcados
     tapaRadios.forEach(radio => {
         if (radio.checked) radio.dispatchEvent(new Event('change'));
     });
