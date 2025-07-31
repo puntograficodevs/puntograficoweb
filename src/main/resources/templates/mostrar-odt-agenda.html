@@ -9,7 +9,7 @@
   <title>Agenda - Punto Gráfico</title>
 </head>
 <body>
-<div th:replace="fragments/navbar :: navbar"></div>
+  <div th:replace="fragments/navbar :: navbar"></div>
 
 <div class="card mb-3 border contenedor-orden-impresion">
   <div class="row align-items-center">
@@ -42,7 +42,7 @@
         <p><strong>Pedido: </strong><span th:text="${ordenAgenda.ordenTrabajo.fechaPedido}"></span></p>
         <p><strong>Total: </strong>$<span th:text="${ordenAgenda.ordenTrabajo.total}"></span></p>
         <p><strong>Entrega: </strong>$<span th:text="${ordenAgenda.ordenTrabajo.abonado}"></span></p>
-        <p><strong>Restante: </strong>$<span th:text="${ordenAgenda.ordenTrabajo.resta}"></span></p>
+        <p class="pago-restante"><strong>Restante: </strong>$<span th:text="${ordenAgenda.ordenTrabajo.resta}"></span></p>
         <p><strong>Medio de pago: </strong><span th:text="${ordenAgenda.ordenTrabajo.medioPago.medioDePago}"></span></p>
         <p><strong>Necesita factura: </strong><span th:text="${ordenAgenda.ordenTrabajo.necesitaFactura} ? 'Sí' : 'No'"></span></p>
         <p><strong>Vendedor/a: </strong><span th:text="${ordenAgenda.ordenTrabajo.empleado.nombre}"></span></p>
@@ -80,6 +80,7 @@
       </div>
     </div>
   </div>
+  <div th:replace="fragments/footer-odt :: footer-odt"></div>
 </div>
 
 
