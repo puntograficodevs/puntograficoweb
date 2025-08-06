@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   <link rel="stylesheet" th:href="@{/css/home.css}"/>
   <link rel="stylesheet" th:href="@{/css/mostrar-productos.css}"/>
-  <title>Agenda - Punto Gráfico</title>
+  <title>Anotador - Punto Gráfico</title>
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
@@ -18,7 +18,7 @@
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#e83e8c" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
       </svg>
-      <h4 class="mb-0">Orden - Anotador #<span th:text="${ordenAnotador.ordenTrabajo.id}"></span></h4>
+      <h4 class="mb-0">Orden #<span th:text="${ordenAnotador.ordenTrabajo.id}"></span></h4>
     </div>
 
     <!-- Imagen -->

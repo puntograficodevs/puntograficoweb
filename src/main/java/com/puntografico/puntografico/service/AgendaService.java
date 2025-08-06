@@ -39,7 +39,6 @@ public class AgendaService {
         Assert.notNull(tipoColor, "El tipo de color es un dato obligatorio.");
         Assert.notNull(cantidad, "La cantidad es un dato obligatorio.");
 
-
         Agenda agenda = new Agenda();
         agenda.setCantidadHojas(Integer.parseInt(cantidadHojas));
         agenda.setMedida(request.getParameter("medida"));

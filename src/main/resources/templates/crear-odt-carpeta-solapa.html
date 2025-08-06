@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" th:href="@{/css/home.css}"/>
+  <link rel="stylesheet" th:href="@{/css/crear-odt.css}"/>
+  <title>Orden - Punto Gráfico</title>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container mt-5">
+  <h2>Crear orden - Carpeta con Solapas</h2>
+
+  <form method="post" action="/api/creacion-carpeta-solapa">
+    <!-- DATOS DEL CLIENTE -->
+    <div class="contenedor-datos-odt">
+      <h5 class="mt-4 datos-del-cliente">Datos del Cliente</h5>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="nombreCliente" class="form-label">Nombre del cliente *</label>
+          <input type="text" class="form-control" name="nombreCliente" id="nombreCliente" placeholder="Ej: Juan Pérez" required>
+        </div>
+        <div class="col-md-4">
+          <label for="telefonoCliente" class="form-label">Teléfono del cliente *</label>
+          <input type="text" class="form-control" name="telefonoCliente" id="telefonoCliente" placeholder="Ej: 1123952892" required>
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" name="esCuentaCorriente" id="esCuentaCorriente">
+            <label class="form-check-label" for="esCuentaCorriente">¿CC?</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="fechaEntrega" class="form-label">Fecha de entrega *</label>
+          <input type="date" class="form-control" name="fechaEntrega" id="fechaEntrega" required>
+        </div>
+        <div class="col-md-4">
+          <label for="horaEntrega" class="form-label">Hora de entrega</label>
+          <input type="text" class="form-control" name="horaEntrega" id="horaEntrega" placeholder="Ej: 11:30 pm">
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="toggleFechaMuestra">
+            <label class="form-check-label" for="toggleFechaMuestra">¿Muestra?</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3 d-none" id="fechaMuestraRow">
+        <div class="col-md-6">
+          <label for="fechaMuestra" class="form-label">Fecha de muestra</label>
+          <input type="date" class="form-control" name="fechaMuestra" id="fechaMuestra">
+        </div>
+      </div>
+    </div>
+
+    <!-- DATOS DE LA CARPETA -->
+    <div class="contenedor-datos-odt">
+      <h5 class="mt-4 datos-del-producto">Datos del Producto</h5>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="carpeta-tipo-papel" class="form-label">Tipo de papel *</label>
+          <input type="text" class="form-control" id="carpeta-tipo-papel" name="tipoPapel" required placeholder="Ej: Ilustración 300gr">
+        </div>
+        <div class="col-md-6">
+          <label for="carpeta-cantidad" class="form-label">Cantidad *</label>
+          <input type="number" class="form-control" id="carpeta-cantidad" name="cantidad" required min="1" placeholder="0">
+        </div>
+      </div>
+
+      <div class="row mb-3 align-items-end">
+        <!-- Tipo de Laminado -->
+        <div class="col-md-6">
+          <label class="form-label d-block">Tipo de laminado *</label>
+          <div class="d-flex flex-column gap-1">
+            <div th:each="laminado : ${listaTipoLaminadoCarpetaSolapa}" class="form-check">
+              <input class="form-check-input" type="radio" name="tipoLaminadoCarpetaSolapa.id"
+                     th:id="'laminado-' + ${laminado.id}" th:value="${laminado.id}" required>
+              <label class="form-check-label" th:for="'laminado-' + ${laminado.id}" th:text="${laminado.laminado}"></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tipo de Faz -->
+        <div class="col-md-6">
+          <label class="form-label d-block">Tipo de faz *</label>
+          <div class="d-flex flex-column gap-1">
+            <div th:each="faz : ${listaTipoFazCarpetaSolapa}" class="form-check">
+              <input class="form-check-input" type="radio" name="tipoFazCarpetaSolapa.id"
+                     th:id="'faz-' + ${faz.id}" th:value="${faz.id}" required>
+              <label class="form-check-label" th:for="'faz-' + ${faz.id}" th:text="${faz.tipo}"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="carpeta-enlace-archivo" class="form-label">Enlace del Archivo</label>
+          <input type="url" class="form-control" name="enlaceArchivo" id="carpeta-enlace-archivo" placeholder="Ej: http://drive.google.com/archivo.pdf">
+        </div>
+        <div class="col-md-6">
+          <label for="carpeta-informacion-adicional" class="form-label">Información adicional</label>
+          <textarea class="form-control" name="informacionAdicional" id="carpeta-informacion-adicional" rows="1" placeholder="Ej: Plastificado sectorizado, etc."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="contenedor-datos-odt">
+      <!-- DATOS DE PAGO -->
+      <h5 class="mt-4 datos-de-pago">Datos de Pago</h5>
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <label for="total" class="form-label">Total *</label>
+          <input type="number" class="form-control" name="total" id="total" placeholder="0" required>
+        </div>
+        <div class="col-md-3">
+          <label for="abonado" class="form-label">Abonado *</label>
+          <input type="number" class="form-control" name="abonado" id="abonado" placeholder="0" required>
+        </div>
+        <div class="col-md-3">
+          <label for="resta" class="form-label">Resta</label>
+          <input type="number" class="form-control" name="resta" id="resta" readonly>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+          <div class="form-check">
+            <input class="form-check-input" name="conAdicionalDisenio" type="checkbox" id="carpeta-con-adicional-disenio">
+            <label class="form-check-label" for="carpeta-con-adicional-disenio">Adicional diseño</label>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-8">
+          <label class="form-label d-block">Medio de pago *</label>
+          <div class="d-flex flex-wrap gap-3">
+            <div th:each="medio : ${listaMediosDePago}" class="form-check mx-3">
+              <input class="form-check-input" type="radio"
+                     name="medioPago.id"
+                     th:id="'medioPago-' + ${medio.id}"
+                     th:value="${medio.id}" required>
+              <label class="form-check-label" th:for="'medioPago-' + ${medio.id}" th:text="${medio.medioDePago}"></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 d-flex align-items-end">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura">
+            <label class="form-check-label" for="necesitaFactura">¿Necesita factura?</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center mt-4">
+      <button type="submit" class="btn btn-crear-odt text-white px-4 py-2">Crear orden</button>
+    </div>
+  </form>
+</div>
+
+
+<script th:src="@{/js/crear-carpeta-solapa.js}"></script>
+</body>
+</html>
