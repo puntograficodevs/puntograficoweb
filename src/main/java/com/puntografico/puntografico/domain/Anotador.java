@@ -6,9 +6,9 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "agenda")
+@Table(name = "anotador")
 @Getter @Setter
-public class Agenda {
+public class Anotador {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,12 +17,11 @@ public class Agenda {
     @Column(nullable = false)
     private String medida;
 
-    private String tipoTapaPersonalizada;
+    @Column(nullable = false)
+    private String tipoTapa;
 
     @Column(nullable = false)
     private int cantidadHojas;
-
-    private int cantidad;
 
     private String enlaceArchivo;
 
@@ -30,11 +29,5 @@ public class Agenda {
 
     private String informacionAdicional;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_tipo_tapa_agenda")
-    private TipoTapaAgenda tipoTapaAgenda;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_tipo_color_agenda")
-    private TipoColorAgenda tipoColorAgenda;
+    private int cantidad;
 }
