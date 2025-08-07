@@ -36,8 +36,6 @@ public class CierraBolsasService {
         String opcionCantidad = request.getParameter("cantidadCierraBolsas.id");
         String cantidad = request.getParameter("cantidad");
 
-
-
         Assert.notNull(tipoTroquelado, "El tipo de troquelado es un dato obligatorio.");
         Assert.notNull(medida, "La medida es un dato obligatorio.");
         Assert.notNull(opcionCantidad, "La opción de cantidad es un dato obligatorio.");
