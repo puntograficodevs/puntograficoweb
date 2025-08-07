@@ -1,8 +1,6 @@
 package com.puntografico.puntografico.controller;
 
-import com.puntografico.puntografico.domain.PlantillaAgenda;
 import com.puntografico.puntografico.domain.PlantillaCarpetaSolapa;
-import com.puntografico.puntografico.repository.PlantillaAgendaRepository;
 import com.puntografico.puntografico.repository.PlantillaCarpetaSolapaRepository;
 import com.puntografico.puntografico.service.PlantillaCarpetaSolapaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/plantilla-carpeta-solapa")
-public class PlantillaCarpetaSolapaController {
+public class PlantillaCarpetaSolapaRestController {
     @Autowired
     private PlantillaCarpetaSolapaRepository plantillaCarpetaSolapaRepository;
 

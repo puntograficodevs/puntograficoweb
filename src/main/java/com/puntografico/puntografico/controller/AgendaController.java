@@ -58,6 +58,4 @@ public class AgendaController {
         OrdenAgenda ordenAgenda = ordenAgendaService.crear(ordenTrabajo, agenda);
         return "redirect:/mostrar-odt-agenda/" + ordenAgenda.getId();
     }
-
-
 }
