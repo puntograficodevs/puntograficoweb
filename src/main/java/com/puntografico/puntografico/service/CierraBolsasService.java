@@ -36,6 +36,8 @@ public class CierraBolsasService {
         String opcionCantidad = request.getParameter("cantidadCierraBolsas.id");
         String cantidad = request.getParameter("cantidad");
 
+
+
         Assert.notNull(tipoTroquelado, "El tipo de troquelado es un dato obligatorio.");
         Assert.notNull(medida, "La medida es un dato obligatorio.");
         Assert.notNull(opcionCantidad, "La opción de cantidad es un dato obligatorio.");
@@ -45,6 +47,10 @@ public class CierraBolsasService {
         TipoTroqueladoCierraBolsas tipoTroqueladoCierraBolsas = tipoTroqueladoCierraBolsasRepository.findById(Long.parseLong(tipoTroquelado)).get();
         MedidaCierraBolsas medidaCierraBolsas = medidaCierraBolsasRepository.findById(Long.parseLong(medida)).get();
         CantidadCierraBolsas cantidadCierraBolsas = cantidadCierraBolsasRepository.findById(Long.parseLong(opcionCantidad)).get();
+
+        if (cantidad.isBlank() || cantidad.isEmpty()) {
+            cantidad = cantidadCierraBolsas.getCantidad();
+        }
 
         cierraBolsas.setTipoTroqueladoCierraBolsas(tipoTroqueladoCierraBolsas);
         cierraBolsas.setMedidaCierraBolsas(medidaCierraBolsas);

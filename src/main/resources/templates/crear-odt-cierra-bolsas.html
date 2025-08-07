@@ -65,40 +65,46 @@
       <h5 class="mt-4 datos-del-producto">Datos del Producto</h5>
 
       <div class="row mb-3">
+        <!-- MEDIDA -->
+        <div class="col-md-4">
+          <label class="form-label">Medida *</label>
+          <div th:each="medida : ${listaMedidaCierraBolsas}" class="form-check">
+            <input class="form-check-input medida-radio" type="radio" name="medidaCierraBolsas.id"
+                   th:id="'medida-' + ${medida.id}" th:value="${medida.id}" th:data-medida="${medida.medida}" required>
+            <label class="form-check-label" th:for="'medida-' + ${medida.id}" th:text="${medida.medida}"></label>
+          </div>
+
+          <!-- INPUT PERSONALIZADO -->
+          <div class="mt-2 d-none" id="medidaPersonalizadaGroup">
+            <label for="medidaPersonalizada" class="form-label">Medida personalizada</label>
+            <input type="text" class="form-control" name="medidaPersonalizada" id="medidaPersonalizada" placeholder="Ej: 9x12 cm">
+          </div>
+        </div>
+
+        <!-- TIPO DE TROQUELADO -->
         <div class="col-md-4">
           <label class="form-label">Tipo de troquelado *</label>
           <div th:each="tipo : ${listaTipoTroqueladoCierraBolsas}" class="form-check">
-            <input class="form-check-input" type="radio" name="tipoTroqueladoCierraBolsas.id" th:id="'tipo-' + ${tipo.id}" th:value="${tipo.id}" required>
+            <input class="form-check-input" type="radio" name="tipoTroqueladoCierraBolsas.id"
+                   th:id="'tipo-' + ${tipo.id}" th:value="${tipo.id}" required>
             <label class="form-check-label" th:for="'tipo-' + ${tipo.id}" th:text="${tipo.tipo}"></label>
           </div>
         </div>
 
-        <div class="col-md-4">
-          <label class="form-label">Medida *</label>
-          <div th:each="medida : ${listaMedidaCierraBolsas}" class="form-check">
-            <input class="form-check-input medida-radio" type="radio" name="medidaCierraBolsas.id" th:id="'medida-' + ${medida.id}" th:value="${medida.id}" th:data-medida="${medida.medida}" required>
-            <label class="form-check-label" th:for="'medida-' + ${medida.id}" th:text="${medida.medida}"></label>
-          </div>
-        </div>
-
-        <div class="col-md-4 d-none" id="medidaPersonalizadaGroup">
-          <label for="medidaPersonalizada" class="form-label">Medida personalizada</label>
-          <input type="text" class="form-control" name="medidaPersonalizada" id="medidaPersonalizada" placeholder="Ej: 9x12 cm">
-        </div>
-      </div>
-
-      <div class="row mb-3">
+        <!-- CANTIDAD -->
         <div class="col-md-4">
           <label class="form-label">Cantidad *</label>
           <div th:each="cant : ${listaCantidadCierraBolsas}" class="form-check">
-            <input class="form-check-input cantidad-radio" type="radio" name="cantidadCierraBolsas.id" th:id="'cantidad-' + ${cant.id}" th:value="${cant.id}" th:data-cantidad="${cant.cantidad}" required>
+            <input class="form-check-input cantidad-radio" type="radio" name="cantidadCierraBolsas.id"
+                   th:id="'cantidad-' + ${cant.id}" th:value="${cant.id}" th:data-cantidad="${cant.cantidad}" required>
             <label class="form-check-label" th:for="'cantidad-' + ${cant.id}" th:text="${cant.cantidad}"></label>
           </div>
-        </div>
 
-        <div class="col-md-4 d-none" id="cantidadManualGroup">
-          <label for="cantidad" class="form-label">Cantidad personalizada *</label>
-          <input type="number" class="form-control" name="cantidad" id="cantidad" placeholder="Ej: 750">
+          <!-- INPUT PERSONALIZADO -->
+          <div class="mt-2 d-none" id="cantidadManualGroup">
+            <label for="cantidad" class="form-label">Cantidad personalizada *</label>
+            <input type="number" class="form-control" name="cantidad" id="cantidad" placeholder="Ej: 750">
+          </div>
         </div>
       </div>
 
