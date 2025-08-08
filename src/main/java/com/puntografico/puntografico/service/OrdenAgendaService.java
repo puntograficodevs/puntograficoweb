@@ -18,7 +18,7 @@ public class OrdenAgendaService {
 
     public OrdenAgenda crear(OrdenTrabajo ordenTrabajo, Agenda agenda) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
-        Assert.notNull(agenda, "Debe venir una agenda para enlazar");
+        Assert.notNull(agenda, "Debe venir una agenda para enlazar.");
 
         OrdenAgenda ordenAgenda = new OrdenAgenda();
         ordenAgenda.setCantidad(agenda.getCantidad());
