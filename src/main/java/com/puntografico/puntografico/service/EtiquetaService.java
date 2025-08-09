@@ -73,7 +73,7 @@ public class EtiquetaService {
         etiqueta.setTipoFazEtiqueta(tipoFazEtiqueta);
         etiqueta.setCantidadEtiqueta(cantidadEtiqueta);
         etiqueta.setMedidaEtiqueta(medidaEtiqueta);
-        etiqueta.setCantidad(Integer.parseInt(cantidadEtiquetaString));
+        etiqueta.setCantidad(Integer.parseInt(cantidadString));
 
         return etiquetaRepository.save(etiqueta);
     }
