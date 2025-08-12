@@ -26,27 +26,27 @@ public class OpcionesFolletoService {
         this.cantidadFolletoRepository = cantidadFolletoRepository;
     }
 
-    List<TipoPapelFolleto> buscarTodosTipoPapelFolleto() {
+    public List<TipoPapelFolleto> buscarTodosTipoPapelFolleto() {
         return tipoPapelFolletoRepository.findAll();
     }
 
-    List<TipoColorFolleto> buscarTodosTipoColorFolleto() {
+    public List<TipoColorFolleto> buscarTodosTipoColorFolleto() {
         return tipoColorFolletoRepository.findAll();
     }
 
-    List<TipoFazFolleto> buscarTodosTipoFazFolleto() {
+    public List<TipoFazFolleto> buscarTodosTipoFazFolleto() {
         return tipoFazFolletoRepository.findAll();
     }
 
-    List<TamanioHojaFolleto> buscarTodosTamanioHojaFolleto() {
+    public List<TamanioHojaFolleto> buscarTodosTamanioHojaFolleto() {
         return tamanioHojaFolletoRepository.findAll();
     }
 
-    List<TipoFolleto> buscarTodosTipoFolleto() {
+    public List<TipoFolleto> buscarTodosTipoFolleto() {
         return tipoFolletoRepository.findAll();
     }
 
-    List<CantidadFolleto> buscarTodosCantidadFolleto() {
+    public List<CantidadFolleto> buscarTodosCantidadFolleto() {
         return cantidadFolletoRepository.findAll();
     }
 }
