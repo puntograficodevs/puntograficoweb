@@ -20,7 +20,7 @@ public class HojasMembreteadas {
     private int cantidad;
 
     @Column(nullable = false)
-    private int cantidad_hojas;
+    private int cantidadHojas;
 
     private String enlaceArchivo;
 
