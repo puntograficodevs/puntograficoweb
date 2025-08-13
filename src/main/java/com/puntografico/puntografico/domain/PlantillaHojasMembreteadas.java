@@ -18,7 +18,7 @@ public class PlantillaHojasMembreteadas {
     private int precio;
 
     @Column(nullable = false)
-    private int cantidad_hojas;
+    private int cantidadHojas;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_medida_hojas_membreteadas")

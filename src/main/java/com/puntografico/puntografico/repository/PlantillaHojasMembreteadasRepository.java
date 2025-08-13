@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface PlantillaHojasMembreteadasRepository extends JpaRepository<PlantillaHojasMembreteadas, Long> {
-    Optional<PlantillaHojasMembreteadas> findByCantidadHojasAnd_MedidaHojasMembreteadas_IdAndTipoColorHojasMembreteadas_IdCantidadHojasMembreteadas_Id(
+    Optional<PlantillaHojasMembreteadas> findByCantidadHojasAndMedidaHojasMembreteadas_IdAndTipoColorHojasMembreteadas_IdAndCantidadHojasMembreteadas_Id(
             int cantidadHojas, Long medidaHojasMembreteadasId, Long tipoColorHojasMembreteadasId, Long cantidadHojasMembreteadasid
     );
 }
