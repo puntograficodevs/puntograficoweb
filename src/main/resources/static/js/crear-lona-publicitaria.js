@@ -2,16 +2,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggleFechaMuestra = document.getElementById("toggleFechaMuestra");
   const fechaMuestraRow = document.getElementById("fechaMuestraRow");
 
-  const tipoRadios = document.querySelectorAll("input[name='tipoLonaComun.id']");
-  const medidaRadios = document.querySelectorAll("input[name='medidaLonaComun.id']");
-  const medidaPersonalizadaGroup = document.getElementById("medidaPersonalizadaGroup");
-  const medidaPersonalizadaInput = document.getElementById("medidaPersonalizada");
+  const tipoRadios = document.querySelectorAll("input[name='tipoLonaPublicitaria.id']");
+  const medidaRadios = document.querySelectorAll("input[name='medidaLonaPublicitaria.id']");
   const cantidadInput = document.getElementById("cantidad");
   const totalInput = document.getElementById("total");
   const abonadoInput = document.getElementById("abonado");
   const restaInput = document.getElementById("resta");
-  const bolsillosCheckbox = document.getElementById("lona-comun-con-bolsillos");
-  const adicionalDisenioCheckbox = document.getElementById("lona-comun-con-adicional-disenio");
+  const adicionalPortabannerCheckbox = document.getElementById("lona-publicitaria-con-adicional-portabanner");
+  const ojalesCheckbox = document.getElementById("lona-publicitaria-con-ojales");
+  const ojalesConRefuerzoCheckbox = document.getElementById("lona-publicitaria-con-ojales-con-refuerzo");
+  const bolsillosCheckbox = document.getElementById("lona-publicitaria-con-bolsillos");
+  const demasiaParaTensadoCheckbox = document.getElementById("lona-publicitaria-con-demasia-para-tensado");
+  const solapadoCheckbox = document.getElementById("lona-publicitaria-con-solapado");
+  const adicionalDisenioCheckbox = document.getElementById("lona-publicitaria-con-adicional-disenio");
   const medioPagoRadios = document.querySelectorAll("input[name='medioPago.id']");
 
   // Variables internas
@@ -24,25 +27,14 @@ document.addEventListener("DOMContentLoaded", () => {
     fechaMuestraRow.classList.toggle("d-none", !toggleFechaMuestra.checked);
   });
 
-  // 2. Mostrar input personalizada medida si eligieron OTRA
-  medidaRadios.forEach(radio => {
-    radio.addEventListener("change", () => {
-      const texto = radio.nextElementSibling.textContent.trim().toUpperCase();
-      if (texto === "OTRA") {
-        medidaPersonalizadaGroup.classList.remove("d-none");
-        medidaPersonalizadaInput.required = true;
-      } else {
-        medidaPersonalizadaGroup.classList.add("d-none");
-        medidaPersonalizadaInput.required = false;
-        medidaPersonalizadaInput.value = "";
-      }
-      buscarPrecio();
-    });
-  });
-
   // 4. Inputs personalizados disparan búsqueda también
   cantidadInput.addEventListener("input", buscarPrecio);
   bolsillosCheckbox.addEventListener("change", buscarPrecio);
+  adicionalPortabannerCheckbox.addEventListener("change", buscarPrecio);
+  ojalesCheckbox.addEventListener("change", buscarPrecio);
+  ojalesConRefuerzoCheckbox.addEventListener("change", buscarPrecio);
+  demasiaParaTensadoCheckbox.addEventListener("change", buscarPrecio);
+  solapadoCheckbox.addEventListener("change", buscarPrecio);
   [tipoRadios, medidaRadios].forEach(grupo => {
       grupo.forEach(radio => radio.addEventListener("change", buscarPrecio));
     });
@@ -83,15 +75,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function buscarPrecio() {
     const cantidad = parseInt(cantidadInput.value) || 0;
+    const conAdicionalPortabanner = adicionalPortabannerCheckbox.checked;
+    const conOjales = ojalesCheckbox.checked;
+    const conOjalesConRefuerzo = ojalesConRefuerzoCheckbox.checked;
     const conBolsillos = bolsillosCheckbox.checked;
+    const conDemasiaParaTensado = demasiaParaTensadoCheckbox.checked;
+    const conSolapado = solapadoCheckbox.checked;
     const tipoId = getCheckedValue(tipoRadios);
-    let medidaId = getCheckedValue(medidaRadios);
-    const medidaSeleccionada = medidaRadios.length > 0
-      ? Array.from(medidaRadios).find(r => r.checked)?.nextElementSibling.textContent.trim().toUpperCase()
-      : null;
-    if (medidaSeleccionada === "OTRA") {
-      medidaId = 5;
-    }
+    const medidaId = getCheckedValue(medidaRadios);
 
     if (!tipoId || !medidaId || !cantidad) {
       // Falta algo, limpio precio y dejo total editable
@@ -107,12 +98,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Armar query params
     const params = new URLSearchParams({
+      conAdicionalPortabanner: conAdicionalPortabanner,
+      conOjales: conOjales,
+      conOjalesConRefuerzo: conOjalesConRefuerzo,
       conBolsillos: conBolsillos,
-      medidaLonaComunId: medidaId,
-      tipoLonaComunId: tipoId
+      conDemasiaParaTensado: conDemasiaParaTensado,
+      conSolapado: conSolapado,
+      medidaLonaPublicitariaId: medidaId,
+      tipoLonaPublicitariaId: tipoId
     });
 
-    fetch(`/api/plantilla-lona-comun/precio?${params.toString()}`)
+    fetch(`/api/plantilla-lona-publicitaria/precio?${params.toString()}`)
       .then(res => (res.ok ? res.text() : null))
       .then(data => {
         if (data !== null && data !== "") {

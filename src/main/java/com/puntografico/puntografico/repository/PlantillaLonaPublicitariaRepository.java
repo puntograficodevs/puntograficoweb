@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface PlantillaLonaPublicitariaRepository extends JpaRepository<PlantillaLonaPublicitaria, Long> {
-    Optional<PlantillaLonaPublicitaria> findByConAdicionalPortabannerAndConOjalesAndConOjalesConRefuerzoAndConBolsillosAndConDemasiaParaTensadoAndConSolapadoAndMedidaLonaPublictaria_IdAndTipoLonaPublicitaria_Id(
+    Optional<PlantillaLonaPublicitaria> findByConAdicionalPortabannerAndConOjalesAndConOjalesConRefuerzoAndConBolsillosAndConDemasiaParaTensadoAndConSolapadoAndMedidaLonaPublicitaria_IdAndTipoLonaPublicitaria_Id(
             boolean conAdicionalPortabanner, boolean conOjales, boolean conOjalesConRefuerzo, boolean conBolsillos, boolean conDemasiaParaTensado, boolean conSolapado, Long medidaLonaPublicitariaId, Long tipoLonaPublicitariaId
     );
 }
