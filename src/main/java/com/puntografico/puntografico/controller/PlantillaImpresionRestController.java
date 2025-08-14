@@ -29,7 +29,7 @@ public class PlantillaImpresionRestController {
             @RequestParam Long tipoImpresionId
     ) {
         Optional<PlantillaImpresion> plantilla = plantillaImpresionRepository
-                .findByTipoColorImpresion_IdAndTamanioHojaImpresion_IdAndTipoFazImpresion_IdAndTipoPapelImpresion_IdCantidadImpresion_IdAndTipoImpresion_Id(
+                .findByTipoColorImpresion_IdAndTamanioHojaImpresion_IdAndTipoFazImpresion_IdAndTipoPapelImpresion_IdAndCantidadImpresion_IdAndTipoImpresion_Id(
                         tipoColorImpresionId, tamanioHojaImpresionId, tipoFazImpresionId, tipoPapelImpresionId, cantidadImpresionId, tipoImpresionId
                 );
 

@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface PlantillaImpresionRepository extends JpaRepository<PlantillaImpresion, Long> {
-    Optional<PlantillaImpresion> findByTipoColorImpresion_IdAndTamanioHojaImpresion_IdAndTipoFazImpresion_IdAndTipoPapelImpresion_IdCantidadImpresion_IdAndTipoImpresion_Id(
+    Optional<PlantillaImpresion> findByTipoColorImpresion_IdAndTamanioHojaImpresion_IdAndTipoFazImpresion_IdAndTipoPapelImpresion_IdAndCantidadImpresion_IdAndTipoImpresion_Id(
             Long tipoColorImpresionId, Long tamanioHojaImpresionId, Long tipoFazImpresionId, Long tipoPapelImpresionId, Long cantidadImpresionId, Long tipoImpresionId
     );
 }
