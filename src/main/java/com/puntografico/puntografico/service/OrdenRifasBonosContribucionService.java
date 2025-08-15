@@ -1,0 +1,35 @@
+package com.puntografico.puntografico.service;
+
+import com.puntografico.puntografico.domain.OrdenRifasBonosContribucion;
+import com.puntografico.puntografico.domain.OrdenTrabajo;
+import com.puntografico.puntografico.domain.RifasBonosContribucion;
+import com.puntografico.puntografico.repository.OrdenRifasBonosContribucionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+
+import javax.transaction.Transactional;
+
+@Service @Transactional
+public class OrdenRifasBonosContribucionService {
+
+    @Autowired
+    private OrdenRifasBonosContribucionRepository ordenRifasBonosContribucionRepository;
+
+    public OrdenRifasBonosContribucion crear (OrdenTrabajo ordenTrabajo, RifasBonosContribucion rifasBonosContribucion) {
+        Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
+        Assert.notNull(rifasBonosContribucion, "Debe venir una rifa o un bono contribución para enlazar.");
+
+        OrdenRifasBonosContribucion ordenRifasBonosContribucion = new OrdenRifasBonosContribucion();
+        ordenRifasBonosContribucion.setOrdenTrabajo(ordenTrabajo);
+        ordenRifasBonosContribucion.setRifasBonosContribucion(rifasBonosContribucion);
+        ordenRifasBonosContribucion.setCantidad(rifasBonosContribucion.getCantidad());
+
+        return ordenRifasBonosContribucionRepository.save(ordenRifasBonosContribucion);
+    }
+
+    public OrdenRifasBonosContribucion buscarPorId(Long id) {
+        return ordenRifasBonosContribucionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("OrdenRifasBonosContribucion con ID " + id + " no encontrada"));
+    }
+}
