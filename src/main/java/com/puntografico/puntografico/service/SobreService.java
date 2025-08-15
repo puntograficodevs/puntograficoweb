@@ -35,7 +35,6 @@ public class SobreService {
         String tipoColorSobreString = request.getParameter("tipoColorSobre.id");
         String cantidadSobreString = request.getParameter("cantidadSobre.id");
         String cantidadString = request.getParameter("cantidad");
-        int cantidad = Integer.parseInt(cantidadString);
 
         Assert.notNull(medidaSobreString, "medidaSobre es un dato obligatorio.");
         Assert.notNull(tipoColorSobreString, "tipoColorSobre es un dato obligatorio.");
@@ -45,8 +44,12 @@ public class SobreService {
         TipoColorSobre tipoColorSobre = tipoColorSobreRepository.findById(Long.parseLong(tipoColorSobreString)).get();
         CantidadSobre cantidadSobre = cantidadSobreRepository.findById(Long.parseLong(cantidadSobreString)).get();
 
+        int cantidad;
+
         if (cantidadSobre.getId() != 4) {
             cantidad = Integer.parseInt(cantidadSobre.getCantidad());
+        } else {
+            cantidad = Integer.parseInt(cantidadString);
         }
 
         Sobre sobre = new Sobre();
