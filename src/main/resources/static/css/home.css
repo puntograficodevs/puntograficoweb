@@ -18,12 +18,30 @@ body, html {
     padding: 0;
     height: 100%;
     font-family: 'Montserrat';
-    font-size: 0.95rem;
+    font-size: 1.05rem;
 }
 
 .navbar {
-    padding: 1em;
+    padding: 0.25em;
     background-color: #E52987 !important;
+}
+
+.palabra-menu {
+    color: #ffffff;
+}
+
+.nav-nombre-usuario {
+    font-family: 'Nanum';
+    color: #efcf00;
+    font-size: 1.7rem;
+}
+
+.nav-nombre-usuario:hover {
+    color: #ffffff;
+}
+
+.bi-house-fill {
+    margin-top: -3px;
 }
 
 img.isologotipo {
@@ -32,4 +50,12 @@ img.isologotipo {
 
 .navbar p {
     margin-bottom: 0;
+}
+
+.custom-gap {
+  gap: 6px; /* Bootstrap gap-1 = 4px, gap-2 = 8px → este es intermedio */
+}
+
+.custom-nav .nav-item + .nav-item {
+  margin-left: 16px;
 }
