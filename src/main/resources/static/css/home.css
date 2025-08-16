@@ -23,6 +23,11 @@ body, html {
 
 .navbar {
     padding: 1em;
+    background-color: #E52987 !important;
+}
+
+img.isologotipo {
+    width: 100px;
 }
 
 .navbar p {
