@@ -148,14 +148,15 @@ document.addEventListener("DOMContentLoaded", () => {
           creditoAplicado = false;
           adicionalDisenioCheckbox.checked = false;
           medioPagoRadios.forEach(r => r.checked = false);
+
           totalInput.value = totalActual;
-          totalInput.disabled = true;
+          totalInput.readOnly = true; // <-- Cambiado
           actualizarResta();
         } else {
           // No hay precio asociado, dejo total editable
           precioBase = null;
           totalInput.value = "";
-          totalInput.disabled = false;
+          totalInput.readOnly = false; // <-- Cambiado
           totalActual = 0;
           actualizarResta();
         }
