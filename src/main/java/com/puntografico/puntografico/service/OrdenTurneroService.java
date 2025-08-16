@@ -1,0 +1,32 @@
+package com.puntografico.puntografico.service;
+
+import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.repository.OrdenTurneroRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+
+import javax.transaction.Transactional;
+
+@Service @Transactional
+public class OrdenTurneroService {
+
+    @Autowired
+    private OrdenTurneroRepository ordenTurneroRepository;
+
+    public OrdenTurnero crear(OrdenTrabajo ordenTrabajo, Turnero turnero) {
+        Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
+        Assert.notNull(turnero, "Debe venir un turnero para enlazar.");
+
+        OrdenTurnero ordenTurnero = new OrdenTurnero();
+        ordenTurnero.setCantidad(turnero.getCantidad());
+        ordenTurnero.setOrdenTrabajo(ordenTrabajo);
+        ordenTurnero.setTurnero(turnero);
+
+        return ordenTurneroRepository.save(ordenTurnero);
+    }
+
+    public OrdenTurnero buscarPorId(Long id) {
+        return ordenTurneroRepository.findById(id).orElseThrow(() -> new RuntimeException("OrdenTurnero con ID " + id + " no encontrada."));
+    }
+}
