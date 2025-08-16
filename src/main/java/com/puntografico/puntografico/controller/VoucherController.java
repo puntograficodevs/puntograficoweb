@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class VoucherController {
     private OrdenVoucherService ordenVoucherService;
 
     @GetMapping("/crear-odt-voucher")
-    public String verCrearOdtVoucher(Model model) {
+    public String verCrearOdtVoucher(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<MedidaVoucher> listaMedidaVoucher = opcionesVoucherService.buscarTodosMedidaVoucher();
         List<TipoPapelVoucher> listaTipoPapelVoucher = opcionesVoucherService.buscarTodosTipoPapelVoucher();
         List<TipoFazVoucher> listaTipoFazVoucher = opcionesVoucherService.buscarTodosTipoFazVoucher();
@@ -49,7 +58,15 @@ public class VoucherController {
     }
 
     @GetMapping("/mostrar-odt-voucher/{ordenVoucherId}")
-    public String verOrdenVoucher(@PathVariable("ordenVoucherId") Long ordenVoucherId, Model model) {
+    public String verOrdenVoucher(@PathVariable("ordenVoucherId") Long ordenVoucherId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenVoucher ordenVoucher = ordenVoucherService.buscarPorId(ordenVoucherId);
 
         model.addAttribute("ordenVoucher", ordenVoucher);

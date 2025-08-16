@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -32,9 +33,16 @@ public class AnotadorController {
 
 
     @GetMapping("/crear-odt-anotador")
-    public String verCrearOdtAnotador(Model model) {
+    public String verCrearOdtAnotador(HttpSession session, Model model) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
+        model.addAttribute("empleado", empleado);
         model.addAttribute("anotador", new Anotador());
         model.addAttribute("listaMediosDePago", listaMediosDePago);
 
@@ -42,7 +50,15 @@ public class AnotadorController {
     }
 
     @GetMapping("/mostrar-odt-anotador/{ordenAnotadorId}")
-    public String verOrdenAnotador(@PathVariable("ordenAnotadorId") Long ordenAnotadorId, Model model) {
+    public String verOrdenAnotador(@PathVariable("ordenAnotadorId") Long ordenAnotadorId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenAnotador ordenAnotador = ordenAnotadorService.buscarPorId(ordenAnotadorId);
 
         model.addAttribute("ordenAnotador", ordenAnotador);

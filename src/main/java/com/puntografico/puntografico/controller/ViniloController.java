@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class ViniloController {
     private OrdenViniloService ordenViniloService;
 
     @GetMapping("/crear-odt-vinilo")
-    public String verCrearOdtVinilo(Model model) {
+    public String verCrearOdtVinilo(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<TipoVinilo> listaTipoVinilo = opcionesViniloService.buscarTodosTipoVinilo();
         List<TipoAdicionalVinilo> listaTipoAdicionalVinilo = opcionesViniloService.buscarTodosTipoAdicionalVinilo();
         List<TipoCorteVinilo> listaTipoCorteVinilo = opcionesViniloService.buscarTodosTipoCorteVinilo();
@@ -51,7 +60,15 @@ public class ViniloController {
     }
 
     @GetMapping("/mostrar-odt-vinilo/{ordenViniloId}")
-    public String verOrdenVinilo(@PathVariable("ordenViniloId") Long ordenViniloId, Model model) {
+    public String verOrdenVinilo(@PathVariable("ordenViniloId") Long ordenViniloId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenVinilo ordenVinilo = ordenViniloService.buscarPorId(ordenViniloId);
 
         model.addAttribute("ordenVinilo", ordenVinilo);

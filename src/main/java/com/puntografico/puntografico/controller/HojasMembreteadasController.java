@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class HojasMembreteadasController {
     private OrdenHojasMembreteadasService ordenHojasMembreteadasService;
 
     @GetMapping("/crear-odt-hojas-membreteadas")
-    public String verCreadOdtHojasMembreteadas(Model model) {
+    public String verCreadOdtHojasMembreteadas(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<MedidaHojasMembreteadas> listaMedidaHojasMembreteadas = opcionesHojasMembreteadasService.buscarTodosMedidaHojasMembreteadas();
         List<TipoColorHojasMembreteadas> listaTipoColorHojasMembreteadas = opcionesHojasMembreteadasService.buscarTodosTipoColorHojasMembreteadas();
         List<CantidadHojasMembreteadas> listaCantidadHojasMembreteadas = opcionesHojasMembreteadasService.buscarTodosCantidadHojasMembreteadas();
@@ -47,7 +56,15 @@ public class HojasMembreteadasController {
     }
 
     @GetMapping("/mostrar-odt-hojas-membreteadas/{ordenHojasMembreteadasId}")
-    public String verOrdenHojasMembreteadas(@PathVariable("ordenHojasMembreteadasId") Long ordenHojasMembreteadasId, Model model) {
+    public String verOrdenHojasMembreteadas(@PathVariable("ordenHojasMembreteadasId") Long ordenHojasMembreteadasId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenHojasMembreteadas ordenHojasMembreteadas = ordenHojasMembreteadasService.buscarPorId(ordenHojasMembreteadasId);
 
         model.addAttribute("ordenHojasMembreteadas", ordenHojasMembreteadas);

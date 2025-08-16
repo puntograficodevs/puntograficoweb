@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class TalonarioController {
     private OrdenTalonarioService ordenTalonarioService;
 
     @GetMapping("/crear-odt-talonario")
-    public String verCrearOdtTalonario(Model model) {
+    public String verCrearOdtTalonario(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<TipoTalonario> listaTipoTalonario = opcionesTalonarioService.buscarTodosTipoTalonario();
         List<TipoTroqueladoTalonario> listaTipoTroqueladoTalonario = opcionesTalonarioService.buscarTodosTipoTroqueladoTalonario();
         List<ModoTalonario> listaModoTalonario = opcionesTalonarioService.buscarTodosModoTalonario();
@@ -55,7 +64,15 @@ public class TalonarioController {
     }
 
     @GetMapping("/mostrar-odt-talonario/{ordenTalonarioId}")
-    public String verOrdenTalonario(@PathVariable("ordenTalonarioId") Long ordenTalonarioId, Model model) {
+    public String verOrdenTalonario(@PathVariable("ordenTalonarioId") Long ordenTalonarioId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenTalonario ordenTalonario = ordenTalonarioService.buscarPorId(ordenTalonarioId);
 
         model.addAttribute("ordenTalonario", ordenTalonario);

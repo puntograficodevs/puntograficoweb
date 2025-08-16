@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,14 @@ public class CarpetaSolapaController {
     private OrdenCarpetaSolapaService ordenCarpetaSolapaService;
 
     @GetMapping("/crear-odt-carpeta-solapa")
-    public String verCrearOdtCarpetaSolapa(Model model) {
+    public String verCrearOdtCarpetaSolapa(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
         List<TipoFazCarpetaSolapa> listaTipoFazCarpetaSolapa = opcionesCarpetaSolapaService.buscarTodosTipoFazCarpetaSolapa();
         List<TipoLaminadoCarpetaSolapa> listaTipoLaminadoCarpetaSolapa = opcionesCarpetaSolapaService.buscarTodosTipoLaminadoCarpetaSolapa();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
@@ -45,7 +53,15 @@ public class CarpetaSolapaController {
     }
 
     @GetMapping("/mostrar-odt-carpeta-solapa/{ordenCarpetaSolapaId}")
-    public String verOrdenCarpetaSolapa(@PathVariable("ordenCarpetaSolapaId") Long ordenCarpetaSolapaId, Model model) {
+    public String verOrdenCarpetaSolapa(@PathVariable("ordenCarpetaSolapaId") Long ordenCarpetaSolapaId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenCarpetaSolapa ordenCarpetaSolapa = ordenCarpetaSolapaService.buscarPorId(ordenCarpetaSolapaId);
 
         model.addAttribute("ordenCarpetaSolapa", ordenCarpetaSolapa);

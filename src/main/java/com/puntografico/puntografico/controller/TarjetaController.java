@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class TarjetaController {
     private OrdenTarjetaService ordenTarjetaService;
 
     @GetMapping("/crear-odt-tarjeta")
-    public String verCrearOdtTarjeta(Model model) {
+    public String verCrearOdtTarjeta(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<TipoPapelTarjeta> listaTipoPapelTarjeta = opcionesTarjetaService.buscarTodosTipoPapelTarjeta();
         List<TipoColorTarjeta> listaTipoColorTarjeta = opcionesTarjetaService.buscarTodosTipoColorTarjeta();
         List<TipoFazTarjeta> listaTipoFazTarjeta = opcionesTarjetaService.buscarTodosTipoFazTarjeta();
@@ -53,7 +62,15 @@ public class TarjetaController {
     }
 
     @GetMapping("/mostrar-odt-tarjeta/{ordenTarjetaId}")
-    public String verOrdenTarjeta(@PathVariable("ordenTarjetaId") Long ordenTarjetaId, Model model) {
+    public String verOrdenTarjeta(@PathVariable("ordenTarjetaId") Long ordenTarjetaId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenTarjeta ordenTarjeta = ordenTarjetaService.buscarPorId(ordenTarjetaId);
 
         model.addAttribute("ordenTarjeta", ordenTarjeta);

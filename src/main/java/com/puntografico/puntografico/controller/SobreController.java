@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class SobreController {
     private OrdenSobreService ordenSobreService;
 
     @GetMapping("/crear-odt-sobre")
-    public String verCrearOdtSobre(Model model) {
+    public String verCrearOdtSobre(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<MedidaSobre> listaMedidaSobre = opcionesSobreService.buscarTodosMedidaSobre();
         List<TipoColorSobre> listaTipoColorSobre = opcionesSobreService.buscarTodosTipoColorSobre();
         List<CantidadSobre> listaCantidadSobre = opcionesSobreService.buscarTodosCantidadSobre();
@@ -47,7 +56,15 @@ public class SobreController {
     }
 
     @GetMapping("/mostrar-odt-sobre/{ordenSobreId}")
-    public String verOrdenSobre(@PathVariable("ordenSobreId") Long ordenSobreId, Model model) {
+    public String verOrdenSobre(@PathVariable("ordenSobreId") Long ordenSobreId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenSobre ordenSobre = ordenSobreService.buscarPorId(ordenSobreId);
 
         model.addAttribute("ordenSobre", ordenSobre);

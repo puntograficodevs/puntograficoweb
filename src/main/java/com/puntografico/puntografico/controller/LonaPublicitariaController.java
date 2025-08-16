@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -30,7 +31,15 @@ public class LonaPublicitariaController {
     private OrdenLonaPublicitariaService ordenLonaPublicitariaService;
 
     @GetMapping("/crear-odt-lona-publicitaria")
-    public String verCrearOdtLonaPublicitaria(Model model) {
+    public String verCrearOdtLonaPublicitaria(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<MedidaLonaPublicitaria> listaMedidaLonaPublicitaria = opcionesLonaPublicitariaService.buscarTodosMedidaLonaPublicitaria();
         List<TipoLonaPublicitaria> listaTipoLonaPublicitaria = opcionesLonaPublicitariaService.buscarTodosTipoLonaPublicitaria();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
@@ -44,7 +53,15 @@ public class LonaPublicitariaController {
     }
 
     @GetMapping("/mostrar-odt-lona-publicitaria/{ordenLonaPublicitariaId}")
-    public String verOrdenLonaPublicitaria(@PathVariable("ordenLonaPublicitariaId") Long ordenLonaPublicitariaId, Model model) {
+    public String verOrdenLonaPublicitaria(@PathVariable("ordenLonaPublicitariaId") Long ordenLonaPublicitariaId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenLonaPublicitaria ordenLonaPublicitaria = ordenLonaPublicitariaService.buscarPorId(ordenLonaPublicitariaId);
 
         model.addAttribute("ordenLonaPublicitaria", ordenLonaPublicitaria);

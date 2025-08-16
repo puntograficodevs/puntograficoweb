@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class EtiquetaController {
     private OrdenEtiquetaService ordenEtiquetaService;
 
     @GetMapping("/crear-odt-etiqueta")
-    public String verCrearOdtEtiqueta(Model model) {
+    public String verCrearOdtEtiqueta(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<TipoPapelEtiqueta> listaTipoPapelEtiqueta = opcionesEtiquetaService.buscarTodosTipoPapelEtiqueta();
         List<TipoLaminadoEtiqueta> listaTipoLaminadoEtiqueta = opcionesEtiquetaService.buscarTodosTipoLaminadoEtiqueta();
         List<TamanioPerforacion> listaTamanioPerforacion = opcionesEtiquetaService.buscarTodosTamanioPerforacion();
@@ -53,7 +62,15 @@ public class EtiquetaController {
     }
 
     @GetMapping("/mostrar-odt-etiqueta/{ordenEtiquetaId}")
-    public String verOrdenEtiqueta(@PathVariable("ordenEtiquetaId") Long ordenEtiquetaId, Model model) {
+    public String verOrdenEtiqueta(@PathVariable("ordenEtiquetaId") Long ordenEtiquetaId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenEtiqueta ordenEtiqueta = ordenEtiquetaService.buscarPorId(ordenEtiquetaId);
 
         model.addAttribute("ordenEtiqueta", ordenEtiqueta);

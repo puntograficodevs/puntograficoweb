@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class SublimacionController {
     private OrdenSublimacionService ordenSublimacionService;
 
     @GetMapping("/crear-odt-sublimacion")
-    public String verCrearOdtSublimacion(Model model) {
+    public String verCrearOdtSublimacion(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<MaterialSublimacion> listaMaterialSublimacion = opcionesSublimacionService.buscarTodosMaterialSublimacion();
         List<CantidadSublimacion> listaCantidadSublimacion = opcionesSublimacionService.buscarTodosCantidadSublimacion();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
@@ -45,7 +54,15 @@ public class SublimacionController {
     }
 
     @GetMapping("/mostrar-odt-sublimacion/{ordenSublimacionId}")
-    public String verOrdenSublimacion(@PathVariable("ordenSublimacionId") Long ordenSublimacionId, Model model) {
+    public String verOrdenSublimacion(@PathVariable("ordenSublimacionId") Long ordenSublimacionId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenSublimacion ordenSublimacion = ordenSublimacionService.buscarPorId(ordenSublimacionId);
 
         model.addAttribute("ordenSublimacion", ordenSublimacion);

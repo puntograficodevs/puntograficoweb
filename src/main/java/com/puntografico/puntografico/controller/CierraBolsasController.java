@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class CierraBolsasController {
     private CierraBolsasService cierraBolsasService;
 
     @GetMapping("/crear-odt-cierra-bolsas")
-    public String verCrearOdtCierraBolsas(Model model) {
+    public String verCrearOdtCierraBolsas(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<TipoTroqueladoCierraBolsas> listaTipoTroqueladoCierraBolsas = opcionesCierraBolsasService.buscarTodosTipoTroqueladoCierraBolsas();
         List<MedidaCierraBolsas> listaMedidaCierraBolsas = opcionesCierraBolsasService.buscarTodosMedidaCierraBolsas();
         List<CantidadCierraBolsas> listaCantidadCierraBolsas = opcionesCierraBolsasService.buscarTodosCantidadCierraBolsas();
@@ -47,7 +56,15 @@ public class CierraBolsasController {
     }
 
     @GetMapping("/mostrar-odt-cierra-bolsas/{ordenCierraBolsasId}")
-    public String verOrdenCierraBolsas(@PathVariable("ordenCierraBolsasId") Long ordenCierraBolsasId, Model model) {
+    public String verOrdenCierraBolsas(@PathVariable("ordenCierraBolsasId") Long ordenCierraBolsasId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenCierraBolsas ordenCierraBolsas = ordenCierraBolsasService.buscarPorId(ordenCierraBolsasId);
 
         model.addAttribute("ordenCierraBolsas", ordenCierraBolsas);

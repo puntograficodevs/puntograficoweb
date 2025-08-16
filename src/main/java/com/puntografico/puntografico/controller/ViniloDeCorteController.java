@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class ViniloDeCorteController {
     private OrdenViniloDeCorteService ordenViniloDeCorteService;
 
     @GetMapping("/crear-odt-vinilo-de-corte")
-    public String verCrearOdtViniloDeCorte(Model model) {
+    public String verCrearOdtViniloDeCorte(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<TraeMaterialVinilo> listaTraeMaterialVinilo = opcionesViniloDeCorteService.buscarTodosTraeMaterialVinilo();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
@@ -43,7 +52,15 @@ public class ViniloDeCorteController {
     }
 
     @GetMapping("/mostrar-odt-vinilo-de-corte/{ordenViniloDeCorteId}")
-    public String verOrdenViniloDeCorte(@PathVariable("ordenViniloDeCorteId") Long ordenViniloDeCorteId, Model model) {
+    public String verOrdenViniloDeCorte(@PathVariable("ordenViniloDeCorteId") Long ordenViniloDeCorteId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenViniloDeCorte ordenViniloDeCorte = ordenViniloDeCorteService.buscarPorId(ordenViniloDeCorteId);
 
         model.addAttribute("ordenViniloDeCorte", ordenViniloDeCorte);

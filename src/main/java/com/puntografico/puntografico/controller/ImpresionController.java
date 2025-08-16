@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class ImpresionController {
     private OrdenImpresionService ordenImpresionService;
 
     @GetMapping("/crear-odt-impresion")
-    public String verCrearOdtImpresion(Model model) {
+    public String verCrearOdtImpresion(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<TipoColorImpresion> listaTipoColorImpresion = opcionesImpresionService.buscarTodosTipoColorImpresion();
         List<TamanioHojaImpresion> listaTamanioHojaImpresion = opcionesImpresionService.buscarTodosTamanioHojaImpresion();
         List<TipoFazImpresion> listaTipoFazImpresion = opcionesImpresionService.buscarTodosTipoFazImpresion();
@@ -53,7 +62,15 @@ public class ImpresionController {
     }
 
     @GetMapping("/mostrar-odt-impresion/{ordenImpresionId}")
-    public String verOrdenImpresion(@PathVariable("ordenImpresionId") Long ordenImpresionId, Model model) {
+    public String verOrdenImpresion(@PathVariable("ordenImpresionId") Long ordenImpresionId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenImpresion ordenImpresion = ordenImpresionService.buscarPorId(ordenImpresionId);
 
         model.addAttribute("ordenImpresion", ordenImpresion);

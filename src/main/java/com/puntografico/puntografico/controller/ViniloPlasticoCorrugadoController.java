@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class ViniloPlasticoCorrugadoController {
     private OrdenViniloPlasticoCorrugadoService ordenViniloPlasticoCorrugadoService;
 
     @GetMapping("/crear-odt-vinilo-plastico-corrugado")
-    public String verCrearOdtViniloPlasticoCorrugado(Model model) {
+    public String verCrearOdtViniloPlasticoCorrugado(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<MedidaViniloPlasticoCorrugado> listaMedidaViniloPlasticoCorrugado = opcionesViniloPlasticoCorrugadoService.buscarTodosMedidaViniloPlasticoCorrugado();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
@@ -43,7 +52,15 @@ public class ViniloPlasticoCorrugadoController {
     }
 
     @GetMapping("/mostrar-odt-vinilo-plastico-corrugado/{ordenViniloPlasticoCorrugadoId}")
-    public String verOrdenViniloPlasticoCorrugado(@PathVariable("ordenViniloPlasticoCorrugadoId") Long ordenViniloPlasticoCorrugadoId, Model model) {
+    public String verOrdenViniloPlasticoCorrugado(@PathVariable("ordenViniloPlasticoCorrugadoId") Long ordenViniloPlasticoCorrugadoId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenViniloPlasticoCorrugado ordenViniloPlasticoCorrugado = ordenViniloPlasticoCorrugadoService.buscarPorId(ordenViniloPlasticoCorrugadoId);
 
         model.addAttribute("ordenViniloPlasticoCorrugado", ordenViniloPlasticoCorrugado);

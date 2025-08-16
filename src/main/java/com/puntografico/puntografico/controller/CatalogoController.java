@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class CatalogoController {
     private CatalogoService catalogoService;
 
     @GetMapping("/crear-odt-catalogo")
-    public String verCrearOdtCatalogo(Model model) {
+    public String verCrearOdtCatalogo(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<TipoFazCatalogo> listaTipoFazCatalogo = opcionesCatalogoService.buscarTodosTipoFazCatalogo();
         List<TipoLaminadoCatalogo> listaTipoLaminadoCatalogo = opcionesCatalogoService.buscarTodosTipoLaminadoCatalogo();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
@@ -45,7 +54,15 @@ public class CatalogoController {
     }
 
     @GetMapping("/mostrar-odt-catalogo/{ordenCatalogoId}")
-    public String verOrdenCatalogo(@PathVariable("ordenCatalogoId") Long ordenCatalogoId, Model model) {
+    public String verOrdenCatalogo(@PathVariable("ordenCatalogoId") Long ordenCatalogoId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenCatalogo ordenCatalogo = ordenCatalogoService.buscarPorId(ordenCatalogoId);
 
         model.addAttribute("ordenCatalogo", ordenCatalogo);

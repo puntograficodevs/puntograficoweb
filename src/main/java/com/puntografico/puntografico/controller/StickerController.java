@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class StickerController {
     private OrdenStickerService ordenStickerService;
 
     @GetMapping("/crear-odt-sticker")
-    public String verCrearOdtSticker(Model model) {
+    public String verCrearOdtSticker(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<TipoTroqueladoSticker> listaTipoTroqueladoSticker = opcionesStickerService.buscarTodosTipoTroqueladoSticker();
         List<CantidadSticker> listaCantidadSticker = opcionesStickerService.buscarTodosCantidadSticker();
         List<MedidaSticker> listaMedidaSticker = opcionesStickerService.buscarTodosMedidaSticker();
@@ -47,7 +56,15 @@ public class StickerController {
     }
 
     @GetMapping("/mostrar-odt-sticker/{ordenStickerId}")
-    public String verOrdenSticker(@PathVariable("ordenStickerId") Long ordenStickerId, Model model) {
+    public String verOrdenSticker(@PathVariable("ordenStickerId") Long ordenStickerId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenSticker ordenSticker = ordenStickerService.buscarPorId(ordenStickerId);
 
         model.addAttribute("ordenSticker", ordenSticker);

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class FlybannerController {
     private OrdenFlybannerService ordenFlybannerService;
 
     @GetMapping("/crear-odt-flybanner")
-    public String verCrearOdtFlybanner(Model model) {
+    public String verCrearOdtFlybanner(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<TipoFazFlybanner> listaTipoFazFlybanner = opcionesFlybannerService.buscarTodosTipoFazFlybaner();
         List<AlturaFlybanner> listaAlturaFlybanner = opcionesFlybannerService.buscarTodosAlturaFlybanner();
         List<BanderaFlybanner> listaBanderaFlybanner = opcionesFlybannerService.buscarTodosBanderaFlybanner();
@@ -49,7 +58,15 @@ public class FlybannerController {
     }
 
     @GetMapping("/mostrar-odt-flybanner/{ordenFlybannerId}")
-    public String verOrdenFlybanner(@PathVariable("ordenFlybannerId") Long ordenFlybannerId, Model model) {
+    public String verOrdenFlybanner(@PathVariable("ordenFlybannerId") Long ordenFlybannerId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenFlybanner ordenFlybanner = ordenFlybannerService.buscarPorId(ordenFlybannerId);
 
         model.addAttribute("ordenFlybanner", ordenFlybanner);

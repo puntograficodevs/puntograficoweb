@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class SelloAutomaticoEscolarController {
     private OrdenSelloAutomaticoEscolarService ordenSelloAutomaticoEscolarService;
 
     @GetMapping("/crear-odt-sello-automatico-escolar")
-    public String verCrearOdtSelloAutomaticoEscolar(Model model) {
+    public String verCrearOdtSelloAutomaticoEscolar(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<ModeloSelloAutomaticoEscolar> listaModeloSelloAutomaticoEscolar = opcionesSelloAutomaticoEscolarService.buscarTodosModeloSelloAutomaticoEscolar();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
@@ -43,7 +52,15 @@ public class SelloAutomaticoEscolarController {
     }
 
     @GetMapping("/mostrar-odt-sello-automatico-escolar/{ordenSelloAutomaticoEscolarId}")
-    public String verOrdenSelloAutomaticoEscolar(@PathVariable("ordenSelloAutomaticoEscolarId") Long ordenSelloAutomaticoEscolarId, Model model) {
+    public String verOrdenSelloAutomaticoEscolar(@PathVariable("ordenSelloAutomaticoEscolarId") Long ordenSelloAutomaticoEscolarId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenSelloAutomaticoEscolar ordenSelloAutomaticoEscolar = ordenSelloAutomaticoEscolarService.buscarPorId(ordenSelloAutomaticoEscolarId);
 
         model.addAttribute("ordenSelloAutomaticoEscolar", ordenSelloAutomaticoEscolar);

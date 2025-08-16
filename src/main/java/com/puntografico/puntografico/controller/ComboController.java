@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class ComboController {
     private ComboService comboService;
 
     @GetMapping("/crear-odt-combo")
-    public String verCrearOdtCombo(Model model) {
+    public String verCrearOdtCombo(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
         List<TipoCombo> listaTipoCombo = opcionesComboService.buscarTodosTipoCombo();
 
@@ -43,7 +52,15 @@ public class ComboController {
     }
 
     @GetMapping("/mostrar-odt-combo/{ordenComboId}")
-    public String verOrdenCombo(@PathVariable("ordenComboId") Long ordenComboId, Model model) {
+    public String verOrdenCombo(@PathVariable("ordenComboId") Long ordenComboId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenCombo ordenCombo = ordenComboService.buscarPorId(ordenComboId);
 
         model.addAttribute("ordenCombo", ordenCombo);

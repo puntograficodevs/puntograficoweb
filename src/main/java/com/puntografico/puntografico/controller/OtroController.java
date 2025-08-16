@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class OtroController {
     private OrdenOtroService ordenOtroService;
 
     @GetMapping("/crear-odt-otro")
-    public String verCrearOdtOtro(Model model) {
+    public String verCrearOdtOtro(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<TipoColorOtro> listaTipoColorOtro = opcionesOtroService.buscarTodosTipoColorOtro();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
@@ -43,7 +52,15 @@ public class OtroController {
     }
 
     @GetMapping("/mostrar-odt-otro/{ordenOtroId}")
-    public String verOrdenOtro(@PathVariable("ordenOtroId") Long ordenOtroId, Model model) {
+    public String verOrdenOtro(@PathVariable("ordenOtroId") Long ordenOtroId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenOtro ordenOtro = ordenOtroService.buscarPorId(ordenOtroId);
 
         model.addAttribute("ordenOtro", ordenOtro);

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class LonaComunController {
     private OrdenLonaComunService ordenLonaComunService;
 
     @GetMapping("/crear-odt-lona-comun")
-    public String verCrearOdtLonaComun(Model model) {
+    public String verCrearOdtLonaComun(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<MedidaLonaComun> listaMedidaLonaComun = opcionesLonaComunService.buscarTodosMedidaLonaComun();
         List<TipoLonaComun> listaTipoLonaComun = opcionesLonaComunService.buscarTodosTipoLonaComun();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
@@ -45,7 +54,15 @@ public class LonaComunController {
     }
 
     @GetMapping("/mostrar-odt-lona-comun/{ordenLonaComunId}")
-    public String verOrdenLonaComun(@PathVariable("ordenLonaComunId") Long ordenLonaComunId, Model model) {
+    public String verOrdenLonaComun(@PathVariable("ordenLonaComunId") Long ordenLonaComunId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenLonaComun ordenLonaComun = ordenLonaComunService.buscarPorId(ordenLonaComunId);
 
         model.addAttribute("ordenLonaComun", ordenLonaComun);

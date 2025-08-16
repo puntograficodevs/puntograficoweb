@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class SelloMaderaController {
     private OrdenSelloMaderaService ordenSelloMaderaService;
 
     @GetMapping("/crear-odt-sello-madera")
-    public String verCrearOdtSelloMadera(Model model) {
+    public String verCrearOdtSelloMadera(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<TamanioSelloMadera> listaTamanioSelloMadera = opcionesSelloMaderaService.buscarTodosTamanioSelloMadera();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
@@ -43,7 +52,15 @@ public class SelloMaderaController {
     }
 
     @GetMapping("/mostrar-odt-sello-madera/{ordenSelloMaderaId}")
-    public String verOrdenSelloMadera(@PathVariable("ordenSelloMaderaId") Long ordenSelloMaderaId, Model model) {
+    public String verOrdenSelloMadera(@PathVariable("ordenSelloMaderaId") Long ordenSelloMaderaId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenSelloMadera ordenSelloMadera = ordenSelloMaderaService.buscarPorId(ordenSelloMaderaId);
 
         model.addAttribute("ordenSelloMadera", ordenSelloMadera);

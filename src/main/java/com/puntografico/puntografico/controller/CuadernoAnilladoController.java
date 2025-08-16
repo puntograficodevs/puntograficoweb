@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -31,7 +32,15 @@ public class CuadernoAnilladoController {
     private OrdenCuadernoAnilladoService ordenCuadernoAnilladoService;
 
     @GetMapping("/crear-odt-cuaderno-anillado")
-    public String verCrearOdtCuadernoAnillado(Model model) {
+    public String verCrearOdtCuadernoAnillado(Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         List<TipoTapaCuadernoAnillado> listaTipoTapaCuadernoAnillado = opcionesCuadernoAnilladoService.buscarTodosTipoTapaCuadernoAnillado();
         List<MedidaCuadernoAnillado> listaMedidaCuadernoAnillado = opcionesCuadernoAnilladoService.buscarTodosMedidaCuadernoAnillado();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
@@ -45,7 +54,15 @@ public class CuadernoAnilladoController {
     }
 
     @GetMapping("/mostrar-odt-cuaderno-anillado/{ordenCuadernoAnilladoId}")
-    public String verOrdenCuadernoAnillado(@PathVariable("ordenCuadernoAnilladoId") Long ordenCuadernoAnilladoId, Model model) {
+    public String verOrdenCuadernoAnillado(@PathVariable("ordenCuadernoAnilladoId") Long ordenCuadernoAnilladoId, Model model, HttpSession session) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        model.addAttribute("empleado", empleado);
+
         OrdenCuadernoAnillado ordenCuadernoAnillado = ordenCuadernoAnilladoService.buscarPorId(ordenCuadernoAnilladoId);
 
         model.addAttribute("ordenCuadernoAnillado", ordenCuadernoAnillado);
