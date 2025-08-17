@@ -15,6 +15,7 @@ import org.springframework.util.Assert;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @Transactional
@@ -55,6 +56,7 @@ public class OrdenTrabajoService {
         ordenTrabajo.setNecesitaFactura(request.getParameter("necesitaFactura") != null);
         ordenTrabajo.setTotal(Integer.parseInt(request.getParameter("total")));
         ordenTrabajo.setAbonado(Integer.parseInt(request.getParameter("abonado")));
+        ordenTrabajo.setTipoProducto(request.getParameter("tipoProducto"));
 
         // Calculamos resta (por si no viene en el form o es error)
         int resta = ordenTrabajo.getTotal() - ordenTrabajo.getAbonado();
@@ -84,4 +86,23 @@ public class OrdenTrabajoService {
         return ordenTrabajoRepository.save(ordenTrabajo);
     }
 
+    public List<OrdenTrabajo> buscarEstadoSinHacer(){
+        return ordenTrabajoRepository.findByEstadoOrdenId(1L);
+    };
+
+    public List<OrdenTrabajo> buscarEstadoCorregir(){
+        return ordenTrabajoRepository.findByEstadoOrdenId(5L);
+    };
+
+    public List<OrdenTrabajo> buscarEstadoEnProceso(){
+        return ordenTrabajoRepository.findByEstadoOrdenId(2L);
+    };
+
+    public List<OrdenTrabajo> buscarEstadoListaParaRetirar(){
+        return ordenTrabajoRepository.findByEstadoOrdenId(3L);
+    };
+
+    public List<OrdenTrabajo> buscarTodas() {
+        return ordenTrabajoRepository.findAll();
+    }
 }

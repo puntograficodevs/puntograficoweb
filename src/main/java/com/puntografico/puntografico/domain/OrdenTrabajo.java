@@ -47,6 +47,9 @@ public class OrdenTrabajo {
     @Column(nullable = false)
     private int resta;
 
+    @Column(nullable = false)
+    private String tipoProducto;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_medio_pago")
     private MedioPago medioPago;
