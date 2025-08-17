@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrdenSelloAutomaticoRepository extends JpaRepository<OrdenSelloAutomatico, Long> {
+
+    OrdenSelloAutomatico findByOrdenTrabajo_Id(Long id);
 }

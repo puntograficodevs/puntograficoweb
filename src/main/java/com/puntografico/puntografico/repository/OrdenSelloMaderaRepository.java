@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrdenSelloMaderaRepository extends JpaRepository<OrdenSelloMadera, Long> {
+
+    OrdenSelloMadera findByOrdenTrabajo_Id(Long id);
 }

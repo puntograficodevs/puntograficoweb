@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrdenHojasMembreteadasRepository extends JpaRepository<OrdenHojasMembreteadas, Long> {
+
+    OrdenHojasMembreteadas findByOrdenTrabajo_Id(Long id);
 }

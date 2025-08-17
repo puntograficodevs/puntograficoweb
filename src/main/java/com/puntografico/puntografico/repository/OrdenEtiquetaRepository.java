@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrdenEtiquetaRepository extends JpaRepository<OrdenEtiqueta, Long> {
+
+    OrdenEtiqueta findByOrdenTrabajo_Id(Long id);
 }

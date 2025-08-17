@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrdenRifasBonosContribucionRepository extends JpaRepository<OrdenRifasBonosContribucion, Long> {
+    OrdenRifasBonosContribucion findByOrdenTrabajo_Id(Long id);
 }

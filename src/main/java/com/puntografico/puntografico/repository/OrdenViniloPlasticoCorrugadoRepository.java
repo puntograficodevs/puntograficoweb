@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrdenViniloPlasticoCorrugadoRepository extends JpaRepository<OrdenViniloPlasticoCorrugado, Long> {
+    OrdenViniloPlasticoCorrugado findByOrdenTrabajo_Id(Long id);
 }

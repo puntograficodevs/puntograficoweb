@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrdenImpresionRepository extends JpaRepository<OrdenImpresion, Long> {
+    OrdenImpresion findByOrdenTrabajo_Id(Long id);
 }

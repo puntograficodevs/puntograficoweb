@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrdenFlybannerRepository extends JpaRepository<OrdenFlybanner, Long> {
+
+    OrdenFlybanner findByOrdenTrabajo_Id(Long id);
 }

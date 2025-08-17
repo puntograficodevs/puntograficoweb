@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrdenVoucherRepository extends JpaRepository<OrdenVoucher, Long> {
+    OrdenVoucher findByOrdenTrabajo_Id(Long id);
 }

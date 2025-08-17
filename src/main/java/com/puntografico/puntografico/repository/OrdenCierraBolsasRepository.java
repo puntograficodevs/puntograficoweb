@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrdenCierraBolsasRepository extends JpaRepository<OrdenCierraBolsas, Long> {
+
+    OrdenCierraBolsas findByOrdenTrabajo_Id(Long id);
 }

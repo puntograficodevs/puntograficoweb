@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrdenCuadernoAnilladoRepository extends JpaRepository<OrdenCuadernoAnillado, Long> {
+
+    OrdenCuadernoAnillado findByOrdenTrabajo_Id(Long id);
 }

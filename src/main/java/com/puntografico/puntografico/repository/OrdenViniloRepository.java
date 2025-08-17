@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrdenViniloRepository extends JpaRepository<OrdenVinilo, Long> {
+    OrdenVinilo findByOrdenTrabajo_Id(Long id);
 }

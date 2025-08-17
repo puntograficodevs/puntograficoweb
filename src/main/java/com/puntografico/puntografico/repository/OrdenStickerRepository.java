@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrdenStickerRepository extends JpaRepository<OrdenSticker, Long> {
+
+    OrdenSticker findByOrdenTrabajo_Id(Long id);
 }

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrdenCarpetaSolapaRepository extends JpaRepository<OrdenCarpetaSolapa, Long> {
+    OrdenCarpetaSolapa findByOrdenTrabajo_Id(Long id);
 }
