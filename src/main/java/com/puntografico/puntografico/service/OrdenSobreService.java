@@ -29,4 +29,8 @@ public class OrdenSobreService {
         return ordenSobreRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenSobre con ID " + id + " no encontrada"));
     }
+
+    public OrdenSobre buscarPorOrdenId(Long id) {
+        return ordenSobreRepository.findByOrdenTrabajo_Id(id);
+    }
 }

@@ -1,5 +1,6 @@
 package com.puntografico.puntografico.service;
 
+import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.domain.OrdenViniloDeCorte;
 import com.puntografico.puntografico.domain.ViniloDeCorte;
@@ -31,5 +32,9 @@ public class OrdenViniloDeCorteService {
     public OrdenViniloDeCorte buscarPorId(Long id) {
         return ordenViniloDeCorteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenViniloDeCorte con ID " + id + " no encontrada"));
+    }
+
+    public OrdenViniloDeCorte buscarPorOrdenId(Long id) {
+        return ordenViniloDeCorteRepository.findByOrdenTrabajo_Id(id);
     }
 }

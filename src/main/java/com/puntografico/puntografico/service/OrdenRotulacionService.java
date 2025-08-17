@@ -31,4 +31,8 @@ public class OrdenRotulacionService {
         return ordenRotulacionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenRotulacion con ID " + id + " no encontrada."));
     }
+
+    public OrdenRotulacion buscarPorOrdenId(Long id) {
+        return ordenRotulacionRepository.findByOrdenTrabajo_Id(id);
+    }
 }

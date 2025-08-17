@@ -29,4 +29,8 @@ public class OrdenTurneroService {
     public OrdenTurnero buscarPorId(Long id) {
         return ordenTurneroRepository.findById(id).orElseThrow(() -> new RuntimeException("OrdenTurnero con ID " + id + " no encontrada."));
     }
+
+    public OrdenTurnero buscarPorOrdenId(Long id) {
+        return ordenTurneroRepository.findByOrdenTrabajo_Id(id);
+    }
 }

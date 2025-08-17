@@ -1,5 +1,6 @@
 package com.puntografico.puntografico.service;
 
+import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenSublimacion;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.domain.Sublimacion;
@@ -31,5 +32,9 @@ public class OrdenSublimacionService {
     public OrdenSublimacion buscarPorId(Long id) {
         return ordenSublimacionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenSublimacion con ID " + id + " no encontrada"));
+    }
+
+    public OrdenSublimacion buscarPorOrdenId(Long id) {
+        return ordenSublimacionRepository.findByOrdenTrabajo_Id(id);
     }
 }

@@ -1,6 +1,7 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.Combo;
+import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenCombo;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.OrdenComboRepository;
@@ -31,5 +32,9 @@ public class OrdenComboService {
     public OrdenCombo buscarPorId(Long id) {
         return ordenComboRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenCombo con ID " + id + " no encontrada"));
+    }
+
+    public OrdenCombo buscarPorOrdenId(Long id) {
+        return ordenComboRepository.findByOrdenTrabajo_Id(id);
     }
 }

@@ -1,6 +1,7 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.LonaPublicitaria;
+import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenLonaPublicitaria;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.OrdenLonaPublicitariaRepository;
@@ -31,5 +32,9 @@ public class OrdenLonaPublicitariaService {
     public OrdenLonaPublicitaria buscarPorId(Long id) {
         return ordenLonaPublicitariaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenLonaPublicitaria con ID " + id + " no encontrada."));
+    }
+
+    public OrdenLonaPublicitaria buscarPorOrdenId(Long id) {
+        return ordenLonaPublicitariaRepository.findByOrdenTrabajo_Id(id);
     }
 }

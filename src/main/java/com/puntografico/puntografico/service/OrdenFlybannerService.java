@@ -1,6 +1,7 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.Flybanner;
+import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenFlybanner;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.OrdenFlybannerRepository;
@@ -33,5 +34,9 @@ public class OrdenFlybannerService {
         return ordenFlybannerRepository
                 .findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenFlybanner con ID " + id + " no encontrada"));
+    }
+
+    public OrdenFlybanner buscarPorOrdenId(Long id) {
+        return ordenFlybannerRepository.findByOrdenTrabajo_Id(id);
     }
 }

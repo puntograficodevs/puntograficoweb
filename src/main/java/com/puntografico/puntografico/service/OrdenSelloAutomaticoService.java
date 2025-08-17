@@ -31,4 +31,8 @@ public class OrdenSelloAutomaticoService {
         return ordenSelloAutomaticoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenSelloAutomatico con ID " + id + " no encontrada."));
     }
+
+    public OrdenSelloAutomatico buscarPorOrdenId(Long id) {
+        return ordenSelloAutomaticoRepository.findByOrdenTrabajo_Id(id);
+    }
 }

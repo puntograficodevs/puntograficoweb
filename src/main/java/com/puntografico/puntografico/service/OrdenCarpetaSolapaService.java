@@ -30,4 +30,8 @@ public class OrdenCarpetaSolapaService {
         return ordenCarpetaSolapaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenCarpetaSolapa con ID " + id + " no encontrada"));
     }
+
+    public OrdenCarpetaSolapa buscarPorOrdenId(Long id) {
+        return ordenCarpetaSolapaRepository.findByOrdenTrabajo_Id(id);
+    }
 }

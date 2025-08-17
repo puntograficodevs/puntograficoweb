@@ -1,5 +1,6 @@
 package com.puntografico.puntografico.service;
 
+import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenRifasBonosContribucion;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.domain.RifasBonosContribucion;
@@ -31,5 +32,9 @@ public class OrdenRifasBonosContribucionService {
     public OrdenRifasBonosContribucion buscarPorId(Long id) {
         return ordenRifasBonosContribucionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenRifasBonosContribucion con ID " + id + " no encontrada"));
+    }
+
+    public OrdenRifasBonosContribucion buscarPorOrdenId(Long id) {
+        return ordenRifasBonosContribucionRepository.findByOrdenTrabajo_Id(id);
     }
 }

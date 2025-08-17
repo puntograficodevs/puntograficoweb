@@ -31,4 +31,8 @@ public class OrdenViniloService {
         return ordenViniloRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenVinilo con ID " + id + " no encontrada"));
     }
+
+    public OrdenVinilo buscarPorOrdenId(Long id) {
+        return ordenViniloRepository.findByOrdenTrabajo_Id(id);
+    }
 }

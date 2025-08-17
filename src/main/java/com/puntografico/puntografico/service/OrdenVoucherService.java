@@ -1,9 +1,6 @@
 package com.puntografico.puntografico.service;
 
-import com.puntografico.puntografico.domain.Agenda;
-import com.puntografico.puntografico.domain.OrdenVoucher;
-import com.puntografico.puntografico.domain.OrdenTrabajo;
-import com.puntografico.puntografico.domain.Voucher;
+import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.OrdenVoucherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,5 +29,9 @@ public class OrdenVoucherService {
     public OrdenVoucher buscarPorId(Long id) {
         return ordenVoucherRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenVoucher con ID " + id + " no encontrada"));
+    }
+
+    public OrdenVoucher buscarPorOrdenId(Long id) {
+        return ordenVoucherRepository.findByOrdenTrabajo_Id(id);
     }
 }

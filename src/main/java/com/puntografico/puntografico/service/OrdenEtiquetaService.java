@@ -1,6 +1,7 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.Etiqueta;
+import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenEtiqueta;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.OrdenEtiquetaRepository;
@@ -31,5 +32,9 @@ public class OrdenEtiquetaService {
     public OrdenEtiqueta buscarPorId(Long id) {
         return ordenEtiquetaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenEtiqueta con ID " + id + " no encontrada"));
+    }
+
+    public OrdenEtiqueta buscarPorOrdenId(Long id) {
+        return ordenEtiquetaRepository.findByOrdenTrabajo_Id(id);
     }
 }

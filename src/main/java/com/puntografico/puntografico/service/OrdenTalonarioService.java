@@ -1,5 +1,6 @@
 package com.puntografico.puntografico.service;
 
+import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenTalonario;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.domain.Talonario;
@@ -31,5 +32,9 @@ public class OrdenTalonarioService {
     public OrdenTalonario buscarPorId(Long id) {
         return ordenTalonarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenTalonario con ID " + id + " no encontrada"));
+    }
+
+    public OrdenTalonario buscarPorOrdenId(Long id) {
+        return ordenTalonarioRepository.findByOrdenTrabajo_Id(id);
     }
 }

@@ -1,5 +1,6 @@
 package com.puntografico.puntografico.service;
 
+import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.domain.OrdenViniloPlasticoCorrugado;
 import com.puntografico.puntografico.domain.ViniloPlasticoCorrugado;
@@ -31,5 +32,9 @@ public class OrdenViniloPlasticoCorrugadoService {
     public OrdenViniloPlasticoCorrugado buscarPorId(Long id) {
         return ordenViniloPlasticoCorrugadoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenViniloPlasticoCorrugado con ID " + id + " no encontrada"));
+    }
+
+    public OrdenViniloPlasticoCorrugado buscarPorOrdenId(Long id) {
+        return ordenViniloPlasticoCorrugadoRepository.findByOrdenTrabajo_Id(id);
     }
 }

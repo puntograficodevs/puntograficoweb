@@ -1,6 +1,7 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.CuadernoAnillado;
+import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenCuadernoAnillado;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.OrdenCuadernoAnilladoRepository;
@@ -31,5 +32,9 @@ public class OrdenCuadernoAnilladoService {
     public OrdenCuadernoAnillado buscarPorId(Long id) {
         return ordenCuadernoAnilladoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenCuadernoAnillado con ID " + id + "no encontrada"));
+    }
+
+    public OrdenCuadernoAnillado buscarPorOrdenId(Long id) {
+        return ordenCuadernoAnilladoRepository.findByOrdenTrabajo_Id(id);
     }
 }

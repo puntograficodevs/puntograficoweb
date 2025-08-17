@@ -34,4 +34,8 @@ public class OrdenAnotadorService {
         return ordenAnotadorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenAnotador con ID " + id + " no encontrada"));
     }
+
+    public OrdenAnotador buscarPorOrdenId(Long id) {
+        return ordenAnotadorRepository.findByOrdenTrabajo_Id(id);
+    }
 }

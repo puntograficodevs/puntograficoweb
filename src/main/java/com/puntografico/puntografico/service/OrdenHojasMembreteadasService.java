@@ -1,6 +1,7 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.HojasMembreteadas;
+import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenHojasMembreteadas;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.OrdenHojasMembreteadasRepository;
@@ -30,6 +31,10 @@ public class OrdenHojasMembreteadasService {
 
     public OrdenHojasMembreteadas buscarPorId(Long id) {
         return ordenHojasMembreteadasRepository.findById(id).orElseThrow(() -> new RuntimeException("OrdenHojasMembreteadas con ID " + id + " no encontrada."));
+    }
+
+    public OrdenHojasMembreteadas buscarPorOrdenId(Long id) {
+        return ordenHojasMembreteadasRepository.findByOrdenTrabajo_Id(id);
     }
 
 }

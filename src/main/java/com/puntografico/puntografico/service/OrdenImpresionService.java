@@ -1,6 +1,7 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.Impresion;
+import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenImpresion;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.OrdenImpresionRepository;
@@ -31,5 +32,9 @@ public class OrdenImpresionService {
     public OrdenImpresion buscarPorId(Long id) {
         return ordenImpresionRepository.findById(id).
                 orElseThrow(() -> new RuntimeException("OrdenImpresion con ID " + id + " no encontrada."));
+    }
+
+    public OrdenImpresion buscarPorOrdenId(Long id) {
+        return ordenImpresionRepository.findByOrdenTrabajo_Id(id);
     }
 }

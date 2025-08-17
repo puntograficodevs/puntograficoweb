@@ -30,4 +30,8 @@ public class OrdenCatalogoService {
         return ordenCatalogoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenCatalogo con ID " + id + " no encontrada"));
     }
+
+    public OrdenCatalogo buscarPorOrdenId(Long id) {
+        return ordenCatalogoRepository.findByOrdenTrabajo_Id(id);
+    }
 }

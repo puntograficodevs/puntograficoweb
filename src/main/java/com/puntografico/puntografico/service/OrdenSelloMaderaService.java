@@ -30,4 +30,8 @@ public class OrdenSelloMaderaService {
         return ordenSelloMaderaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenSelloMadera con ID " + id + " no encontrada."));
     }
+
+    public OrdenSelloMadera buscarPorOrdenId(Long id) {
+        return ordenSelloMaderaRepository.findByOrdenTrabajo_Id(id);
+    }
 }

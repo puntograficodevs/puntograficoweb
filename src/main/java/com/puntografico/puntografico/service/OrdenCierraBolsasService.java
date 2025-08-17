@@ -31,4 +31,8 @@ public class OrdenCierraBolsasService {
         return ordenCierraBolsasRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenCierraBolsas con ID " + id + " no encontrada"));
     }
+
+    public OrdenCierraBolsas buscarPorOrdenId(Long id) {
+        return ordenCierraBolsasRepository.findByOrdenTrabajo_Id(id);
+    }
 }

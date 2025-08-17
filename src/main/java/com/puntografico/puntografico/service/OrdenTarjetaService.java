@@ -30,4 +30,8 @@ public class OrdenTarjetaService {
         return ordenTarjetaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenTarjeta con ID " + id + " no encontrada"));
     }
+
+    public OrdenTarjeta buscarPorOrdenId(Long id) {
+        return ordenTarjetaRepository.findByOrdenTrabajo_Id(id);
+    }
 }

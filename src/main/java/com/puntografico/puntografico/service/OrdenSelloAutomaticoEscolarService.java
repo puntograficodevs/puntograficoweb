@@ -1,5 +1,6 @@
 package com.puntografico.puntografico.service;
 
+import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenSelloAutomaticoEscolar;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.domain.SelloAutomaticoEscolar;
@@ -32,5 +33,9 @@ public class OrdenSelloAutomaticoEscolarService {
     public OrdenSelloAutomaticoEscolar buscarPorId(Long id) {
         return ordenSelloAutomaticoEscolarRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenSelloAutomaticoEscolar con ID " + id + " no encontrada."));
+    }
+
+    public OrdenSelloAutomaticoEscolar buscarPorOrdenId(Long id) {
+        return ordenSelloAutomaticoEscolarRepository.findByOrdenTrabajo_Id(id);
     }
 }

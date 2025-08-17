@@ -1,6 +1,7 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.Folleto;
+import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenFolleto;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.OrdenFolletoRepository;
@@ -31,5 +32,9 @@ public class OrdenFolletoService {
     public OrdenFolleto buscarPorId(Long id) {
         return ordenFolletoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenFolleto con ID " + id + " no encontrada"));
+    }
+
+    public OrdenFolleto buscarPorOrdenId(Long id) {
+        return ordenFolletoRepository.findByOrdenTrabajo_Id(id);
     }
 }

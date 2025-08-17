@@ -30,4 +30,8 @@ public class OrdenStickerService {
         return ordenStickerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenSticker con ID " + id + " no encontrada"));
     }
+
+    public OrdenSticker buscarPorOrdenId(Long id) {
+        return ordenStickerRepository.findByOrdenTrabajo_Id(id);
+    }
 }
