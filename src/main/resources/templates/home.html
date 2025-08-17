@@ -9,7 +9,16 @@
 </head>
 <body>
     <div th:replace="fragments/navbar :: navbar"></div>
-Acá estará la página de inicio con el crear orden jej perdón mi amor todavía no lo llegué a hacer
+
+    <div class="container-fluid d-flex contenedor-home">
+        <div class="col-6 d-flex justify-content-center align-items-center">
+            <img th:src="@{/img/icono-foco.png}" alt="Foco" class="foco me-3"/>
+        </div>
+        <div class="col-6 d-flex justify-content-center align-items-center">
+            <a class="btn boton-home" th:href="@{/crear-orden}">CREAR ORDEN</a>
+        </div>
+
+    </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"

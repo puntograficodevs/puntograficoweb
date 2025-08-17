@@ -59,3 +59,28 @@ img.isologotipo {
 .custom-nav .nav-item + .nav-item {
   margin-left: 16px;
 }
+
+.contenedor-home {
+    width: 80%;
+    height: 90vh;
+}
+
+img.foco {
+    width: 60%;
+}
+
+.boton-home {
+    cursor: pointer;
+    width: 80%;
+    padding: 16px 0;
+    border-radius: 60px;
+    background-color: #009FE3;
+    color: #ffffff;
+    font-family: 'Lemon Milk';
+    font-size: 1.5em;
+}
+
+.boton-home:hover {
+    color: #1d1d1b;
+    background-color: #efcf00;
+}
