@@ -91,7 +91,7 @@ public class OrdenTrabajoService {
     };
 
     public List<OrdenTrabajo> buscarEstadoCorregir(){
-        return ordenTrabajoRepository.findByEstadoOrdenId(5L);
+        return ordenTrabajoRepository.findByEstadoOrdenId(4L);
     };
 
     public List<OrdenTrabajo> buscarEstadoEnProceso(){

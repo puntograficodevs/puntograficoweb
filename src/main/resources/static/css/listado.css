@@ -41,3 +41,13 @@ p {
 .ver-btn:hover {
     background-color: #C22171;
 }
+
+.modal-title {
+    font-size: 1.6em;
+    font-family: 'Lemon Milk';
+    color: #009fe3;
+}
+
+.contenedor-kanban-ordenes {
+    width: 95%;
+}

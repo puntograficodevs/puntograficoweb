@@ -21,6 +21,10 @@ body, html {
     font-size: 1.05rem;
 }
 
+body {
+    padding-top: 6%;
+}
+
 .navbar {
     padding: 0.15em 0.25em;
     background-color: #E52987 !important;
