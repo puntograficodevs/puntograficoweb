@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-alert("¿hola?");
   const toggleFechaMuestra = document.getElementById("toggleFechaMuestra");
   const fechaMuestraRow = document.getElementById("fechaMuestraRow");
 

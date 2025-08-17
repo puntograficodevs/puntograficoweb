@@ -22,7 +22,7 @@ body, html {
 }
 
 .navbar {
-    padding: 0.25em;
+    padding: 0.15em 0.25em;
     background-color: #E52987 !important;
 }
 
@@ -33,7 +33,7 @@ body, html {
 .nav-nombre-usuario {
     font-family: 'Nanum';
     color: #efcf00;
-    font-size: 1.7rem;
+    font-size: 2rem;
 }
 
 .nav-nombre-usuario:hover {
