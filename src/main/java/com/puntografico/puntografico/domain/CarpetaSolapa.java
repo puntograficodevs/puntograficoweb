@@ -26,11 +26,11 @@ public class CarpetaSolapa {
 
     private String informacionAdicional;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_laminado_carpeta_solapa")
     private TipoLaminadoCarpetaSolapa tipoLaminadoCarpetaSolapa;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_faz_carpeta_solapa")
     private TipoFazCarpetaSolapa tipoFazCarpetaSolapa;
 }

@@ -16,7 +16,7 @@ public class PlantillaCombo {
 
     private int precio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_combo")
     private TipoCombo tipoCombo;
 }

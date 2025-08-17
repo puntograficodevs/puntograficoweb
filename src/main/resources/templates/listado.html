@@ -14,20 +14,49 @@
 <div class="container-fluid">
   <div class="col-3">
     <div><p class="titulo-columna">Sin hacer</p></div>
-    <div th:each="orden : ${ordenesSinHacer}" class="card mb-2">
+    <div th:each="orden : ${ordenesSinHacer}" class="card mb-2 position-relative">
+      <!-- Botón en esquina superior derecha -->
+      <button class="btn btn-primary btn-sm ver-btn"
+        data-bs-target="#ordenModal"
+        data-bs-toggle="modal"
+        th:data-idorden="${orden.id}"
+        th:data-tipoproducto="${orden.tipoProducto}">
+          VER
+      </button>
+
       <div class="card-body">
-        <b><p class="tipo-producto" th:text="${orden.tipoProducto}"></p></b>
-        Orden #<span th:text="${orden.id}"></span>
+        <b><p class="tipo-producto capitalize" th:text="${orden.tipoProducto}"></p></b>
+        <li><p>Orden #<span th:text="${orden.id}"></span></p></li>
+        <li><p>Nombre del cliente: <span th:text="${orden.nombreCliente}"></span></p></li>
+        <li th:if="${orden.fechaMuestra}"><p>Fecha de muestra: <span th:text="${orden.fechaMuestra}"></span></p></li>
+        <li><p>Fecha de entrega: <span th:text="${orden.fechaEntrega}"></span></p></li>
+        <li th:if="${orden.horaEntrega} != ''"><p>Hora de entrega: <span th:text="${orden.horaEntrega}"></span></p></li>
+        <b><p>Total: $<span th:text="${orden.total}"></span></p></b>
+        <b><p class="falta-abonar">Falta abonar: $<span th:text="${orden.resta}"></span></p></b>
       </div>
     </div>
   </div>
 </div>
 
+<div class="modal fade" id="ordenModal" tabindex="-1" aria-labelledby="ordenModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ordenModalLabel">Detalle de la Orden</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body" id="modalBody">
 
-
-
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
+<script th:src="@{/js/listado.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJ+Y7Vu8y+6ie4EnWz9Z2Jv3C92iZgfH1lwCk="

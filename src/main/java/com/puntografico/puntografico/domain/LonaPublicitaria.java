@@ -34,11 +34,11 @@ public class LonaPublicitaria {
 
     private int cantidad;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_medida_lona_publicitaria")
     private MedidaLonaPublicitaria medidaLonaPublicitaria;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_lona_publicitaria")
     private TipoLonaPublicitaria tipoLonaPublicitaria;
 }

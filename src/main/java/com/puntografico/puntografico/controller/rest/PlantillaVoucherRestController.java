@@ -1,8 +1,6 @@
-package com.puntografico.puntografico.controller;
+package com.puntografico.puntografico.controller.rest;
 
-import com.puntografico.puntografico.domain.PlantillaVinilo;
 import com.puntografico.puntografico.domain.PlantillaVoucher;
-import com.puntografico.puntografico.repository.PlantillaViniloRepository;
 import com.puntografico.puntografico.repository.PlantillaVoucherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

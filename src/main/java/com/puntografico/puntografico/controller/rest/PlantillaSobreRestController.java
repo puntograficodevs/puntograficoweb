@@ -1,4 +1,4 @@
-package com.puntografico.puntografico.controller;
+package com.puntografico.puntografico.controller.rest;
 
 import com.puntografico.puntografico.domain.PlantillaSobre;
 import com.puntografico.puntografico.repository.PlantillaSobreRepository;

@@ -27,19 +27,19 @@ public class Voucher {
 
     private int cantidad;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_medida_voucher")
     private MedidaVoucher medidaVoucher;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_papel_voucher")
     private TipoPapelVoucher tipoPapelVoucher;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_faz_voucher")
     private TipoFazVoucher tipoFazVoucher;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_cantidad_voucher")
     private CantidadVoucher cantidadVoucher;
 }

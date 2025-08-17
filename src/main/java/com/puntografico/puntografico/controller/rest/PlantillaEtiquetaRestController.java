@@ -1,4 +1,4 @@
-package com.puntografico.puntografico.controller;
+package com.puntografico.puntografico.controller.rest;
 
 import com.puntografico.puntografico.domain.PlantillaEtiqueta;
 import com.puntografico.puntografico.repository.PlantillaEtiquetaRepository;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.Optional;
 
 @RestController

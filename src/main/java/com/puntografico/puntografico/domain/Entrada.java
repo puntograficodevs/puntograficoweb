@@ -26,31 +26,31 @@ public class Entrada {
     @Column(nullable = false)
     private int cantidad;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_papel_entrada")
     private TipoPapelEntrada tipoPapelEntrada;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_color_entrada")
     private TipoColorEntrada tipoColorEntrada;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_troquelado_entrada")
     private TipoTroqueladoEntrada tipoTroqueladoEntrada;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_medida_entrada")
     private MedidaEntrada medidaEntrada;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_cantidad_entrada")
     private CantidadEntrada cantidadEntrada;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_numerado_entrada")
     private NumeradoEntrada numeradoEntrada;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_terminacion_entrada")
     private TerminacionEntrada terminacionEntrada;
 }

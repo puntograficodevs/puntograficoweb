@@ -16,27 +16,27 @@ public class PlantillaImpresion {
 
     private int precio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_color_impresion")
     private TipoColorImpresion tipoColorImpresion;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tamanio_hoja_impresion")
     private TamanioHojaImpresion tamanioHojaImpresion;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_faz_impresion")
     private TipoFazImpresion tipoFazImpresion;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_papel_impresion")
     private TipoPapelImpresion tipoPapelImpresion;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_cantidad_impresion")
     private CantidadImpresion cantidadImpresion;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_impresion")
     private TipoImpresion tipoImpresion;
 }

@@ -18,11 +18,11 @@ public class PlantillaAgenda {
 
     private int cantidadHojas;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_tapa_agenda")
     private TipoTapaAgenda tipoTapaAgenda;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_color_agenda")
     private TipoColorAgenda tipoColorAgenda;
 }

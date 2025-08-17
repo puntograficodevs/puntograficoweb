@@ -15,15 +15,15 @@ public class PlantillaSticker {
 
     private int precio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_troquelado_sticker")
     private TipoTroqueladoSticker tipoTroqueladoSticker;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_cantidad_sticker")
     private CantidadSticker cantidadSticker;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_medida_sticker")
     private MedidaSticker medidaSticker;
 }

@@ -1,8 +1,6 @@
-package com.puntografico.puntografico.controller;
+package com.puntografico.puntografico.controller.rest;
 
-import com.puntografico.puntografico.domain.PlantillaLonaComun;
 import com.puntografico.puntografico.domain.PlantillaLonaPublicitaria;
-import com.puntografico.puntografico.repository.PlantillaLonaComunRepository;
 import com.puntografico.puntografico.repository.PlantillaLonaPublicitariaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

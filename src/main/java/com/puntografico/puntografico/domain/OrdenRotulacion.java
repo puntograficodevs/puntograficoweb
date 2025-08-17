@@ -17,11 +17,11 @@ public class OrdenRotulacion {
 
     private int cantidad;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_orden_trabajo")
     private OrdenTrabajo ordenTrabajo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_rotulacion")
     private Rotulacion rotulacion;
 }

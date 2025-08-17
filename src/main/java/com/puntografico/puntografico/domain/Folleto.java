@@ -24,27 +24,27 @@ public class Folleto {
 
     private int cantidad;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_papel_folleto")
     private TipoPapelFolleto tipoPapelFolleto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_color_folleto")
     private TipoColorFolleto tipoColorFolleto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_faz_folleto")
     private TipoFazFolleto tipoFazFolleto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tamanio_hoja_folleto")
     private TamanioHojaFolleto tamanioHojaFolleto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_folleto")
     private TipoFolleto tipoFolleto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_cantidad_folleto")
     private CantidadFolleto cantidadFolleto;
 }

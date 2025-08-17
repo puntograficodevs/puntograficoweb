@@ -30,11 +30,11 @@ public class Rotulacion {
 
     private int cantidad;
 
-    @ManyToOne(fetch =  FetchType.LAZY)
+    @ManyToOne(fetch =  FetchType.EAGER)
     @JoinColumn(name = "id_tipo_rotulacion")
     private TipoRotulacion tipoRotulacion;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_corte_rotulacion")
     private TipoCorteRotulacion tipoCorteRotulacion;
 }

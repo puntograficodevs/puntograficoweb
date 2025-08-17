@@ -24,7 +24,7 @@ public class Otro {
 
     private int cantidad;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_color_otro")
     private TipoColorOtro tipoColorOtro;
 }

@@ -17,15 +17,15 @@ public class PlantillaCierraBolsas {
 
     private int precio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_troquelado_cierra_bolsas")
     private TipoTroqueladoCierraBolsas tipoTroqueladoCierraBolsas;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_medida_cierra_bolsas")
     private MedidaCierraBolsas medidaCierraBolsas;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_cantidad_cierra_bolsas")
     private CantidadCierraBolsas cantidadCierraBolsas;
 }

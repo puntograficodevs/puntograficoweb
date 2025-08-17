@@ -33,7 +33,7 @@ public class ViniloDeCorte {
 
     private int cantidad;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_trae_material_vinilo")
     private TraeMaterialVinilo traeMaterialVinilo;
 }

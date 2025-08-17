@@ -17,19 +17,19 @@ public class PlantillaFlybanner {
 
     private int precio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_faz_flybanner")
     private TipoFazFlybanner tipoFazFlybanner;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_altura_flybanner")
     private AlturaFlybanner alturaFlybanner;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_bandera_flybanner")
     private BanderaFlybanner banderaFlybanner;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_base_flybanner")
     private TipoBaseFlybanner tipoBaseFlybanner;
 }

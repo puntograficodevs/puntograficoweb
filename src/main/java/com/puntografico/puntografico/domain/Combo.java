@@ -23,7 +23,7 @@ public class Combo {
 
     private String informacionAdicional;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_combo")
     private TipoCombo tipoCombo;
 }

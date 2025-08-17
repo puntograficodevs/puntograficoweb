@@ -17,11 +17,11 @@ public class OrdenCarpetaSolapa {
 
     private int cantidad;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_orden_trabajo")
     private OrdenTrabajo ordenTrabajo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_carpeta_solapa")
     private CarpetaSolapa carpetaSolapa;
 }

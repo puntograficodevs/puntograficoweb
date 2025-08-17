@@ -26,11 +26,11 @@ public class Catalogo {
 
     private String informacionAdicional;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_laminado_catalogo")
     private TipoLaminadoCatalogo tipoLaminadoCatalogo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_faz_catalogo")
     private TipoFazCatalogo tipoFazCatalogo;
 }

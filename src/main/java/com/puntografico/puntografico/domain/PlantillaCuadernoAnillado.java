@@ -18,11 +18,11 @@ public class PlantillaCuadernoAnillado {
 
     private int cantidadHojas;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_tapa_cuaderno_anillado")
     private TipoTapaCuadernoAnillado tipoTapaCuadernoAnillado;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_medida_cuaderno_anillado")
     private MedidaCuadernoAnillado medidaCuadernoAnillado;
 }

@@ -16,11 +16,11 @@ public class PlantillaSublimacion {
 
     private int precio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_material_sublimacion")
     private MaterialSublimacion materialSublimacion;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_cantidad_sublimacion")
     private CantidadSublimacion cantidadSublimacion;
 }

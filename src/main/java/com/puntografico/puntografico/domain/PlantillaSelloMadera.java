@@ -17,7 +17,7 @@ public class PlantillaSelloMadera {
 
     private int precio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tamanio_sello_madera")
     private TamanioSelloMadera tamanioSelloMadera;
 

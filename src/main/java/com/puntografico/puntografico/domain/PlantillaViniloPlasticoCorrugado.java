@@ -16,7 +16,7 @@ public class PlantillaViniloPlasticoCorrugado {
 
     private int precio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_medida_vinilo_plastico_corrugado")
     private MedidaViniloPlasticoCorrugado medidaViniloPlasticoCorrugado;
 }

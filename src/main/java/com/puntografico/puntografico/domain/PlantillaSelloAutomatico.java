@@ -16,7 +16,7 @@ public class PlantillaSelloAutomatico {
 
     private int precio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_modelo_sello_automatico")
     private ModeloSelloAutomatico modeloSelloAutomatico;
 }

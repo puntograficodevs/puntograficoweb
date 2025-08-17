@@ -1,0 +1,43 @@
+.capitalize::first-letter {
+    text-transform: uppercase;
+}
+
+body {
+    font-size: 0.85rem;
+}
+
+.falta-abonar {
+    color: #e52987;
+}
+
+p {
+    margin-bottom: 0;
+}
+.card-body {
+    line-height: 1.6em;
+    padding: 0.8em 1.3em !important;
+}
+
+.card-body li {
+    margin-left: 24px;
+}
+
+.ver-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  text-align: center;
+  line-height: 40px;
+  background-color: #e52987;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+.ver-btn:hover {
+    background-color: #C22171;
+}

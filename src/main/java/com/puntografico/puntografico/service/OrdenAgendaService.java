@@ -32,4 +32,8 @@ public class OrdenAgendaService {
         return ordenAgendaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("OrdenAgenda con ID " + id + " no encontrada"));
     }
+
+    public OrdenAgenda buscarPorOrdenId(Long id) {
+        return ordenAgendaRepository.findByOrdenTrabajo_Id(id);
+    }
 }

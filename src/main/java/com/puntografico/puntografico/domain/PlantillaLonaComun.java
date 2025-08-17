@@ -18,11 +18,11 @@ public class PlantillaLonaComun {
 
     private boolean conBolsillos;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_medida_lona_comun")
     private MedidaLonaComun medidaLonaComun;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_lona_comun")
     private TipoLonaComun tipoLonaComun;
 }

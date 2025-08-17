@@ -16,23 +16,23 @@ public class PlantillaEtiqueta {
 
     private int precio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_papel_etiqueta")
     private TipoPapelEtiqueta tipoPapelEtiqueta;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_laminado_etiqueta")
     private TipoLaminadoEtiqueta tipoLaminadoEtiqueta;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_faz_etiqueta")
     private TipoFazEtiqueta tipoFazEtiqueta;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_cantidad_etiqueta")
     private CantidadEtiqueta cantidadEtiqueta;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_medida_etiqueta")
     private MedidaEtiqueta medidaEtiqueta;
 }

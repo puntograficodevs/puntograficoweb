@@ -16,19 +16,19 @@ public class PlantillaVinilo {
 
     private int precio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_adicional_vinilo")
     private TipoAdicionalVinilo tipoAdicionalVinilo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_corte_vinilo")
     private TipoCorteVinilo tipoCorteVinilo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_medida_vinilo")
     private MedidaVinilo medidaVinilo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_cantidad_vinilo")
     private CantidadVinilo cantidadVinilo;
 }

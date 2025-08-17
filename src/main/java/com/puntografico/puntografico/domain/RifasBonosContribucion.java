@@ -31,15 +31,15 @@ public class RifasBonosContribucion {
 
     private int cantidad;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_papel_rifa")
     private TipoPapelRifa tipoPapelRifa;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_troquelado_rifa")
     private TipoTroqueladoRifa tipoTroqueladoRifa;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_color_rifa")
     private TipoColorRifa tipoColorRifa;
 }

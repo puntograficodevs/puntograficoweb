@@ -19,15 +19,15 @@ public class PlantillaTurnero {
 
     private Integer cantidadHojas;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_color_turnero")
     private TipoColorTurnero tipoColorTurnero;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_cantidad_turnero")
     private CantidadTurnero cantidadTurnero;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_medida_turnero")
     private MedidaTurnero medidaTurnero;
 }

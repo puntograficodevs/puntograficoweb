@@ -1,8 +1,6 @@
-package com.puntografico.puntografico.controller;
+package com.puntografico.puntografico.controller.rest;
 
-import com.puntografico.puntografico.domain.PlantillaSelloAutomatico;
 import com.puntografico.puntografico.domain.PlantillaSelloMadera;
-import com.puntografico.puntografico.repository.PlantillaSelloAutomaticoRepository;
 import com.puntografico.puntografico.repository.PlantillaSelloMaderaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

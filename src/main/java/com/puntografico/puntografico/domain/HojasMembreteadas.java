@@ -28,15 +28,15 @@ public class HojasMembreteadas {
 
     private String informacionAdicional;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_medida_hojas_membreteadas")
     private MedidaHojasMembreteadas medidaHojasMembreteadas;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tipo_color_hojas_membreteadas")
     private TipoColorHojasMembreteadas tipoColorHojasMembreteadas;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_cantidad_hojas_membreteadas")
     private CantidadHojasMembreteadas cantidadHojasMembreteadas;
 }
