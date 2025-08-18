@@ -51,3 +51,49 @@ p {
 .contenedor-kanban-ordenes {
     width: 95%;
 }
+
+.titulo-columna {
+    padding: 0.8em;
+    color: #1d1d1b;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.1em;
+    border-radius: 20px;
+}
+
+.columna-sin-hacer .titulo-columna {
+    background-color: #F4CFFF;
+}
+
+.columna-corregir .titulo-columna {
+    background-color: #ff8f8f;
+}
+
+.columna-en-proceso .titulo-columna {
+    background-color: #ffef8b;
+}
+
+.columna-listas-para-retirar .titulo-columna {
+    background-color: #abf28c;
+}
+
+.card {
+    margin-top: 1em;
+    border-radius: 20px;
+}
+
+.columna-sin-hacer .card {
+    border: 3px solid #F4CFFF;
+}
+
+.columna-corregir .card {
+    border: 3px solid #ff8f8f;
+}
+
+.columna-en-proceso .card {
+    border: 3px solid #ffef8b;
+}
+
+.columna-listas-para-retirar .card {
+    border: 3px solid #abf28c;
+}

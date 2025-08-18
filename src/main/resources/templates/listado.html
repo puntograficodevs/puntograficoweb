@@ -15,8 +15,8 @@
 
 <div class="container-fluid contenedor-kanban-ordenes">
   <div class="row flex-nowrap overflow-auto">
-    <div class="col-3">
-      <div><p class="titulo-columna">Sin hacer</p></div>
+    <div class="col-3 columna-sin-hacer">
+      <div><p class="titulo-columna">SIN HACER</p></div>
       <div th:each="orden : ${ordenesSinHacer}" class="card mb-2 position-relative">
         <!-- Botón en esquina superior derecha -->
         <button class="btn btn-primary btn-sm ver-btn"
@@ -36,11 +36,15 @@
           <li th:if="${orden.horaEntrega} != ''"><p>Hora de entrega: <span th:text="${orden.horaEntrega}"></span></p></li>
           <b><p>Total: $<span th:text="${orden.total}"></span></p></b>
           <b><p class="falta-abonar">Falta abonar: $<span th:text="${orden.resta}"></span></p></b>
+          <button class="btn btn-success btn-sm mt-2 pasar-en-proceso-btn" id="btnCambiarEstado"
+                  th:data-idorden="${orden.id}">
+            Pasar a "En proceso"
+          </button>
         </div>
       </div>
     </div>
-    <div class="col-3">
-      <div><p class="titulo-columna">Corregir</p></div>
+    <div class="col-3 columna-corregir">
+      <div><p class="titulo-columna">CORREGIR</p></div>
       <div th:each="orden : ${ordenesCorregir}" class="card mb-2 position-relative">
         <!-- Botón en esquina superior derecha -->
         <button class="btn btn-primary btn-sm ver-btn"
@@ -63,8 +67,8 @@
         </div>
       </div>
     </div>
-    <div class="col-3">
-      <div><p class="titulo-columna">En proceso</p></div>
+    <div class="col-3 columna-en-proceso">
+      <div><p class="titulo-columna">EN PROCESO</p></div>
       <div th:each="orden : ${ordenesEnProceso}" class="card mb-2 position-relative">
         <!-- Botón en esquina superior derecha -->
         <button class="btn btn-primary btn-sm ver-btn"
@@ -87,8 +91,8 @@
         </div>
       </div>
     </div>
-    <div class="col-3">
-      <div><p class="titulo-columna">Listas para retirar</p></div>
+    <div class="col-3 columna-listas-para-retirar">
+      <div><p class="titulo-columna">LISTAS PARA RETIRAR</p></div>
       <div th:each="orden : ${ordenesListaParaRetirar}" class="card mb-2 position-relative">
         <!-- Botón en esquina superior derecha -->
         <button class="btn btn-primary btn-sm ver-btn"

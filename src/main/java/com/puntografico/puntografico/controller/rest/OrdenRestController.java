@@ -4,10 +4,7 @@ import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/orden")
@@ -105,6 +102,9 @@ public class OrdenRestController {
 
     @Autowired
     private OrdenVoucherService ordenVoucherService;
+
+    @Autowired
+    private OrdenTrabajoService ordenTrabajoService;
 
     @GetMapping("/ordenAgenda/{ordenId}")
     public ResponseEntity<OrdenAgenda> getOrdenAgenda(@PathVariable Long ordenId) {
@@ -445,5 +445,11 @@ public class OrdenRestController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping("/cambiar-a-en-proceso/{ordenId}")
+    public ResponseEntity<Void> cambiarEstadoAEnProceso(@PathVariable Long ordenId) {
+        ordenTrabajoService.cambiarEstadoAEnProceso(ordenId);
+        return ResponseEntity.ok().build();
     }
 }

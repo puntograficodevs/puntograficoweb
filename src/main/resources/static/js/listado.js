@@ -216,6 +216,11 @@ document.addEventListener('DOMContentLoaded', () => {
         cuerpoModal.innerHTML = '';
     });
 
+    document.getElementById('btnCambiarEstado').addEventListener('click', function() {
+        const ordenId = this.dataset.idorden; // asumiendo que tienes data-orden-id en el botón
+        cambiarEstadoAEnProceso(ordenId);
+    });
+
     function renderOrdenAgenda(orden) {
         return `<div class="row mt-4">
             <div class="col-6">
@@ -2173,5 +2178,22 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       </div>
       `;
+    }
+
+    function cambiarEstadoAEnProceso(ordenId) {
+        fetch(`/api/orden/cambiar-a-en-proceso/${ordenId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.error('Error al cambiar estado');
+            }
+        })
+        .catch(error => console.error('Error de red:', error));
     }
 });

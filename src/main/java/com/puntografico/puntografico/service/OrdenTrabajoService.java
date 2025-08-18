@@ -37,7 +37,6 @@ public class OrdenTrabajoService {
         OrdenTrabajo ordenTrabajo = new OrdenTrabajo();
 
         Empleado empleado = (Empleado) request.getSession().getAttribute("empleadoLogueado");
-        System.out.println("EL EMPLEADOE ES " + empleado.getNombre());
         ordenTrabajo.setEmpleado((Empleado) request.getSession().getAttribute("empleadoLogueado"));
         ordenTrabajo.setFechaPedido(LocalDate.now());
         ordenTrabajo.setEstadoOrden(estadoOrdenRepository.findById(1L)
@@ -104,5 +103,12 @@ public class OrdenTrabajoService {
 
     public List<OrdenTrabajo> buscarTodas() {
         return ordenTrabajoRepository.findAll();
+    }
+
+    public void cambiarEstadoAEnProceso(Long id) {
+        OrdenTrabajo ordenTrabajo = ordenTrabajoRepository.findById(id).get();
+        EstadoOrden enProceso = estadoOrdenRepository.findById(2L).get();
+        ordenTrabajo.setEstadoOrden(enProceso);
+        ordenTrabajoRepository.save(ordenTrabajo);
     }
 }
