@@ -139,12 +139,12 @@ public class OrdenRestController {
         }
     }
 
-    @GetMapping("/ordenCataloogo/{ordenId}")
+    @GetMapping("/ordenCatalogo/{ordenId}")
     public ResponseEntity<OrdenCatalogo> getOrdenCatalogo(@PathVariable Long ordenId) {
-        OrdenCatalogo ordenCataloogo = ordenCatalogoService.buscarPorOrdenId(ordenId);
+        OrdenCatalogo ordenCatalogo = ordenCatalogoService.buscarPorOrdenId(ordenId);
 
-        if (ordenCataloogo != null) {
-            return ResponseEntity.ok(ordenCataloogo);
+        if (ordenCatalogo != null) {
+            return ResponseEntity.ok(ordenCatalogo);
         } else {
             return ResponseEntity.notFound().build();
         }
