@@ -97,3 +97,52 @@ p {
 .columna-listas-para-retirar .card {
     border: 3px solid #abf28c;
 }
+
+.btn-cambio-estado {
+    width:75%;
+    font-size: 1em;
+    color: #1d1d1b;
+    border: none;
+    border-radius: 10px;
+    display: block;
+    margin: 0 auto;
+    //background-color: #f1eeee;
+}
+
+.btn-cambio-estado:hover {
+    color: #000000;
+}
+
+.corregir-btn,
+.pasar-en-proceso-btn {
+    background-color: #F4CFFF;
+}
+
+.corregir-btn:hover,
+.pasar-en-proceso-btn:hover {
+    background-color: #C79BD4;
+}
+
+.pasar-lista-para-retirar-btn {
+    background-color: #ffef8b;
+}
+
+.pasar-lista-para-retirar-btn:hover {
+    background-color: #F6E15D;
+}
+
+.pasar-retirada-btn {
+    background-color: #abf28c;
+}
+
+.pasar-retirada-btn:hover {
+    background-color: #81C862;
+}
+
+.pasar-corregido-btn {
+    background-color: #ff8f8f;
+}
+
+.pasar-corregido-btn:hover {
+    background-color: #CF4B4B;
+}

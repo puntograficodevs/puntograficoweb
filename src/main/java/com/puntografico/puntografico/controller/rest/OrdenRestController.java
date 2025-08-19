@@ -447,9 +447,33 @@ public class OrdenRestController {
         }
     }
 
+    @PostMapping("/cambiar-a-corregir/{ordenId}")
+    public ResponseEntity<Void> cambiarEstadoACorregir(@PathVariable Long ordenId) {
+        ordenTrabajoService.cambiarEstadoACorregir(ordenId);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/cambiar-a-en-proceso/{ordenId}")
     public ResponseEntity<Void> cambiarEstadoAEnProceso(@PathVariable Long ordenId) {
         ordenTrabajoService.cambiarEstadoAEnProceso(ordenId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/cambiar-a-lista-para-retirar/{ordenId}")
+    public ResponseEntity<Void> cambiarEstadoAListaParaRetirar(@PathVariable Long ordenId) {
+        ordenTrabajoService.cambiarEstadoAListaParaRetirar(ordenId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/cambiar-a-retirada/{ordenId}")
+    public ResponseEntity<Void> cambiarEstadoARetirada(@PathVariable Long ordenId) {
+        ordenTrabajoService.cambiarEstadoARetirada(ordenId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/cambiar-a-sin-hacer/{ordenId}")
+    public ResponseEntity<Void> cambiarEstadoASinHacer(@PathVariable Long ordenId) {
+        ordenTrabajoService.cambiarEstadoASinHacer(ordenId);
         return ResponseEntity.ok().build();
     }
 }

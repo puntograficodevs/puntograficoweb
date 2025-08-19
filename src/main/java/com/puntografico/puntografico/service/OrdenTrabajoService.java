@@ -105,10 +105,38 @@ public class OrdenTrabajoService {
         return ordenTrabajoRepository.findAll();
     }
 
+    public void cambiarEstadoACorregir(Long id) {
+        OrdenTrabajo ordenTrabajo = ordenTrabajoRepository.findById(id).get();
+        EstadoOrden aCorregir = estadoOrdenRepository.findById(4L).get();
+        ordenTrabajo.setEstadoOrden(aCorregir);
+        ordenTrabajoRepository.save(ordenTrabajo);
+    }
+
     public void cambiarEstadoAEnProceso(Long id) {
         OrdenTrabajo ordenTrabajo = ordenTrabajoRepository.findById(id).get();
         EstadoOrden enProceso = estadoOrdenRepository.findById(2L).get();
         ordenTrabajo.setEstadoOrden(enProceso);
+        ordenTrabajoRepository.save(ordenTrabajo);
+    }
+
+    public void cambiarEstadoAListaParaRetirar(Long id) {
+        OrdenTrabajo ordenTrabajo = ordenTrabajoRepository.findById(id).get();
+        EstadoOrden listaParaRetirar = estadoOrdenRepository.findById(3L).get();
+        ordenTrabajo.setEstadoOrden(listaParaRetirar);
+        ordenTrabajoRepository.save(ordenTrabajo);
+    }
+
+    public void cambiarEstadoARetirada(Long id) {
+        OrdenTrabajo ordenTrabajo = ordenTrabajoRepository.findById(id).get();
+        EstadoOrden retirada = estadoOrdenRepository.findById(5L).get();
+        ordenTrabajo.setEstadoOrden(retirada);
+        ordenTrabajoRepository.save(ordenTrabajo);
+    }
+
+    public void cambiarEstadoASinHacer(Long id) {
+        OrdenTrabajo ordenTrabajo = ordenTrabajoRepository.findById(id).get();
+        EstadoOrden sinHacer = estadoOrdenRepository.findById(1L).get();
+        ordenTrabajo.setEstadoOrden(sinHacer);
         ordenTrabajoRepository.save(ordenTrabajo);
     }
 }

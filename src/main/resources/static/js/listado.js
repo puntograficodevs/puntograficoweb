@@ -216,11 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
         cuerpoModal.innerHTML = '';
     });
 
-    document.getElementById('btnCambiarEstado').addEventListener('click', function() {
-        const ordenId = this.dataset.idorden; // asumiendo que tienes data-orden-id en el botón
-        cambiarEstadoAEnProceso(ordenId);
-    });
-
     function renderOrdenAgenda(orden) {
         return `<div class="row mt-4">
             <div class="col-6">
@@ -2180,8 +2175,112 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
     }
 
+    // CAMBIOS DE ESTADO
+    document.querySelectorAll('.corregir-btn').forEach(boton => {
+        boton.addEventListener('click', () => {
+            const ordenId = boton.dataset.idorden;
+            cambiarEstadoACorregir(ordenId);
+        });
+    });
+
+    document.querySelectorAll('.pasar-en-proceso-btn').forEach(boton => {
+        boton.addEventListener('click', () => {
+            const ordenId = boton.dataset.idorden;
+            cambiarEstadoAEnProceso(ordenId);
+        });
+    });
+
+    document.querySelectorAll('.pasar-lista-para-retirar-btn').forEach(boton => {
+        boton.addEventListener('click', () => {
+            const ordenId = boton.dataset.idorden;
+            cambiarEstadoAListaParaRetirar(ordenId);
+        });
+    });
+
+    document.querySelectorAll('.pasar-retirada-btn').forEach(boton => {
+        boton.addEventListener('click', () => {
+            const ordenId = boton.dataset.idorden;
+            cambiarEstadoARetirada(ordenId);
+        });
+    });
+
+    document.querySelectorAll('.pasar-corregido-btn').forEach(boton => {
+        boton.addEventListener('click', () => {
+            const ordenId = boton.dataset.idorden;
+            cambiarEstadoaSinHacer(ordenId);
+        });
+    });
+
+    function cambiarEstadoACorregir(ordenId) {
+        fetch(`/api/orden/cambiar-a-corregir/${ordenId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.error('Error al cambiar estado');
+            }
+        })
+        .catch(error => console.error('Error de red:', error));
+    }
+
     function cambiarEstadoAEnProceso(ordenId) {
         fetch(`/api/orden/cambiar-a-en-proceso/${ordenId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.error('Error al cambiar estado');
+            }
+        })
+        .catch(error => console.error('Error de red:', error));
+    }
+
+    function cambiarEstadoAListaParaRetirar(ordenId) {
+        fetch(`/api/orden/cambiar-a-lista-para-retirar/${ordenId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.error('Error al cambiar estado');
+            }
+        })
+        .catch(error => console.error('Error de red:', error));
+    }
+
+    function cambiarEstadoARetirada(ordenId) {
+        fetch(`/api/orden/cambiar-a-retirada/${ordenId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.error('Error al cambiar estado');
+            }
+        })
+        .catch(error => console.error('Error de red:', error));
+    }
+
+    function cambiarEstadoaSinHacer(ordenId) {
+        fetch(`/api/orden/cambiar-a-sin-hacer/${ordenId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
