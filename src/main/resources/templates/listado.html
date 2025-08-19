@@ -50,7 +50,7 @@
               </button>
             </div>
           </div>
-          <button th:data-idorden="${orden.id}"
+          <button th:if="${orden.resta} != 0" th:data-idorden="${orden.id}"
                   class="btn btn-success btn-sm mt-2 btn-cambio-estado btn-marcar-abonado">
             Marcar como abonado</button>
         </div>
@@ -91,7 +91,7 @@
               </button>
             </div>
           </div>
-          <button th:data-idorden="${orden.id}"
+          <button th:if="${orden.resta} != 0" th:data-idorden="${orden.id}"
                   class="btn btn-success btn-sm mt-2 btn-cambio-estado btn-marcar-abonado">
             Marcar como abonado</button>
         </div>
@@ -133,7 +133,7 @@
               </button>
             </div>
           </div>
-          <button th:data-idorden="${orden.id}"
+          <button th:if="${orden.resta} != 0" th:data-idorden="${orden.id}"
                   class="btn btn-success btn-sm mt-2 btn-cambio-estado btn-marcar-abonado">
             Marcar como abonado</button>
         </div>
@@ -168,7 +168,7 @@
                 </button>
               </div>
           </div>
-          <button th:data-idorden="${orden.id}"
+          <button th:if="${orden.resta} != 0" th:data-idorden="${orden.id}"
                   class="btn btn-success btn-sm mt-2 btn-cambio-estado btn-marcar-abonado">
             Marcar como abonado</button>
         </div>
