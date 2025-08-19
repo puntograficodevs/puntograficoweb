@@ -88,9 +88,3 @@ img.foco {
     color: #1d1d1b;
     background-color: #efcf00;
 }
-
-#spinner-overlay .spinner-border {
-  width: 4rem;
-  height: 4rem;
-  border-width: 0.4rem;
-}
