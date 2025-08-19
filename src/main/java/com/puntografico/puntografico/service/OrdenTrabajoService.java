@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -91,26 +92,40 @@ public class OrdenTrabajoService {
         Empleado community = empleadoService.traerEmpleadoPorUsername("maripm");
         List<OrdenTrabajo> ordenes =  ordenTrabajoRepository.findByEstadoOrdenId(1L);
 
-        if (empleado.equals(desarrollador)) {
-            return ordenes.stream().filter(orden -> orden.getEmpleado().equals(desarrollador)).toList();
-        } else if (empleado.equals(community)) {
-            return ordenes.stream().filter(orden -> !orden.getEmpleado().equals(desarrollador)).toList();
+        if (Objects.equals(empleado.getId(), desarrollador.getId())) {
+            return ordenes.stream()
+                    .filter(orden -> orden.getEmpleado().getId().equals(desarrollador.getId()))
+                    .toList();
+        } else if (Objects.equals(empleado.getId(), community.getId())) {
+            return ordenes.stream()
+                    .filter(orden -> !orden.getEmpleado().getId().equals(desarrollador.getId()))
+                    .toList();
         } else {
-            return ordenes.stream().filter(orden -> !orden.getEmpleado().equals(desarrollador) && !orden.getEmpleado().equals(community)).toList();
+            return ordenes.stream()
+                    .filter(orden -> !orden.getEmpleado().getId().equals(desarrollador.getId())
+                            && !orden.getEmpleado().getId().equals(community.getId()))
+                    .toList();
         }
-    };
+    }
 
     public List<OrdenTrabajo> buscarEstadoCorregir(Empleado empleado){
         Empleado desarrollador = empleadoService.traerEmpleadoPorUsername("benpm");
         Empleado community = empleadoService.traerEmpleadoPorUsername("maripm");
         List<OrdenTrabajo> ordenes = ordenTrabajoRepository.findByEstadoOrdenId(4L);
 
-        if (empleado.equals(desarrollador)) {
-            return ordenes.stream().filter(orden -> orden.getEmpleado().equals(desarrollador)).toList();
-        } else if (empleado.equals(community)) {
-            return ordenes.stream().filter(orden -> !orden.getEmpleado().equals(desarrollador)).toList();
+        if (Objects.equals(empleado.getId(), desarrollador.getId())) {
+            return ordenes.stream()
+                    .filter(orden -> orden.getEmpleado().getId().equals(desarrollador.getId()))
+                    .toList();
+        } else if (Objects.equals(empleado.getId(), community.getId())) {
+            return ordenes.stream()
+                    .filter(orden -> !orden.getEmpleado().getId().equals(desarrollador.getId()))
+                    .toList();
         } else {
-            return ordenes.stream().filter(orden -> !orden.getEmpleado().equals(desarrollador) && !orden.getEmpleado().equals(community)).toList();
+            return ordenes.stream()
+                    .filter(orden -> !orden.getEmpleado().getId().equals(desarrollador.getId())
+                            && !orden.getEmpleado().getId().equals(community.getId()))
+                    .toList();
         }
     }
 
@@ -119,28 +134,42 @@ public class OrdenTrabajoService {
         Empleado community = empleadoService.traerEmpleadoPorUsername("maripm");
         List<OrdenTrabajo> ordenes =  ordenTrabajoRepository.findByEstadoOrdenId(2L);
 
-        if (empleado.equals(desarrollador)) {
-            return ordenes.stream().filter(orden -> orden.getEmpleado().equals(desarrollador)).toList();
-        } else if (empleado.equals(community)) {
-            return ordenes.stream().filter(orden -> !orden.getEmpleado().equals(desarrollador)).toList();
+        if (Objects.equals(empleado.getId(), desarrollador.getId())) {
+            return ordenes.stream()
+                    .filter(orden -> orden.getEmpleado().getId().equals(desarrollador.getId()))
+                    .toList();
+        } else if (Objects.equals(empleado.getId(), community.getId())) {
+            return ordenes.stream()
+                    .filter(orden -> !orden.getEmpleado().getId().equals(desarrollador.getId()))
+                    .toList();
         } else {
-            return ordenes.stream().filter(orden -> !orden.getEmpleado().equals(desarrollador) && !orden.getEmpleado().equals(community)).toList();
+            return ordenes.stream()
+                    .filter(orden -> !orden.getEmpleado().getId().equals(desarrollador.getId())
+                            && !orden.getEmpleado().getId().equals(community.getId()))
+                    .toList();
         }
-    };
+    }
 
     public List<OrdenTrabajo> buscarEstadoListaParaRetirar(Empleado empleado){
         Empleado desarrollador = empleadoService.traerEmpleadoPorUsername("benpm");
         Empleado community = empleadoService.traerEmpleadoPorUsername("maripm");
         List<OrdenTrabajo> ordenes =  ordenTrabajoRepository.findByEstadoOrdenId(3L);
 
-        if (empleado.equals(desarrollador)) {
-            return ordenes.stream().filter(orden -> orden.getEmpleado().equals(desarrollador)).toList();
-        } else if (empleado.equals(community)) {
-            return ordenes.stream().filter(orden -> !orden.getEmpleado().equals(desarrollador)).toList();
+        if (Objects.equals(empleado.getId(), desarrollador.getId())) {
+            return ordenes.stream()
+                    .filter(orden -> orden.getEmpleado().getId().equals(desarrollador.getId()))
+                    .toList();
+        } else if (Objects.equals(empleado.getId(), community.getId())) {
+            return ordenes.stream()
+                    .filter(orden -> !orden.getEmpleado().getId().equals(desarrollador.getId()))
+                    .toList();
         } else {
-            return ordenes.stream().filter(orden -> !orden.getEmpleado().equals(desarrollador) && !orden.getEmpleado().equals(community)).toList();
+            return ordenes.stream()
+                    .filter(orden -> !orden.getEmpleado().getId().equals(desarrollador.getId())
+                            && !orden.getEmpleado().getId().equals(community.getId()))
+                    .toList();
         }
-    };
+    }
 
     public List<OrdenTrabajo> buscarTodas() {
         return ordenTrabajoRepository.findAll();

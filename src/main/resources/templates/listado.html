@@ -29,11 +29,11 @@
 
         <div class="card-body">
           <b><p class="tipo-producto capitalize" th:text="${orden.tipoProducto}"></p></b>
-          <li><p>Orden #<span th:text="${orden.id}"></span></p></li>
-          <li><p>Nombre del cliente: <span th:text="${orden.nombreCliente}"></span></p></li>
-          <li th:if="${orden.fechaMuestra}"><p>Fecha de muestra: <span th:text="${orden.fechaMuestra}"></span></p></li>
-          <li><p>Fecha de entrega: <span th:text="${orden.fechaEntrega}"></span></p></li>
-          <li th:if="${orden.horaEntrega} != ''"><p>Hora de entrega: <span th:text="${orden.horaEntrega}"></span></p></li>
+          <li>Orden #<span th:text="${orden.id}"></span></li>
+          <li>Nombre del cliente: <span th:text="${orden.nombreCliente}"></span></li>
+          <li th:if="${orden.fechaMuestra}">Fecha de muestra: <span th:text="${orden.fechaMuestra}"></span></li>
+          <li>Fecha de entrega: <span th:text="${orden.fechaEntrega}"></span></li>
+          <li th:if="${orden.horaEntrega} != ''">Hora de entrega: <span th:text="${orden.horaEntrega}"></span></li>
           <b><p>Total: $<span th:text="${orden.total}"></span></p></b>
           <b><p class="falta-abonar">Falta abonar: $<span th:text="${orden.resta}"></span></p></b>
           <button class="btn btn-success btn-sm mt-2 corregir-btn btn-cambio-estado"
@@ -61,11 +61,11 @@
 
         <div class="card-body">
           <b><p class="tipo-producto capitalize" th:text="${orden.tipoProducto}"></p></b>
-          <li><p>Orden #<span th:text="${orden.id}"></span></p></li>
-          <li><p>Nombre del cliente: <span th:text="${orden.nombreCliente}"></span></p></li>
-          <li th:if="${orden.fechaMuestra}"><p>Fecha de muestra: <span th:text="${orden.fechaMuestra}"></span></p></li>
-          <li><p>Fecha de entrega: <span th:text="${orden.fechaEntrega}"></span></p></li>
-          <li th:if="${orden.horaEntrega} != ''"><p>Hora de entrega: <span th:text="${orden.horaEntrega}"></span></p></li>
+          <li>Orden #<span th:text="${orden.id}"></span></li>
+          <li>Nombre del cliente: <span th:text="${orden.nombreCliente}"></span></li>
+          <li th:if="${orden.fechaMuestra}">Fecha de muestra: <span th:text="${orden.fechaMuestra}"></span></li>
+          <li>Fecha de entrega: <span th:text="${orden.fechaEntrega}"></span></li>
+          <li th:if="${orden.horaEntrega} != ''">Hora de entrega: <span th:text="${orden.horaEntrega}"></span></li>
           <b><p>Total: $<span th:text="${orden.total}"></span></p></b>
           <b><p class="falta-abonar">Falta abonar: $<span th:text="${orden.resta}"></span></p></b>
           <button class="btn btn-success btn-sm mt-2 pasar-corregido-btn volver-sin-hacer-btn btn-cambio-estado"
@@ -93,11 +93,11 @@
 
         <div class="card-body">
           <b><p class="tipo-producto capitalize" th:text="${orden.tipoProducto}"></p></b>
-          <li><p>Orden #<span th:text="${orden.id}"></span></p></li>
-          <li><p>Nombre del cliente: <span th:text="${orden.nombreCliente}"></span></p></li>
-          <li th:if="${orden.fechaMuestra}"><p>Fecha de muestra: <span th:text="${orden.fechaMuestra}"></span></p></li>
-          <li><p>Fecha de entrega: <span th:text="${orden.fechaEntrega}"></span></p></li>
-          <li th:if="${orden.horaEntrega} != ''"><p>Hora de entrega: <span th:text="${orden.horaEntrega}"></span></p></li>
+          <li>Orden #<span th:text="${orden.id}"></span></li>
+          <li>Nombre del cliente: <span th:text="${orden.nombreCliente}"></span></li>
+          <li th:if="${orden.fechaMuestra}">Fecha de muestra: <span th:text="${orden.fechaMuestra}"></span></li>
+          <li>Fecha de entrega: <span th:text="${orden.fechaEntrega}"></span></li>
+          <li th:if="${orden.horaEntrega} != ''">Hora de entrega: <span th:text="${orden.horaEntrega}"></span></li>
           <b><p>Total: $<span th:text="${orden.total}"></span></p></b>
           <b><p class="falta-abonar">Falta abonar: $<span th:text="${orden.resta}"></span></p></b>
           <button class="btn btn-success btn-sm mt-2 pasar-en-proceso-btn volver-en-proceso-btn btn-cambio-estado"
@@ -126,11 +126,11 @@
 
         <div class="card-body">
           <b><p class="tipo-producto capitalize" th:text="${orden.tipoProducto}"></p></b>
-          <li><p>Orden #<span th:text="${orden.id}"></span></p></li>
-          <li><p>Nombre del cliente: <span th:text="${orden.nombreCliente}"></span></p></li>
-          <li th:if="${orden.fechaMuestra}"><p>Fecha de muestra: <span th:text="${orden.fechaMuestra}"></span></p></li>
-          <li><p>Fecha de entrega: <span th:text="${orden.fechaEntrega}"></span></p></li>
-          <li th:if="${orden.horaEntrega} != ''"><p>Hora de entrega: <span th:text="${orden.horaEntrega}"></span></p></li>
+          <li>Orden #<span th:text="${orden.id}"></span></li>
+          <li>Nombre del cliente: <span th:text="${orden.nombreCliente}"></span></li>
+          <li th:if="${orden.fechaMuestra}">Fecha de muestra: <span th:text="${orden.fechaMuestra}"></span></li>
+          <li>Fecha de entrega: <span th:text="${orden.fechaEntrega}"></span></li>
+          <li th:if="${orden.horaEntrega} != ''">Hora de entrega: <span th:text="${orden.horaEntrega}"></span></li>
           <b><p>Total: $<span th:text="${orden.total}"></span></p></b>
           <b><p class="falta-abonar">Falta abonar: $<span th:text="${orden.resta}"></span></p></b>
           <button class="btn btn-success btn-sm mt-2 pasar-corregido-btn btn-cambio-estado"
