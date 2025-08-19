@@ -2,7 +2,6 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.Empleado;
 import com.puntografico.puntografico.domain.EstadoOrden;
-import com.puntografico.puntografico.domain.EstadoPago;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.EstadoOrdenRepository;
 import com.puntografico.puntografico.repository.EstadoPagoRepository;
@@ -10,7 +9,6 @@ import com.puntografico.puntografico.repository.MedioPagoRepository;
 import com.puntografico.puntografico.repository.OrdenTrabajoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -32,6 +30,9 @@ public class OrdenTrabajoService {
 
     @Autowired
     private MedioPagoRepository medioPagoRepository;
+
+    @Autowired
+    private EmpleadoService empleadoService;
 
     public OrdenTrabajo crear(HttpServletRequest request) {
         OrdenTrabajo ordenTrabajo = new OrdenTrabajo();
@@ -85,20 +86,60 @@ public class OrdenTrabajoService {
         return ordenTrabajoRepository.save(ordenTrabajo);
     }
 
-    public List<OrdenTrabajo> buscarEstadoSinHacer(){
-        return ordenTrabajoRepository.findByEstadoOrdenId(1L);
+    public List<OrdenTrabajo> buscarEstadoSinHacer(Empleado empleado){
+        Empleado desarrollador = empleadoService.traerEmpleadoPorUsername("benpm");
+        Empleado community = empleadoService.traerEmpleadoPorUsername("maripm");
+        List<OrdenTrabajo> ordenes =  ordenTrabajoRepository.findByEstadoOrdenId(1L);
+
+        if (empleado.equals(desarrollador)) {
+            return ordenes.stream().filter(orden -> orden.getEmpleado().equals(desarrollador)).toList();
+        } else if (empleado.equals(community)) {
+            return ordenes.stream().filter(orden -> !orden.getEmpleado().equals(desarrollador)).toList();
+        } else {
+            return ordenes.stream().filter(orden -> !orden.getEmpleado().equals(desarrollador) && !orden.getEmpleado().equals(community)).toList();
+        }
     };
 
-    public List<OrdenTrabajo> buscarEstadoCorregir(){
-        return ordenTrabajoRepository.findByEstadoOrdenId(4L);
+    public List<OrdenTrabajo> buscarEstadoCorregir(Empleado empleado){
+        Empleado desarrollador = empleadoService.traerEmpleadoPorUsername("benpm");
+        Empleado community = empleadoService.traerEmpleadoPorUsername("maripm");
+        List<OrdenTrabajo> ordenes = ordenTrabajoRepository.findByEstadoOrdenId(4L);
+
+        if (empleado.equals(desarrollador)) {
+            return ordenes.stream().filter(orden -> orden.getEmpleado().equals(desarrollador)).toList();
+        } else if (empleado.equals(community)) {
+            return ordenes.stream().filter(orden -> !orden.getEmpleado().equals(desarrollador)).toList();
+        } else {
+            return ordenes.stream().filter(orden -> !orden.getEmpleado().equals(desarrollador) && !orden.getEmpleado().equals(community)).toList();
+        }
+    }
+
+    public List<OrdenTrabajo> buscarEstadoEnProceso(Empleado empleado){
+        Empleado desarrollador = empleadoService.traerEmpleadoPorUsername("benpm");
+        Empleado community = empleadoService.traerEmpleadoPorUsername("maripm");
+        List<OrdenTrabajo> ordenes =  ordenTrabajoRepository.findByEstadoOrdenId(2L);
+
+        if (empleado.equals(desarrollador)) {
+            return ordenes.stream().filter(orden -> orden.getEmpleado().equals(desarrollador)).toList();
+        } else if (empleado.equals(community)) {
+            return ordenes.stream().filter(orden -> !orden.getEmpleado().equals(desarrollador)).toList();
+        } else {
+            return ordenes.stream().filter(orden -> !orden.getEmpleado().equals(desarrollador) && !orden.getEmpleado().equals(community)).toList();
+        }
     };
 
-    public List<OrdenTrabajo> buscarEstadoEnProceso(){
-        return ordenTrabajoRepository.findByEstadoOrdenId(2L);
-    };
+    public List<OrdenTrabajo> buscarEstadoListaParaRetirar(Empleado empleado){
+        Empleado desarrollador = empleadoService.traerEmpleadoPorUsername("benpm");
+        Empleado community = empleadoService.traerEmpleadoPorUsername("maripm");
+        List<OrdenTrabajo> ordenes =  ordenTrabajoRepository.findByEstadoOrdenId(3L);
 
-    public List<OrdenTrabajo> buscarEstadoListaParaRetirar(){
-        return ordenTrabajoRepository.findByEstadoOrdenId(3L);
+        if (empleado.equals(desarrollador)) {
+            return ordenes.stream().filter(orden -> orden.getEmpleado().equals(desarrollador)).toList();
+        } else if (empleado.equals(community)) {
+            return ordenes.stream().filter(orden -> !orden.getEmpleado().equals(desarrollador)).toList();
+        } else {
+            return ordenes.stream().filter(orden -> !orden.getEmpleado().equals(desarrollador) && !orden.getEmpleado().equals(community)).toList();
+        }
     };
 
     public List<OrdenTrabajo> buscarTodas() {

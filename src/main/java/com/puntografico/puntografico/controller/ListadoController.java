@@ -2,6 +2,7 @@ package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.Empleado;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
+import com.puntografico.puntografico.domain.Rol;
 import com.puntografico.puntografico.service.EmpleadoService;
 import com.puntografico.puntografico.service.OrdenTrabajoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +30,10 @@ public class ListadoController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        List<OrdenTrabajo> ordenesSinHacer = ordenTrabajoService.buscarEstadoSinHacer();
-        List<OrdenTrabajo> ordenesCorregir = ordenTrabajoService.buscarEstadoCorregir();
-        List<OrdenTrabajo> ordenesEnProceso = ordenTrabajoService.buscarEstadoEnProceso();
-        List<OrdenTrabajo> ordenesListaParaRetirar = ordenTrabajoService.buscarEstadoListaParaRetirar();
+        List<OrdenTrabajo> ordenesSinHacer = ordenTrabajoService.buscarEstadoSinHacer(empleado);
+        List<OrdenTrabajo> ordenesCorregir = ordenTrabajoService.buscarEstadoCorregir(empleado);
+        List<OrdenTrabajo> ordenesEnProceso = ordenTrabajoService.buscarEstadoEnProceso(empleado);
+        List<OrdenTrabajo> ordenesListaParaRetirar = ordenTrabajoService.buscarEstadoListaParaRetirar(empleado);
 
         model.addAttribute("empleado", empleado);
         model.addAttribute("ordenesSinHacer", ordenesSinHacer);
