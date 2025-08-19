@@ -13,6 +13,50 @@
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 
+<form method="get" action="/listado" id="formulario-selector-producto">
+  <div class="row contenedor-selector-producto justify-content-center align-items-center">
+    <div class="col-md-4 p-0 text-end">
+      <h3 class="titulo-filtro">Elegí qué órdenes querés ver:</h3>
+    </div>
+    <div class="col-md-8">
+      <select name="tipoProducto" class="form-select mb-3" onchange="this.form.submit()" id="selector-producto">
+        <option value="todas" th:selected="${tipoProducto == null or tipoProducto == 'todas'}">Todas</option>
+        <option value="agenda" th:selected="${tipoProducto == 'agenda'}">Agendas</option>
+        <option value="anotador" th:selected="${tipoProducto == 'anotador'}">Anotadores</option>
+        <option value="carpeta con solapas" th:selected="${tipoProducto == 'carpeta con solapas'}">Carpetas con solapas</option>
+        <option value="catálogo" th:selected="${tipoProducto == 'catálogo'}">Catálogos</option>
+        <option value="cierra bolsas" th:selected="${tipoProducto == 'cierra bolsas'}">Cierra bolsas</option>
+        <option value="combo" th:selected="${tipoProducto == 'combo'}">Combos</option>
+        <option value="cuaderno anillado" th:selected="${tipoProducto == 'anotador'}">Cuadernos anillados</option>
+        <option value="entrada" th:selected="${tipoProducto == 'entrada'}">Entradas</option>
+        <option value="etiqueta" th:selected="${tipoProducto == 'etiqueta'}">Etiquetas</option>
+        <option value="flybanner" th:selected="${tipoProducto == 'flybanner'}">Flybanners</option>
+        <option value="folleto" th:selected="${tipoProducto == 'folleto'}">Folletos</option>
+        <option value="hojas membretadas" th:selected="${tipoProducto == 'hojas membretadas'}">Hojas membretadas</option>
+        <option value="impresión" th:selected="${tipoProducto == 'impresión'}">Impresiones</option>
+        <option value="lona común" th:selected="${tipoProducto == 'lona común'}">Lonas comunes</option>
+        <option value="lona publicitaria" th:selected="${tipoProducto == 'lona publicitaria'}">Lonas publicitarias</option>
+        <option value="rifa o bono" th:selected="${tipoProducto == 'rifa o bono'}">Rifas o bonos</option>
+        <option value="rotulación" th:selected="${tipoProducto == 'rotulación'}">Rotulaciones</option>
+        <option value="sello automático" th:selected="${tipoProducto == 'sello automático'}">Sellos automáticos</option>
+        <option value="sello automático escolar" th:selected="${tipoProducto == 'sello automático escolar'}">Sellos automáticos escolares</option>
+        <option value="sello de madera" th:selected="${tipoProducto == 'sello de madera'}">Sellos de madera</option>
+        <option value="sobre" th:selected="${tipoProducto == 'sobre'}">Sobres</option>
+        <option value="sticker" th:selected="${tipoProducto == 'sticker'}">Stickers</option>
+        <option value="sublimación" th:selected="${tipoProducto == 'sublimación'}">Sublimaciones</option>
+        <option value="talonario" th:selected="${tipoProducto == 'talonario'}">Talonarios</option>
+        <option value="tarjeta" th:selected="${tipoProducto == 'tarjeta'}">Tarjetas</option>
+        <option value="turnero" th:selected="${tipoProducto == 'turnero'}">Turneros</option>
+        <option value="vinilo" th:selected="${tipoProducto == 'vinilo'}">Vinilos</option>
+        <option value="vinilo con plástico corrugado" th:selected="${tipoProducto == 'vinilo con plástico corrugado'}">Vinilos + plástico corrugado</option>
+        <option value="vinilo de corte" th:selected="${tipoProducto == 'vinilo de corte'}">Vinilos de corte</option>
+        <option value="voucher" th:selected="${tipoProducto == 'voucher'}">Vouchers</option>
+        <option value="sin categoría" th:selected="${tipoProducto == 'sin categoría'}">Sin categoría</option>
+      </select>
+    </div>
+  </div>
+</form>
+
 <div class="container-fluid contenedor-kanban-ordenes">
   <div class="row flex-nowrap overflow-auto">
     <div class="col-3 columna-sin-hacer">

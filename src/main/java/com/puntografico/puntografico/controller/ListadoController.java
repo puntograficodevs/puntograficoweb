@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -22,7 +24,7 @@ public class ListadoController {
     @Autowired
     private OrdenTrabajoService ordenTrabajoService;
 
-    @GetMapping("/listado")
+    /*@GetMapping("/listado")
     public String listado(HttpSession session, Model model) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
@@ -40,6 +42,33 @@ public class ListadoController {
         model.addAttribute("ordenesCorregir", ordenesCorregir);
         model.addAttribute("ordenesEnProceso", ordenesEnProceso);
         model.addAttribute("ordenesListaParaRetirar", ordenesListaParaRetirar);
+
+        return "listado";
+    }*/
+
+    @GetMapping("/listado")
+    public String listado(HttpSession session, Model model, @RequestParam(required = false) String tipoProducto) {
+        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
+
+        if (empleado == null) {
+            return "redirect:/"; // Si no hay sesión, lo manda al login
+        }
+
+        if (tipoProducto == null) {
+            tipoProducto = "todas";
+        }
+
+        List<OrdenTrabajo> ordenesSinHacer = ordenTrabajoService.buscarEstadoSinHacer(empleado, tipoProducto);
+        List<OrdenTrabajo> ordenesCorregir = ordenTrabajoService.buscarEstadoCorregir(empleado, tipoProducto);
+        List<OrdenTrabajo> ordenesEnProceso = ordenTrabajoService.buscarEstadoEnProceso(empleado, tipoProducto);
+        List<OrdenTrabajo> ordenesListaParaRetirar = ordenTrabajoService.buscarEstadoListaParaRetirar(empleado, tipoProducto);
+
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenesSinHacer", ordenesSinHacer);
+        model.addAttribute("ordenesCorregir", ordenesCorregir);
+        model.addAttribute("ordenesEnProceso", ordenesEnProceso);
+        model.addAttribute("ordenesListaParaRetirar", ordenesListaParaRetirar);
+        model.addAttribute("tipoProducto", tipoProducto);
 
         return "listado";
     }

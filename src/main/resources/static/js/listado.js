@@ -2334,6 +2334,16 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error de red:', error));
     }
+
+    const select = document.getElementById('selector-producto');
+      const form = document.getElementById('formulario-selector-producto');
+
+      select.addEventListener('change', () => {
+        // Mostrar el spinner
+        document.getElementById('spinner-overlay').style.display = 'flex';
+        // Enviar el formulario
+        form.submit();
+      });
 });
 
 window.addEventListener('load', () => {

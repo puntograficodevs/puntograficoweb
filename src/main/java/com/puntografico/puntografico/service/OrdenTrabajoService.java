@@ -88,88 +88,92 @@ public class OrdenTrabajoService {
         return ordenTrabajoRepository.save(ordenTrabajo);
     }
 
-    public List<OrdenTrabajo> buscarEstadoSinHacer(Empleado empleado){
+    public List<OrdenTrabajo> buscarEstadoSinHacer(Empleado empleado, String tipoProducto){
         Empleado desarrollador = empleadoService.traerEmpleadoPorUsername("benpm");
         Empleado community = empleadoService.traerEmpleadoPorUsername("maripm");
-        List<OrdenTrabajo> ordenes =  ordenTrabajoRepository.findByEstadoOrdenId(1L);
 
-        if (Objects.equals(empleado.getId(), desarrollador.getId())) {
-            return ordenes.stream()
-                    .filter(orden -> orden.getEmpleado().getId().equals(desarrollador.getId()))
-                    .toList();
-        } else if (Objects.equals(empleado.getId(), community.getId())) {
-            return ordenes.stream()
-                    .filter(orden -> !orden.getEmpleado().getId().equals(desarrollador.getId()))
-                    .toList();
-        } else {
-            return ordenes.stream()
-                    .filter(orden -> !orden.getEmpleado().getId().equals(desarrollador.getId())
-                            && !orden.getEmpleado().getId().equals(community.getId()))
-                    .toList();
-        }
+        List<OrdenTrabajo> ordenes = "todas".equals(tipoProducto)
+                ? ordenTrabajoRepository.findByEstadoOrdenId(1L)
+                : ordenTrabajoRepository.findByEstadoOrdenIdAndTipoProducto(1L, tipoProducto);
+
+        return ordenes.stream()
+                .filter(orden -> {
+                    if (empleado.getId().equals(desarrollador.getId())) {
+                        return orden.getEmpleado().getId().equals(desarrollador.getId());
+                    } else if (empleado.getId().equals(community.getId())) {
+                        return !orden.getEmpleado().getId().equals(desarrollador.getId());
+                    } else {
+                        return !orden.getEmpleado().getId().equals(desarrollador.getId())
+                                && !orden.getEmpleado().getId().equals(community.getId());
+                    }
+                })
+                .toList();
     }
 
-    public List<OrdenTrabajo> buscarEstadoCorregir(Empleado empleado){
+    public List<OrdenTrabajo> buscarEstadoCorregir(Empleado empleado, String tipoProducto){
         Empleado desarrollador = empleadoService.traerEmpleadoPorUsername("benpm");
         Empleado community = empleadoService.traerEmpleadoPorUsername("maripm");
-        List<OrdenTrabajo> ordenes = ordenTrabajoRepository.findByEstadoOrdenId(4L);
 
-        if (Objects.equals(empleado.getId(), desarrollador.getId())) {
-            return ordenes.stream()
-                    .filter(orden -> orden.getEmpleado().getId().equals(desarrollador.getId()))
-                    .toList();
-        } else if (Objects.equals(empleado.getId(), community.getId())) {
-            return ordenes.stream()
-                    .filter(orden -> !orden.getEmpleado().getId().equals(desarrollador.getId()))
-                    .toList();
-        } else {
-            return ordenes.stream()
-                    .filter(orden -> !orden.getEmpleado().getId().equals(desarrollador.getId())
-                            && !orden.getEmpleado().getId().equals(community.getId()))
-                    .toList();
-        }
+        List<OrdenTrabajo> ordenes = "todas".equals(tipoProducto)
+                ? ordenTrabajoRepository.findByEstadoOrdenId(4L)
+                : ordenTrabajoRepository.findByEstadoOrdenIdAndTipoProducto(4L, tipoProducto);
+
+        return ordenes.stream()
+                .filter(orden -> {
+                    if (empleado.getId().equals(desarrollador.getId())) {
+                        return orden.getEmpleado().getId().equals(desarrollador.getId());
+                    } else if (empleado.getId().equals(community.getId())) {
+                        return !orden.getEmpleado().getId().equals(desarrollador.getId());
+                    } else {
+                        return !orden.getEmpleado().getId().equals(desarrollador.getId())
+                                && !orden.getEmpleado().getId().equals(community.getId());
+                    }
+                })
+                .toList();
     }
 
-    public List<OrdenTrabajo> buscarEstadoEnProceso(Empleado empleado){
+    public List<OrdenTrabajo> buscarEstadoEnProceso(Empleado empleado, String tipoProducto){
         Empleado desarrollador = empleadoService.traerEmpleadoPorUsername("benpm");
         Empleado community = empleadoService.traerEmpleadoPorUsername("maripm");
-        List<OrdenTrabajo> ordenes =  ordenTrabajoRepository.findByEstadoOrdenId(2L);
 
-        if (Objects.equals(empleado.getId(), desarrollador.getId())) {
-            return ordenes.stream()
-                    .filter(orden -> orden.getEmpleado().getId().equals(desarrollador.getId()))
-                    .toList();
-        } else if (Objects.equals(empleado.getId(), community.getId())) {
-            return ordenes.stream()
-                    .filter(orden -> !orden.getEmpleado().getId().equals(desarrollador.getId()))
-                    .toList();
-        } else {
-            return ordenes.stream()
-                    .filter(orden -> !orden.getEmpleado().getId().equals(desarrollador.getId())
-                            && !orden.getEmpleado().getId().equals(community.getId()))
-                    .toList();
-        }
+        List<OrdenTrabajo> ordenes = "todas".equals(tipoProducto)
+                ? ordenTrabajoRepository.findByEstadoOrdenId(2L)
+                : ordenTrabajoRepository.findByEstadoOrdenIdAndTipoProducto(2L, tipoProducto);
+
+        return ordenes.stream()
+                .filter(orden -> {
+                    if (empleado.getId().equals(desarrollador.getId())) {
+                        return orden.getEmpleado().getId().equals(desarrollador.getId());
+                    } else if (empleado.getId().equals(community.getId())) {
+                        return !orden.getEmpleado().getId().equals(desarrollador.getId());
+                    } else {
+                        return !orden.getEmpleado().getId().equals(desarrollador.getId())
+                                && !orden.getEmpleado().getId().equals(community.getId());
+                    }
+                })
+                .toList();
     }
 
-    public List<OrdenTrabajo> buscarEstadoListaParaRetirar(Empleado empleado){
+    public List<OrdenTrabajo> buscarEstadoListaParaRetirar(Empleado empleado, String tipoProducto){
         Empleado desarrollador = empleadoService.traerEmpleadoPorUsername("benpm");
         Empleado community = empleadoService.traerEmpleadoPorUsername("maripm");
-        List<OrdenTrabajo> ordenes =  ordenTrabajoRepository.findByEstadoOrdenId(3L);
 
-        if (Objects.equals(empleado.getId(), desarrollador.getId())) {
-            return ordenes.stream()
-                    .filter(orden -> orden.getEmpleado().getId().equals(desarrollador.getId()))
-                    .toList();
-        } else if (Objects.equals(empleado.getId(), community.getId())) {
-            return ordenes.stream()
-                    .filter(orden -> !orden.getEmpleado().getId().equals(desarrollador.getId()))
-                    .toList();
-        } else {
-            return ordenes.stream()
-                    .filter(orden -> !orden.getEmpleado().getId().equals(desarrollador.getId())
-                            && !orden.getEmpleado().getId().equals(community.getId()))
-                    .toList();
-        }
+        List<OrdenTrabajo> ordenes = "todas".equals(tipoProducto)
+                ? ordenTrabajoRepository.findByEstadoOrdenId(3L)
+                : ordenTrabajoRepository.findByEstadoOrdenIdAndTipoProducto(3L, tipoProducto);
+
+        return ordenes.stream()
+                .filter(orden -> {
+                    if (empleado.getId().equals(desarrollador.getId())) {
+                        return orden.getEmpleado().getId().equals(desarrollador.getId());
+                    } else if (empleado.getId().equals(community.getId())) {
+                        return !orden.getEmpleado().getId().equals(desarrollador.getId());
+                    } else {
+                        return !orden.getEmpleado().getId().equals(desarrollador.getId())
+                                && !orden.getEmpleado().getId().equals(community.getId());
+                    }
+                })
+                .toList();
     }
 
     public List<OrdenTrabajo> buscarTodas() {

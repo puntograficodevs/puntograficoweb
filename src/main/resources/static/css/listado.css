@@ -211,8 +211,19 @@ p {
   z-index: 9999;         /* sobre todo lo demás */
 }
 
-#spinner-overlay .spinner-border {
-  width: 4rem;
-  height: 4rem;
-  border-width: 0.4rem;
+.contenedor-selector-producto {
+    width: 75%;
+    margin: 1em auto;
+}
+
+.contenedor-selector-producto .titulo-filtro {
+    font-size: 1.2em;
+    color: #E52987;
+    font-family: 'Lemon Milk';
+}
+
+.contenedor-selector-producto select {
+    font-size: 1em;
+    margin-top: 8px;
+    border: 1px solid #e52987;
 }
