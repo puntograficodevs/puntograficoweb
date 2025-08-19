@@ -74,8 +74,7 @@
         </button>
 
         <div class="card-body">
-          <b><p class="tipo-producto capitalize" th:text="${orden.tipoProducto}"></p></b>
-          <li>Orden #<span th:text="${orden.id}"></span></li>
+          <b><p class="uppercase" th:text="'Orden #' + ${orden.id} + ' - ' + ${orden.tipoProducto}"></p></b>
           <li>Nombre del cliente: <span th:text="${orden.nombreCliente}"></span></li>
           <li th:if="${orden.fechaMuestra}">Fecha de muestra: <span th:text="${orden.fechaMuestra}"></span></li>
           <li>Fecha de entrega: <span th:text="${orden.fechaEntrega}"></span></li>
@@ -115,8 +114,7 @@
         </button>
 
         <div class="card-body">
-          <b><p class="tipo-producto capitalize" th:text="${orden.tipoProducto}"></p></b>
-          <li>Orden #<span th:text="${orden.id}"></span></li>
+          <b><p class="uppercase" th:text="'Orden #' + ${orden.id} + ' - ' + ${orden.tipoProducto}"></p></b>
           <li>Nombre del cliente: <span th:text="${orden.nombreCliente}"></span></li>
           <li th:if="${orden.fechaMuestra}">Fecha de muestra: <span th:text="${orden.fechaMuestra}"></span></li>
           <li>Fecha de entrega: <span th:text="${orden.fechaEntrega}"></span></li>
@@ -156,8 +154,7 @@
         </button>
 
         <div class="card-body">
-          <b><p class="tipo-producto capitalize" th:text="${orden.tipoProducto}"></p></b>
-          <li>Orden #<span th:text="${orden.id}"></span></li>
+          <b><p class="uppercase" th:text="'Orden #' + ${orden.id} + ' - ' + ${orden.tipoProducto}"></p></b>
           <li>Nombre del cliente: <span th:text="${orden.nombreCliente}"></span></li>
           <li th:if="${orden.fechaMuestra}">Fecha de muestra: <span th:text="${orden.fechaMuestra}"></span></li>
           <li>Fecha de entrega: <span th:text="${orden.fechaEntrega}"></span></li>
@@ -198,8 +195,7 @@
         </button>
 
         <div class="card-body">
-          <b><p class="tipo-producto capitalize" th:text="${orden.tipoProducto}"></p></b>
-          <li>Orden #<span th:text="${orden.id}"></span></li>
+          <b><p class="uppercase" th:text="'Orden #' + ${orden.id} + ' - ' + ${orden.tipoProducto}"></p></b>
           <li>Nombre del cliente: <span th:text="${orden.nombreCliente}"></span></li>
           <li th:if="${orden.fechaMuestra}">Fecha de muestra: <span th:text="${orden.fechaMuestra}"></span></li>
           <li>Fecha de entrega: <span th:text="${orden.fechaEntrega}"></span></li>
@@ -223,13 +219,6 @@
   </div>
 </div>
 
-<!-- Spinner overlay
-<div id="spinner-overlay">
-  <div class="spinner-border text-warning" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-</div>-->
-<div th:replace="fragments/spinner :: spinner"></div>
 
 <div class="modal fade" id="ordenModal" tabindex="-1" aria-labelledby="ordenModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
