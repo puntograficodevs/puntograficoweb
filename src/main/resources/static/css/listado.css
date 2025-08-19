@@ -227,3 +227,8 @@ p {
     margin-top: 8px;
     border: 1px solid #e52987;
 }
+
+.divider-listado {
+    border: 1px solid #a7a7a7;
+    margin: 1em 3em 2em 3em;
+}
