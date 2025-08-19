@@ -2178,6 +2178,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // CAMBIOS DE ESTADO
     document.querySelectorAll('.corregir-btn').forEach(boton => {
         boton.addEventListener('click', () => {
+            document.getElementById('spinner-overlay').style.display = 'flex';
             const ordenId = boton.dataset.idorden;
             cambiarEstadoACorregir(ordenId);
         });
@@ -2185,6 +2186,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.pasar-en-proceso-btn').forEach(boton => {
         boton.addEventListener('click', () => {
+            document.getElementById('spinner-overlay').style.display = 'flex';
             const ordenId = boton.dataset.idorden;
             cambiarEstadoAEnProceso(ordenId);
         });
@@ -2192,6 +2194,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.pasar-lista-para-retirar-btn').forEach(boton => {
         boton.addEventListener('click', () => {
+            document.getElementById('spinner-overlay').style.display = 'flex';
             const ordenId = boton.dataset.idorden;
             cambiarEstadoAListaParaRetirar(ordenId);
         });
@@ -2200,12 +2203,22 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.pasar-retirada-btn').forEach(boton => {
         boton.addEventListener('click', () => {
             const ordenId = boton.dataset.idorden;
+            const resta = boton.dataset.resta;
+
+            if (resta != 0) {
+                const confirmar = confirm("¡ADVERTENCIA! El producto no fue abonado por completo.\n\n¿Desea continuar de todos modos?");
+                if (!confirmar) {
+                    return;
+                }
+            }
+            document.getElementById('spinner-overlay').style.display = 'flex';
             cambiarEstadoARetirada(ordenId);
         });
     });
 
     document.querySelectorAll('.pasar-corregido-btn').forEach(boton => {
         boton.addEventListener('click', () => {
+            document.getElementById('spinner-overlay').style.display = 'flex';
             const ordenId = boton.dataset.idorden;
             cambiarEstadoaSinHacer(ordenId);
         });
@@ -2295,4 +2308,34 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error de red:', error));
     }
+
+    // CAMBIO DE PAGO
+    document.querySelectorAll('.btn-marcar-abonado').forEach(boton => {
+        boton.addEventListener('click', () => {
+            document.getElementById('spinner-overlay').style.display = 'flex';
+            const ordenId = boton.dataset.idorden;
+            cambiarEstadoAAbonado(ordenId);
+        });
+    });
+
+    function cambiarEstadoAAbonado(ordenId) {
+        fetch(`/api/orden/cambiar-a-abonado/${ordenId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.error('Error al cambiar estado de pago');
+            }
+        })
+        .catch(error => console.error('Error de red:', error));
+    }
+});
+
+window.addEventListener('load', () => {
+  document.getElementById('spinner-overlay').style.display = 'none';
 });

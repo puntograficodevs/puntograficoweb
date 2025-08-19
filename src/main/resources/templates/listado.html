@@ -36,14 +36,23 @@
           <li th:if="${orden.horaEntrega} != ''">Hora de entrega: <span th:text="${orden.horaEntrega}"></span></li>
           <b><p>Total: $<span th:text="${orden.total}"></span></p></b>
           <b><p class="falta-abonar">Falta abonar: $<span th:text="${orden.resta}"></span></p></b>
-          <button class="btn btn-success btn-sm mt-2 corregir-btn btn-cambio-estado"
-                  th:data-idorden="${orden.id}">
-            Corregir
-          </button>
-          <button class="btn btn-success btn-sm mt-2 pasar-en-proceso-btn btn-cambio-estado"
-                  th:data-idorden="${orden.id}">
-            En proceso
-          </button>
+          <div class="row mt-2">
+            <div class="col-md-6 m-0">
+              <button class="btn btn-success corregir-btn btn-cambio-estado"
+                      th:data-idorden="${orden.id}">
+                Corregir
+              </button>
+            </div>
+            <div class="col-md-6 m-0">
+              <button class="btn btn-success pasar-en-proceso-btn btn-cambio-estado"
+                      th:data-idorden="${orden.id}">
+                En proceso
+              </button>
+            </div>
+          </div>
+          <button th:data-idorden="${orden.id}"
+                  class="btn btn-success btn-sm mt-2 btn-cambio-estado btn-marcar-abonado">
+            Marcar como abonado</button>
         </div>
       </div>
     </div>
@@ -68,14 +77,23 @@
           <li th:if="${orden.horaEntrega} != ''">Hora de entrega: <span th:text="${orden.horaEntrega}"></span></li>
           <b><p>Total: $<span th:text="${orden.total}"></span></p></b>
           <b><p class="falta-abonar">Falta abonar: $<span th:text="${orden.resta}"></span></p></b>
-          <button class="btn btn-success btn-sm mt-2 pasar-corregido-btn volver-sin-hacer-btn btn-cambio-estado"
-                  th:data-idorden="${orden.id}">
-            Sin hacer
-          </button>
-          <button class="btn btn-success btn-sm mt-2 pasar-lista-para-retirar-btn btn-cambio-estado"
-                  th:data-idorden="${orden.id}">
-            Lista para retirar
-          </button>
+          <div class="row mt-2">
+            <div class="col-md-6 m-0">
+              <button class="btn btn-success pasar-corregido-btn volver-sin-hacer-btn btn-cambio-estado"
+                      th:data-idorden="${orden.id}">
+                Sin hacer
+              </button>
+            </div>
+            <div class="col-md-6 m-0">
+              <button class="btn btn-success pasar-lista-para-retirar-btn btn-cambio-estado"
+                      th:data-idorden="${orden.id}">
+                Hecha
+              </button>
+            </div>
+          </div>
+          <button th:data-idorden="${orden.id}"
+                  class="btn btn-success btn-sm mt-2 btn-cambio-estado btn-marcar-abonado">
+            Marcar como abonado</button>
         </div>
       </div>
     </div>
@@ -100,15 +118,24 @@
           <li th:if="${orden.horaEntrega} != ''">Hora de entrega: <span th:text="${orden.horaEntrega}"></span></li>
           <b><p>Total: $<span th:text="${orden.total}"></span></p></b>
           <b><p class="falta-abonar">Falta abonar: $<span th:text="${orden.resta}"></span></p></b>
-          <button class="btn btn-success btn-sm mt-2 pasar-en-proceso-btn volver-en-proceso-btn btn-cambio-estado"
-                  th:data-idorden="${orden.id}">
-            En proceso
-          </button>
-
-          <button class="btn btn-success btn-sm mt-2 pasar-retirada-btn btn-cambio-estado"
-                  th:data-idorden="${orden.id}">
-            Entregado
-          </button>
+          <div class="row mt-2">
+            <div class="col-md-6 m-0">
+              <button class="btn btn-success pasar-en-proceso-btn volver-en-proceso-btn btn-cambio-estado"
+                      th:data-idorden="${orden.id}">
+                En proceso
+              </button>
+            </div>
+            <div class="col-md-6 m-0">
+              <button class="btn btn-success pasar-retirada-btn btn-cambio-estado"
+                      th:data-idorden="${orden.id}"
+                      th:data-resta="${orden.resta}">
+                Entregado
+              </button>
+            </div>
+          </div>
+          <button th:data-idorden="${orden.id}"
+                  class="btn btn-success btn-sm mt-2 btn-cambio-estado btn-marcar-abonado">
+            Marcar como abonado</button>
         </div>
       </div>
     </div>
@@ -133,13 +160,27 @@
           <li th:if="${orden.horaEntrega} != ''">Hora de entrega: <span th:text="${orden.horaEntrega}"></span></li>
           <b><p>Total: $<span th:text="${orden.total}"></span></p></b>
           <b><p class="falta-abonar">Falta abonar: $<span th:text="${orden.resta}"></span></p></b>
-          <button class="btn btn-success btn-sm mt-2 pasar-corregido-btn btn-cambio-estado"
-                  th:data-idorden="${orden.id}">
-            Corregido
-          </button>
+          <div class="row mt-2">
+              <div class="col-md-12 m-0">
+                <button class="btn btn-success pasar-corregido-btn btn-cambio-estado"
+                        th:data-idorden="${orden.id}">
+                  Corregido
+                </button>
+              </div>
+          </div>
+          <button th:data-idorden="${orden.id}"
+                  class="btn btn-success btn-sm mt-2 btn-cambio-estado btn-marcar-abonado">
+            Marcar como abonado</button>
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Spinner overlay -->
+<div id="spinner-overlay">
+  <div class="spinner-border text-warning" role="status">
+    <span class="visually-hidden">Loading...</span>
   </div>
 </div>
 

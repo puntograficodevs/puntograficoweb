@@ -2,6 +2,7 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.Empleado;
 import com.puntografico.puntografico.domain.EstadoOrden;
+import com.puntografico.puntografico.domain.EstadoPago;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.EstadoOrdenRepository;
 import com.puntografico.puntografico.repository.EstadoPagoRepository;
@@ -207,6 +208,20 @@ public class OrdenTrabajoService {
         OrdenTrabajo ordenTrabajo = ordenTrabajoRepository.findById(id).get();
         EstadoOrden sinHacer = estadoOrdenRepository.findById(1L).get();
         ordenTrabajo.setEstadoOrden(sinHacer);
+        ordenTrabajoRepository.save(ordenTrabajo);
+    }
+
+    public void cambiarAAbonado(Long id) {
+        OrdenTrabajo ordenTrabajo = ordenTrabajoRepository.findById(id).get();
+
+        if (ordenTrabajo.getResta() != 0) {
+            int total = ordenTrabajo.getTotal();
+            EstadoPago estadoAbonado = estadoPagoRepository.findById(3L).get();
+            ordenTrabajo.setEstadoPago(estadoAbonado);
+            ordenTrabajo.setResta(0);
+            ordenTrabajo.setAbonado(total);
+        }
+
         ordenTrabajoRepository.save(ordenTrabajo);
     }
 }

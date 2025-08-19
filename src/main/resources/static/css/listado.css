@@ -73,7 +73,7 @@ p {
     background-color: #ffef8b;
 }
 
-.columna-listas-para-retirar .titulo-columna {
+.columna-listas-para-retirar .titulo-columna  {
     background-color: #abf28c;
 }
 
@@ -99,14 +99,13 @@ p {
 }
 
 .btn-cambio-estado {
-    width:75%;
     font-size: 1em;
     color: #1d1d1b;
     border: none;
     border-radius: 10px;
     display: block;
     margin: 0 auto;
-    //background-color: #f1eeee;
+    width: 100%;
 }
 
 .btn-cambio-estado:hover {
@@ -161,4 +160,59 @@ p {
 
 .volver-en-proceso-btn:hover {
     background-color: #81C862;
+}
+
+.columna-sin-hacer .btn-marcar-abonado {
+    background-color: #ffffff;
+    border: 3px solid #f4cfff;
+}
+
+.columna-sin-hacer .btn-marcar-abonado:hover {
+    background-color: #f4cfff;
+}
+
+.columna-corregir .btn-marcar-abonado {
+    background-color: #ffffff;
+    border: 3px solid #ff8f8f;
+}
+
+.columna-corregir .btn-marcar-abonado:hover {
+    background-color: #ff8f8f;
+}
+
+.columna-en-proceso .btn-marcar-abonado {
+    background-color: #ffffff;
+    border: 3px solid #ffef8b;
+}
+
+.columna-en-proceso .btn-marcar-abonado:hover {
+    background-color: #ffef8b;
+}
+
+.columna-listas-para-retirar .btn-marcar-abonado {
+    background-color: #ffffff;
+    border: 3px solid #abf28c;
+}
+
+.columna-listas-para-retirar .btn-marcar-abonado:hover {
+    background-color: #abf28c;
+}
+
+#spinner-overlay {
+  position: fixed;       /* Fija sobre toda la ventana */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.4); /* oscurece un poco la pantalla */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;         /* sobre todo lo demás */
+}
+
+#spinner-overlay .spinner-border {
+  width: 4rem;
+  height: 4rem;
+  border-width: 0.4rem;
 }
