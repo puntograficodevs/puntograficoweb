@@ -65,19 +65,19 @@
         <div class="contenedor-datos-odt">
             <h5 class="mt-4 datos-del-producto">Datos del Producto</h5>
             <div class="row mb-3">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <label for="agenda-medida" class="form-label">Medida *</label>
                     <input type="text" class="form-control" id="agenda-medida" name="medida" required placeholder="Ej: 30x30 cm">
                 </div>
-                <div class="col-md-6">
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-12">
                     <label for="agenda-cantidad-hojas" class="form-label">Cantidad de Hojas *</label>
                     <input type="number" name="cantidadHojas" class="form-control" id="agenda-cantidad-hojas" required min="1" placeholder="0">
                 </div>
             </div>
-
-            <div class="row mb-3 align-items-end">
-                <!-- Tipo de Tapa -->
-                <div class="col-md-6">
+            <div class="row mb-3">
+                <div class="col-md-12">
                     <label class="form-label d-block">Tipo de tapa *</label>
                     <div class="d-flex flex-column gap-1">
                         <div th:each="tapa : ${listaTipoTapaAgenda}" class="form-check">
@@ -88,9 +88,16 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Tipo de Color -->
-                <div class="col-md-6">
+            </div>
+            <div class="row mb-3 d-none" id="inputTapaPersonalizadaRow">
+                <div class="col-md-12">
+                    <label for="agenda-tipo-tapa-personalizada" class="form-label">Tipo de tapa personalizada</label>
+                    <input type="text" name="tipoTapaPersonalizada" class="form-control"
+                           id="agenda-tipo-tapa-personalizada" placeholder="Ej: Tapa blanda">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-12">
                     <label class="form-label d-block">Tipo de color *</label>
                     <div class="d-flex flex-column gap-1">
                         <div th:each="color : ${listaTipoColorAgenda}" class="form-check">
@@ -101,26 +108,20 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Input de tapa personalizada (inicialmente oculto) -->
-            <div class="row mb-3 d-none" id="inputTapaPersonalizadaRow">
-                <div class="col-md-6">
-                    <label for="agenda-tipo-tapa-personalizada" class="form-label">Tipo de tapa personalizada</label>
-                    <input type="text" name="tipoTapaPersonalizada" class="form-control"
-                           id="agenda-tipo-tapa-personalizada" placeholder="Ej: Tapa blanda">
-                </div>
-            </div>
-
             <div class="row mb-3">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <label for="agenda-enlace-archivo" class="form-label">Enlace del Archivo</label>
                     <input type="url" class="form-control" name="enlaceArchivo" id="agenda-enlace-archivo" placeholder="Ej: http://drive.google.com/archivo.pdf">
                 </div>
-                <div class="col-md-4">
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-12">
                     <label for="agenda-informacion-adicional" class="form-label">Información adicional</label>
-                    <textarea class="form-control" name="informacionAdicional" id="agenda-informacion-adicional" rows="1" placeholder="Ej: Hojas fluorescentes"></textarea>
+                    <textarea class="form-control" name="informacionAdicional" id="agenda-informacion-adicional" rows="1" placeholder="Inserte aquí más info."></textarea>
                 </div>
-                <div class="col-md-2">
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-12">
                     <label for="agenda-cantidad" class="form-label">Cantidad *</label>
                     <input type="number" value="1" class="form-control" id="agenda-cantidad" name="cantidad" required placeholder="0">
                 </div>
@@ -131,27 +132,35 @@
             <!-- DATOS DE PAGO -->
             <h5 class="mt-4 datos-de-pago">Datos de Pago</h5>
             <div class="row mb-3">
-                <div class="col-md-3">
-                    <label for="total" class="form-label">Total *</label>
-                    <input type="number" class="form-control" name="total" id="total" placeholder="0" required>
-                </div>
-                <div class="col-md-3">
-                    <label for="abonado" class="form-label">Abonado *</label>
-                    <input type="number" class="form-control" name="abonado" id="abonado" placeholder="0" required>
-                </div>
-                <div class="col-md-3">
-                    <label for="resta" class="form-label">Resta</label>
-                    <input type="number" class="form-control" name="resta" id="resta" readonly>
-                </div>
-                <div class="col-md-3 d-flex align-items-end">
+                <div class="col-md-6 d-flex align-items-end">
                     <div class="form-check">
                         <input class="form-check-input" name="conAdicionalDisenio" type="checkbox" id="agenda-con-adicional-disenio">
                         <label class="form-check-label" for="agenda-con-adicional-disenio">Adicional diseño</label>
                     </div>
                 </div>
+                <div class="col-md-6 d-flex align-items-end">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura">
+                        <label class="form-check-label" for="necesitaFactura">¿Necesita factura?</label>
+                    </div>
+                </div>
             </div>
             <div class="row mb-3">
-                <div class="col-md-8">
+                <div class="col-md-4">
+                    <label for="total" class="form-label">Total *</label>
+                    <input type="number" class="form-control" name="total" id="total" placeholder="0" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="abonado" class="form-label">Abonado *</label>
+                    <input type="number" class="form-control" name="abonado" id="abonado" placeholder="0" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="resta" class="form-label">Resta</label>
+                    <input type="number" class="form-control" name="resta" id="resta" readonly>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-12">
                     <label class="form-label d-block">Medio de pago *</label>
                     <div class="d-flex flex-wrap gap-3">
                         <div th:each="medio : ${listaMediosDePago}" class="form-check mx-3">
@@ -161,13 +170,6 @@
                                    th:value="${medio.id}" required>
                             <label class="form-check-label" th:for="'medioPago-' + ${medio.id}" th:text="${medio.medioDePago}"></label>
                         </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 d-flex align-items-end">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura">
-                        <label class="form-check-label" for="necesitaFactura">¿Necesita factura?</label>
                     </div>
                 </div>
             </div>

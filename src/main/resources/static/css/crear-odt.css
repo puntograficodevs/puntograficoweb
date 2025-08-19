@@ -41,3 +41,13 @@ h5 {
 .btn-crear-odt:hover {
     background-color: #e52987;
 }
+
+.container form {
+    width: 85%;
+    margin: 0 auto;
+}
+
+
+.col-md-12 .form-label {
+    margin-bottom: 1em !important;
+}
