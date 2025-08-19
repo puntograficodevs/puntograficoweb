@@ -64,10 +64,8 @@
     <input type="hidden" name="tipoProducto" value="cierra bolsas">
     <div class="contenedor-datos-odt">
       <h5 class="mt-4 datos-del-producto">Datos del Producto</h5>
-
       <div class="row mb-3">
-        <!-- MEDIDA -->
-        <div class="col-md-4">
+        <div class="col-md-12">
           <label class="form-label">Medida *</label>
           <div th:each="medida : ${listaMedidaCierraBolsas}" class="form-check">
             <input class="form-check-input medida-radio" type="radio" name="medidaCierraBolsas.id"
@@ -81,9 +79,9 @@
             <input type="text" class="form-control" name="medidaPersonalizada" id="medidaPersonalizada" placeholder="Ej: 9x12 cm">
           </div>
         </div>
-
-        <!-- TIPO DE TROQUELADO -->
-        <div class="col-md-4">
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
           <label class="form-label">Tipo de troquelado *</label>
           <div th:each="tipo : ${listaTipoTroqueladoCierraBolsas}" class="form-check">
             <input class="form-check-input" type="radio" name="tipoTroqueladoCierraBolsas.id"
@@ -91,8 +89,8 @@
             <label class="form-check-label" th:for="'tipo-' + ${tipo.id}" th:text="${tipo.tipo}"></label>
           </div>
         </div>
-
-        <!-- CANTIDAD -->
+      </div>
+      <div class="row mb-3">
         <div class="col-md-4">
           <label class="form-label">Cantidad *</label>
           <div th:each="cant : ${listaCantidadCierraBolsas}" class="form-check">
@@ -108,15 +106,16 @@
           </div>
         </div>
       </div>
-
       <div class="row mb-3">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <label for="enlaceArchivo" class="form-label">Enlace del archivo</label>
           <input type="text" class="form-control" name="enlaceArchivo" id="enlaceArchivo" placeholder="Ej: http://drive.google.com/archivo.pdf">
         </div>
-        <div class="col-md-6">
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
           <label for="informacionAdicional" class="form-label">Información adicional</label>
-          <textarea class="form-control" name="informacionAdicional" id="informacionAdicional" rows="3" placeholder="Detalles extra del pedido..."></textarea>
+          <textarea class="form-control" name="informacionAdicional" id="informacionAdicional" rows="3" placeholder="Inserte aquí más info."></textarea>
         </div>
       </div>
     </div>
@@ -125,27 +124,35 @@
       <!-- DATOS DE PAGO -->
       <h5 class="mt-4 datos-de-pago">Datos de Pago</h5>
       <div class="row mb-3">
-        <div class="col-md-3">
-          <label for="total" class="form-label">Total *</label>
-          <input type="number" class="form-control" name="total" id="total" placeholder="0" required>
-        </div>
-        <div class="col-md-3">
-          <label for="abonado" class="form-label">Abonado *</label>
-          <input type="number" class="form-control" name="abonado" id="abonado" placeholder="0" required>
-        </div>
-        <div class="col-md-3">
-          <label for="resta" class="form-label">Resta</label>
-          <input type="number" class="form-control" name="resta" id="resta" readonly>
-        </div>
-        <div class="col-md-3 d-flex align-items-end">
+        <div class="col-md-6 d-flex align-items-end">
           <div class="form-check">
             <input class="form-check-input" name="conAdicionalDisenio" type="checkbox" id="cierra-bolsas-con-adicional-disenio">
             <label class="form-check-label" for="cierra-bolsas-con-adicional-disenio">Adicional diseño</label>
           </div>
         </div>
+        <div class="col-md-6 d-flex align-items-end">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura">
+            <label class="form-check-label" for="necesitaFactura">¿Necesita factura?</label>
+          </div>
+        </div>
       </div>
       <div class="row mb-3">
-        <div class="col-md-8">
+        <div class="col-md-4">
+          <label for="total" class="form-label">Total *</label>
+          <input type="number" class="form-control" name="total" id="total" placeholder="0" required>
+        </div>
+        <div class="col-md-4">
+          <label for="abonado" class="form-label">Abonado *</label>
+          <input type="number" class="form-control" name="abonado" id="abonado" placeholder="0" required>
+        </div>
+        <div class="col-md-4">
+          <label for="resta" class="form-label">Resta</label>
+          <input type="number" class="form-control" name="resta" id="resta" readonly>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
           <label class="form-label d-block">Medio de pago *</label>
           <div class="d-flex flex-wrap gap-3">
             <div th:each="medio : ${listaMediosDePago}" class="form-check mx-3">
@@ -155,13 +162,6 @@
                      th:value="${medio.id}" required>
               <label class="form-check-label" th:for="'medioPago-' + ${medio.id}" th:text="${medio.medioDePago}"></label>
             </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 d-flex align-items-end">
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura">
-            <label class="form-check-label" for="necesitaFactura">¿Necesita factura?</label>
           </div>
         </div>
       </div>

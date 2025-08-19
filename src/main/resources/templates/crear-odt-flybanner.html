@@ -65,8 +65,7 @@
     <div class="contenedor-datos-odt">
       <h5 class="mt-4 datos-del-producto">Datos del Producto</h5>
       <div class="row mb-3">
-        <!-- ALTURA -->
-        <div class="col-md-6">
+        <div class="col-md-12">
           <label class="form-label">Altura *</label>
           <div class="d-flex flex-wrap gap-3">
             <div th:each="altura : ${listaAlturaFlybanner}" class="form-check">
@@ -76,8 +75,9 @@
             </div>
           </div>
         </div>
-        <!-- BANDERA -->
-        <div class="col-md-6">
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
           <label class="form-label">Bandera *</label>
           <div class="d-flex flex-wrap gap-3">
             <div th:each="bandera : ${listaBanderaFlybanner}" class="form-check">
@@ -89,8 +89,7 @@
         </div>
       </div>
       <div class="row mb-3">
-        <!-- TIPO DE FAZ -->
-        <div class="col-md-6">
+        <div class="col-md-12">
           <label class="form-label">Tipo de faz *</label>
           <div class="d-flex flex-wrap gap-3">
             <div th:each="tipo : ${listaTipoFazFlybanner}" class="form-check">
@@ -100,8 +99,9 @@
             </div>
           </div>
         </div>
-        <!-- TIPO DE BASE -->
-        <div class="col-md-6">
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
           <label class="form-label">Tipo de base *</label>
           <div class="d-flex flex-wrap gap-3">
             <div th:each="tipo : ${listaTipoBaseFlybanner}" class="form-check">
@@ -112,18 +112,20 @@
           </div>
         </div>
       </div>
-
       <div class="row mb-3">
-        <div class="col-md-4">
+        <div class="col-md-12">
           <label for="flybanner-enlace-archivo" class="form-label">Enlace del Archivo</label>
           <input type="url" class="form-control" name="enlaceArchivo" id="flybanner-enlace-archivo" placeholder="Ej: http://drive.google.com/archivo.pdf">
         </div>
-        <div class="col-md-4">
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
           <label for="flybanner-informacion-adicional" class="form-label">Información adicional</label>
-          <textarea class="form-control" name="informacionAdicional" id="flybanner-informacion-adicional" rows="1" placeholder="Ej: Lo más urgente posible."></textarea>
+          <textarea class="form-control" name="informacionAdicional" id="flybanner-informacion-adicional" rows="1" placeholder="Inserte aquí más info."></textarea>
         </div>
-        <!-- CANTIDAD -->
-        <div class="col-md-2">
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
           <div class="mt-2" id="cantidadFlybanner">
             <label for="cantidad" class="form-label">Cantidad *</label>
             <input type="text" class="form-control" name="cantidad" id="cantidad" placeholder="Ej: 3">
@@ -136,27 +138,35 @@
       <!-- DATOS DE PAGO -->
       <h5 class="mt-4 datos-de-pago">Datos de Pago</h5>
       <div class="row mb-3">
-        <div class="col-md-3">
-          <label for="total" class="form-label">Total *</label>
-          <input type="number" class="form-control" name="total" id="total" placeholder="0" required>
-        </div>
-        <div class="col-md-3">
-          <label for="abonado" class="form-label">Abonado *</label>
-          <input type="number" class="form-control" name="abonado" id="abonado" placeholder="0" required>
-        </div>
-        <div class="col-md-3">
-          <label for="resta" class="form-label">Resta</label>
-          <input type="number" class="form-control" name="resta" id="resta" readonly>
-        </div>
-        <div class="col-md-3 d-flex align-items-end">
+        <div class="col-md-6 d-flex align-items-end">
           <div class="form-check">
             <input class="form-check-input" name="conAdicionalDisenio" type="checkbox" id="flybanner-con-adicional-disenio">
             <label class="form-check-label" for="flybanner-con-adicional-disenio">Adicional diseño</label>
           </div>
         </div>
+        <div class="col-md-6 d-flex align-items-end">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura">
+            <label class="form-check-label" for="necesitaFactura">¿Necesita factura?</label>
+          </div>
+        </div>
       </div>
       <div class="row mb-3">
-        <div class="col-md-8">
+        <div class="col-md-4">
+          <label for="total" class="form-label">Total *</label>
+          <input type="number" class="form-control" name="total" id="total" placeholder="0" required>
+        </div>
+        <div class="col-md-4">
+          <label for="abonado" class="form-label">Abonado *</label>
+          <input type="number" class="form-control" name="abonado" id="abonado" placeholder="0" required>
+        </div>
+        <div class="col-md-4">
+          <label for="resta" class="form-label">Resta</label>
+          <input type="number" class="form-control" name="resta" id="resta" readonly>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
           <label class="form-label d-block">Medio de pago *</label>
           <div class="d-flex flex-wrap gap-3">
             <div th:each="medio : ${listaMediosDePago}" class="form-check mx-3">
@@ -166,13 +176,6 @@
                      th:value="${medio.id}" required>
               <label class="form-check-label" th:for="'medioPago-' + ${medio.id}" th:text="${medio.medioDePago}"></label>
             </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 d-flex align-items-end">
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura">
-            <label class="form-check-label" for="necesitaFactura">¿Necesita factura?</label>
           </div>
         </div>
       </div>

@@ -65,8 +65,7 @@
     <div class="contenedor-datos-odt">
       <h5 class="mt-4 datos-del-producto">Datos del Producto</h5>
       <div class="row mb-3">
-        <!-- TIPO DE LONA -->
-        <div class="col-md-6">
+        <div class="col-md-12">
           <label class="form-label">Tipo de lona *</label>
           <div class="d-flex flex-wrap gap-3">
             <div th:each="tipo : ${listaTipoLonaComun}" class="form-check">
@@ -76,7 +75,9 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
           <label class="form-label">Medida *</label>
           <div class="d-flex flex-wrap gap-3">
             <div th:each="medida : ${listaMedidaLonaComun}" class="form-check">
@@ -93,52 +94,56 @@
           </div>
         </div>
       </div>
-
       <div class="row mb-3">
-        <div class="col-md-2 d-flex align-items-end">
+        <div class="col-md-6 d-flex align-items-end">
           <div class="form-check">
             <input class="form-check-input" name="conOjales" type="checkbox" id="lona-comun-con-ojales">
             <label class="form-check-label" for="lona-comun-con-ojales">Ojales comunes</label>
           </div>
         </div>
-        <div class="col-md-2 d-flex align-items-end">
+        <div class="col-md-6 d-flex align-items-end">
           <div class="form-check">
             <input class="form-check-input" name="conOjalesConRefuerzo" type="checkbox" id="lona-comun-con-ojales-con-refuerzo">
             <label class="form-check-label" for="lona-comun-con-ojales-con-refuerzo">Ojales reforzados</label>
           </div>
         </div>
-        <div class="col-md-2 d-flex align-items-end">
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4 d-flex align-items-end">
           <div class="form-check">
             <input class="form-check-input" name="conBolsillos" type="checkbox" id="lona-comun-con-bolsillos">
             <label class="form-check-label" for="lona-comun-con-bolsillos">Bolsillos</label>
           </div>
         </div>
-        <div class="col-md-2 d-flex align-items-end">
+        <div class="col-md-4 d-flex align-items-end">
           <div class="form-check">
             <input class="form-check-input" name="conDemasiaParaTensado" type="checkbox" id="lona-comun-con-demasia-para-tensado">
             <label class="form-check-label" for="lona-comun-con-demasia-para-tensado">Demasía para tensado</label>
           </div>
         </div>
-        <div class="col-md-2 d-flex align-items-end">
+        <div class="col-md-4 d-flex align-items-end">
           <div class="form-check">
             <input class="form-check-input" name="conSolapado" type="checkbox" id="lona-comun-con-solapado">
             <label class="form-check-label" for="lona-comun-con-solapado">Solapado</label>
           </div>
         </div>
-        <div class="col-md-2" id="cantidadInput">
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12" id="cantidadInput">
           <label for="cantidad" class="form-label">Cantidad *</label>
           <input type="text" class="form-control" name="cantidad" id="cantidad" placeholder="Ej: 3">
         </div>
       </div>
-
       <div class="row mb-3">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <label for="lona-comun-enlace-archivo" class="form-label">Enlace del Archivo</label>
           <input type="url" class="form-control" name="enlaceArchivo" id="lona-comun-enlace-archivo" placeholder="Ej: http://drive.google.com/archivo.pdf">
         </div>
-        <div class="col-md-6">
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
           <label for="lona-comun-informacion-adicional" class="form-label">Información adicional</label>
-          <textarea class="form-control" name="informacionAdicional" id="lona-comun-informacion-adicional" rows="1" placeholder="Ej: Dato relevante a la lona, etc."></textarea>
+          <textarea class="form-control" name="informacionAdicional" id="lona-comun-informacion-adicional" rows="1" placeholder="Inserte aquí más info."></textarea>
         </div>
       </div>
     </div>
@@ -147,28 +152,35 @@
     <div class="contenedor-datos-odt">
       <h5 class="mt-4 datos-de-pago">Datos de Pago</h5>
       <div class="row mb-3">
-        <div class="col-md-3">
-          <label for="total" class="form-label">Total *</label>
-          <input type="number" class="form-control" name="total" id="total" placeholder="0" required>
-        </div>
-        <div class="col-md-3">
-          <label for="abonado" class="form-label">Abonado *</label>
-          <input type="number" class="form-control" name="abonado" id="abonado" placeholder="0" required>
-        </div>
-        <div class="col-md-3">
-          <label for="resta" class="form-label">Resta</label>
-          <input type="number" class="form-control" name="resta" id="resta" readonly>
-        </div>
-        <div class="col-md-3 d-flex align-items-end">
+        <div class="col-md-6 d-flex align-items-end">
           <div class="form-check">
             <input class="form-check-input" name="conAdicionalDisenio" type="checkbox" id="lona-comun-con-adicional-disenio">
             <label class="form-check-label" for="lona-comun-con-adicional-disenio">Adicional diseño</label>
           </div>
         </div>
+        <div class="col-md-6 d-flex align-items-end">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura">
+            <label class="form-check-label" for="necesitaFactura">¿Necesita factura?</label>
+          </div>
+        </div>
       </div>
-
       <div class="row mb-3">
-        <div class="col-md-8">
+        <div class="col-md-4">
+          <label for="total" class="form-label">Total *</label>
+          <input type="number" class="form-control" name="total" id="total" placeholder="0" required>
+        </div>
+        <div class="col-md-4">
+          <label for="abonado" class="form-label">Abonado *</label>
+          <input type="number" class="form-control" name="abonado" id="abonado" placeholder="0" required>
+        </div>
+        <div class="col-md-4">
+          <label for="resta" class="form-label">Resta</label>
+          <input type="number" class="form-control" name="resta" id="resta" readonly>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
           <label class="form-label d-block">Medio de pago *</label>
           <div class="d-flex flex-wrap gap-3">
             <div th:each="medio : ${listaMediosDePago}" class="form-check mx-3">
@@ -178,13 +190,6 @@
                      th:value="${medio.id}" required>
               <label class="form-check-label" th:for="'medioPago-' + ${medio.id}" th:text="${medio.medioDePago}"></label>
             </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 d-flex align-items-end">
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura">
-            <label class="form-check-label" for="necesitaFactura">¿Necesita factura?</label>
           </div>
         </div>
       </div>

@@ -342,7 +342,7 @@ create table if not exists plantilla_combo (
 
 insert into plantilla_combo(id_tipo_combo, descripcion_combo, precio) values
 (3, '100 cierra bolsas (8x4 cm), 100 etiquetas colgantes (7x5 cm), 100 circulares troqueladas (5 cm)', 22500), -- emprendedor 100
-(4, '200 cierra bolsas (8x4 cm), 200 eitquetas colgantes (7x5 cm), 200 circulares troqueladas (5 cm)', 38250), -- emprendedor 200
+(4, '200 cierra bolsas (8x4 cm), 200 etiquetas colgantes (7x5 cm), 200 circulares troqueladas (5 cm)', 38250), -- emprendedor 200
 (5, '500 cierra bolsas (8x4 cm), 500 etiquetas colgamtes (7x5 cm), 500 circulares troqueladas (5 cm)', 78400), -- emprendedor 500
 (2, '100 tarjetas simple faz, 100 sobres oficio inglés, 2 talonarios RP blanco y negro (13x18 cm)', 75800),    -- profesional
 (1, '100 tarjetas simple faz, 100 sobres oficio inglés, 1 talonario A4 a color con membrete', 101300);         -- oficina

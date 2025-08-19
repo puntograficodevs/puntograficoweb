@@ -65,7 +65,6 @@
     <div class="contenedor-datos-odt">
       <h5 class="mt-4 datos-del-producto">Datos del Producto</h5>
       <div class="row mb-3">
-        <!-- TRAE MATERIAL VINILO -->
         <div class="col-md-12">
           <label class="form-label">Trae material *</label>
           <div class="d-flex flex-wrap gap-3">
@@ -92,11 +91,7 @@
         </div>
       </div>
       <div class="row mb-3">
-        <div class="col-md-6">
-            <label for="codigo-color" class="form-label">Código de color</label>
-            <input type="text" class="form-control" name="codigoColor" id="codigo-color" placeholder="Código">
-        </div>
-        <div class="col-md-6 d-flex align-items-end">
+        <div class="col-md-12 d-flex align-items-end">
           <div class="form-check">
             <input class="form-check-input" name="conColocacion" type="checkbox" id="vinilo-de-corte-con-colocacion">
             <label class="form-check-label" for="vinilo-de-corte-con-colocacion">¿Con colocación?</label>
@@ -104,7 +99,12 @@
         </div>
       </div>
       <div class="row mb-3">
-        <!-- MEDIDA VINILO -->
+        <div class="col-md-12">
+          <label for="codigo-color" class="form-label">Código de color</label>
+          <input type="text" class="form-control" name="codigoColor" id="codigo-color" placeholder="Código">
+        </div>
+      </div>
+      <div class="row mb-3">
         <div class="col-md-12">
           <div id="medidaPersonalizadaGroup">
             <label class="form-label">Medida *</label>
@@ -113,7 +113,6 @@
         </div>
       </div>
       <div class="row mb-3">
-        <!-- CANTIDAD VINILO -->
         <div class="col-md-12">
           <div id="cantidadPersonalizadaGroup">
             <label for="cantidad" class="form-label">Cantidad *</label>
@@ -130,7 +129,7 @@
       <div class="row mb-3">
         <div class="col-md-12">
           <label for="vinilo-de-corte-informacion-adicional" class="form-label">Información adicional</label>
-          <textarea class="form-control" name="informacionAdicional" id="vinilo-de-corte-informacion-adicional" rows="1" placeholder="Ej: Hojas fluorescentes"></textarea>
+          <textarea class="form-control" name="informacionAdicional" id="vinilo-de-corte-informacion-adicional" rows="1" placeholder="Inserte aquí más info."></textarea>
         </div>
       </div>
     </div>
@@ -138,27 +137,35 @@
       <!-- DATOS DE PAGO -->
       <h5 class="mt-4 datos-de-pago">Datos de Pago</h5>
       <div class="row mb-3">
-        <div class="col-md-3">
-          <label for="total" class="form-label">Total *</label>
-          <input type="number" class="form-control" name="total" id="total" placeholder="0" required>
-        </div>
-        <div class="col-md-3">
-          <label for="abonado" class="form-label">Abonado *</label>
-          <input type="number" class="form-control" name="abonado" id="abonado" placeholder="0" required>
-        </div>
-        <div class="col-md-3">
-          <label for="resta" class="form-label">Resta</label>
-          <input type="number" class="form-control" name="resta" id="resta" readonly>
-        </div>
-        <div class="col-md-3 d-flex align-items-end">
+        <div class="col-md-6 d-flex align-items-end">
           <div class="form-check">
             <input class="form-check-input" name="conAdicionalDisenio" type="checkbox" id="vinilo-de-corte-con-adicional-disenio">
             <label class="form-check-label" for="vinilo-de-corte-con-adicional-disenio">Adicional diseño</label>
           </div>
         </div>
+        <div class="col-md-6 d-flex align-items-end">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura">
+            <label class="form-check-label" for="necesitaFactura">¿Necesita factura?</label>
+          </div>
+        </div>
       </div>
       <div class="row mb-3">
-        <div class="col-md-8">
+        <div class="col-md-4">
+          <label for="total" class="form-label">Total *</label>
+          <input type="number" class="form-control" name="total" id="total" placeholder="0" required>
+        </div>
+        <div class="col-md-4">
+          <label for="abonado" class="form-label">Abonado *</label>
+          <input type="number" class="form-control" name="abonado" id="abonado" placeholder="0" required>
+        </div>
+        <div class="col-md-4">
+          <label for="resta" class="form-label">Resta</label>
+          <input type="number" class="form-control" name="resta" id="resta" readonly>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
           <label class="form-label d-block">Medio de pago *</label>
           <div class="d-flex flex-wrap gap-3">
             <div th:each="medio : ${listaMediosDePago}" class="form-check mx-3">
@@ -168,13 +175,6 @@
                      th:value="${medio.id}" required>
               <label class="form-check-label" th:for="'medioPago-' + ${medio.id}" th:text="${medio.medioDePago}"></label>
             </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 d-flex align-items-end">
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura">
-            <label class="form-check-label" for="necesitaFactura">¿Necesita factura?</label>
           </div>
         </div>
       </div>
