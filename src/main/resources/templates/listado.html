@@ -68,6 +68,10 @@
           <li th:if="${orden.horaEntrega} != ''"><p>Hora de entrega: <span th:text="${orden.horaEntrega}"></span></p></li>
           <b><p>Total: $<span th:text="${orden.total}"></span></p></b>
           <b><p class="falta-abonar">Falta abonar: $<span th:text="${orden.resta}"></span></p></b>
+          <button class="btn btn-success btn-sm mt-2 pasar-corregido-btn volver-sin-hacer-btn btn-cambio-estado"
+                  th:data-idorden="${orden.id}">
+            Sin hacer
+          </button>
           <button class="btn btn-success btn-sm mt-2 pasar-lista-para-retirar-btn btn-cambio-estado"
                   th:data-idorden="${orden.id}">
             Lista para retirar
@@ -96,6 +100,10 @@
           <li th:if="${orden.horaEntrega} != ''"><p>Hora de entrega: <span th:text="${orden.horaEntrega}"></span></p></li>
           <b><p>Total: $<span th:text="${orden.total}"></span></p></b>
           <b><p class="falta-abonar">Falta abonar: $<span th:text="${orden.resta}"></span></p></b>
+          <button class="btn btn-success btn-sm mt-2 pasar-en-proceso-btn volver-en-proceso-btn btn-cambio-estado"
+                  th:data-idorden="${orden.id}">
+            En proceso
+          </button>
 
           <button class="btn btn-success btn-sm mt-2 pasar-retirada-btn btn-cambio-estado"
                   th:data-idorden="${orden.id}">

@@ -1,0 +1,12 @@
+h1 {
+    font-family: 'Nanum';
+}
+
+.contenedor-pagina-en-proceso {
+    width: 65%;
+    height: 95%;
+}
+
+.pagina-en-proceso {
+    width: 100%;
+}

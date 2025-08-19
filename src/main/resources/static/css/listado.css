@@ -146,3 +146,19 @@ p {
 .pasar-corregido-btn:hover {
     background-color: #CF4B4B;
 }
+
+.volver-sin-hacer-btn {
+    background-color: #ffef8b;
+}
+
+.volver-sin-hacer-btn:hover {
+    background-color: #F6E15D;
+}
+
+.volver-en-proceso-btn {
+    background-color: #abf28c;
+}
+
+.volver-en-proceso-btn:hover {
+    background-color: #81C862;
+}
