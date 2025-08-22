@@ -1,128 +1,151 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const toggleFechaMuestra = document.getElementById("toggleFechaMuestra");
-    const fechaMuestraRow = document.getElementById("fechaMuestraRow");
+document.addEventListener('DOMContentLoaded', () => {
+      // Valores predefinidos
+      const precioDisenio = 0;
+      const recargoFactura = 0.21; // 21% sobre subtotal
+      const recargoCredito = 0.10; // 10% sobre subtotal+impuesto
 
-    const medidaRadios = document.querySelectorAll(".medida-radio");
-    const medidaPersonalizadaGroup = document.getElementById("medidaPersonalizadaGroup");
+      // Inputs y checkboxes
+      const adicionalCheckbox = document.getElementById('cuaderno-anillado-con-adicional-disenio');
+      const necesitaFacturaCheckbox = document.getElementById('necesitaFactura');
+      const precioProductoInput = document.getElementById('precioProducto');
+      const precioDisenioInput = document.getElementById('precioDisenio');
+      const precioImpuestosInput = document.getElementById('precioImpuestos');
+      const totalInput = document.getElementById('total');
+      const abonadoInput = document.getElementById('abonado');
+      const restaInput = document.getElementById('resta');
+      const radiosMedioPago = document.querySelectorAll('input[name="medioPago.id"]');
+      const radiosTapa = document.querySelectorAll('input[name="tipoTapaCuadernoAnillado.id"]');
+      const radiosMedida = document.querySelectorAll('input[name="medidaCuadernoAnillado.id"]');
+      const cantidadHojasInput = document.getElementById('cuaderno-anillado-cantidad-hojas');
+      const cantidadCuadernosAnilladosInput = document.getElementById('cuaderno-anillado-cantidad');
 
-    const tipoTapaRadios = document.querySelectorAll(".tipo-tapa-radio");
-    const tipoTapaPersonalizadaGroup = document.getElementById("tipoTapaPersonalizadaGroup");
 
-    const cantidadHojasInput = document.getElementById("cuaderno-anillado-cantidad-hojas");
+      // Inicializamos valores visibles
+      cantidadCuadernosAnilladosInput.value = 1;
+      precioDisenioInput.value = 0;
+      precioImpuestosInput.value = 0;
+      totalInput.value = 0;
+      restaInput.value = 0;
+      abonadoInput.value = 0;
 
-    const totalInput = document.getElementById("total");
-    const abonadoInput = document.getElementById("abonado");
-    const restaInput = document.getElementById("resta");
+      // Toggles
+      const toggleFechaMuestra = document.getElementById('toggleFechaMuestra');
+      const fechaMuestraRow = document.getElementById('fechaMuestraRow');
+      toggleFechaMuestra.addEventListener('change', () => {
+          fechaMuestraRow.classList.toggle('d-none', !toggleFechaMuestra.checked);
+      });
 
-    const adicionalDisenioCheckbox = document.getElementById("cuaderno-anillado-con-adicional-disenio");
-    const medioPagoRadios = document.querySelectorAll("input[name='medioPago.id']");
-
-    let precioBase = null; // Precio de plantilla si existe
-    let totalActual = 0;
-    let adicionalAplicado = false;
-    let creditoAplicado = false;
-
-    // Mostrar/ocultar fecha de muestra
-    toggleFechaMuestra.addEventListener("change", () => {
-        fechaMuestraRow.classList.toggle("d-none", !toggleFechaMuestra.checked);
-    });
-
-    // Mostrar input de medida personalizada
-    medidaRadios.forEach(radio => {
-        radio.addEventListener("change", () => {
-            medidaPersonalizadaGroup.classList.toggle(
-                "d-none",
-                radio.dataset.medida !== "OTRA"
-            );
-            buscarPrecio();
+      const tapaInputRow = document.getElementById('tipoTapaPersonalizadaGroup');
+      radiosTapa.forEach(radio => {
+        radio.addEventListener('change', () => {
+          const label = document.querySelector(`label[for="${radio.id}"]`);
+          const esOtra = label?.textContent.trim().toLowerCase() === 'otra';
+          tapaInputRow.classList.toggle('d-none', !esOtra);
         });
-    });
+      });
 
-    // Mostrar input de tipo de tapa personalizada
-    tipoTapaRadios.forEach(radio => {
-        radio.addEventListener("change", () => {
-            tipoTapaPersonalizadaGroup.classList.toggle(
-                "d-none",
-                radio.dataset.tipoTapa !== "OTRA"
-            );
-            buscarPrecio();
+      const medidaInputRow = document.getElementById('medidaPersonalizadaGroup');
+      radiosMedida.forEach(radio => {
+        radio.addEventListener('change', () => {
+          const label = document.querySelector(`label[for="${radio.id}"]`);
+          const esOtra = label?.textContent.trim().toLowerCase() === 'otra';
+          medidaInputRow.classList.toggle('d-none', !esOtra);
         });
-    });
+      });
 
-    // Buscar precio al cambiar cantidad de hojas
-    cantidadHojasInput.addEventListener("input", buscarPrecio);
+      function resetearPrecio() {
+        precioProductoInput.value = 0;
+        precioProductoInput.readOnly = false;
+      }
 
-    // Calcular resta al cambiar abonado o total manual
-    abonadoInput.addEventListener("input", actualizarResta);
-    totalInput.addEventListener("input", () => {
-        precioBase = null; // Total manual rompe vínculo con precio de plantilla
-        totalActual = parseFloat(totalInput.value) || 0;
-        actualizarResta();
-    });
+      async function calcularPrecio() {
+        const tipoTapaSeleccionada = document.querySelector('input[name="tipoTapaCuadernoAnillado.id"]:checked');
+        const medidaSeleccionada = document.querySelector('input[name="medidaCuadernoAnillado.id"]:checked');
+        const cantidadHojas = parseInt(cantidadHojasInput.value, 10) || 0;
+        let tipoTapaId = 0;
+        let medidaId = 0;
+        let precioProducto = 0;
 
-    // Adicional diseño (sumar o restar según estado)
-    adicionalDisenioCheckbox.addEventListener("change", () => {
-        if (adicionalDisenioCheckbox.checked && !adicionalAplicado) {
-            totalActual += 5000;
-            adicionalAplicado = true;
-        } else if (!adicionalDisenioCheckbox.checked && adicionalAplicado) {
-            totalActual -= 5000;
-            adicionalAplicado = false;
+        if (!tipoTapaSeleccionada || !medidaSeleccionada || !cantidadHojas) {
+            return;
+        } else {
+            tipoTapaCuadernoAnilladoId = Number(tipoTapaSeleccionada.value);
+            medidaCuadernoAnilladoId = Number(medidaSeleccionada.value);
         }
-        actualizarTotal();
-    });
 
-    // Medio de pago (sumar o restar 10% según sea Crédito)
-    medioPagoRadios.forEach(radio => {
-        radio.addEventListener("change", () => {
-            const esCredito = radio.nextElementSibling.textContent.trim().toUpperCase() === "CRÉDITO";
-
-            if (esCredito && !creditoAplicado) {
-                totalActual *= 1.10;
-                creditoAplicado = true;
-            } else if (!esCredito && creditoAplicado) {
-                totalActual /= 1.10;
-                creditoAplicado = false;
+        try {
+            const response = await fetch(`/api/plantilla-cuaderno-anillado/precio?cantidadHojas=${cantidadHojas}&tipoTapaCuadernoAnilladoId=${tipoTapaCuadernoAnilladoId}&medidaCuadernoAnilladoId=${medidaCuadernoAnilladoId}`);
+            if (response.status === 200) {
+                let precioUnitario = await response.json();
+                const cantidad = parseInt(cantidadCuadernosAnilladosInput.value, 10) || 0;
+                precioProducto = precioUnitario * cantidad;
+                precioProductoInput.readOnly = true;
+            } else if (response.status === 204) {
+                precioProductoInput.readOnly = false;
+                precioProducto = parseInt(precioProductoInput.value, 10) || 0;
+            } else {
+                console.error('Error al obtener precio base');
             }
-            actualizarTotal();
-        });
-    });
-
-    // ---- Funciones ----
-    function buscarPrecio() {
-        const medidaId = getCheckedValue(medidaRadios);
-        const tipoTapaId = getCheckedValue(tipoTapaRadios);
-        const cantidadHojas = cantidadHojasInput.value;
-
-        if (medidaId && tipoTapaId && cantidadHojas) {
-            fetch(`/api/plantilla-cuaderno-anillado/precio?medidaCuadernoAnilladoId=${medidaId}&tipoTapaCuadernoAnilladoId=${tipoTapaId}&cantidadHojas=${cantidadHojas}`)
-                .then(res => res.ok ? res.json() : null)
-                .then(data => {
-                    if (data) {
-                        precioBase = parseFloat(data);
-                        totalActual = precioBase;
-                        adicionalAplicado = false;
-                        creditoAplicado = false;
-                        adicionalDisenioCheckbox.checked = false;
-                        medioPagoRadios.forEach(r => r.checked = false);
-                        actualizarTotal();
-                    }
-                });
+        } catch (error) {
+            console.error('Error en la conexión:', error);
         }
-    }
 
-    function actualizarTotal() {
-        totalInput.value = Math.round(totalActual);
-        actualizarResta();
-    }
+        const precioDisenioActual = adicionalCheckbox.checked ? precioDisenio : 0;
 
-    function actualizarResta() {
-        const abonado = parseFloat(abonadoInput.value) || 0;
-        restaInput.value = Math.round((parseFloat(totalInput.value) || 0) - abonado);
-    }
+        // Subtotal = producto + diseño
+        let subtotal = precioProducto + precioDisenioActual;
 
-    function getCheckedValue(radios) {
-        const checked = Array.from(radios).find(r => r.checked);
-        return checked ? checked.value : null;
-    }
+        // Impuesto por factura
+        let impuestoFactura = 0;
+        if (necesitaFacturaCheckbox.checked) {
+          impuestoFactura = Math.ceil(subtotal * recargoFactura);
+        }
+
+        // Total inicial con impuesto
+        let total = subtotal + impuestoFactura;
+
+        // Recargo por crédito
+        const medioPagoSeleccionado = document.querySelector('input[name="medioPago.id"]:checked');
+        let recargoCreditoMonto = 0;
+        if (medioPagoSeleccionado && Number(medioPagoSeleccionado.value) === 2) {
+          recargoCreditoMonto = Math.ceil(total * recargoCredito);
+          total += recargoCreditoMonto;
+        }
+
+        // Cantidad abonada
+        const abonado = parseInt(abonadoInput.value, 10) || 0;
+
+        // Resta
+        const resta = total - abonado;
+
+        // Actualizamos inputs visibles
+        precioDisenioInput.value = precioDisenioActual;
+        precioImpuestosInput.value = impuestoFactura + recargoCreditoMonto;
+        totalInput.value = total;
+        restaInput.value = resta;
+        precioProductoInput.value = precioProducto;
+      }
+
+      // Escuchamos cambios en todos los inputs
+      precioProductoInput.addEventListener('input', calcularPrecio);
+      cantidadCuadernosAnilladosInput.addEventListener('input', calcularPrecio);
+      adicionalCheckbox.addEventListener('change', calcularPrecio);
+      necesitaFacturaCheckbox.addEventListener('change', calcularPrecio);
+      abonadoInput.addEventListener('input', calcularPrecio);
+      radiosMedioPago.forEach(radio => radio.addEventListener('change', calcularPrecio));
+      cantidadHojasInput.addEventListener('input', () => {
+        resetearPrecio();
+        calcularPrecio();
+      });
+      radiosTapa.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
+      radiosMedida.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
+
+      // Llamamos al inicio para inicializar los valores
+      calcularPrecio();
 });
