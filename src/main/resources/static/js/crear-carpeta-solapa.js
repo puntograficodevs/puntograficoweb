@@ -1,122 +1,119 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const cantidadInput = document.querySelector("#carpeta-cantidad");
-  const laminadoRadios = document.querySelectorAll("input[name='tipoLaminadoCarpetaSolapa.id']");
-  const fazRadios = document.querySelectorAll("input[name='tipoFazCarpetaSolapa.id']");
-  const totalInput = document.querySelector("#total");
-  const abonadoInput = document.querySelector("#abonado");
-  const restaInput = document.querySelector("#resta");
-  const medioPagoRadios = document.querySelectorAll("input[name='medioPago.id']");
-  const adicionalDisenioCheckbox = document.querySelector("#carpeta-con-adicional-disenio");
-  const toggleFechaMuestra = document.querySelector("#toggleFechaMuestra");
-  const fechaRow = document.querySelector("#fechaMuestraRow");
+document.addEventListener('DOMContentLoaded', () => {
+      // Valores predefinidos
+      const precioDisenio = 5000;
+      const recargoFactura = 0.21; // 21% sobre subtotal
+      const recargoCredito = 0.10; // 10% sobre subtotal+impuesto
 
-  let precioUnitario = null;
-  let esCredito = false;
-  let totalManualBase = null;
+      // Inputs y checkboxes
+      const adicionalCheckbox = document.getElementById('carpeta-con-adicional-disenio');
+      const necesitaFacturaCheckbox = document.getElementById('necesitaFactura');
+      const precioProductoInput = document.getElementById('precioProducto');
+      const precioDisenioInput = document.getElementById('precioDisenio');
+      const precioImpuestosInput = document.getElementById('precioImpuestos');
+      const totalInput = document.getElementById('total');
+      const abonadoInput = document.getElementById('abonado');
+      const restaInput = document.getElementById('resta');
+      const radiosMedioPago = document.querySelectorAll('input[name="medioPago.id"]');
+      const radiosLaminado = document.querySelectorAll('input[name="tipoLaminadoCarpetaSolapa.id"]');
+      const radiosFaz = document.querySelectorAll('input[name="tipoFazCarpetaSolapa.id"]');
+      const cantidadCarpetasInput = document.getElementById('carpeta-cantidad');
 
-  function getSelectedRadioValue(radioNodeList) {
-    for (const radio of radioNodeList) {
-      if (radio.checked) return radio.value;
-    }
-    return null;
-  }
 
-  function actualizarPrecio() {
-    const cantidad = parseInt(cantidadInput.value);
-    const laminadoId = getSelectedRadioValue(laminadoRadios);
-    const fazId = getSelectedRadioValue(fazRadios);
+      // Inicializamos valores visibles
+      precioDisenioInput.value = 0;
+      precioImpuestosInput.value = 0;
+      totalInput.value = 0;
+      restaInput.value = 0;
+      abonadoInput.value = 0;
 
-    if (!cantidad || !laminadoId || !fazId) {
-      precioUnitario = null;
-      totalInput.readOnly = false;
-      return actualizarTotalYResta();
-    }
-
-    fetch(`/api/plantilla-carpeta-solapa/precio?cantidad=${cantidad}&tipoLaminadoCarpetaSolapaId=${laminadoId}&tipoFazCarpetaSolapaId=${fazId}`)
-      .then(res => res.ok ? res.json() : null)
-      .then(precio => {
-        if (precio !== null) {
-          precioUnitario = precio;
-          totalManualBase = null; // se resetea si viene precio nuevo
-          aplicarTotalCalculado();
-        } else {
-          precioUnitario = null;
-          totalInput.readOnly = false;
-          totalInput.value = '';
-        }
-        actualizarTotalYResta();
-      })
-      .catch(() => {
-        precioUnitario = null;
-        totalInput.readOnly = false;
-        totalInput.value = '';
-        actualizarTotalYResta();
+      // Toggles
+      const toggleFechaMuestra = document.getElementById('toggleFechaMuestra');
+      const fechaMuestraRow = document.getElementById('fechaMuestraRow');
+      toggleFechaMuestra.addEventListener('change', () => {
+          fechaMuestraRow.classList.toggle('d-none', !toggleFechaMuestra.checked);
       });
-  }
 
-  function aplicarTotalCalculado() {
-    const cantidad = parseInt(cantidadInput.value) || 0;
+      async function calcularPrecio() {
+        const tipoLaminadoSeleccionado = document.querySelector('input[name="tipoLaminadoCarpetaSolapa.id"]:checked');
+        const tipoFazSeleccionada = document.querySelector('input[name="tipoFazCarpetaSolapa.id"]:checked');
+        const cantidad = parseInt(cantidadCarpetasInput.value, 10) || 0;
+        let tipoLaminadoCarpetaSolapaId = 0;
+        let tipoFazCarpetaSolapaId = 0;
+        let precioProducto = 0;
 
-    let base = totalManualBase !== null ? totalManualBase : (
-      (precioUnitario !== null)
-        ? (cantidad < 50 ? precioUnitario * cantidad : precioUnitario)
-        : null
-    );
+        if (!tipoLaminadoSeleccionado || !tipoFazSeleccionada || !cantidad) {
+            return;
+        } else {
+            tipoLaminadoCarpetaSolapaId = Number(tipoLaminadoSeleccionado.value);
+            tipoFazCarpetaSolapaId = Number(tipoFazSeleccionada.value);
+        }
 
-    if (base === null) return;
+        try {
+            const response = await fetch(`/api/plantilla-carpeta-solapa/precio?cantidad=${cantidad}&tipoLaminadoCarpetaSolapaId=${tipoLaminadoCarpetaSolapaId}&tipoFazCarpetaSolapaId=${tipoFazCarpetaSolapaId}`);
+            if (response.ok) {
+                let precioUnitario = await response.json();
+                if (cantidad < 50) {
+                    precioProducto = precioUnitario * cantidad;
+                }  else {
+                    precioProducto = precioUnitario;
+                }
+                precioProductoInput.readOnly = true;
+            } else if (response.status === 204) {
+                precioProducto = parseInt(precioProductoInput.value, 10) || 0;
+                precioProductoInput.readOnly = false;
+            } else {
+                console.error('Error al obtener precio base');
+            }
+        } catch (error) {
+            console.error('Error en la conexión:', error);
+        }
 
-    let total = base;
+        const precioDisenioActual = adicionalCheckbox.checked ? precioDisenio : 0;
 
-    if (adicionalDisenioCheckbox.checked) total += 5000;
-    if (esCredito) total *= 1.1;
+        // Subtotal = producto + diseño
+        let subtotal = precioProducto + precioDisenioActual;
 
-    totalInput.value = Math.round(total);
-    totalInput.readOnly = precioUnitario !== null;
-  }
+        // Impuesto por factura
+        let impuestoFactura = 0;
+        if (necesitaFacturaCheckbox.checked) {
+            impuestoFactura = Math.ceil(subtotal * recargoFactura);
+        }
 
-  function actualizarTotalYResta() {
-    const totalActual = parseFloat(totalInput.value) || 0;
-    const abonado = parseFloat(abonadoInput.value) || 0;
-    const resta = totalActual - abonado;
-    restaInput.value = Math.max(0, Math.round(resta));
-  }
+        // Total inicial con impuesto
+        let total = subtotal + impuestoFactura;
 
-  function actualizarAdicionalDisenio() {
-    aplicarTotalCalculado();
-    actualizarTotalYResta();
-  }
+        // Recargo por crédito
+        const medioPagoSeleccionado = document.querySelector('input[name="medioPago.id"]:checked');
+        let recargoCreditoMonto = 0;
+        if (medioPagoSeleccionado && Number(medioPagoSeleccionado.value) === 2) {
+          recargoCreditoMonto = Math.ceil(total * recargoCredito);
+          total += recargoCreditoMonto;
+        }
 
-  function actualizarCredito() {
-    const medioPagoId = getSelectedRadioValue(medioPagoRadios);
-    esCredito = medioPagoId === '2';
-    aplicarTotalCalculado();
-    actualizarTotalYResta();
-  }
+        // Cantidad abonada
+        const abonado = parseInt(abonadoInput.value, 10) || 0;
 
-  function toggleFechaMuestraHandler() {
-    fechaRow.classList.toggle("d-none", !toggleFechaMuestra.checked);
-  }
+        // Resta
+        const resta = total - abonado;
 
-  // Detecta entrada manual en total
-  totalInput.addEventListener("input", () => {
-    const val = parseFloat(totalInput.value);
-    if (!isNaN(val)) {
-      totalManualBase = val;
-      aplicarTotalCalculado();
-      actualizarTotalYResta();
-    }
-  });
+        // Actualizamos inputs visibles
+        precioDisenioInput.value = precioDisenioActual;
+        precioImpuestosInput.value = impuestoFactura + recargoCreditoMonto;
+        totalInput.value = total;
+        restaInput.value = resta;
+        precioProductoInput.value = precioProducto;
+      }
 
-  // Listeners
-  cantidadInput.addEventListener("input", actualizarPrecio);
-  laminadoRadios.forEach(r => r.addEventListener("change", actualizarPrecio));
-  fazRadios.forEach(r => r.addEventListener("change", actualizarPrecio));
-  adicionalDisenioCheckbox.addEventListener("change", actualizarAdicionalDisenio);
-  medioPagoRadios.forEach(r => r.addEventListener("change", actualizarCredito));
-  abonadoInput.addEventListener("input", actualizarTotalYResta);
-  toggleFechaMuestra.addEventListener("change", toggleFechaMuestraHandler);
+      // Escuchamos cambios en todos los inputs
+      precioProductoInput.addEventListener('input', calcularPrecio);
+      cantidadCarpetasInput.addEventListener('input', calcularPrecio);
+      adicionalCheckbox.addEventListener('change', calcularPrecio);
+      necesitaFacturaCheckbox.addEventListener('change', calcularPrecio);
+      abonadoInput.addEventListener('input', calcularPrecio);
+      radiosMedioPago.forEach(radio => radio.addEventListener('change', calcularPrecio));
+      radiosLaminado.forEach(radio => radio.addEventListener('change', calcularPrecio));
+      radiosFaz.forEach(radio => radio.addEventListener('change', calcularPrecio));
 
-  // Inicialización
-  actualizarPrecio();
-  toggleFechaMuestraHandler();
+      // Llamamos al inicio para inicializar los valores
+      calcularPrecio();
 });
