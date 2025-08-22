@@ -1,103 +1,118 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const toggleFechaMuestra = document.getElementById("toggleFechaMuestra");
-    const fechaMuestraRow = document.getElementById("fechaMuestraRow");
+document.addEventListener('DOMContentLoaded', () => {
+      // Valores predefinidos
+      const precioDisenio = 5000;
+      const recargoFactura = 0.21; // 21% sobre subtotal
+      const recargoCredito = 0.10; // 10% sobre subtotal+impuesto
 
-    const tipoRadios = document.querySelectorAll(".tipo-radio");
-    const cantidadInput = document.getElementById("combo-cantidad");
+      // Inputs y checkboxes
+      const adicionalCheckbox = document.getElementById('combo-con-adicional-disenio');
+      const necesitaFacturaCheckbox = document.getElementById('necesitaFactura');
+      const precioProductoInput = document.getElementById('precioProducto');
+      const precioDisenioInput = document.getElementById('precioDisenio');
+      const precioImpuestosInput = document.getElementById('precioImpuestos');
+      const totalInput = document.getElementById('total');
+      const abonadoInput = document.getElementById('abonado');
+      const restaInput = document.getElementById('resta');
+      const radiosMedioPago = document.querySelectorAll('input[name="medioPago.id"]');
+      const radiosTipo = document.querySelectorAll('input[name="tipoCombo.id"]');
+      const cantidadCombosInput = document.getElementById('combo-cantidad');
 
-    const totalInput = document.getElementById("total");
-    const abonadoInput = document.getElementById("abonado");
-    const restaInput = document.getElementById("resta");
+      // Inicializamos valores visibles
+      precioDisenioInput.value = 0;
+      precioImpuestosInput.value = 0;
+      totalInput.value = 0;
+      restaInput.value = 0;
+      abonadoInput.value = 0;
+      cantidadCombosInput.value = 1;
 
-    const adicionalDisenioCheckbox = document.getElementById("combo-con-adicional-disenio");
-    const medioPagoRadios = document.querySelectorAll("input[name='medioPago.id']");
+      // Toggles
+      const toggleFechaMuestra = document.getElementById('toggleFechaMuestra');
+      const fechaMuestraRow = document.getElementById('fechaMuestraRow');
+      toggleFechaMuestra.addEventListener('change', () => {
+          fechaMuestraRow.classList.toggle('d-none', !toggleFechaMuestra.checked);
+      });
 
-    let precioBasePlantilla = null; // Precio de la plantilla
-    let totalActual = 0;
-    let adicionalAplicado = false;
-    let creditoAplicado = false;
+      function resetearPrecio() {
+        precioProductoInput.value = 0;
+        precioProductoInput.readOnly = false;
+      }
 
-    // Toggle fecha muestra
-    toggleFechaMuestra.addEventListener("change", () => {
-        fechaMuestraRow.classList.toggle("d-none", !toggleFechaMuestra.checked);
-    });
+      async function calcularPrecio() {
+        const comboSeleccionado = document.querySelector('input[name="tipoCombo.id"]:checked');
+        let tipoComboId = 0;
+        let precioProducto = 0;
 
-    // Selección de tipo de combo → buscar precio
-    tipoRadios.forEach(radio => {
-        radio.addEventListener("change", () => {
-            const tipoId = radio.value;
-            if (tipoId) {
-                fetch(`/api/plantilla-combo/precio?tipoComboId=${tipoId}`)
-                    .then(res => res.ok ? res.json() : null)
-                    .then(data => {
-                        if (data) {
-                            precioBasePlantilla = parseFloat(data);
-                            recalcularDesdeBase();
-                            // Reset extras
-                            adicionalAplicado = false;
-                            creditoAplicado = false;
-                            adicionalDisenioCheckbox.checked = false;
-                            medioPagoRadios.forEach(r => r.checked = false);
-                        }
-                    });
-            }
-        });
-    });
-
-    // Cambio de cantidad → recalcular
-    cantidadInput.addEventListener("input", recalcularDesdeBase);
-
-    // Adicional diseño
-    adicionalDisenioCheckbox.addEventListener("change", () => {
-        if (adicionalDisenioCheckbox.checked && !adicionalAplicado) {
-            totalActual += 5000;
-            adicionalAplicado = true;
-        } else if (!adicionalDisenioCheckbox.checked && adicionalAplicado) {
-            totalActual -= 5000;
-            adicionalAplicado = false;
+        if (!comboSeleccionado) {
+            return;
+        } else {
+            tipoComboId = Number(comboSeleccionado.value);
         }
-        actualizarTotal();
-    });
 
-    // Medio de pago
-    medioPagoRadios.forEach(radio => {
-        radio.addEventListener("change", () => {
-            const esCredito = radio.nextElementSibling.textContent.trim().toUpperCase() === "CRÉDITO";
-
-            if (esCredito && !creditoAplicado) {
-                totalActual *= 1.10;
-                creditoAplicado = true;
-            } else if (!esCredito && creditoAplicado) {
-                totalActual /= 1.10;
-                creditoAplicado = false;
+        try {
+            const response = await fetch(`/api/plantilla-combo/precio?tipoComboId=${tipoComboId}`);
+            if (response.status === 200) {
+                let precioUnitario = await response.json();
+                const cantidad = parseInt(cantidadCombosInput.value, 10) || 0;
+                precioProducto = precioUnitario * cantidad;
+                precioProductoInput.readOnly = true;
+            } else if (response.status === 204) {
+                precioProductoInput.readOnly = false;
+                precioProducto = parseInt(precioProductoInput.value, 10) || 0;
+            } else {
+                console.error('Error al obtener precio base');
             }
-            actualizarTotal();
-        });
-    });
-
-    // Abonado → recalcular resta
-    abonadoInput.addEventListener("input", actualizarResta);
-
-    // ---------------- FUNCIONES ----------------
-    function recalcularDesdeBase() {
-        if (precioBasePlantilla !== null) {
-            const cantidad = parseInt(cantidadInput.value) || 1;
-            totalActual = precioBasePlantilla * cantidad;
-            adicionalAplicado = false;
-            creditoAplicado = false;
-            adicionalDisenioCheckbox.checked = false;
-            medioPagoRadios.forEach(r => r.checked = false);
-            actualizarTotal();
+        } catch (error) {
+            console.error('Error en la conexión:', error);
         }
-    }
 
-    function actualizarTotal() {
-        totalInput.value = Math.round(totalActual);
-        actualizarResta();
-    }
+        const precioDisenioActual = adicionalCheckbox.checked ? precioDisenio : 0;
 
-    function actualizarResta() {
-        const abonado = parseFloat(abonadoInput.value) || 0;
-        restaInput.value = Math.round((parseFloat(totalInput.value) || 0) - abonado);
-    }
+        // Subtotal = producto + diseño
+        let subtotal = precioProducto + precioDisenioActual;
+
+        // Impuesto por factura
+        let impuestoFactura = 0;
+        if (necesitaFacturaCheckbox.checked) {
+          impuestoFactura = Math.ceil(subtotal * recargoFactura);
+        }
+
+        // Total inicial con impuesto
+        let total = subtotal + impuestoFactura;
+
+        // Recargo por crédito
+        const medioPagoSeleccionado = document.querySelector('input[name="medioPago.id"]:checked');
+        let recargoCreditoMonto = 0;
+        if (medioPagoSeleccionado && Number(medioPagoSeleccionado.value) === 2) {
+          recargoCreditoMonto = Math.ceil(total * recargoCredito);
+          total += recargoCreditoMonto;
+        }
+
+        // Cantidad abonada
+        const abonado = parseInt(abonadoInput.value, 10) || 0;
+
+        // Resta
+        const resta = total - abonado;
+
+        // Actualizamos inputs visibles
+        precioDisenioInput.value = precioDisenioActual;
+        precioImpuestosInput.value = impuestoFactura + recargoCreditoMonto;
+        totalInput.value = total;
+        restaInput.value = resta;
+        precioProductoInput.value = precioProducto;
+      }
+
+      // Escuchamos cambios en todos los inputs
+      cantidadCombosInput.addEventListener('input', calcularPrecio);
+      precioProductoInput.addEventListener('input', calcularPrecio);
+      adicionalCheckbox.addEventListener('change', calcularPrecio);
+      necesitaFacturaCheckbox.addEventListener('change', calcularPrecio);
+      abonadoInput.addEventListener('input', calcularPrecio);
+      radiosMedioPago.forEach(radio => radio.addEventListener('change', calcularPrecio));
+      radiosTipo.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
+
+      // Llamamos al inicio para inicializar los valores
+      calcularPrecio();
 });
