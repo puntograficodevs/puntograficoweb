@@ -44,6 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
 
+      function resetearPrecio() {
+        precioProductoInput.value = 0;
+        precioProductoInput.readOnly = false;
+      }
+
       async function calcularPrecio() {
         const tipoTapaSeleccionada = document.querySelector('input[name="tipoTapaAgenda.id"]:checked');
         const tipoColorSeleccionado = document.querySelector('input[name="tipoColorAgenda.id"]:checked');
@@ -61,14 +66,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const response = await fetch(`/api/plantilla-agenda/precio?cantidadHojas=${cantidadHojas}&tipoTapaId=${tipoTapaId}&tipoColorId=${tipoColorId}`);
-            if (response.ok) {
+            if (response.status === 200) {
                 let precioUnitario = await response.json();
                 const cantidad = parseInt(cantidadAgendasInput.value, 10) || 0;
                 precioProducto = precioUnitario * cantidad;
                 precioProductoInput.readOnly = true;
             } else if (response.status === 204) {
-                precioProducto = parseInt(precioProductoInput.value, 10) || 0;
                 precioProductoInput.readOnly = false;
+                precioProducto = parseInt(precioProductoInput.value, 10) || 0;
             } else {
                 console.error('Error al obtener precio base');
             }
@@ -114,14 +119,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Escuchamos cambios en todos los inputs
       precioProductoInput.addEventListener('input', calcularPrecio);
-      cantidadHojasInput.addEventListener('input', calcularPrecio);
       cantidadAgendasInput.addEventListener('input', calcularPrecio);
       adicionalCheckbox.addEventListener('change', calcularPrecio);
       necesitaFacturaCheckbox.addEventListener('change', calcularPrecio);
       abonadoInput.addEventListener('input', calcularPrecio);
       radiosMedioPago.forEach(radio => radio.addEventListener('change', calcularPrecio));
-      radiosTapa.forEach(radio => radio.addEventListener('change', calcularPrecio));
-      radiosColor.forEach(radio => radio.addEventListener('change', calcularPrecio));
+      cantidadHojasInput.addEventListener('input', () => {
+        resetearPrecio();
+        calcularPrecio();
+      });
+      radiosTapa.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
+      radiosColor.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
 
       // Llamamos al inicio para inicializar los valores
       calcularPrecio();

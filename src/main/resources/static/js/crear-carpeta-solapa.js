@@ -33,6 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
           fechaMuestraRow.classList.toggle('d-none', !toggleFechaMuestra.checked);
       });
 
+      function resetearPrecio() {
+        precioProductoInput.value = 0;
+        precioProductoInput.readOnly = false;
+      }
+
       async function calcularPrecio() {
         const tipoLaminadoSeleccionado = document.querySelector('input[name="tipoLaminadoCarpetaSolapa.id"]:checked');
         const tipoFazSeleccionada = document.querySelector('input[name="tipoFazCarpetaSolapa.id"]:checked');
@@ -50,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const response = await fetch(`/api/plantilla-carpeta-solapa/precio?cantidad=${cantidad}&tipoLaminadoCarpetaSolapaId=${tipoLaminadoCarpetaSolapaId}&tipoFazCarpetaSolapaId=${tipoFazCarpetaSolapaId}`);
-            if (response.ok) {
+            if (response.status === 200) {
                 let precioUnitario = await response.json();
                 if (cantidad < 50) {
                     precioProducto = precioUnitario * cantidad;
@@ -59,8 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 precioProductoInput.readOnly = true;
             } else if (response.status === 204) {
-                precioProducto = parseInt(precioProductoInput.value, 10) || 0;
                 precioProductoInput.readOnly = false;
+                precioProducto = parseInt(precioProductoInput.value, 10) || 0;
             } else {
                 console.error('Error al obtener precio base');
             }
@@ -106,13 +111,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Escuchamos cambios en todos los inputs
       precioProductoInput.addEventListener('input', calcularPrecio);
-      cantidadCarpetasInput.addEventListener('input', calcularPrecio);
+      cantidadCarpetasInput.addEventListener('input', () => {
+        resetearPrecio();
+        calcularPrecio();
+      });
       adicionalCheckbox.addEventListener('change', calcularPrecio);
       necesitaFacturaCheckbox.addEventListener('change', calcularPrecio);
       abonadoInput.addEventListener('input', calcularPrecio);
       radiosMedioPago.forEach(radio => radio.addEventListener('change', calcularPrecio));
-      radiosLaminado.forEach(radio => radio.addEventListener('change', calcularPrecio));
-      radiosFaz.forEach(radio => radio.addEventListener('change', calcularPrecio));
+
+      radiosLaminado.forEach(radio => radio.addEventListener('change', () => {
+          resetearPrecio();
+          calcularPrecio();
+      }));
+
+      radiosFaz.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
 
       // Llamamos al inicio para inicializar los valores
       calcularPrecio();

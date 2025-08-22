@@ -1,160 +1,148 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const toggleFechaMuestra = document.getElementById("toggleFechaMuestra");
-  const fechaMuestraRow = document.getElementById("fechaMuestraRow");
+document.addEventListener('DOMContentLoaded', () => {
+      // Valores predefinidos
+      const precioDisenio = 2500;
+      const recargoFactura = 0.21; // 21% sobre subtotal
+      const recargoCredito = 0.10; // 10% sobre subtotal+impuesto
 
-  const medidaRadios = document.querySelectorAll(".medida-radio");
-  const medidaPersonalizadaGroup = document.getElementById("medidaPersonalizadaGroup");
+      // Inputs y checkboxes
+      const adicionalCheckbox = document.getElementById('cierra-bolsas-con-adicional-disenio');
+      const necesitaFacturaCheckbox = document.getElementById('necesitaFactura');
+      const precioProductoInput = document.getElementById('precioProducto');
+      const precioDisenioInput = document.getElementById('precioDisenio');
+      const precioImpuestosInput = document.getElementById('precioImpuestos');
+      const totalInput = document.getElementById('total');
+      const abonadoInput = document.getElementById('abonado');
+      const restaInput = document.getElementById('resta');
+      const radiosMedioPago = document.querySelectorAll('input[name="medioPago.id"]');
+      const radiosMedida = document.querySelectorAll('input[name="medidaCierraBolsas.id"]');
+      const radiosCantidad = document.querySelectorAll('input[name="cantidadCierraBolsas.id"]');
+      const radiosTroquelado = document.querySelectorAll('input[name="tipoTroqueladoCierraBolsas.id"]');
 
-  const cantidadRadios = document.querySelectorAll(".cantidad-radio");
-  const cantidadManualGroup = document.getElementById("cantidadManualGroup");
-  const cantidadManualInput = document.getElementById("cantidad");
 
-  const tipoTroqueladoRadios = document.querySelectorAll("input[name='tipoTroqueladoCierraBolsas.id']");
-  const mediosDePagoRadios = document.querySelectorAll("input[name='medioPago.id']");
-  const adicionalDisenioCheckbox = document.getElementById("cierra-bolsas-con-adicional-disenio");
+      // Inicializamos valores visibles
+      precioDisenioInput.value = 0;
+      precioImpuestosInput.value = 0;
+      totalInput.value = 0;
+      restaInput.value = 0;
+      abonadoInput.value = 0;
 
-  const totalInput = document.getElementById("total");
-  const abonadoInput = document.getElementById("abonado");
-  const restaInput = document.getElementById("resta");
+      // Toggles
+      const toggleFechaMuestra = document.getElementById('toggleFechaMuestra');
+      const fechaMuestraRow = document.getElementById('fechaMuestraRow');
+      toggleFechaMuestra.addEventListener('change', () => {
+          fechaMuestraRow.classList.toggle('d-none', !toggleFechaMuestra.checked);
+      });
 
-  let selectedTipoId = null;
-  let selectedMedidaId = null;
-  let selectedCantidadId = null;
+      const cantidadInputRow = document.getElementById('cantidadManualGroup');
+      radiosCantidad.forEach(radio => {
+        radio.addEventListener('change', () => {
+          const label = document.querySelector(`label[for="${radio.id}"]`);
+          const esOtra = label?.textContent.trim().toLowerCase() === 'otra';
+          cantidadInputRow.classList.toggle('d-none', !esOtra);
+        });
+      });
 
-  let basePrecio = null;
+      const medidaInputRow = document.getElementById('medidaPersonalizadaGroup');
+      radiosMedida.forEach(radio => {
+        radio.addEventListener('change', () => {
+          const label = document.querySelector(`label[for="${radio.id}"]`);
+          const esOtra = label?.textContent.trim().toLowerCase() === 'otra';
+          medidaInputRow.classList.toggle('d-none', !esOtra);
+        });
+      });
 
-  const limpiarTotal = () => {
-    totalInput.value = "";
-    restaInput.value = "";
-    basePrecio = null;
-  };
-
-  const actualizarResta = () => {
-    const total = parseInt(totalInput.value) || 0;
-    const abonado = parseInt(abonadoInput.value) || 0;
-    restaInput.value = total - abonado;
-  };
-
-  const aplicarExtras = () => {
-    // Intentar obtener basePrecio si no lo teníamos, desde el input de total
-    if (basePrecio === null) {
-      const totalActual = parseInt(totalInput.value);
-      if (!isNaN(totalActual)) {
-        basePrecio = totalActual;
-      } else {
-        return; // No hay base sobre la cual operar
+      function resetearPrecio() {
+        precioProductoInput.value = 0;
+        precioProductoInput.readOnly = false;
       }
-    }
 
-    let total = basePrecio;
+      async function calcularPrecio() {
+        const medidaSeleccionada = document.querySelector('input[name="medidaCierraBolsas.id"]:checked');
+        const cantidadSeleccionada = document.querySelector('input[name="cantidadCierraBolsas.id"]:checked');
+        const troqueladoSeleccionado = document.querySelector('input[name="tipoTroqueladoCierraBolsas.id"]:checked');
+        let medidaCierraBolsasId = 0;
+        let cantidadCierraBolsasId = 0;
+        let tipoTroqueladoCierraBolsasId = 0;
+        let precioProducto = 0;
 
-    if (adicionalDisenioCheckbox.checked) {
-      total += 5000;
-    }
-
-    const medioCredito = Array.from(mediosDePagoRadios).find(radio =>
-      radio.checked && radio.nextElementSibling.textContent.toUpperCase().includes("CRÉDITO")
-    );
-    if (medioCredito) {
-      total = Math.round(total * 1.10);
-    }
-
-    totalInput.value = total;
-    actualizarResta();
-  };
-
-  const calcularTotal = () => {
-    if (!selectedTipoId || !selectedMedidaId || !selectedCantidadId) {
-      limpiarTotal();
-      return;
-    }
-
-    fetch(`/api/plantilla-cierra-bolsas/precio?tipoTroqueladoCierraBolsasId=${selectedTipoId}&medidaCierraBolsasId=${selectedMedidaId}&cantidadCierraBolsasId=${selectedCantidadId}`)
-      .then(res => {
-        if (res.status === 204) return null;
-        return res.json();
-      })
-      .then(precioBase => {
-        if (precioBase === null) {
-          limpiarTotal();
-          return;
+        if (!medidaSeleccionada || !cantidadSeleccionada || !troqueladoSeleccionado) {
+            return;
+        } else {
+            tipoTroqueladoCierraBolsasId = Number(troqueladoSeleccionado.value);
+            medidaCierraBolsasId = Number(medidaSeleccionada.value);
+            cantidadCierraBolsasId = Number(cantidadSeleccionada.value);
         }
 
-        basePrecio = precioBase;
-        aplicarExtras();
-      })
-      .catch(err => {
-        console.error("Error obteniendo precio:", err);
-        limpiarTotal();
-      });
-  };
+        try {
+            const response = await fetch(`/api/plantilla-cierra-bolsas/precio?tipoTroqueladoCierraBolsasId=${tipoTroqueladoCierraBolsasId}&medidaCierraBolsasId=${medidaCierraBolsasId}&cantidadCierraBolsasId=${cantidadCierraBolsasId}`);
+            if (response.status === 200) {
+                precioProducto = await response.json();
+                precioProductoInput.readOnly = true;
+            } else if (response.status === 204) {
+                precioProductoInput.readOnly = false;
+                precioProducto = parseInt(precioProductoInput.value, 10) || 0;
+            } else {
+                console.error('Error al obtener precio base');
+            }
+        } catch (error) {
+            console.error('Error en la conexión:', error);
+        }
 
-  // Mostrar/ocultar Fecha Muestra
-  toggleFechaMuestra.addEventListener("change", () => {
-    fechaMuestraRow.classList.toggle("d-none", !toggleFechaMuestra.checked);
-  });
+        const precioDisenioActual = adicionalCheckbox.checked ? precioDisenio : 0;
 
-  // Cambios en medida
-  medidaRadios.forEach(radio => {
-    radio.addEventListener("change", () => {
-      const label = radio.nextElementSibling.textContent.trim().toUpperCase();
-      if (label === "OTRA") {
-        medidaPersonalizadaGroup.classList.remove("d-none");
-        selectedMedidaId = null;
-      } else {
-        medidaPersonalizadaGroup.classList.add("d-none");
-        selectedMedidaId = radio.value;
+        // Subtotal = producto + diseño
+        let subtotal = precioProducto + precioDisenioActual;
+
+        // Impuesto por factura
+        let impuestoFactura = 0;
+        if (necesitaFacturaCheckbox.checked) {
+          impuestoFactura = Math.ceil(subtotal * recargoFactura);
+        }
+
+        // Total inicial con impuesto
+        let total = subtotal + impuestoFactura;
+
+        // Recargo por crédito
+        const medioPagoSeleccionado = document.querySelector('input[name="medioPago.id"]:checked');
+        let recargoCreditoMonto = 0;
+        if (medioPagoSeleccionado && Number(medioPagoSeleccionado.value) === 2) {
+          recargoCreditoMonto = Math.ceil(total * recargoCredito);
+          total += recargoCreditoMonto;
+        }
+
+        // Cantidad abonada
+        const abonado = parseInt(abonadoInput.value, 10) || 0;
+
+        // Resta
+        const resta = total - abonado;
+
+        // Actualizamos inputs visibles
+        precioDisenioInput.value = precioDisenioActual;
+        precioImpuestosInput.value = impuestoFactura + recargoCreditoMonto;
+        totalInput.value = total;
+        restaInput.value = resta;
+        precioProductoInput.value = precioProducto;
       }
-      limpiarTotal();
-      calcularTotal();
-    });
-  });
 
-  // Cambios en cantidad
-  cantidadRadios.forEach(radio => {
-    radio.addEventListener("change", () => {
-      const label = radio.nextElementSibling.textContent.trim().toUpperCase();
-      if (label === "OTRA") {
-        cantidadManualGroup.classList.remove("d-none");
-        selectedCantidadId = null;
-      } else {
-        cantidadManualGroup.classList.add("d-none");
-        selectedCantidadId = radio.value;
-      }
-      limpiarTotal();
-      calcularTotal();
-    });
-  });
+      // Escuchamos cambios en todos los inputs
+      precioProductoInput.addEventListener('input', calcularPrecio);
+      adicionalCheckbox.addEventListener('change', calcularPrecio);
+      necesitaFacturaCheckbox.addEventListener('change', calcularPrecio);
+      abonadoInput.addEventListener('input', calcularPrecio);
+      radiosMedioPago.forEach(radio => radio.addEventListener('change', calcularPrecio));
+      radiosTroquelado.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
+      radiosMedida.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
+      radiosCantidad.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
 
-  // Cambios en tipo troquelado
-  tipoTroqueladoRadios.forEach(radio => {
-    radio.addEventListener("change", () => {
-      selectedTipoId = radio.value;
-      limpiarTotal();
-      calcularTotal();
-    });
-  });
-
-  // Cambios en cantidad personalizada (invalida fetch)
-  cantidadManualInput.addEventListener("input", () => {
-    selectedCantidadId = "9999";
-    limpiarTotal();
-  });
-
-  // Cambios en medios de pago (solo suma 10%)
-  mediosDePagoRadios.forEach(radio => {
-    radio.addEventListener("change", () => {
-      aplicarExtras();
-    });
-  });
-
-  // Cambios en adicional diseño (solo suma 5000)
-  adicionalDisenioCheckbox.addEventListener("change", () => {
-    aplicarExtras();
-  });
-
-  // Cambios en abonado
-  abonadoInput.addEventListener("input", () => {
-    actualizarResta();
-  });
+      // Llamamos al inicio para inicializar los valores
+      calcularPrecio();
 });

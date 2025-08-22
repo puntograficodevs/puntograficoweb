@@ -91,12 +91,12 @@
         </div>
       </div>
       <div class="row mb-3">
-        <div class="col-md-4">
+        <div class="col-md-12">
           <label class="form-label">Cantidad *</label>
-          <div th:each="cant : ${listaCantidadCierraBolsas}" class="form-check">
+          <div th:each="cantidad : ${listaCantidadCierraBolsas}" class="form-check">
             <input class="form-check-input cantidad-radio" type="radio" name="cantidadCierraBolsas.id"
-                   th:id="'cantidad-' + ${cant.id}" th:value="${cant.id}" th:data-cantidad="${cant.cantidad}" required>
-            <label class="form-check-label" th:for="'cantidad-' + ${cant.id}" th:text="${cant.cantidad}"></label>
+                   th:id="'cantidad-' + ${cantidad.id}" th:value="${cantidad.id}" th:data-cantidad="${cantidad.cantidad}" required>
+            <label class="form-check-label" th:for="'cantidad-' + ${cantidad.id}" th:text="${cantidad.cantidad}"></label>
           </div>
 
           <!-- INPUT PERSONALIZADO -->
@@ -135,6 +135,20 @@
             <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura">
             <label class="form-check-label" for="necesitaFactura">¿Necesita factura?</label>
           </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label for="total" class="form-label">Precio del producto *</label>
+          <input type="number" class="form-control" id="precioProducto" placeholder="0" required>
+        </div>
+        <div class="col-md-4">
+          <label for="total" class="form-label">Precio por diseño *</label>
+          <input type="number" class="form-control" id="precioDisenio" placeholder="0" readonly>
+        </div>
+        <div class="col-md-4">
+          <label for="total" class="form-label">Precio impuestos *</label>
+          <input type="number" class="form-control" id="precioImpuestos" placeholder="0" required>
         </div>
       </div>
       <div class="row mb-3">
