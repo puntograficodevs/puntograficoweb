@@ -1,116 +1,154 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // Inputs y elementos relevantes
-  const toggleFechaMuestra = document.getElementById("toggleFechaMuestra");
-  const fechaMuestraRow = document.getElementById("fechaMuestraRow");
-  const medidaPersonalizadaGroup = document.getElementById("medidaPersonalizadaGroup");
-  const cantidadPersonalizadaGroup = document.getElementById("cantidadPersonalizadaGroup");
+document.addEventListener('DOMContentLoaded', () => {
+      // Valores predefinidos
+      const precioDisenio = 5000;
+      const recargoFactura = 0.21; // 21% sobre subtotal
+      const recargoCredito = 0.10; // 10% sobre subtotal+impuesto
 
-  const tipoColorRadios = document.querySelectorAll("input[name='tipoColorHojasMembreteadas.id']");
-  const medidaRadios = document.querySelectorAll("input[name='medidaHojasMembreteadas.id']");
-  const cantidadHojasMembreteadasRadios = document.querySelectorAll("input[name='cantidadHojasMembreteadas.id']");
-  const cantidadHojasInput = document.getElementById("hojas-membreteadas-cantidad-hojas");
+      // Inputs y checkboxes
+      const adicionalCheckbox = document.getElementById('hojas-membreteadas-con-adicional-disenio');
+      const necesitaFacturaCheckbox = document.getElementById('necesitaFactura');
+      const precioProductoInput = document.getElementById('precioProducto');
+      const precioDisenioInput = document.getElementById('precioDisenio');
+      const precioImpuestosInput = document.getElementById('precioImpuestos');
+      const totalInput = document.getElementById('total');
+      const abonadoInput = document.getElementById('abonado');
+      const restaInput = document.getElementById('resta');
+      const radiosMedioPago = document.querySelectorAll('input[name="medioPago.id"]');
+      const cantidadHojasInput = document.getElementById('hojas-membreteadas-cantidad-hojas');
+      const radiosMedida = document.querySelectorAll('input[name="medidaHojasMembreteadas.id"]');
+      const radiosColor = document.querySelectorAll('input[name="tipoColorHojasMembreteadas.id"]');
+      const radiosCantidad = document.querySelectorAll('input[name="cantidadHojasMembreteadas.id"]');
 
-  const totalInput = document.getElementById("total");
-  const abonadoInput = document.getElementById("abonado");
-  const restaInput = document.getElementById("resta");
-  const adicionalDisenioCheckbox = document.getElementById("hojas-membreteadas-con-adicional-disenio");
-  const medioPagoRadios = document.querySelectorAll("input[name='medioPago.id']");
 
-  // Variables de control
-  let precioBase = 0;
-  let adicionalDisenio = 0;
-  let creditoAdicional = 0;
-  let totalManual = false; // para saber si el usuario editó total manualmente
+      // Inicializamos valores visibles
+      precioDisenioInput.value = 0;
+      precioImpuestosInput.value = 0;
+      totalInput.value = 0;
+      restaInput.value = 0;
+      abonadoInput.value = 0;
 
-  // Mostrar/ocultar fecha de muestra
-  toggleFechaMuestra.addEventListener("change", () => {
-    fechaMuestraRow.classList.toggle("d-none", !toggleFechaMuestra.checked);
-  });
+      // Toggles
+      const toggleFechaMuestra = document.getElementById('toggleFechaMuestra');
+      const fechaMuestraRow = document.getElementById('fechaMuestraRow');
+      toggleFechaMuestra.addEventListener('change', () => {
+          fechaMuestraRow.classList.toggle('d-none', !toggleFechaMuestra.checked);
+      });
 
-  // Mostrar/ocultar medida personalizada
-  medidaRadios.forEach(radio => {
-    radio.addEventListener("change", () => {
-      medidaPersonalizadaGroup.classList.toggle("d-none", radio.dataset.medida.toUpperCase() !== "OTRA");
-      fetchPrecio();
-    });
-  });
+      const medidaInputRow = document.getElementById('medidaPersonalizadaGroup');
+      radiosMedida.forEach(radio => {
+        radio.addEventListener('change', () => {
+          const label = document.querySelector(`label[for="${radio.id}"]`);
+          const esOtra = label?.textContent.trim().toLowerCase() === 'otra';
+          medidaInputRow.classList.toggle('d-none', !esOtra);
+        });
+      });
 
-  // Mostrar/ocultar cantidad personalizada
-  cantidadHojasMembreteadasRadios.forEach(radio => {
-    radio.addEventListener("change", () => {
-      cantidadPersonalizadaGroup.classList.toggle("d-none", radio.dataset.cantidad.toUpperCase() !== "OTRA");
-      fetchPrecio();
-    });
-  });
+      const cantidadInputRow = document.getElementById('cantidadPersonalizadaGroup');
+      radiosCantidad.forEach(radio => {
+        radio.addEventListener('change', () => {
+          const label = document.querySelector(`label[for="${radio.id}"]`);
+          const esOtra = label?.textContent.trim().toLowerCase() === 'otra';
+          cantidadInputRow.classList.toggle('d-none', !esOtra);
+        });
+      });
 
-  // Escuchar cambios en tipo color, cantidad de hojas y cantidad de hojas membreteadas
-  tipoColorRadios.forEach(r => r.addEventListener("change", fetchPrecio));
-  cantidadHojasInput.addEventListener("input", fetchPrecio);
-
-  // Escuchar cambios manuales en total y abonado
-  totalInput.addEventListener("input", () => {
-    totalManual = true;
-    actualizarResta();
-  });
-  abonadoInput.addEventListener("input", actualizarResta);
-
-  // Adicional diseño
-  adicionalDisenioCheckbox.addEventListener("change", () => {
-    adicionalDisenio = adicionalDisenioCheckbox.checked ? 5000 : 0;
-    actualizarTotal();
-  });
-
-  // Medio de pago
-  medioPagoRadios.forEach(radio => {
-    radio.addEventListener("change", actualizarTotal);
-  });
-
-  // Función para actualizar total considerando precio base y adicionales
-  function actualizarTotal() {
-    let base = totalManual ? parseInt(totalInput.value) - creditoAdicional - adicionalDisenio || 0 : precioBase;
-    let total = base + adicionalDisenio;
-
-    // Aplicar crédito si corresponde
-    const creditoSeleccionado = Array.from(medioPagoRadios).find(r => r.checked);
-    creditoAdicional = creditoSeleccionado && creditoSeleccionado.nextElementSibling.textContent.toLowerCase() === "crédito"
-                       ? Math.round(total * 0.1)
-                       : 0;
-
-    total += creditoAdicional;
-    totalInput.value = total;
-    actualizarResta();
-  }
-
-  // Función para actualizar resta
-  function actualizarResta() {
-    const total = parseInt(totalInput.value) || 0;
-    const abonado = parseInt(abonadoInput.value) || 0;
-    restaInput.value = total - abonado;
-  }
-
-  // Función para hacer fetch de precio según selección
-  async function fetchPrecio() {
-    const tipoColor = document.querySelector("input[name='tipoColorHojasMembreteadas.id']:checked");
-    const medida = document.querySelector("input[name='medidaHojasMembreteadas.id']:checked");
-    const cantidadMembreteadas = document.querySelector("input[name='cantidadHojasMembreteadas.id']:checked");
-    const cantidadHojas = cantidadHojasInput.value;
-
-    if (!tipoColor || !medida || !cantidadMembreteadas || !cantidadHojas) return;
-
-    try {
-      const response = await fetch(`/api/plantilla-hojas-membreteadas/precio?cantidadHojas=${cantidadHojas}&medidaHojasMembreteadasId=${medida.value}&tipoColorHojasMembreteadasId=${tipoColor.value}&cantidadHojasMembreteadasId=${cantidadMembreteadas.value}`);
-      if (response.ok) {
-        const precio = await response.json();
-        precioBase = parseInt(precio);
-        totalManual = false; // si viene del fetch, dejamos de usar manual
-      } else {
-        precioBase = 0; // No coincidencia
+      function resetearPrecio() {
+        precioProductoInput.value = 0;
+        precioProductoInput.readOnly = false;
       }
-      actualizarTotal();
-    } catch (err) {
-      console.error("Error fetch precio:", err);
-      precioBase = 0;
-      actualizarTotal();
-    }
-  }
+
+      async function calcularPrecio() {
+        const cantidadHojas = parseInt(cantidadHojasInput.value, 10) || 0;
+        const medidaSeleccionada = document.querySelector('input[name="medidaHojasMembreteadas.id"]:checked');
+        const colorSeleccionado = document.querySelector('input[name="tipoColorHojasMembreteadas.id"]:checked');
+        const cantidadSeleccionada = document.querySelector('input[name="cantidadHojasMembreteadas.id"]:checked');
+        let medidaHojasMembreteadasId = 0;
+        let tipoColorHojasMembreteadasId = 0;
+        let cantidadHojasMembreteadasId = 0;
+        let precioProducto = 0;
+
+        if (!cantidadHojas || !medidaSeleccionada || !colorSeleccionado || !cantidadSeleccionada) {
+            return;
+        } else {
+            medidaHojasMembreteadasId = Number(medidaSeleccionada.value);
+            tipoColorHojasMembreteadasId = Number(colorSeleccionado.value);
+            cantidadHojasMembreteadasId = Number(cantidadSeleccionada.value);
+        }
+
+        try {
+            const response = await fetch(`/api/plantilla-hojas-membreteadas/precio?cantidadHojas=${cantidadHojas}&medidaHojasMembreteadasId=${medidaHojasMembreteadasId}&tipoColorHojasMembreteadasId=${tipoColorHojasMembreteadasId}&cantidadHojasMembreteadasId=${cantidadHojasMembreteadasId}`);
+            if (response.status === 200) {
+                precioProducto = await response.json();
+                precioProductoInput.readOnly = true;
+            } else if (response.status === 204) {
+                precioProductoInput.readOnly = false;
+                precioProducto = parseInt(precioProductoInput.value, 10) || 0;
+            } else {
+                console.error('Error al obtener precio base');
+            }
+        } catch (error) {
+            console.error('Error en la conexión:', error);
+        }
+
+        const precioDisenioActual = adicionalCheckbox.checked ? precioDisenio : 0;
+
+        // Subtotal = producto + diseño
+        let subtotal = precioProducto + precioDisenioActual;
+
+        // Impuesto por factura
+        let impuestoFactura = 0;
+        if (necesitaFacturaCheckbox.checked) {
+          impuestoFactura = Math.ceil(subtotal * recargoFactura);
+        }
+
+        // Total inicial con impuesto
+        let total = subtotal + impuestoFactura;
+
+        // Recargo por crédito
+        const medioPagoSeleccionado = document.querySelector('input[name="medioPago.id"]:checked');
+        let recargoCreditoMonto = 0;
+        if (medioPagoSeleccionado && Number(medioPagoSeleccionado.value) === 2) {
+          recargoCreditoMonto = Math.ceil(total * recargoCredito);
+          total += recargoCreditoMonto;
+        }
+
+        // Cantidad abonada
+        const abonado = parseInt(abonadoInput.value, 10) || 0;
+
+        // Resta
+        const resta = total - abonado;
+
+        // Actualizamos inputs visibles
+        precioDisenioInput.value = precioDisenioActual;
+        precioImpuestosInput.value = impuestoFactura + recargoCreditoMonto;
+        totalInput.value = total;
+        restaInput.value = resta;
+        precioProductoInput.value = precioProducto;
+      }
+
+      // Escuchamos cambios en todos los inputs
+      precioProductoInput.addEventListener('input', calcularPrecio);
+      adicionalCheckbox.addEventListener('change', calcularPrecio);
+      necesitaFacturaCheckbox.addEventListener('change', calcularPrecio);
+      abonadoInput.addEventListener('input', calcularPrecio);
+      radiosMedioPago.forEach(radio => radio.addEventListener('change', calcularPrecio));
+      cantidadHojasInput.addEventListener('input', () => {
+        resetearPrecio();
+        calcularPrecio();
+      });
+      radiosMedida.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
+      radiosColor.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
+      radiosCantidad.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
+
+      // Llamamos al inicio para inicializar los valores
+      calcularPrecio();
 });

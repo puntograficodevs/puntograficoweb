@@ -1,164 +1,162 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const toggleFechaMuestra = document.getElementById("toggleFechaMuestra");
-  const fechaMuestraRow = document.getElementById("fechaMuestraRow");
+document.addEventListener('DOMContentLoaded', () => {
+      // Valores predefinidos
+      const precioDisenio = 5000;
+      const recargoFactura = 0.21; // 21% sobre subtotal
+      const recargoCredito = 0.10; // 10% sobre subtotal+impuesto
 
-  const tipoPapelRadios = document.querySelectorAll("input[name='tipoPapelFolleto.id']");
-  const tipoColorRadios = document.querySelectorAll("input[name='tipoColorFolleto.id']");
-  const tipoFazRadios = document.querySelectorAll("input[name='tipoFazFolleto.id']");
-  const tamanioHojaRadios = document.querySelectorAll("input[name='tamanioHojaFolleto.id']");
-  const tipoRadios = document.querySelectorAll("input[name='tipoFolleto.id']");
+      // Inputs y checkboxes
+      const adicionalCheckbox = document.getElementById('folleto-con-adicional-disenio');
+      const necesitaFacturaCheckbox = document.getElementById('necesitaFactura');
+      const precioProductoInput = document.getElementById('precioProducto');
+      const precioDisenioInput = document.getElementById('precioDisenio');
+      const precioImpuestosInput = document.getElementById('precioImpuestos');
+      const totalInput = document.getElementById('total');
+      const abonadoInput = document.getElementById('abonado');
+      const restaInput = document.getElementById('resta');
+      const radiosMedioPago = document.querySelectorAll('input[name="medioPago.id"]');
+      const radiosPapel = document.querySelectorAll('input[name="tipoPapelFolleto.id"]');
+      const radiosColor = document.querySelectorAll('input[name="tipoColorFolleto.id"]');
+      const radiosFaz = document.querySelectorAll('input[name="tipoFazFolleto.id"]');
+      const radiosTamanio = document.querySelectorAll('input[name="tamanioHojaFolleto.id"]');
+      const radiosTipo = document.querySelectorAll('input[name="tipoFolleto.id"]');
+      const radiosCantidad = document.querySelectorAll('input[name="cantidadFolleto.id"]');
 
-  const cantidadRadios = document.querySelectorAll("input[name='cantidadFolleto.id']");
-  const cantidadPersonalizadaGroup = document.getElementById("cantidadPersonalizadaGroup");
-  const cantidadPersonalizadaInput = document.getElementById("cantidad");
+      // Inicializamos valores visibles
+      precioDisenioInput.value = 0;
+      precioImpuestosInput.value = 0;
+      totalInput.value = 0;
+      restaInput.value = 0;
+      abonadoInput.value = 0;
 
-  const totalInput = document.getElementById("total");
-  const abonadoInput = document.getElementById("abonado");
-  const restaInput = document.getElementById("resta");
-
-  const adicionalDisenioCheckbox = document.getElementById("folleto-con-adicional-disenio");
-  const medioPagoRadios = document.querySelectorAll("input[name='medioPago.id']");
-
-  // Variables internas
-  let precioBase = 0; // base para cálculos (puede venir de plantilla o manual)
-  let adicionalAplicado = false;
-  let creditoAplicado = false;
-
-  // 1. Toggle fecha muestra
-  toggleFechaMuestra.addEventListener("change", () => {
-    fechaMuestraRow.classList.toggle("d-none", !toggleFechaMuestra.checked);
-  });
-
-  // 3. Mostrar input personalizada cantidad si eligieron OTRA
-  cantidadRadios.forEach(radio => {
-    radio.addEventListener("change", () => {
-      const texto = radio.nextElementSibling.textContent.trim().toUpperCase();
-      if (texto === "OTRA") {
-        cantidadPersonalizadaGroup.classList.remove("d-none");
-        cantidadPersonalizadaInput.required = true;
-      } else {
-        cantidadPersonalizadaGroup.classList.add("d-none");
-        cantidadPersonalizadaInput.required = false;
-        cantidadPersonalizadaInput.value = "";
-      }
-      buscarPrecio();
-    });
-  });
-
-  // 4. Inputs personalizados disparan búsqueda también
-  cantidadPersonalizadaInput.addEventListener("input", buscarPrecio);
-
-  // 5. Adicional diseño checkbox
-  adicionalDisenioCheckbox.addEventListener("change", () => {
-    adicionalAplicado = adicionalDisenioCheckbox.checked;
-    actualizarTotal();
-  });
-
-  // 6. Medio de pago radios
-  medioPagoRadios.forEach(radio => {
-    radio.addEventListener("change", () => {
-      const labelText = radio.nextElementSibling.textContent.trim().toUpperCase();
-      creditoAplicado = (labelText === "CRÉDITO");
-      actualizarTotal();
-    });
-  });
-
-  // 7. Abonado input actualiza resta
-  abonadoInput.addEventListener("input", actualizarResta);
-
-  // 8. Total editable siempre, si el usuario escribe manualmente, se actualiza precioBase a ese valor
-  totalInput.addEventListener("input", () => {
-    const manualTotal = parseInt(totalInput.value) || 0;
-    // Actualizo precioBase para que los cálculos posteriores usen el valor manual
-    precioBase = manualTotal;
-    actualizarTotal(); // recalcula con adicional y crédito sobre nuevo precioBase
-    actualizarResta();
-  });
-
-  // --- Funciones ---
-
-  function getCheckedValue(radios) {
-    const checked = Array.from(radios).find(r => r.checked);
-    return checked ? checked.value : null;
-  }
-
-  function buscarPrecio() {
-    // Agarrar todos los IDs seleccionados o personalizados
-    const tipoPapelId = getCheckedValue(tipoPapelRadios);
-    const tipoColorId = getCheckedValue(tipoColorRadios);
-    const tipoFazId = getCheckedValue(tipoFazRadios);
-    const tamanioHojaId = getCheckedValue(tamanioHojaRadios);
-    const tipoId = getCheckedValue(tipoRadios);
-
-    // Medida puede ser seleccionada o personalizada (si es "OTRA")
-    let cantidadId = getCheckedValue(cantidadRadios);
-    const cantidadSeleccionada = cantidadRadios.length > 0
-      ? Array.from(cantidadRadios).find(r => r.checked)?.nextElementSibling.textContent.trim().toUpperCase()
-      : null;
-    if (cantidadSeleccionada === "OTRA") {
-      cantidadId = cantidadPersonalizadaInput.value.trim();
-      if (!cantidadId) cantidadId = null;
-    }
-
-    if (!tipoPapelId || !tipoColorId || !tipoFazId || !tamanioHojaId || !tipoId || !cantidadId) {
-      // Falta algo, limpio precio y dejo total editable
-      precioBase = 0;
-      totalInput.value = "";
-      totalInput.disabled = false;
-      adicionalDisenioCheckbox.checked = false;
-      creditoAplicado = false;
-      medioPagoRadios.forEach(r => (r.checked = false));
-      actualizarResta();
-      return;
-    }
-
-    // Armar query params
-    const params = new URLSearchParams({
-      tipoPapelFolletoId: tipoPapelId,
-      tipoColorFolletoId: tipoColorId,
-      tipoFazFolletoId: tipoFazId,
-      tamanioHojaFolletoId: tamanioHojaId,
-      tipoFolletoId: tipoId,
-      cantidadFolletoId: cantidadId
-    });
-
-    fetch(`/api/plantilla-folleto/precio?${params.toString()}`)
-      .then(res => (res.ok ? res.text() : null))
-      .then(data => {
-        if (data !== null && data !== "") {
-          precioBase = parseInt(data);
-          adicionalDisenioCheckbox.checked = false;
-          creditoAplicado = false;
-          medioPagoRadios.forEach(r => (r.checked = false));
-          actualizarTotal();
-        } else {
-          precioBase = 0;
-          totalInput.value = "";
-          totalInput.disabled = false;
-          adicionalDisenioCheckbox.checked = false;
-          creditoAplicado = false;
-          medioPagoRadios.forEach(r => (r.checked = false));
-          actualizarResta();
-        }
+      // Toggles
+      const toggleFechaMuestra = document.getElementById('toggleFechaMuestra');
+      const fechaMuestraRow = document.getElementById('fechaMuestraRow');
+      toggleFechaMuestra.addEventListener('change', () => {
+          fechaMuestraRow.classList.toggle('d-none', !toggleFechaMuestra.checked);
       });
-  }
 
-  function actualizarTotal() {
-    let total = precioBase;
-    if (adicionalAplicado) total += 5000;
-    if (creditoAplicado) total = Math.round(total * 1.10);
-    totalInput.value = total;
-    totalInput.disabled = false; // Siempre editable
-    actualizarResta();
-  }
+      const cantidadInputRow = document.getElementById('cantidadPersonalizadaGroup');
+      radiosCantidad.forEach(radio => {
+        radio.addEventListener('change', () => {
+          const label = document.querySelector(`label[for="${radio.id}"]`);
+          const esOtra = label?.textContent.trim().toLowerCase() === 'otra';
+          cantidadInputRow.classList.toggle('d-none', !esOtra);
+        });
+      });
 
-  function actualizarResta() {
-    const total = parseInt(totalInput.value) || 0;
-    const abonado = parseInt(abonadoInput.value) || 0;
-    const resta = Math.max(total - abonado, 0);
-    restaInput.value = resta;
-  }
+      function resetearPrecio() {
+        precioProductoInput.value = 0;
+        precioProductoInput.readOnly = false;
+      }
 
-  // Inicializo
-  buscarPrecio();
+      async function calcularPrecio() {
+        const papelSeleccionado = document.querySelector('input[name="tipoPapelFolleto.id"]:checked');
+        const colorSeleccionado = document.querySelector('input[name="tipoColorFolleto.id"]:checked');
+        const fazSeleccionada = document.querySelector('input[name="tipoFazFolleto.id"]:checked');
+        const tamanioSeleccionado = document.querySelector('input[name="tamanioHojaFolleto.id"]:checked');
+        const tipoSeleccionado = document.querySelector('input[name="tipoFolleto.id"]:checked');
+        const cantidadSeleccionada = document.querySelector('input[name="cantidadFolleto.id"]:checked');
+        let tipoPapelFolletoId = 0;
+        let tipoColorFolletoId = 0;
+        let tipoFazFolletoId = 0;
+        let tamanioHojaFolletoId = 0;
+        let tipoFolletoId = 0;
+        let cantidadFolletoId = 0;
+        let precioProducto = 0;
+
+        if (!papelSeleccionado || !colorSeleccionado || !fazSeleccionada || !tamanioSeleccionado || !tipoSeleccionado || !cantidadSeleccionada) {
+            return;
+        } else {
+            tipoPapelFolletoId = Number(papelSeleccionado.value);
+            tipoColorFolletoId = Number(colorSeleccionado.value);
+            tipoFazFolletoId = Number(fazSeleccionada.value);
+            tamanioHojaFolletoId = Number(tamanioSeleccionado.value);
+            tipoFolletoId = Number(tipoSeleccionado.value);
+            cantidadFolletoId = Number(cantidadSeleccionada.value);
+        }
+
+        try {
+            const response = await fetch(`/api/plantilla-folleto/precio?tipoPapelFolletoId=${tipoPapelFolletoId}&tipoColorFolletoId=${tipoColorFolletoId}&tipoFazFolletoId=${tipoFazFolletoId}&tamanioHojaFolletoId=${tamanioHojaFolletoId}&tipoFolletoId=${tipoFolletoId}&cantidadFolletoId=${cantidadFolletoId}`);
+            if (response.status === 200) {
+                precioProducto = await response.json();
+                precioProductoInput.readOnly = true;
+            } else if (response.status === 204) {
+                precioProductoInput.readOnly = false;
+                precioProducto = parseInt(precioProductoInput.value, 10) || 0;
+            } else {
+                console.error('Error al obtener precio base');
+            }
+        } catch (error) {
+            console.error('Error en la conexión:', error);
+        }
+
+        const precioDisenioActual = adicionalCheckbox.checked ? precioDisenio : 0;
+
+        // Subtotal = producto + diseño
+        let subtotal = precioProducto + precioDisenioActual;
+
+        // Impuesto por factura
+        let impuestoFactura = 0;
+        if (necesitaFacturaCheckbox.checked) {
+          impuestoFactura = Math.ceil(subtotal * recargoFactura);
+        }
+
+        // Total inicial con impuesto
+        let total = subtotal + impuestoFactura;
+
+        // Recargo por crédito
+        const medioPagoSeleccionado = document.querySelector('input[name="medioPago.id"]:checked');
+        let recargoCreditoMonto = 0;
+        if (medioPagoSeleccionado && Number(medioPagoSeleccionado.value) === 2) {
+          recargoCreditoMonto = Math.ceil(total * recargoCredito);
+          total += recargoCreditoMonto;
+        }
+
+        // Cantidad abonada
+        const abonado = parseInt(abonadoInput.value, 10) || 0;
+
+        // Resta
+        const resta = total - abonado;
+
+        // Actualizamos inputs visibles
+        precioDisenioInput.value = precioDisenioActual;
+        precioImpuestosInput.value = impuestoFactura + recargoCreditoMonto;
+        totalInput.value = total;
+        restaInput.value = resta;
+        precioProductoInput.value = precioProducto;
+      }
+
+      // Escuchamos cambios en todos los inputs
+      precioProductoInput.addEventListener('input', calcularPrecio);
+      adicionalCheckbox.addEventListener('change', calcularPrecio);
+      necesitaFacturaCheckbox.addEventListener('change', calcularPrecio);
+      abonadoInput.addEventListener('input', calcularPrecio);
+      radiosMedioPago.forEach(radio => radio.addEventListener('change', calcularPrecio));
+      radiosPapel.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
+      radiosColor.forEach(radio => radio.addEventListener('change', () => {
+          resetearPrecio();
+          calcularPrecio();
+      }));
+      radiosFaz.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
+      radiosTamanio.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
+      radiosTipo.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
+      radiosCantidad.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
+
+      // Llamamos al inicio para inicializar los valores
+      calcularPrecio();
 });

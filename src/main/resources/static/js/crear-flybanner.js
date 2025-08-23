@@ -1,135 +1,143 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const toggleFechaMuestra = document.getElementById("toggleFechaMuestra");
-  const fechaMuestraRow = document.getElementById("fechaMuestraRow");
+document.addEventListener('DOMContentLoaded', () => {
+      // Valores predefinidos
+      const precioDisenio = 8000;
+      const recargoFactura = 0.21; // 21% sobre subtotal
+      const recargoCredito = 0.10; // 10% sobre subtotal+impuesto
 
-  const tipoFazRadios = document.querySelectorAll("input[name='tipoFazFlybanner.id']");
-  const tipoBaseRadios = document.querySelectorAll("input[name='tipoBaseFlybanner.id']");
-  const alturaRadios = document.querySelectorAll("input[name='alturaFlybanner.id']");
-  const banderaRadios = document.querySelectorAll("input[name='banderaFlybanner.id']");
-  const cantidadInput = document.getElementById("cantidad");
-
-  const totalInput = document.getElementById("total");
-  const abonadoInput = document.getElementById("abonado");
-  const restaInput = document.getElementById("resta");
-
-  const adicionalDisenioCheckbox = document.getElementById("flybanner-con-adicional-disenio");
-  const medioPagoRadios = document.querySelectorAll("input[name='medioPago.id']");
-
-  // Variables internas
-  let precioBase = 0; // base para cálculos (puede venir de plantilla o manual)
-  let adicionalAplicado = false;
-  let creditoAplicado = false;
-
-  // 1. Toggle fecha muestra
-  toggleFechaMuestra.addEventListener("change", () => {
-    fechaMuestraRow.classList.toggle("d-none", !toggleFechaMuestra.checked);
-  });
-
-  // 2. Inputs personalizados disparan búsqueda también
-  cantidadInput.addEventListener("input", buscarPrecio);
-  const inputs = [...tipoFazRadios, ...tipoBaseRadios, ...alturaRadios, ...banderaRadios];
-  inputs.forEach(input => input.addEventListener("change", buscarPrecio));
+      // Inputs y checkboxes
+      const adicionalCheckbox = document.getElementById('flybanner-con-adicional-disenio');
+      const necesitaFacturaCheckbox = document.getElementById('necesitaFactura');
+      const precioProductoInput = document.getElementById('precioProducto');
+      const precioDisenioInput = document.getElementById('precioDisenio');
+      const precioImpuestosInput = document.getElementById('precioImpuestos');
+      const totalInput = document.getElementById('total');
+      const abonadoInput = document.getElementById('abonado');
+      const restaInput = document.getElementById('resta');
+      const radiosMedioPago = document.querySelectorAll('input[name="medioPago.id"]');
+      const radiosFaz = document.querySelectorAll('input[name="tipoFazFlybanner.id"]');
+      const radiosAltura = document.querySelectorAll('input[name="alturaFlybanner.id"]');
+      const radiosBandera = document.querySelectorAll('input[name="banderaFlybanner.id"]');
+      const radiosBase = document.querySelectorAll('input[name="tipoBaseFlybanner.id"]');
+      const cantidadFlybannersInput = document.getElementById('cantidad');
 
 
-  // 3. Adicional diseño checkbox
-  adicionalDisenioCheckbox.addEventListener("change", () => {
-    adicionalAplicado = adicionalDisenioCheckbox.checked;
-    actualizarTotal();
-  });
+      // Inicializamos valores visibles
+      cantidadFlybannersInput.value = 1;
+      precioDisenioInput.value = 0;
+      precioImpuestosInput.value = 0;
+      totalInput.value = 0;
+      restaInput.value = 0;
+      abonadoInput.value = 0;
 
-  // 4. Medio de pago radios
-  medioPagoRadios.forEach(radio => {
-    radio.addEventListener("change", () => {
-      const labelText = radio.nextElementSibling.textContent.trim().toUpperCase();
-      creditoAplicado = (labelText === "CRÉDITO");
-      actualizarTotal();
-    });
-  });
-
-  // 5. Abonado input actualiza resta
-  abonadoInput.addEventListener("input", actualizarResta);
-
-  // 6. Total editable siempre, si el usuario escribe manualmente, se actualiza precioBase a ese valor
-  totalInput.addEventListener("input", () => {
-    const manualTotal = parseInt(totalInput.value) || 0;
-    // Actualizo precioBase para que los cálculos posteriores usen el valor manual
-    precioBase = manualTotal;
-    actualizarTotal(); // recalcula con adicional y crédito sobre nuevo precioBase
-    actualizarResta();
-  });
-
-  // --- Funciones ---
-
-  function getCheckedValue(radios) {
-    const checked = Array.from(radios).find(r => r.checked);
-    return checked ? checked.value : null;
-  }
-
-  function buscarPrecio() {
-    // Agarrar todos los IDs seleccionados o personalizados
-    const tipoFazId = getCheckedValue(tipoFazRadios);
-    const tipoBaseId = getCheckedValue(tipoBaseRadios);
-    const alturaId = getCheckedValue(alturaRadios);
-    const banderaId = getCheckedValue(banderaRadios);
-
-    if (!tipoFazId || !banderaId || !tipoBaseId || !alturaId) {
-      // Falta algo, limpio precio y dejo total editable
-      precioBase = 0;
-      totalInput.value = "";
-      totalInput.disabled = false;
-      adicionalDisenioCheckbox.checked = false;
-      creditoAplicado = false;
-      medioPagoRadios.forEach(r => (r.checked = false));
-      actualizarResta();
-      return;
-    }
-
-    // Armar query params
-    const params = new URLSearchParams({
-      tipoFazFlybannerId: tipoFazId,
-      alturaFlybannerId: alturaId,
-      banderaFlybannerId: banderaId,
-      tipoBaseFlybannerId: tipoBaseId
-    });
-
-    fetch(`/api/plantilla-flybanner/precio?${params.toString()}`)
-      .then(res => (res.ok ? res.text() : null))
-      .then(data => {
-        if (data !== null && data !== "") {
-          precioBase = parseInt(data);
-          adicionalDisenioCheckbox.checked = false;
-          creditoAplicado = false;
-          medioPagoRadios.forEach(r => (r.checked = false));
-          actualizarTotal();
-        } else {
-          precioBase = 0;
-          totalInput.value = "";
-          totalInput.disabled = false;
-          adicionalDisenioCheckbox.checked = false;
-          creditoAplicado = false;
-          medioPagoRadios.forEach(r => (r.checked = false));
-          actualizarResta();
-        }
+      // Toggles
+      const toggleFechaMuestra = document.getElementById('toggleFechaMuestra');
+      const fechaMuestraRow = document.getElementById('fechaMuestraRow');
+      toggleFechaMuestra.addEventListener('change', () => {
+          fechaMuestraRow.classList.toggle('d-none', !toggleFechaMuestra.checked);
       });
-  }
 
-  function actualizarTotal() {
-    let cantidad = parseInt(cantidadInput.value) || 1;
-    let total = precioBase * cantidad; // multiplicar precio unitario por cantidad
-    if (adicionalAplicado) total += 5000;
-    if (creditoAplicado) total = Math.round(total * 1.10);
-    totalInput.value = total;
-    totalInput.disabled = false; // Siempre editable
-    actualizarResta();
-  }
+      function resetearPrecio() {
+        precioProductoInput.value = 0;
+        precioProductoInput.readOnly = false;
+      }
 
-  function actualizarResta() {
-    const total = parseInt(totalInput.value) || 0;
-    const abonado = parseInt(abonadoInput.value) || 0;
-    const resta = Math.max(total - abonado, 0);
-    restaInput.value = resta;
-  }
+      async function calcularPrecio() {
+        const fazSeleccionada = document.querySelector('input[name="tipoFazFlybanner.id"]:checked');
+        const alturaSeleccionada = document.querySelector('input[name="alturaFlybanner.id"]:checked');
+        const banderaSeleccionada = document.querySelector('input[name="banderaFlybanner.id"]:checked');
+        const baseSeleccionada = document.querySelector('input[name="tipoBaseFlybanner.id"]:checked');
+        let tipoFazFlybannerId = 0;
+        let alturaFlybannerId = 0;
+        let banderaFlybannerId = 0;
+        let tipoBaseFlybannerId = 0;
+        let precioProducto = 0;
 
-  // Inicializo
-  buscarPrecio();
+        if (!fazSeleccionada || !alturaSeleccionada || !banderaSeleccionada || !baseSeleccionada) {
+            return;
+        } else {
+            tipoFazFlybannerId = Number(fazSeleccionada.value);
+            alturaFlybannerId = Number(alturaSeleccionada.value);
+            banderaFlybannerId = Number(banderaSeleccionada.value);
+            tipoBaseFlybannerId = Number(baseSeleccionada.value);
+        }
+
+        try {
+            const response = await fetch(`/api/plantilla-flybanner/precio?tipoFazFlybannerId=${tipoFazFlybannerId}&alturaFlybannerId=${alturaFlybannerId}&banderaFlybannerId=${banderaFlybannerId}&tipoBaseFlybannerId=${tipoBaseFlybannerId}`);
+            if (response.status === 200) {
+                let precioUnitario = await response.json();
+                const cantidad = parseInt(cantidadFlybannersInput.value, 10) || 0;
+                precioProducto = precioUnitario * cantidad;
+                precioProductoInput.readOnly = true;
+            } else if (response.status === 204) {
+                precioProductoInput.readOnly = false;
+                precioProducto = parseInt(precioProductoInput.value, 10) || 0;
+            } else {
+                console.error('Error al obtener precio base');
+            }
+        } catch (error) {
+            console.error('Error en la conexión:', error);
+        }
+
+        const precioDisenioActual = adicionalCheckbox.checked ? precioDisenio : 0;
+
+        // Subtotal = producto + diseño
+        let subtotal = precioProducto + precioDisenioActual;
+
+        // Impuesto por factura
+        let impuestoFactura = 0;
+        if (necesitaFacturaCheckbox.checked) {
+          impuestoFactura = Math.ceil(subtotal * recargoFactura);
+        }
+
+        // Total inicial con impuesto
+        let total = subtotal + impuestoFactura;
+
+        // Recargo por crédito
+        const medioPagoSeleccionado = document.querySelector('input[name="medioPago.id"]:checked');
+        let recargoCreditoMonto = 0;
+        if (medioPagoSeleccionado && Number(medioPagoSeleccionado.value) === 2) {
+          recargoCreditoMonto = Math.ceil(total * recargoCredito);
+          total += recargoCreditoMonto;
+        }
+
+        // Cantidad abonada
+        const abonado = parseInt(abonadoInput.value, 10) || 0;
+
+        // Resta
+        const resta = total - abonado;
+
+        // Actualizamos inputs visibles
+        precioDisenioInput.value = precioDisenioActual;
+        precioImpuestosInput.value = impuestoFactura + recargoCreditoMonto;
+        totalInput.value = total;
+        restaInput.value = resta;
+        precioProductoInput.value = precioProducto;
+      }
+
+      // Escuchamos cambios en todos los inputs
+      precioProductoInput.addEventListener('input', calcularPrecio);
+      cantidadFlybannersInput.addEventListener('input', calcularPrecio);
+      adicionalCheckbox.addEventListener('change', calcularPrecio);
+      necesitaFacturaCheckbox.addEventListener('change', calcularPrecio);
+      abonadoInput.addEventListener('input', calcularPrecio);
+      radiosMedioPago.forEach(radio => radio.addEventListener('change', calcularPrecio));
+      radiosFaz.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
+      radiosAltura.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
+      radiosBandera.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
+      radiosBase.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
+
+      // Llamamos al inicio para inicializar los valores
+      calcularPrecio();
 });
