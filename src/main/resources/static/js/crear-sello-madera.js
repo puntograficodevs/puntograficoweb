@@ -1,141 +1,135 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const toggleFechaMuestra = document.getElementById("toggleFechaMuestra");
-  const fechaMuestraRow = document.getElementById("fechaMuestraRow");
+document.addEventListener('DOMContentLoaded', () => {
+      // Valores predefinidos
+      const precioDisenio = 6000;
+      const precioPerilla = 2800;
+      const recargoFactura = 0.21; // 21% sobre subtotal
+      const recargoCredito = 0.10; // 10% sobre subtotal+impuesto
 
-  const cantidadInput = document.getElementById("cantidad");
-  const totalInput = document.getElementById("total");
-  const abonadoInput = document.getElementById("abonado");
-  const restaInput = document.getElementById("resta");
-  const adicionalDisenioCheckbox = document.getElementById("sello-madera-con-adicional-disenio");
-  const medioPagoRadios = document.querySelectorAll("input[name='medioPago.id']");
-  const tamanioRadios = document.querySelectorAll("input[name='tamanioSelloMadera.id']");
-  const tamanioPersonalizadoGroup = document.getElementById("tamanioPersonalizadoGroup");
-  const tamanioPersonalizadoInput = document.getElementById("tamanioPersonalizado");
+      // Inputs y checkboxes
+      const adicionalDisenioCheckbox = document.getElementById('sello-madera-con-adicional-disenio');
+      const adicionalPerillaCheckbox = document.getElementById('sello-madera-con-adicional-perilla');
+      const necesitaFacturaCheckbox = document.getElementById('necesitaFactura');
+      const precioProductoInput = document.getElementById('precioProducto');
+      const precioDisenioInput = document.getElementById('precioDisenio');
+      const precioPerillaInput = document.getElementById('precioPerilla');
+      const precioImpuestosInput = document.getElementById('precioImpuestos');
+      const totalInput = document.getElementById('total');
+      const abonadoInput = document.getElementById('abonado');
+      const restaInput = document.getElementById('resta');
+      const radiosMedioPago = document.querySelectorAll('input[name="medioPago.id"]');
+      const radiosTamanio = document.querySelectorAll('input[name="tamanioSelloMadera.id"]');
+      const cantidadSellosMaderaInput = document.getElementById('cantidad');
 
-  // Variables internas
-  let precioBase = 0; // base para cálculos (puede venir de plantilla o manual)
-  let adicionalAplicado = false;
-  let creditoAplicado = false;
 
-  // 1. Toggle fecha muestra
-  toggleFechaMuestra.addEventListener("change", () => {
-    fechaMuestraRow.classList.toggle("d-none", !toggleFechaMuestra.checked);
-  });
+      // Inicializamos valores visibles
+      cantidadSellosMaderaInput.value = 1;
+      precioDisenioInput.value = 0;
+      precioPerillaInput.value = 0;
+      precioImpuestosInput.value = 0;
+      totalInput.value = 0;
+      restaInput.value = 0;
+      abonadoInput.value = 0;
 
-  tamanioRadios.forEach(radio => {
-      radio.addEventListener("change", () => {
-        const texto = radio.nextElementSibling.textContent.trim().toUpperCase();
-        if (texto === "OTRO") {
-          tamanioPersonalizadoGroup.classList.remove("d-none");
-          tamanioPersonalizadoInput.required = true;
-        } else {
-          tamanioPersonalizadoGroup.classList.add("d-none");
-          tamanioPersonalizadoInput.required = false;
-          tamanioPersonalizadoInput.value = "";
-        }
-        buscarPrecio();
+      // Toggles
+      const toggleFechaMuestra = document.getElementById('toggleFechaMuestra');
+      const fechaMuestraRow = document.getElementById('fechaMuestraRow');
+      toggleFechaMuestra.addEventListener('change', () => {
+          fechaMuestraRow.classList.toggle('d-none', !toggleFechaMuestra.checked);
       });
-    });
 
-  // 4. Inputs personalizados disparan búsqueda también
-  cantidadInput.addEventListener("input", buscarPrecio);
-  [tamanioRadios].forEach(grupo => {
-      grupo.forEach(radio => radio.addEventListener("change", buscarPrecio));
-    });
-
-  // 5. Adicional diseño checkbox
-  adicionalDisenioCheckbox.addEventListener("change", () => {
-    adicionalAplicado = adicionalDisenioCheckbox.checked;
-    actualizarTotal();
-  });
-
-  // 6. Medio de pago radios
-  medioPagoRadios.forEach(radio => {
-    radio.addEventListener("change", () => {
-      const labelText = radio.nextElementSibling.textContent.trim().toUpperCase();
-      creditoAplicado = (labelText === "CRÉDITO");
-      actualizarTotal();
-    });
-  });
-
-  // 7. Abonado input actualiza resta
-  abonadoInput.addEventListener("input", actualizarResta);
-
-  // 8. Total editable siempre, si el usuario escribe manualmente, se actualiza precioBase a ese valor
-  totalInput.addEventListener("input", () => {
-    const manualTotal = parseInt(totalInput.value) || 0;
-    // Actualizo precioBase para que los cálculos posteriores usen el valor manual
-    precioBase = manualTotal;
-    actualizarTotal(); // recalcula con adicional y crédito sobre nuevo precioBase
-    actualizarResta();
-  });
-
-  // --- Funciones ---
-
-  function getCheckedValue(radios) {
-    const checked = Array.from(radios).find(r => r.checked);
-    return checked ? checked.value : null;
-  }
-
-  function buscarPrecio() {
-    const cantidad = parseInt(cantidadInput.value) || 0;
-    const tamanioId = getCheckedValue(tamanioRadios);
-
-    if (!tamanioId || !cantidad) {
-      precioBase = 0;
-      totalInput.value = "";
-      totalInput.disabled = false;
-      adicionalDisenioCheckbox.checked = false;
-      creditoAplicado = false;
-      medioPagoRadios.forEach(r => (r.checked = false));
-      actualizarResta();
-      return;
-    }
-
-    // Armar query params
-    const params = new URLSearchParams({
-      tamanioSelloMaderaId: tamanioId
-    });
-
-    fetch(`/api/plantilla-sello-madera/precio?${params.toString()}`)
-      .then(res => (res.ok ? res.text() : null))
-      .then(data => {
-        if (data !== null && data !== "") {
-          const precioUnitario = parseInt(data) || 0; // precio de la plantilla
-          const cantidadReal = parseInt(cantidadInput.value) || 0; // cantidad que puso el usuario
-          precioBase = precioUnitario * cantidadReal; // multiplicamos una sola vez
-          creditoAplicado = false;
-          adicionalDisenioCheckbox.checked = false;
-          medioPagoRadios.forEach(r => (r.checked = false));
-          actualizarTotal();
-        } else {
-          precioBase = 0;
-          totalInput.value = "";
-          totalInput.disabled = false;
-          adicionalDisenioCheckbox.checked = false;
-          creditoAplicado = false;
-          medioPagoRadios.forEach(r => (r.checked = false));
-          actualizarResta();
-        }
+      const tamanioInputRow = document.getElementById('tamanioPersonalizadoGroup');
+      radiosTamanio.forEach(radio => {
+        radio.addEventListener('change', () => {
+          const label = document.querySelector(`label[for="${radio.id}"]`);
+          const esOtro = label?.textContent.trim().toLowerCase() === 'otro';
+          tamanioInputRow.classList.toggle('d-none', !esOtro);
+        });
       });
-  }
 
-  function actualizarTotal() {
-    let total = precioBase;
-    if (adicionalAplicado) total += 5000;
-    if (creditoAplicado) total = Math.round(total * 1.10);
-    totalInput.value = total;
-    totalInput.disabled = false; // Siempre editable
-    actualizarResta();
-  }
+      function resetearPrecio() {
+        precioProductoInput.value = 0;
+        precioProductoInput.readOnly = false;
+      }
 
-  function actualizarResta() {
-    const total = parseInt(totalInput.value) || 0;
-    const abonado = parseInt(abonadoInput.value) || 0;
-    const resta = Math.max(total - abonado, 0);
-    restaInput.value = resta;
-  }
+      async function calcularPrecio() {
+        const tamanioSeleccionado = document.querySelector('input[name="tamanioSelloMadera.id"]:checked');
+        let tamanioSelloMaderaId = 0;
+        let precioProducto = 0;
 
-  // Inicializo
-  buscarPrecio();
+        if (!tamanioSeleccionado) {
+            return;
+        } else {
+            tamanioSelloMaderaId = Number(tamanioSeleccionado.value);
+        }
+
+        try {
+            const response = await fetch(`/api/plantilla-sello-madera/precio?tamanioSelloMaderaId=${tamanioSelloMaderaId}`);
+            if (response.status === 200) {
+                let precioUnitario = await response.json();
+                const cantidad = parseInt(cantidadSellosMaderaInput.value, 10) || 0;
+                precioProducto = precioUnitario * cantidad;
+                precioProductoInput.readOnly = true;
+            } else if (response.status === 204) {
+                precioProductoInput.readOnly = false;
+                precioProducto = parseInt(precioProductoInput.value, 10) || 0;
+            } else {
+                console.error('Error al obtener precio base');
+            }
+        } catch (error) {
+            console.error('Error en la conexión:', error);
+        }
+
+        const precioDisenioActual = adicionalDisenioCheckbox.checked ? precioDisenio : 0;
+        const precioPerillaActual = adicionalPerillaCheckbox.checked ? precioPerilla : 0;
+
+        // Subtotal = producto + diseño
+        let subtotal = precioProducto + precioDisenioActual + precioPerillaActual;
+
+        // Impuesto por factura
+        let impuestoFactura = 0;
+        if (necesitaFacturaCheckbox.checked) {
+          impuestoFactura = Math.ceil(subtotal * recargoFactura);
+        }
+
+        // Total inicial con impuesto
+        let total = Math.ceil(subtotal + impuestoFactura);
+
+        // Recargo por crédito
+        const medioPagoSeleccionado = document.querySelector('input[name="medioPago.id"]:checked');
+        let recargoCreditoMonto = 0;
+        if (medioPagoSeleccionado && Number(medioPagoSeleccionado.value) === 2) {
+          recargoCreditoMonto = Math.ceil(total * recargoCredito);
+          total += recargoCreditoMonto;
+        }
+
+        // Cantidad abonada
+        const abonado = parseInt(abonadoInput.value, 10) || 0;
+
+        // Resta
+        const resta = total - abonado;
+
+        // Actualizamos inputs visibles
+        precioDisenioInput.value = precioDisenioActual;
+        precioPerillaInput.value = precioPerillaActual;
+        precioImpuestosInput.value = impuestoFactura + recargoCreditoMonto;
+        totalInput.value = total;
+        restaInput.value = resta;
+        precioProductoInput.value = precioProducto;
+      }
+
+      // Escuchamos cambios en todos los inputs
+      precioProductoInput.addEventListener('input', calcularPrecio);
+      cantidadSellosMaderaInput.addEventListener('input', calcularPrecio);
+      adicionalDisenioCheckbox.addEventListener('change', calcularPrecio);
+      adicionalPerillaCheckbox.addEventListener('change', calcularPrecio);
+      necesitaFacturaCheckbox.addEventListener('change', calcularPrecio);
+      abonadoInput.addEventListener('input', calcularPrecio);
+      radiosMedioPago.forEach(radio => radio.addEventListener('change', calcularPrecio));
+      radiosTamanio.forEach(radio => radio.addEventListener('change', () => {
+        resetearPrecio();
+        calcularPrecio();
+      }));
+
+      // Llamamos al inicio para inicializar los valores
+      calcularPrecio();
 });

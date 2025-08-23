@@ -33,8 +33,6 @@ public class SelloAutomatico {
 
     private String enlaceArchivo;
 
-    private boolean conAdicionalDisenio;
-
     private String informacionAdicional;
 
     private int cantidad;

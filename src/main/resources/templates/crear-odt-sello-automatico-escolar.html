@@ -122,7 +122,7 @@
             <div class="row mb-3">
                 <div class="col-md-12" id="cantidadInput">
                     <label for="cantidad" class="form-label">Cantidad *</label>
-                    <input type="number" class="form-control" name="cantidad" id="cantidad" placeholder="Ej: 30">
+                    <input type="number" class="form-control" name="cantidad" id="cantidad" placeholder="0">
                 </div>
             </div>
         </div>
@@ -131,13 +131,7 @@
         <div class="contenedor-datos-odt">
             <h5 class="mt-4 datos-de-pago">Datos de Pago</h5>
             <div class="row mb-3">
-                <div class="col-md-6 d-flex align-items-end">
-                    <div class="form-check">
-                        <input class="form-check-input" name="conAdicionalDisenio" type="checkbox" id="sello-automatico-escolar-con-adicional-disenio">
-                        <label class="form-check-label" for="sello-automatico-escolar-con-adicional-disenio">Adicional diseño</label>
-                    </div>
-                </div>
-                <div class="col-md-6 d-flex align-items-end">
+                <div class="col-md-12 d-flex align-items-end">
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura">
                         <label class="form-check-label" for="necesitaFactura">¿Necesita factura?</label>
@@ -145,9 +139,19 @@
                 </div>
             </div>
             <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="total" class="form-label">Precio del producto *</label>
+                    <input type="number" class="form-control" id="precioProducto" placeholder="0" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="total" class="form-label">Precio impuestos *</label>
+                    <input type="number" class="form-control" id="precioImpuestos" placeholder="0" readonly>
+                </div>
+            </div>
+            <div class="row mb-3">
                 <div class="col-md-4">
                     <label for="total" class="form-label">Total *</label>
-                    <input type="number" class="form-control" name="total" id="total" placeholder="0" required>
+                    <input type="number" class="form-control" name="total" id="total" placeholder="0" readonly>
                 </div>
                 <div class="col-md-4">
                     <label for="abonado" class="form-label">Abonado *</label>

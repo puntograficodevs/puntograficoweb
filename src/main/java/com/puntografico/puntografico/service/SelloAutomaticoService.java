@@ -42,7 +42,6 @@ public class SelloAutomaticoService {
         selloAutomatico.setTextoLineaCuatro(request.getParameter("textoLineaCuatro"));
         selloAutomatico.setTipografiaLineaUno(tipografiaLineaUno);
         selloAutomatico.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
-        selloAutomatico.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
         selloAutomatico.setInformacionAdicional(request.getParameter("informacionAdicional"));
         selloAutomatico.setModeloSelloAutomatico(modeloSelloAutomatico);
         selloAutomatico.setCantidad(Integer.parseInt(cantidad));

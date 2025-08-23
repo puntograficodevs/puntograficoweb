@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const medioPagoSeleccionado = document.querySelector('input[name="medioPago.id"]:checked');
     let recargoCreditoMonto = 0;
     if (medioPagoSeleccionado && Number(medioPagoSeleccionado.value) === 2) {
-      recargoCreditoMonto = total * recargoCredito;
+      recargoCreditoMonto = Math.ceil(total * recargoCredito);
       total += recargoCreditoMonto;
     }
 

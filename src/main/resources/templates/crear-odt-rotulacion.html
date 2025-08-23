@@ -129,7 +129,7 @@
       <div class="row mb-3">
         <div class="col-md-12" id="cantidadInput">
           <label for="cantidad" class="form-label">Cantidad *</label>
-          <input type="number" class="form-control" name="cantidad" id="cantidad" placeholder="Ej: 30">
+          <input type="number" class="form-control" name="cantidad" id="cantidad" placeholder="0">
         </div>
       </div>
     </div>
@@ -149,6 +149,20 @@
             <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura">
             <label class="form-check-label" for="necesitaFactura">¿Necesita factura?</label>
           </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label for="total" class="form-label">Precio del producto *</label>
+          <input type="number" class="form-control" id="precioProducto" placeholder="0" required>
+        </div>
+        <div class="col-md-4">
+          <label for="total" class="form-label">Precio por diseño</label>
+          <input type="number" class="form-control" id="precioDisenio" placeholder="0">
+        </div>
+        <div class="col-md-4">
+          <label for="total" class="form-label">Precio impuestos *</label>
+          <input type="number" class="form-control" id="precioImpuestos" placeholder="0" readonly>
         </div>
       </div>
       <div class="row mb-3">
