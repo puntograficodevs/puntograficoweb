@@ -1,64 +1,80 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const toggleFechaMuestra = document.getElementById("toggleFechaMuestra");
-  const fechaMuestraRow = document.getElementById("fechaMuestraRow");
+document.addEventListener('DOMContentLoaded', function () {
+  // Valores predefinidos
+  const recargoFactura = 0.21; // 21% sobre subtotal
+  const recargoCredito = 0.10; // 10% sobre subtotal+impuesto
 
-  const totalInput = document.getElementById("total");
-  const abonadoInput = document.getElementById("abonado");
-  const restaInput = document.getElementById("resta");
-  const medioPagoRadios = document.querySelectorAll("input[name='medioPago.id']");
-  const adicionalDisenioCheckbox = document.getElementById("otro-con-adicional-disenio");
+  // Inputs y checkboxes
+  const adicionalCheckbox = document.getElementById('otro-con-adicional-disenio');
+  const necesitaFacturaCheckbox = document.getElementById('necesitaFactura');
+  const precioProductoInput = document.getElementById('precioProducto');
+  const precioDisenioInput = document.getElementById('precioDisenio');
+  const precioImpuestosInput = document.getElementById('precioImpuestos');
+  const totalInput = document.getElementById('total');
+  const abonadoInput = document.getElementById('abonado');
+  const restaInput = document.getElementById('resta');
+  const radiosMedioPago = document.querySelectorAll('input[name="medioPago.id"]');
 
-  // Variables internas
-  let precioBase = parseInt(totalInput.value) || 0; // base para cálculos (puede venir de plantilla o manual)
-  let adicionalAplicado = false;
-  let creditoAplicado = false;
+  // Inicializamos valores visibles
+  precioImpuestosInput.value = 0;
+  totalInput.value = 0;
+  restaInput.value = 0;
+  abonadoInput.value = 0;
 
-  // 1. Toggle fecha muestra
-  toggleFechaMuestra.addEventListener("change", () => {
-    fechaMuestraRow.classList.toggle("d-none", !toggleFechaMuestra.checked);
+  // Toggles
+  const toggleFechaMuestra = document.getElementById('toggleFechaMuestra');
+  const fechaMuestraRow = document.getElementById('fechaMuestraRow');
+  toggleFechaMuestra.addEventListener('change', () => {
+      fechaMuestraRow.classList.toggle('d-none', !toggleFechaMuestra.checked);
   });
 
-  // 5. Adicional diseño checkbox
-  adicionalDisenioCheckbox.addEventListener("change", () => {
-    adicionalAplicado = adicionalDisenioCheckbox.checked;
-    actualizarTotal();
-  });
+  function calcularPrecio() {
+    const precioProducto = parseInt(precioProductoInput.value, 10) || 0;
+    let precioDisenioActual = parseInt(precioDisenioInput.value, 10) || 0;
+    if (!adicionalCheckbox.checked) {
+      precioDisenioActual = 0;
+    }
 
-  // 6. Medio de pago radios
-  medioPagoRadios.forEach(radio => {
-    radio.addEventListener("change", () => {
-      const labelText = radio.nextElementSibling.textContent.trim().toUpperCase();
-      creditoAplicado = (labelText === "CRÉDITO");
-      actualizarTotal();
-    });
-  });
+    // Subtotal = producto + diseño
+    let subtotal = Math.ceil(precioProducto + precioDisenioActual);
 
-  // 7. Abonado input actualiza resta
-  abonadoInput.addEventListener("input", actualizarResta);
+    // Impuesto por factura
+    let impuestoFactura = 0;
+    if (necesitaFacturaCheckbox.checked) {
+      impuestoFactura = Math.ceil(subtotal * recargoFactura);
+    }
 
-  // 8. Total editable siempre, si el usuario escribe manualmente, se actualiza precioBase a ese valor
-  totalInput.addEventListener("input", () => {
-    const manualTotal = parseInt(totalInput.value) || 0;
-    precioBase = manualTotal;
-    actualizarTotal(); // recalcula con adicional y crédito sobre nuevo precioBase
-    actualizarResta();
-  });
+    // Total inicial con impuesto
+    let total = Math.ceil(subtotal + impuestoFactura);
 
-  function actualizarTotal() {
-    let total = precioBase;
-    if (adicionalAplicado) total += 5000;
-    if (creditoAplicado) total = Math.round(total * 1.10);
+    // Recargo por crédito
+    const medioPagoSeleccionado = document.querySelector('input[name="medioPago.id"]:checked');
+    let recargoCreditoMonto = 0;
+    if (medioPagoSeleccionado && Number(medioPagoSeleccionado.value) === 2) {
+      recargoCreditoMonto = total * recargoCredito;
+      total += recargoCreditoMonto;
+    }
+
+    // Cantidad abonada
+    const abonado = parseInt(abonadoInput.value, 10) || 0;
+
+    // Resta
+    const resta = total - abonado;
+
+    // Actualizamos inputs visibles
+    precioDisenioInput.value = precioDisenioActual;
+    precioImpuestosInput.value = impuestoFactura + recargoCreditoMonto;
     totalInput.value = total;
-    totalInput.disabled = false; // Siempre editable
-    actualizarResta();
-  }
-
-  function actualizarResta() {
-    const total = parseInt(totalInput.value) || 0;
-    const abonado = parseInt(abonadoInput.value) || 0;
-    const resta = Math.max(total - abonado, 0);
     restaInput.value = resta;
   }
 
-  actualizarResta();
+  // Escuchamos cambios en todos los inputs
+  precioProductoInput.addEventListener('input', calcularPrecio);
+  precioDisenioInput.addEventListener('input', calcularPrecio);
+  adicionalCheckbox.addEventListener('change', calcularPrecio);
+  necesitaFacturaCheckbox.addEventListener('change', calcularPrecio);
+  abonadoInput.addEventListener('input', calcularPrecio);
+  radiosMedioPago.forEach(radio => radio.addEventListener('change', calcularPrecio));
+
+  // Llamamos al inicio para inicializar los valores
+  calcularPrecio();
 });

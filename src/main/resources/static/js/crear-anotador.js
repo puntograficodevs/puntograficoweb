@@ -34,16 +34,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const precioDisenioActual = adicionalCheckbox.checked ? precioDisenio : 0;
 
     // Subtotal = producto + diseño
-    let subtotal = precioProducto + precioDisenioActual;
+    let subtotal = Math.ceil(precioProducto + precioDisenioActual);
 
     // Impuesto por factura
     let impuestoFactura = 0;
     if (necesitaFacturaCheckbox.checked) {
-      impuestoFactura = subtotal * recargoFactura;
+      impuestoFactura = Math.ceil(subtotal * recargoFactura);
     }
 
     // Total inicial con impuesto
-    let total = subtotal + impuestoFactura;
+    let total = Math.ceil(subtotal + impuestoFactura);
 
     // Recargo por crédito
     const medioPagoSeleccionado = document.querySelector('input[name="medioPago.id"]:checked');
