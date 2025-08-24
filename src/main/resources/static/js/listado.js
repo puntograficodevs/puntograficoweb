@@ -2312,6 +2312,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // CAMBIO DE PAGO
     document.querySelectorAll('.btn-marcar-abonado').forEach(boton => {
         boton.addEventListener('click', () => {
+            const confirmar = confirm("¡ADVERTENCIA! Estás confirmando que el pedido fue abonado en su totalidad. ¿Deseas continuar?");
+            if (!confirmar) {
+                return;
+            }
+
             document.getElementById('spinner-overlay').style.display = 'flex';
             const ordenId = boton.dataset.idorden;
             cambiarEstadoAAbonado(ordenId);
