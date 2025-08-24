@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const tamanioSeleccionado = document.querySelector('input[name="tamanioSelloMadera.id"]:checked');
         let tamanioSelloMaderaId = 0;
         let precioProducto = 0;
+        const cantidad = parseInt(cantidadSellosMaderaInput.value, 10) || 0;
 
         if (!tamanioSeleccionado) {
             return;
@@ -66,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(`/api/plantilla-sello-madera/precio?tamanioSelloMaderaId=${tamanioSelloMaderaId}`);
             if (response.status === 200) {
                 let precioUnitario = await response.json();
-                const cantidad = parseInt(cantidadSellosMaderaInput.value, 10) || 0;
                 precioProducto = precioUnitario * cantidad;
                 precioProductoInput.readOnly = true;
             } else if (response.status === 204) {
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const precioDisenioActual = adicionalDisenioCheckbox.checked ? precioDisenio : 0;
-        const precioPerillaActual = adicionalPerillaCheckbox.checked ? precioPerilla : 0;
+        const precioPerillaActual = adicionalPerillaCheckbox.checked ? precioPerilla * cantidad : 0;
 
         // Subtotal = producto + diseño
         let subtotal = precioProducto + precioDisenioActual + precioPerillaActual;
