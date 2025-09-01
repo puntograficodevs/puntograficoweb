@@ -5,7 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Inputs y checkboxes
       const necesitaFacturaCheckbox = document.getElementById('necesitaFactura');
+      const anilladoCheckbox = document.getElementById('impresion-es-anillado');
       const precioProductoInput = document.getElementById('precioProducto');
+      const precioAnilladoInput = document.getElementById('precioAnillado');
       const precioImpuestosInput = document.getElementById('precioImpuestos');
       const totalInput = document.getElementById('total');
       const abonadoInput = document.getElementById('abonado');
@@ -97,8 +99,10 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error en la conexión:', error);
         }
 
+        const precioAnillado = anilladoCheckbox.checked ? calcularPrecioAnillado() : 0;
+
         // Subtotal = producto + diseño
-        let subtotal = precioProducto;
+        let subtotal = precioProducto + precioAnillado;
 
         // Impuesto por factura
         let impuestoFactura = 0;
@@ -128,12 +132,65 @@ document.addEventListener('DOMContentLoaded', () => {
         totalInput.value = total;
         restaInput.value = resta;
         precioProductoInput.value = precioProducto;
+        precioAnilladoInput.value = precioAnillado;
+      }
+
+      function calcularPrecioAnillado() {
+           const fazSeleccionada = document.querySelector('input[name="tipoFazImpresion.id"]:checked');
+           let cantidadHojas = parseInt(cantidadImpresionesInput.value) || 0;
+
+           if (fazSeleccionada && Number(fazSeleccionada.value) === 2) {
+                cantidadHojas = cantidadHojas / 2;
+           }
+
+           const cantidadAnillados = Math.ceil(cantidadHojas / 400);
+
+
+           if (cantidadAnillados === 1) {
+                return calcularPrecioSegunCantidadHojas(cantidadHojas);
+           } else {
+                const cantidadHojasPorParte = cantidadHojas / cantidadAnillados;
+                const precioParcial = calcularPrecioSegunCantidadHojas(cantidadHojasPorParte);
+                return precioParcial * cantidadAnillados;
+           }
+      }
+
+      function calcularPrecioSegunCantidadHojas(cantidadHojas) {
+            const precioMenos20 = 890;
+            const precioEntre20Y40 = 980;
+            const precioEntre40Y60 = 1100;
+            const precioEntre60Y100 = 1300;
+            const precioEntre100Y150 = 1500;
+            const precioEntre150Y200 = 1950;
+            const precioEntre200Y300 = 2500;
+            const precioEntre300Y400 = 2800;
+
+            if (cantidadHojas <= 20) {
+                return precioMenos20;
+            } else if (cantidadHojas <= 40) {
+                return precioEntre20Y40;
+            } else if (cantidadHojas <= 60) {
+                return precioEntre40Y60;
+            } else if (cantidadHojas <= 100) {
+                return precioEntre60Y100;
+            } else if (cantidadHojas <= 150) {
+                return precioEntre100Y150;
+            } else if (cantidadHojas <= 200) {
+                return precioEntre150Y200;
+            } else if (cantidadHojas <= 300) {
+                return precioEntre200Y300;
+            } else if (cantidadHojas <= 400) {
+                return precioEntre300Y400;
+            }
+
+            return precioEntre300Y400;
       }
 
       // Escuchamos cambios en todos los inputs
       precioProductoInput.addEventListener('input', calcularPrecio);
       cantidadImpresionesInput.addEventListener('input', calcularPrecio);
       necesitaFacturaCheckbox.addEventListener('change', calcularPrecio);
+      anilladoCheckbox.addEventListener('change', calcularPrecio);
       abonadoInput.addEventListener('input', calcularPrecio);
       radiosMedioPago.forEach(radio => radio.addEventListener('change', calcularPrecio));
       radiosColor.forEach(radio => radio.addEventListener('change', () => {
