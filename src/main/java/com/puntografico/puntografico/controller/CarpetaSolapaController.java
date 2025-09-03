@@ -1,6 +1,7 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.CarpetaSolapaDTO;
 import com.puntografico.puntografico.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -71,9 +72,23 @@ public class CarpetaSolapaController {
 
     @PostMapping("/api/creacion-carpeta-solapa")
     public String creacionCarpetaSolapa(HttpServletRequest request) {
+        CarpetaSolapaDTO carpetaSolapaDTO = armarDTO(request);
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        CarpetaSolapa carpetaSolapa = carpetaSolapaService.crear(request);
+        CarpetaSolapa carpetaSolapa = carpetaSolapaService.crear(carpetaSolapaDTO);
         OrdenCarpetaSolapa ordenCarpetaSolapa = ordenCarpetaSolapaService.crear(ordenTrabajo, carpetaSolapa);
         return "redirect:/mostrar-odt-carpeta-solapa/" + ordenCarpetaSolapa.getId();
+    }
+
+    private CarpetaSolapaDTO armarDTO(HttpServletRequest request) {
+        CarpetaSolapaDTO carpetaSolapaDTO = new CarpetaSolapaDTO();
+        carpetaSolapaDTO.setTipoFazCarpetaSolapaId(Long.parseLong(request.getParameter("tipoFazCarpetaSolapa.id")));
+        carpetaSolapaDTO.setTipoLaminadoCarpetaSolapaId(Long.parseLong(request.getParameter("tipoLaminadoCarpetaSolapa.id")));
+        carpetaSolapaDTO.setTipoPapel(request.getParameter("tipoPapel"));
+        carpetaSolapaDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        carpetaSolapaDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        carpetaSolapaDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        carpetaSolapaDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+
+        return carpetaSolapaDTO;
     }
 }

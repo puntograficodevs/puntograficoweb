@@ -30,4 +30,12 @@ public class OpcionesCarpetaSolapaService {
     public List<TipoFazCarpetaSolapa> buscarTodosTipoFazCarpetaSolapa() {
         return tipoFazCarpetaSolapaRepository.findAll();
     }
+
+    public TipoLaminadoCarpetaSolapa buscarTipoLaminadoCarpetaSolapaPorId(Long id) {
+        return tipoLaminadoCarpetaSolapaRepository.findById(id).get();
+    }
+
+    public TipoFazCarpetaSolapa buscarTipoFazCarpetaSolapaPorId(Long id) {
+        return tipoFazCarpetaSolapaRepository.findById(id).get();
+    }
 }
