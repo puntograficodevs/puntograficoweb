@@ -1,6 +1,7 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.AnotadorDTO;
 import com.puntografico.puntografico.service.AnotadorService;
 import com.puntografico.puntografico.service.MedioPagoService;
 import com.puntografico.puntografico.service.OrdenAnotadorService;
@@ -68,9 +69,24 @@ public class AnotadorController {
 
     @PostMapping("/api/creacion-anotador")
     public String creacionAnotador(HttpServletRequest request) {
+        AnotadorDTO anotadorDTO = armarDTO(request);
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        Anotador anotador = anotadorService.crear(request);
+        Anotador anotador = anotadorService.crear(anotadorDTO);
         OrdenAnotador ordenAnotador = ordenAnotadorService.crear(ordenTrabajo, anotador);
         return "redirect:/mostrar-odt-anotador/" + ordenAnotador.getId();
+    }
+
+    private AnotadorDTO armarDTO(HttpServletRequest request) {
+        AnotadorDTO anotadorDTO = new AnotadorDTO();
+
+        anotadorDTO.setMedida(request.getParameter("medida"));
+        anotadorDTO.setCantidadHojas(Integer.parseInt(request.getParameter("cantidadHojas")));
+        anotadorDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        anotadorDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        anotadorDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        anotadorDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        anotadorDTO.setTipoTapa(request.getParameter("tipoTapa"));
+
+        return anotadorDTO;
     }
 }
