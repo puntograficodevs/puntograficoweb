@@ -88,7 +88,7 @@ public class OrdenTrabajoService {
         return ordenTrabajoRepository.save(ordenTrabajo);
     }
 
-    public List<OrdenTrabajo> buscarEstadoSinHacer(Empleado empleado, String tipoProducto){
+    public List<OrdenTrabajo> buscarEstadoSinHacer(Empleado empleado, String tipoProducto) {
         Empleado desarrollador = empleadoService.traerEmpleadoPorUsername("benpm");
         Empleado community = empleadoService.traerEmpleadoPorUsername("maripm");
 
@@ -110,7 +110,7 @@ public class OrdenTrabajoService {
                 .toList();
     }
 
-    public List<OrdenTrabajo> buscarEstadoCorregir(Empleado empleado, String tipoProducto){
+    public List<OrdenTrabajo> buscarEstadoCorregir(Empleado empleado, String tipoProducto) {
         Empleado desarrollador = empleadoService.traerEmpleadoPorUsername("benpm");
         Empleado community = empleadoService.traerEmpleadoPorUsername("maripm");
 
@@ -132,7 +132,7 @@ public class OrdenTrabajoService {
                 .toList();
     }
 
-    public List<OrdenTrabajo> buscarEstadoEnProceso(Empleado empleado, String tipoProducto){
+    public List<OrdenTrabajo> buscarEstadoEnProceso(Empleado empleado, String tipoProducto) {
         Empleado desarrollador = empleadoService.traerEmpleadoPorUsername("benpm");
         Empleado community = empleadoService.traerEmpleadoPorUsername("maripm");
 

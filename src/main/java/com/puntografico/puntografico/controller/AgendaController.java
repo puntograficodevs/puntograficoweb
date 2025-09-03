@@ -1,6 +1,7 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.AgendaDTO;
 import com.puntografico.puntografico.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -68,9 +69,25 @@ public class AgendaController {
 
     @PostMapping("/api/creacion-agenda")
     public String creacionAgenda(HttpServletRequest request) {
+        AgendaDTO agendaDTO = armarDTO(request);
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        Agenda agenda = agendaService.crear(request);
+        Agenda agenda = agendaService.crear(agendaDTO);
         OrdenAgenda ordenAgenda = ordenAgendaService.crear(ordenTrabajo, agenda);
         return "redirect:/mostrar-odt-agenda/" + ordenAgenda.getId();
+    }
+
+    private AgendaDTO armarDTO(HttpServletRequest request) {
+        AgendaDTO agendaDTO = new AgendaDTO();
+        agendaDTO.setCantidadHojas(Integer.parseInt(request.getParameter("cantidadHojas")));
+        agendaDTO.setTipoTapaAgendaId(Long.parseLong(request.getParameter("tipoTapaAgenda.id")));
+        agendaDTO.setTipoColorAgendaId(Long.parseLong(request.getParameter("tipoColorAgenda.id")));
+        agendaDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        agendaDTO.setMedida(request.getParameter("medida"));
+        agendaDTO.setTipoTapaPersonalizada(request.getParameter("tipoTapaPersonalizada"));
+        agendaDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        agendaDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        agendaDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+
+        return agendaDTO;
     }
 }
