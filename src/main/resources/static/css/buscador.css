@@ -1,12 +1,16 @@
-h1 {
-    font-family: 'Nanum';
+.titulo-tabla-ordenes {
+    font-family: 'Lemon Milk';
 }
 
 .contenedor-pagina-en-proceso {
-    width: 65%;
+    width: 95%;
     height: 95%;
 }
 
 .pagina-en-proceso {
     width: 100%;
+}
+
+.capitalize:first-letter {
+    text-transform: uppercase;
 }

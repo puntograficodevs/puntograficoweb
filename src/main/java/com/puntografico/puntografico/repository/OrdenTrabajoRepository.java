@@ -11,4 +11,5 @@ public interface OrdenTrabajoRepository extends JpaRepository<OrdenTrabajo, Long
 
     List<OrdenTrabajo> findByEstadoOrdenId(Long id);
     List<OrdenTrabajo> findByEstadoOrdenIdAndTipoProducto(Long id, String tipoProducto);
+    List<OrdenTrabajo> findByNombreClienteContainingIgnoreCaseOrTelefonoClienteContaining(String nombre, String telefono);
 }

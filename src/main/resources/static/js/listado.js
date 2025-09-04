@@ -2224,6 +2224,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    document.querySelectorAll('.btn-lupa').forEach(boton => {
+        boton.addEventListener('click', () => {
+            document.getElementById('spinner-overlay').style.display = 'flex';
+            const ordenId = boton.dataset.idorden;
+        });
+    });
+
     function cambiarEstadoACorregir(ordenId) {
         fetch(`/api/orden/cambiar-a-corregir/${ordenId}`, {
             method: 'POST',

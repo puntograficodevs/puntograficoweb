@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @Transactional
@@ -228,4 +227,21 @@ public class OrdenTrabajoService {
 
         ordenTrabajoRepository.save(ordenTrabajo);
     }
+
+    public List<OrdenTrabajo> buscarTodasConIDONombreOTelefono(String datoOrden) {
+        Set<OrdenTrabajo> ordenesEncontradas = new HashSet<>();
+
+        try {
+            Long posibleId = Long.parseLong(datoOrden);
+            ordenTrabajoRepository.findById(posibleId).ifPresent(ordenesEncontradas::add);
+        } catch (NumberFormatException e) {
+        }
+
+        ordenesEncontradas.addAll(
+            ordenTrabajoRepository.findByNombreClienteContainingIgnoreCaseOrTelefonoClienteContaining(datoOrden, datoOrden)
+        );
+
+        return new ArrayList<>(ordenesEncontradas);
+    }
+
 }

@@ -2,14 +2,12 @@ package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.Empleado;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
-import com.puntografico.puntografico.domain.Rol;
 import com.puntografico.puntografico.service.EmpleadoService;
 import com.puntografico.puntografico.service.OrdenTrabajoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
@@ -23,28 +21,6 @@ public class ListadoController {
 
     @Autowired
     private OrdenTrabajoService ordenTrabajoService;
-
-    /*@GetMapping("/listado")
-    public String listado(HttpSession session, Model model) {
-        Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
-
-        if (empleado == null) {
-            return "redirect:/"; // Si no hay sesión, lo manda al login
-        }
-
-        List<OrdenTrabajo> ordenesSinHacer = ordenTrabajoService.buscarEstadoSinHacer(empleado);
-        List<OrdenTrabajo> ordenesCorregir = ordenTrabajoService.buscarEstadoCorregir(empleado);
-        List<OrdenTrabajo> ordenesEnProceso = ordenTrabajoService.buscarEstadoEnProceso(empleado);
-        List<OrdenTrabajo> ordenesListaParaRetirar = ordenTrabajoService.buscarEstadoListaParaRetirar(empleado);
-
-        model.addAttribute("empleado", empleado);
-        model.addAttribute("ordenesSinHacer", ordenesSinHacer);
-        model.addAttribute("ordenesCorregir", ordenesCorregir);
-        model.addAttribute("ordenesEnProceso", ordenesEnProceso);
-        model.addAttribute("ordenesListaParaRetirar", ordenesListaParaRetirar);
-
-        return "listado";
-    }*/
 
     @GetMapping("/listado")
     public String listado(HttpSession session, Model model, @RequestParam(required = false) String tipoProducto) {
