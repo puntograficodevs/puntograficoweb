@@ -16,11 +16,11 @@ public class OrdenAgendaService {
     @Autowired
     private OrdenAgendaRepository ordenAgendaRepository;
 
-    public OrdenAgenda crear(OrdenTrabajo ordenTrabajo, Agenda agenda) {
+    public OrdenAgenda guardar(OrdenTrabajo ordenTrabajo, Agenda agenda, Long idOrdenAgenda) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(agenda, "Debe venir una agenda para enlazar.");
 
-        OrdenAgenda ordenAgenda = new OrdenAgenda();
+        OrdenAgenda ordenAgenda = (idOrdenAgenda != null) ? ordenAgendaRepository.findById(idOrdenAgenda).get() : new OrdenAgenda();
         ordenAgenda.setCantidad(agenda.getCantidad());
         ordenAgenda.setOrdenTrabajo(ordenTrabajo);
         ordenAgenda.setAgenda(agenda);

@@ -74,10 +74,12 @@ public class TurneroController {
 
     @PostMapping("/api/creacion-turnero")
     public String creacionProducto(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         Turnero turnero = turneroService.crear(request);
         OrdenTurnero ordenTurnero = ordenTurneroService.crear(ordenTrabajo, turnero);
 
-        return "redirect:/mostrar-odt-turnero/" + ordenTurnero.getId();
+        return "redirect:/mostrar-odt-turnero/" + ordenTurnero.getId();*/
+
+        return null;
     }
 }

@@ -72,10 +72,12 @@ public class RotulacionController {
 
     @PostMapping("/api/creacion-rotulacion")
     public String creacionProducto(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         Rotulacion rotulacion = rotulacionService.crear(request);
         OrdenRotulacion ordenRotulacion = ordenRotulacionService.crear(ordenTrabajo, rotulacion);
 
-        return "redirect:/mostrar-odt-rotulacion/" + ordenRotulacion.getId();
+        return "redirect:/mostrar-odt-rotulacion/" + ordenRotulacion.getId();*/
+
+        return null;
     }
 }

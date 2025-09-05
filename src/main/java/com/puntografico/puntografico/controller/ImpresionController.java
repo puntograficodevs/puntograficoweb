@@ -80,10 +80,11 @@ public class ImpresionController {
 
     @PostMapping("/api/creacion-impresion")
     public String creacionImpresion(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         Impresion impresion = impresionService.crear(request);
         OrdenImpresion ordenImpresion = ordenImpresionService.crear(ordenTrabajo, impresion);
 
-        return "redirect:/mostrar-odt-impresion/" + ordenImpresion.getId();
+        return "redirect:/mostrar-odt-impresion/" + ordenImpresion.getId();*/
+        return null;
     }
 }

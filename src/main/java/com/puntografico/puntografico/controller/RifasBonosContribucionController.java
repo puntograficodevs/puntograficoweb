@@ -74,11 +74,12 @@ public class RifasBonosContribucionController {
 
     @PostMapping("/api/creacion-rifas-bonos-contribucion")
     public String creacionProducto(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         RifasBonosContribucion rifasBonosContribucion = rifasBonosContribucionService.crear(request);
         OrdenRifasBonosContribucion ordenRifasBonosContribucion = ordenRifasBonosContribucionService.crear(ordenTrabajo, rifasBonosContribucion);
 
-        return "redirect:/mostrar-odt-rifas-bonos-contribucion/" + ordenRifasBonosContribucion.getId();
+        return "redirect:/mostrar-odt-rifas-bonos-contribucion/" + ordenRifasBonosContribucion.getId();*/
+        return null;
     }
 
 }

@@ -78,10 +78,12 @@ public class ViniloController {
 
     @PostMapping("/api/creacion-vinilo")
     public String creacionProducto(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         Vinilo vinilo = viniloService.crear(request);
         OrdenVinilo ordenVinilo = ordenViniloService.crear(ordenTrabajo, vinilo);
 
-        return "redirect:/mostrar-odt-vinilo/" + ordenVinilo.getId();
+        return "redirect:/mostrar-odt-vinilo/" + ordenVinilo.getId();*/
+
+        return null;
     }
 }

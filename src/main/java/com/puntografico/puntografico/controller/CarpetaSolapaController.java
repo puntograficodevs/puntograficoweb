@@ -72,11 +72,13 @@ public class CarpetaSolapaController {
 
     @PostMapping("/api/creacion-carpeta-solapa")
     public String creacionCarpetaSolapa(HttpServletRequest request) {
-        CarpetaSolapaDTO carpetaSolapaDTO = armarDTO(request);
+        /*CarpetaSolapaDTO carpetaSolapaDTO = armarDTO(request);
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         CarpetaSolapa carpetaSolapa = carpetaSolapaService.crear(carpetaSolapaDTO);
         OrdenCarpetaSolapa ordenCarpetaSolapa = ordenCarpetaSolapaService.crear(ordenTrabajo, carpetaSolapa);
-        return "redirect:/mostrar-odt-carpeta-solapa/" + ordenCarpetaSolapa.getId();
+        return "redirect:/mostrar-odt-carpeta-solapa/" + ordenCarpetaSolapa.getId();*/
+
+        return null;
     }
 
     private CarpetaSolapaDTO armarDTO(HttpServletRequest request) {

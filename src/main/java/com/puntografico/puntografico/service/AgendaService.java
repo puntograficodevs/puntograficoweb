@@ -22,24 +22,29 @@ public class AgendaService {
     @Autowired
     private OpcionesAgendaService opcionesAgendaService;
 
-    public Agenda crear(AgendaDTO agendaDTO) {
+    public Agenda guardar(AgendaDTO agendaDTO, Long idAgenda) {
         validarAgendaDTO(agendaDTO);
 
         TipoColorAgenda tipoColorAgenda = opcionesAgendaService.buscarTipoColorAgendaPorId(agendaDTO.getTipoColorAgendaId());
         TipoTapaAgenda tipoTapaAgenda = opcionesAgendaService.buscarTipoTapaAgendaPorId(agendaDTO.getTipoTapaAgendaId());
 
-        Agenda agenda = new Agenda();
+        Agenda agenda = (idAgenda != null) ? agendaRepository.findById(idAgenda).get() : new Agenda();
         agenda.setCantidadHojas(agendaDTO.getCantidadHojas());
         agenda.setMedida(agendaDTO.getMedida());
         agenda.setTipoTapaAgenda(tipoTapaAgenda);
-        agenda.setTipoTapaPersonalizada(agenda.getTipoTapaPersonalizada());
+        agenda.setTipoTapaPersonalizada(agendaDTO.getTipoTapaPersonalizada());
         agenda.setTipoColorAgenda(tipoColorAgenda);
-        agenda.setConAdicionalDisenio(agendaDTO.getConAdicionalDisenio());
         agenda.setEnlaceArchivo(agendaDTO.getEnlaceArchivo());
         agenda.setInformacionAdicional(agendaDTO.getInformacionAdicional());
         agenda.setCantidad(agendaDTO.getCantidad());
+        agenda.setConAdicionalDisenio(agendaDTO.getConAdicionalDisenio());
 
         return agendaRepository.save(agenda);
+    }
+
+    public Agenda buscarPorId(Long id) {
+        Assert.notNull(agendaRepository.findById(id).get(), "La agenda debe existir en base de datos.");
+        return agendaRepository.findById(id).get();
     }
 
     private void validarAgendaDTO(AgendaDTO agendaDTO) {

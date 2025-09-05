@@ -80,10 +80,11 @@ public class FolletoController {
 
     @PostMapping("/api/creacion-folleto")
     public String creacionProducto(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         Folleto folleto = folletoService.crear(request);
         OrdenFolleto ordenFolleto = ordenFolletoService.crear(ordenTrabajo, folleto);
 
-        return "redirect:/mostrar-odt-folleto/" + ordenFolleto.getId();
+        return "redirect:/mostrar-odt-folleto/" + ordenFolleto.getId();*/
+        return null;
     }
 }

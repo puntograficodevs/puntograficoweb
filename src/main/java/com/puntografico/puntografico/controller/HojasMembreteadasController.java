@@ -74,10 +74,11 @@ public class HojasMembreteadasController {
 
     @PostMapping("/api/creacion-hojas-membreteadas")
     public String creacionProducto(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         HojasMembreteadas hojasMembreteadas = hojasMembreteadasService.crear(request);
         OrdenHojasMembreteadas ordenHojasMembreteadas = ordenHojasMembreteadasService.crear(ordenTrabajo, hojasMembreteadas);
 
-        return "redirect:/mostrar-odt-hojas-membreteadas/" + ordenHojasMembreteadas.getId();
+        return "redirect:/mostrar-odt-hojas-membreteadas/" + ordenHojasMembreteadas.getId();*/
+        return null;
     }
 }

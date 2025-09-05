@@ -4,6 +4,7 @@ import com.puntografico.puntografico.domain.Empleado;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.service.EmpleadoService;
 import com.puntografico.puntografico.service.OrdenTrabajoService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,13 +15,10 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
+@AllArgsConstructor
 public class ListadoController {
 
-    @Autowired
-    private EmpleadoService empleadoService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
+    private final OrdenTrabajoService ordenTrabajoService;
 
     @GetMapping("/listado")
     public String listado(HttpSession session, Model model, @RequestParam(required = false) String tipoProducto) {

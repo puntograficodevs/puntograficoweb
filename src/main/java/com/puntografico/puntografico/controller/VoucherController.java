@@ -76,10 +76,11 @@ public class VoucherController {
 
     @PostMapping("/api/creacion-voucher")
     public String creacionProducto(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         Voucher voucher = voucherService.crear(request);
         OrdenVoucher ordenVoucher = ordenVoucherService.crear(ordenTrabajo, voucher);
 
-        return "redirect:/mostrar-odt-voucher/" + ordenVoucher.getId();
+        return "redirect:/mostrar-odt-voucher/" + ordenVoucher.getId();*/
+        return null;
     }
 }

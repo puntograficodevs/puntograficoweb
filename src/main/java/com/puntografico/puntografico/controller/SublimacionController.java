@@ -72,9 +72,11 @@ public class SublimacionController {
 
     @PostMapping("/api/creacion-sublimacion")
     public String creacionSublimacion(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         Sublimacion sublimacion = sublimacionService.crear(request);
         OrdenSublimacion ordenSublimacion = ordenSublimacionService.crear(ordenTrabajo, sublimacion);
-        return "redirect:/mostrar-odt-sublimacion/" + ordenSublimacion.getId();
+        return "redirect:/mostrar-odt-sublimacion/" + ordenSublimacion.getId();*/
+
+        return null;
     }
 }

@@ -12,7 +12,7 @@
 <div th:replace="fragments/navbar :: navbar"></div>
 
 <div class="container mt-5">
-    <h2>Crear orden - Agenda</h2>
+    <h2 th:text="${ordenTrabajo.id} != null ? 'Editar orden - Agenda' : 'Crear orden - Agenda'"></h2>
 
     <form method="post" action="/api/creacion-agenda">
         <!-- DATOS DEL CLIENTE -->
@@ -21,15 +21,15 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="nombreCliente" class="form-label">Nombre del cliente *</label>
-                    <input type="text" class="form-control" name="nombreCliente" id="nombreCliente" placeholder="Ej: Juan Pérez" required>
+                    <input type="text" class="form-control" name="nombreCliente" id="nombreCliente" th:value="${ordenTrabajo.nombreCliente}" placeholder="Ej: Juan Pérez" required>
                 </div>
                 <div class="col-md-4">
                     <label for="telefonoCliente" class="form-label">Teléfono del cliente *</label>
-                    <input type="text" class="form-control" name="telefonoCliente" id="telefonoCliente" placeholder="Ej: 1123952892" required>
+                    <input type="text" class="form-control" name="telefonoCliente" id="telefonoCliente" th:value="${ordenTrabajo.telefonoCliente}" placeholder="Ej: 1123952892" required>
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" name="esCuentaCorriente" id="esCuentaCorriente">
+                        <input type="checkbox" class="form-check-input" name="esCuentaCorriente" id="esCuentaCorriente" th:checked="${ordenTrabajo.esCuentaCorriente}">
                         <label class="form-check-label" for="esCuentaCorriente">¿CC?</label>
                     </div>
                 </div>
@@ -38,42 +38,44 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="fechaEntrega" class="form-label">Fecha de entrega *</label>
-                    <input type="date" class="form-control" name="fechaEntrega" id="fechaEntrega" required>
+                    <input type="date" class="form-control" name="fechaEntrega" id="fechaEntrega" th:value="${ordenTrabajo.fechaEntrega}" required>
                 </div>
                 <div class="col-md-4">
                     <label for="horaEntrega" class="form-label">Hora de entrega</label>
-                    <input type="text" class="form-control" name="horaEntrega" id="horaEntrega" placeholder="Ej: 11:30 pm">
+                    <input type="text" class="form-control" name="horaEntrega" id="horaEntrega" th:value="${ordenTrabajo.horaEntrega}" placeholder="Ej: 11:30 pm">
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="toggleFechaMuestra">
+                        <input type="checkbox" class="form-check-input" id="toggleFechaMuestra" th:checked="${ordenTrabajo.fechaMuestra != null}">
                         <label class="form-check-label" for="toggleFechaMuestra">¿Muestra?</label>
                     </div>
                 </div>
             </div>
 
-            <div class="row mb-3 d-none" id="fechaMuestraRow">
+            <div class="row mb-3" th:classappend="${ordenTrabajo.fechaMuestra != null} ? '' : 'd-none'" id="fechaMuestraRow">
                 <div class="col-md-6">
                     <label for="fechaMuestra" class="form-label">Fecha de muestra</label>
-                    <input type="date" class="form-control" name="fechaMuestra" id="fechaMuestra">
+                    <input type="date" class="form-control" name="fechaMuestra" id="fechaMuestra" th:value="${ordenTrabajo.fechaMuestra}">
                 </div>
             </div>
         </div>
 
         <!-- DATOS DE LA AGENDA -->
         <input type="hidden" name="tipoProducto" value="agenda">
+        <input type="hidden" name="idOrden" th:value="${ordenTrabajo != null ? ordenTrabajo.id : ''}">
+
         <div class="contenedor-datos-odt">
             <h5 class="mt-4 datos-del-producto">Datos del Producto</h5>
             <div class="row mb-3">
                 <div class="col-md-12">
                     <label for="agenda-medida" class="form-label">Medida *</label>
-                    <input type="text" class="form-control" id="agenda-medida" name="medida" required placeholder="Ej: 30x30 cm">
+                    <input type="text" class="form-control" id="agenda-medida" name="medida" th:value="${agenda.medida}" required placeholder="Ej: 30x30 cm">
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-12">
                     <label for="agenda-cantidad-hojas" class="form-label">Cantidad de Hojas *</label>
-                    <input type="number" name="cantidadHojas" class="form-control" id="agenda-cantidad-hojas" required min="1" placeholder="0">
+                    <input type="number" name="cantidadHojas" class="form-control" id="agenda-cantidad-hojas" th:value="${agenda.cantidadHojas}" required min="1" placeholder="0">
                 </div>
             </div>
             <div class="row mb-3">
@@ -83,17 +85,18 @@
                         <div th:each="tapa : ${listaTipoTapaAgenda}" class="form-check">
                             <input class="form-check-input" type="radio" name="tipoTapaAgenda.id"
                                    th:id="'tapa-' + ${tapa.id}" th:value="${tapa.id}" required
-                                   th:data-es-otra="${tapa.tipo.equalsIgnoreCase('Otra')}">
+                                   th:data-es-otra="${tapa.tipo.equalsIgnoreCase('Otra')}"
+                                   th:checked="${agenda.tipoTapaAgenda != null} ? ${tapa.id} == ${agenda.tipoTapaAgenda.id} : false">
                             <label class="form-check-label" th:for="'tapa-' + ${tapa.id}" th:text="${tapa.tipo}"></label>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row mb-3 d-none" id="inputTapaPersonalizadaRow">
+            <div class="row mb-3" th:classappend="${agenda.tipoTapaPersonalizada == null} ? 'd-none' : ''" id="inputTapaPersonalizadaRow">
                 <div class="col-md-12">
                     <label for="agenda-tipo-tapa-personalizada" class="form-label">Tipo de tapa personalizada</label>
                     <input type="text" name="tipoTapaPersonalizada" class="form-control"
-                           id="agenda-tipo-tapa-personalizada" placeholder="Ej: Tapa blanda">
+                           id="agenda-tipo-tapa-personalizada" th:value="${agenda.tipoTapaPersonalizada}" placeholder="Ej: Tapa blanda">
                 </div>
             </div>
             <div class="row mb-3">
@@ -102,7 +105,8 @@
                     <div class="d-flex flex-column gap-1">
                         <div th:each="color : ${listaTipoColorAgenda}" class="form-check">
                             <input class="form-check-input" type="radio" name="tipoColorAgenda.id"
-                                   th:id="'color-' + ${color.id}" th:value="${color.id}" required>
+                                   th:id="'color-' + ${color.id}" th:value="${color.id}"
+                                   th:checked="${agenda.tipoColorAgenda != null} ? ${color.id} == ${agenda.tipoColorAgenda.id} : false" required>
                             <label class="form-check-label" th:for="'color-' + ${color.id}" th:text="${color.tipo}"></label>
                         </div>
                     </div>
@@ -111,24 +115,65 @@
             <div class="row mb-3">
                 <div class="col-md-12">
                     <label for="agenda-enlace-archivo" class="form-label">Enlace del Archivo</label>
-                    <input type="url" class="form-control" name="enlaceArchivo" id="agenda-enlace-archivo" placeholder="Ej: http://drive.google.com/archivo.pdf">
+                    <input type="url" class="form-control" name="enlaceArchivo" th:value="${agenda.enlaceArchivo}" id="agenda-enlace-archivo" placeholder="Ej: http://drive.google.com/archivo.pdf">
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-12">
                     <label for="agenda-informacion-adicional" class="form-label">Información adicional</label>
-                    <textarea class="form-control" name="informacionAdicional" id="agenda-informacion-adicional" rows="1" placeholder="Inserte aquí más info."></textarea>
+                    <textarea class="form-control" name="informacionAdicional" th:value="${agenda.informacionAdicional}" id="agenda-informacion-adicional" rows="1" placeholder="Inserte aquí más info."></textarea>
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-12">
                     <label for="agenda-cantidad" class="form-label">Cantidad *</label>
-                    <input type="number" value="1" class="form-control" id="agenda-cantidad" name="cantidad" required placeholder="0">
+                    <input type="number" class="form-control" th:value="${agenda.cantidad}" id="agenda-cantidad" name="cantidad" required placeholder="0">
                 </div>
             </div>
         </div>
 
-        <div class="contenedor-datos-odt">
+        <div class="contenedor-datos-odt" th:if="${ordenTrabajo.id}">
+            <h5 class="mt-4 datos-de-pago">Datos de Pago</h5>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="total" class="form-label">Total *</label>
+                    <input type="number" class="form-control" id="totalPrevio" th:value="${ordenTrabajo.total}" readonly>
+                </div>
+                <div class="col-md-4">
+                    <label for="abonado" class="form-label">Abonado *</label>
+                    <input type="number" class="form-control" id="abonadoPrevio" th:value="${ordenTrabajo.abonado}" readonly>
+                </div>
+                <div class="col-md-4">
+                    <label for="resta" class="form-label">Resta</label>
+                    <input type="number" class="form-control" id="restaPrevio" th:value="${ordenTrabajo.resta}" readonly>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarTotalModal">
+                Editar total
+            </button>
+
+            <div class="modal fade" id="editarTotalModal" tabindex="-1" aria-labelledby="editarTotalModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editarTotalModalLabel">Editar Total</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="nuevoTotal" class="form-label">Total</label>
+                            <input type="number" class="form-control" id="nuevoTotal" th:value="${ordenTrabajo.total}">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" id="guardarTotalModal">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="contenedor-datos-odt" th:if="${ordenTrabajo.id} == null">
             <!-- DATOS DE PAGO -->
             <h5 class="mt-4 datos-de-pago">Datos de Pago</h5>
             <div class="row mb-3">
@@ -170,7 +215,7 @@
                 </div>
                 <div class="col-md-4">
                     <label for="resta" class="form-label">Resta</label>
-                    <input type="number" class="form-control" name="resta" id="resta" readonly>
+                    <input type="number" class="form-control" name="resta" id="resta"readonly>
                 </div>
             </div>
             <div class="row mb-3">
@@ -181,7 +226,8 @@
                             <input class="form-check-input" type="radio"
                                    name="medioPago.id"
                                    th:id="'medioPago-' + ${medio.id}"
-                                   th:value="${medio.id}" required>
+                                   th:value="${medio.id}"
+                                   th:checked="${ordenTrabajo.medioPago != null} ? ${medio.id} == ${ordenTrabajo.medioPago.id} : false" required>
                             <label class="form-check-label" th:for="'medioPago-' + ${medio.id}" th:text="${medio.medioDePago}"></label>
                         </div>
                     </div>
@@ -189,12 +235,42 @@
             </div>
         </div>
         <div class="d-flex justify-content-center mt-4">
-            <button type="submit" class="btn btn-crear-odt text-white px-4 py-2">Crear orden</button>
+            <button type="submit" class="btn btn-crear-odt text-white px-4 py-2"
+                    th:text="${ordenTrabajo.id} != null ? 'Editar orden' : 'Crear orden'">
+            </button>
         </div>
     </form>
 </div>
 
+<script>
+    document.getElementById('guardarTotalModal').addEventListener('click', function() {
+        // Tomar valor del modal
+        const nuevoTotal = document.getElementById('nuevoTotal').value;
+
+        // Crear input hidden o actualizar si ya existe
+        let inputHidden = document.querySelector('input[name="nuevoTotal"]');
+        if (!inputHidden) {
+            inputHidden = document.createElement('input');
+            inputHidden.type = 'hidden';
+            inputHidden.name = 'nuevoTotal';
+            document.querySelector('form').appendChild(inputHidden);
+        }
+        inputHidden.value = nuevoTotal;
+
+        // Cerrar modal
+        const modalEl = document.getElementById('editarTotalModal');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
+
+        // Enviar formulario
+        document.querySelector('form').submit();
+    });
+</script>
 
 <script th:src="@{/js/crear-agenda.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJ+Y7Vu8y+6ie4EnWz9Z2Jv3C92iZgfH1lwCk="
+        crossorigin="anonymous"></script>
 </body>
 </html>

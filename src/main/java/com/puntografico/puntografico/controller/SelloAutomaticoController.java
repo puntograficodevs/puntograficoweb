@@ -70,10 +70,11 @@ public class SelloAutomaticoController {
 
     @PostMapping("/api/creacion-sello-automatico")
     public String creacionSelloAutomatico(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         SelloAutomatico selloAutomatico = selloAutomaticoService.crear(request);
         OrdenSelloAutomatico ordenSelloAutomatico = ordenSelloAutomaticoService.crear(ordenTrabajo, selloAutomatico);
 
-        return "redirect:/mostrar-odt-sello-automatico/" + ordenSelloAutomatico.getId();
+        return "redirect:/mostrar-odt-sello-automatico/" + ordenSelloAutomatico.getId();*/
+        return null;
     }
 }

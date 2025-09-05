@@ -5,7 +5,6 @@ import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.service.EmpleadoService;
 import com.puntografico.puntografico.service.OrdenTrabajoService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +18,6 @@ import java.util.List;
 @Controller
 @AllArgsConstructor
 public class BuscadorController {
-
-    private final EmpleadoService empleadoService;
 
     private final OrdenTrabajoService ordenTrabajoService;
 

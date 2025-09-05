@@ -74,9 +74,11 @@ public class CierraBolsasController {
 
     @PostMapping("/api/creacion-cierra-bolsas")
     public String creacionCierraBolsas(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         CierraBolsas cierraBolsas = cierraBolsasService.crear(request);
         OrdenCierraBolsas ordenCierraBolsas = ordenCierraBolsasService.crear(ordenTrabajo, cierraBolsas);
-        return "redirect:/mostrar-odt-cierra-bolsas/" + ordenCierraBolsas.getId();
+        return "redirect:/mostrar-odt-cierra-bolsas/" + ordenCierraBolsas.getId();*/
+
+        return null;
     }
 }

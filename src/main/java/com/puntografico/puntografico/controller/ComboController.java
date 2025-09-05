@@ -70,10 +70,12 @@ public class ComboController {
 
     @PostMapping("/api/creacion-combo")
     public String creacionCombo(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         Combo combo = comboService.crear(request);
         OrdenCombo ordenCombo = ordenComboService.crear(ordenTrabajo, combo);
 
-        return "redirect:/mostrar-odt-combo/" + ordenCombo.getId();
+        return "redirect:/mostrar-odt-combo/" + ordenCombo.getId();*/
+
+        return null;
     }
 }

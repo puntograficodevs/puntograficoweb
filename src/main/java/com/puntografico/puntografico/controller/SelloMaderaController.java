@@ -70,10 +70,12 @@ public class SelloMaderaController {
 
     @PostMapping("/api/creacion-sello-madera")
     public String creacionSelloMadera(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         SelloMadera selloMadera = selloMaderaService.crear(request);
         OrdenSelloMadera ordenSelloMadera = ordenSelloMaderaService.crear(ordenTrabajo, selloMadera);
 
-        return "redirect:/mostrar-odt-sello-madera/" + ordenSelloMadera.getId();
+        return "redirect:/mostrar-odt-sello-madera/" + ordenSelloMadera.getId();*/
+
+        return null;
     }
 }

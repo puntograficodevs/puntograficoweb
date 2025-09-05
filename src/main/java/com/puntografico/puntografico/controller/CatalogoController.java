@@ -72,9 +72,11 @@ public class CatalogoController {
 
     @PostMapping("/api/creacion-catalogo")
     public String creacionCatalogo(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         Catalogo catalogo = catalogoService.crear(request);
         OrdenCatalogo ordenCatalogo = ordenCatalogoService.crear(ordenTrabajo, catalogo);
-        return "redirect:/mostrar-odt-catalogo/" + ordenCatalogo.getId();
+        return "redirect:/mostrar-odt-catalogo/" + ordenCatalogo.getId();*/
+
+        return null;
     }
 }

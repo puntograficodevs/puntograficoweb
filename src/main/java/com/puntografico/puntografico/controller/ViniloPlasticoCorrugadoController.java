@@ -70,10 +70,12 @@ public class ViniloPlasticoCorrugadoController {
 
     @PostMapping("/api/creacion-vinilo-plastico-corrugado")
     public String creacionProducto(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         ViniloPlasticoCorrugado viniloPlasticoCorrugado = viniloPlasticoCorrugadoService.crear(request);
         OrdenViniloPlasticoCorrugado ordenViniloPlasticoCorrugado = ordenViniloPlasticoCorrugadoService.crear(ordenTrabajo, viniloPlasticoCorrugado);
 
-        return "redirect:/mostrar-odt-vinilo-plastico-corrugado/" + ordenViniloPlasticoCorrugado.getId();
+        return "redirect:/mostrar-odt-vinilo-plastico-corrugado/" + ordenViniloPlasticoCorrugado.getId();*/
+
+        return null;
     }
 }

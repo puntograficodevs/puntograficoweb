@@ -80,9 +80,10 @@ public class TarjetaController {
 
     @PostMapping("/api/creacion-tarjeta")
     public String creacionTarjeta(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         Tarjeta tarjeta = tarjetaService.crear(request);
         OrdenTarjeta ordenTarjeta = ordenTarjetaService.crear(ordenTrabajo, tarjeta);
-        return "redirect:/mostrar-odt-tarjeta/" + ordenTarjeta.getId();
+        return "redirect:/mostrar-odt-tarjeta/" + ordenTarjeta.getId();*/
+        return null;
     }
 }

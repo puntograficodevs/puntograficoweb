@@ -8,6 +8,7 @@ import com.puntografico.puntografico.repository.EstadoOrdenRepository;
 import com.puntografico.puntografico.repository.EstadoPagoRepository;
 import com.puntografico.puntografico.repository.MedioPagoRepository;
 import com.puntografico.puntografico.repository.OrdenTrabajoRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,17 +36,69 @@ public class OrdenTrabajoService {
     @Autowired
     private EmpleadoService empleadoService;
 
-    public OrdenTrabajo crear(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = new OrdenTrabajo();
+    public OrdenTrabajo guardar(HttpServletRequest request, Long idOrdenTrabajo) {
+        OrdenTrabajo ordenTrabajo = (idOrdenTrabajo != null) ? ordenTrabajoRepository.findById(idOrdenTrabajo).get() : new OrdenTrabajo();
+
+        if (idOrdenTrabajo == null) {
+            ordenTrabajo.setTotal(Integer.parseInt(request.getParameter("total")));
+            ordenTrabajo.setAbonado(Integer.parseInt(request.getParameter("abonado")));
+            ordenTrabajo.setTipoProducto(request.getParameter("tipoProducto"));
+
+            // Calculamos resta (por si no viene en el form o es error)
+            int resta = ordenTrabajo.getTotal() - ordenTrabajo.getAbonado();
+            ordenTrabajo.setResta(resta);
+
+            String medioPagoIdStr = request.getParameter("medioPago.id");
+            if (medioPagoIdStr != null && !medioPagoIdStr.isBlank()) {
+                Long medioPagoId = Long.parseLong(medioPagoIdStr);
+                ordenTrabajo.setMedioPago(medioPagoRepository.findById(medioPagoId)
+                        .orElseThrow(() -> new RuntimeException("Medio de pago no encontrado")));
+            } else {
+                throw new RuntimeException("Medio de pago es obligatorio");
+            }
+
+            // Asignar estadoPago según la lógica
+            if (ordenTrabajo.getTotal() == ordenTrabajo.getAbonado()) {
+                ordenTrabajo.setEstadoPago(estadoPagoRepository.findById(3L)
+                        .orElseThrow(() -> new RuntimeException("Estado Pago no encontrado")));
+            } else if (ordenTrabajo.getResta() != 0) {
+                ordenTrabajo.setEstadoPago(estadoPagoRepository.findById(2L)
+                        .orElseThrow(() -> new RuntimeException("Estado Pago no encontrado")));
+            } else {
+                ordenTrabajo.setEstadoPago(estadoPagoRepository.findById(1L)
+                        .orElseThrow(() -> new RuntimeException("Estado Pago no encontrado")));
+            }
+        } else {
+            Integer totalNuevo = Integer.parseInt(request.getParameter("nuevoTotal"));
+
+            if (totalNuevo != null) {
+                int resta = (int)totalNuevo - ordenTrabajo.getAbonado();
+                ordenTrabajo.setResta(resta);
+                ordenTrabajo.setTotal(totalNuevo);
+            }
+
+            // Asignar estadoPago según la lógica
+            if (ordenTrabajo.getTotal() == ordenTrabajo.getAbonado()) {
+                ordenTrabajo.setEstadoPago(estadoPagoRepository.findById(3L)
+                        .orElseThrow(() -> new RuntimeException("Estado Pago no encontrado")));
+            } else if (ordenTrabajo.getResta() != 0) {
+                ordenTrabajo.setEstadoPago(estadoPagoRepository.findById(2L)
+                        .orElseThrow(() -> new RuntimeException("Estado Pago no encontrado")));
+            } else {
+                ordenTrabajo.setEstadoPago(estadoPagoRepository.findById(1L)
+                        .orElseThrow(() -> new RuntimeException("Estado Pago no encontrado")));
+            }
+        }
 
         Empleado empleado = (Empleado) request.getSession().getAttribute("empleadoLogueado");
-        ordenTrabajo.setEmpleado((Empleado) request.getSession().getAttribute("empleadoLogueado"));
+        ordenTrabajo.setEmpleado(empleado);
         ordenTrabajo.setFechaPedido(LocalDate.now());
         ordenTrabajo.setEstadoOrden(estadoOrdenRepository.findById(1L)
                 .orElseThrow(() -> new RuntimeException("Estado Orden no encontrado")));
         ordenTrabajo.setNombreCliente(request.getParameter("nombreCliente"));
         ordenTrabajo.setTelefonoCliente(request.getParameter("telefonoCliente"));
         ordenTrabajo.setEsCuentaCorriente(request.getParameter("esCuentaCorriente") != null);
+        ordenTrabajo.setNecesitaFactura(request.getParameter("necesitaFactura") != null);
 
         String fechaMuestraStr = request.getParameter("fechaMuestra");
         if (fechaMuestraStr != null && !fechaMuestraStr.isBlank()) {
@@ -54,35 +107,6 @@ public class OrdenTrabajoService {
 
         ordenTrabajo.setFechaEntrega(LocalDate.parse(request.getParameter("fechaEntrega")));
         ordenTrabajo.setHoraEntrega(request.getParameter("horaEntrega"));
-        ordenTrabajo.setNecesitaFactura(request.getParameter("necesitaFactura") != null);
-        ordenTrabajo.setTotal(Integer.parseInt(request.getParameter("total")));
-        ordenTrabajo.setAbonado(Integer.parseInt(request.getParameter("abonado")));
-        ordenTrabajo.setTipoProducto(request.getParameter("tipoProducto"));
-
-        // Calculamos resta (por si no viene en el form o es error)
-        int resta = ordenTrabajo.getTotal() - ordenTrabajo.getAbonado();
-        ordenTrabajo.setResta(resta);
-
-        String medioPagoIdStr = request.getParameter("medioPago.id");
-        if (medioPagoIdStr != null && !medioPagoIdStr.isBlank()) {
-            Long medioPagoId = Long.parseLong(medioPagoIdStr);
-            ordenTrabajo.setMedioPago(medioPagoRepository.findById(medioPagoId)
-                    .orElseThrow(() -> new RuntimeException("Medio de pago no encontrado")));
-        } else {
-            throw new RuntimeException("Medio de pago es obligatorio");
-        }
-
-        // Asignar estadoPago según la lógica
-        if (ordenTrabajo.getTotal() == ordenTrabajo.getAbonado()) {
-            ordenTrabajo.setEstadoPago(estadoPagoRepository.findById(3L)
-                    .orElseThrow(() -> new RuntimeException("Estado Pago no encontrado")));
-        } else if (ordenTrabajo.getResta() != 0) {
-            ordenTrabajo.setEstadoPago(estadoPagoRepository.findById(2L)
-                    .orElseThrow(() -> new RuntimeException("Estado Pago no encontrado")));
-        } else {
-            ordenTrabajo.setEstadoPago(estadoPagoRepository.findById(1L)
-                    .orElseThrow(() -> new RuntimeException("Estado Pago no encontrado")));
-        }
 
         return ordenTrabajoRepository.save(ordenTrabajo);
     }

@@ -80,10 +80,11 @@ public class EtiquetaController {
 
     @PostMapping("/api/creacion-etiqueta")
     public String creacionEtiqueta(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         Etiqueta etiqueta = etiquetaService.crear(request);
         OrdenEtiqueta ordenEtiqueta = ordenEtiquetaService.crear(ordenTrabajo, etiqueta);
 
-        return "redirect:/mostrar-odt-etiqueta/" + ordenEtiqueta.getId();
+        return "redirect:/mostrar-odt-etiqueta/" + ordenEtiqueta.getId();*/
+        return null;
     }
 }

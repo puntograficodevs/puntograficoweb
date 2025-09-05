@@ -82,10 +82,11 @@ public class EntradaController {
 
     @PostMapping("/api/creacion-entrada")
     public String creacionEntrada(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         Entrada entrada = entradaService.crear(request);
         OrdenEntrada ordenEntrada = ordenEntradaService.crear(ordenTrabajo, entrada);
 
-        return "redirect:/mostrar-odt-entrada/" + ordenEntrada.getId();
+        return "redirect:/mostrar-odt-entrada/" + ordenEntrada.getId();*/
+        return null;
     }
 }

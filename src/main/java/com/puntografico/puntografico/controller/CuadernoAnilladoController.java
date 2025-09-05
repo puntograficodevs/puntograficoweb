@@ -72,9 +72,11 @@ public class CuadernoAnilladoController {
 
     @PostMapping("/api/creacion-cuaderno-anillado")
     public String creacionCuadernoAnillado(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         CuadernoAnillado cuadernoAnillado = cuadernoAnilladoService.crear(request);
         OrdenCuadernoAnillado ordenCuadernoAnillado = ordenCuadernoAnilladoService.crear(ordenTrabajo, cuadernoAnillado);
-        return "redirect:/mostrar-odt-cuaderno-anillado/" + ordenCuadernoAnillado.getId();
+        return "redirect:/mostrar-odt-cuaderno-anillado/" + ordenCuadernoAnillado.getId();*/
+
+        return null;
     }
 }

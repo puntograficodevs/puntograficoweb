@@ -30,20 +30,29 @@ public class AgendaController {
     @Autowired
     private OrdenAgendaService ordenAgendaService;
 
-    @GetMapping("/crear-odt-agenda")
-    public String verCrearOdtAgenda(HttpSession session, Model model) {
+    @GetMapping({"/crear-odt-agenda", "/crear-odt-agenda/{idOrden}"})
+    public String verCrearOdtAgenda(
+            HttpSession session,
+            Model model,
+            @PathVariable(required = false) Long idOrden) {
+
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
+        OrdenAgenda ordenAgenda = (idOrden != null) ? ordenAgendaService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenAgenda != null) ? ordenAgenda.getOrdenTrabajo() : new OrdenTrabajo();
+        Agenda agenda = (ordenAgenda != null)? ordenAgenda.getAgenda() : new Agenda();
+
         List<TipoTapaAgenda> listaTipoTapaAgenda = opcionesAgendaService.buscarTodosTipoTapaAgenda();
         List<TipoColorAgenda> listaTipoColorAgenda = opcionesAgendaService.buscarTodosTipoColorAgenda();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
         model.addAttribute("empleado", empleado);
-        model.addAttribute("agenda", new Agenda());
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
+        model.addAttribute("agenda", agenda);
         model.addAttribute("listaTipoTapaAgenda", listaTipoTapaAgenda);
         model.addAttribute("listaTipoColorAgenda", listaTipoColorAgenda);
         model.addAttribute("listaMediosDePago", listaMediosDePago);
@@ -69,10 +78,29 @@ public class AgendaController {
 
     @PostMapping("/api/creacion-agenda")
     public String creacionAgenda(HttpServletRequest request) {
+        String idOrdenStr = request.getParameter("idOrden");
+
+        Long idOrden = null;
+        if (idOrdenStr != null && !idOrdenStr.isBlank()) {
+            try {
+                idOrden = Long.parseLong(idOrdenStr);
+            } catch (NumberFormatException e) {
+                throw new RuntimeException("Id Orden inválido: " + idOrdenStr);
+            }
+        }
+
+        OrdenAgenda ordenAgendaExistente = (idOrden != null) ?
+                ordenAgendaService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenAgendaExistente != null) ? ordenAgendaExistente.getOrdenTrabajo().getId() : null;
+        Long idAgenda = (ordenAgendaExistente != null) ? ordenAgendaExistente.getAgenda().getId() : null;
+        Long idOrdenAgenda = (ordenAgendaExistente != null) ? ordenAgendaExistente.getId() : null;
+
         AgendaDTO agendaDTO = armarDTO(request);
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        Agenda agenda = agendaService.crear(agendaDTO);
-        OrdenAgenda ordenAgenda = ordenAgendaService.crear(ordenTrabajo, agenda);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        Agenda agenda = agendaService.guardar(agendaDTO, idAgenda);
+        OrdenAgenda ordenAgenda = ordenAgendaService.guardar(ordenTrabajo, agenda, idOrdenAgenda);
+
         return "redirect:/mostrar-odt-agenda/" + ordenAgenda.getId();
     }
 

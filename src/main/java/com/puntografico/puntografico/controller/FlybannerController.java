@@ -76,10 +76,12 @@ public class FlybannerController {
 
     @PostMapping("/api/creacion-flybanner")
     public String creacionProducto(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         Flybanner flybanner = flybannerService.crear(request);
         OrdenFlybanner ordenFlybanner = ordenFlybannerService.crear(ordenTrabajo, flybanner);
 
-        return "redirect:/mostrar-odt-flybanner/" + ordenFlybanner.getId();
+        return "redirect:/mostrar-odt-flybanner/" + ordenFlybanner.getId();*/
+
+        return null;
     }
 }

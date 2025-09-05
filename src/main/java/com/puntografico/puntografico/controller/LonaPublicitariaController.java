@@ -71,10 +71,11 @@ public class LonaPublicitariaController {
 
     @PostMapping("/api/creacion-lona-publicitaria")
     public String creacionProducto(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         LonaPublicitaria lonaPublicitaria = lonaPublicitariaService.crear(request);
         OrdenLonaPublicitaria ordenLonaPublicitaria = ordenLonaPublicitariaService.crear(ordenTrabajo, lonaPublicitaria);
 
-        return "redirect:/mostrar-odt-lona-publicitaria/" + ordenLonaPublicitaria.getId();
+        return "redirect:/mostrar-odt-lona-publicitaria/" + ordenLonaPublicitaria.getId();*/
+        return null;
     }
 }

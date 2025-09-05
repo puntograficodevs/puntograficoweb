@@ -82,9 +82,11 @@ public class TalonarioController {
 
     @PostMapping("/api/creacion-talonario")
     public String creacionTalonario(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         Talonario talonario = talonarioService.crear(request);
         OrdenTalonario ordenTalonario = ordenTalonarioService.crear(ordenTrabajo, talonario);
-        return "redirect:/mostrar-odt-talonario/" + ordenTalonario.getId();
+        return "redirect:/mostrar-odt-talonario/" + ordenTalonario.getId();*/
+
+        return null;
     }
 }

@@ -70,10 +70,12 @@ public class SelloAutomaticoEscolarController {
 
     @PostMapping("/api/creacion-sello-automatico-escolar")
     public String creacionSelloAutomaticoEscolar(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         SelloAutomaticoEscolar selloAutomaticoEscolar = selloAutomaticoEscolarService.crear(request);
         OrdenSelloAutomaticoEscolar ordenSelloAutomaticoEscolar = ordenSelloAutomaticoEscolarService.crear(ordenTrabajo, selloAutomaticoEscolar);
 
-        return "redirect:/mostrar-odt-sello-automatico-escolar/" + ordenSelloAutomaticoEscolar.getId();
+        return "redirect:/mostrar-odt-sello-automatico-escolar/" + ordenSelloAutomaticoEscolar.getId();*/
+
+        return null;
     }
 }

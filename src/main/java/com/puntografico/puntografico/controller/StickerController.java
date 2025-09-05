@@ -74,9 +74,10 @@ public class StickerController {
 
     @PostMapping("/api/creacion-sticker")
     public String creacionSticker(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         Sticker sticker = stickerService.crear(request);
         OrdenSticker ordenSticker = ordenStickerService.crear(ordenTrabajo, sticker);
-        return "redirect:/mostrar-odt-sticker/" + ordenSticker.getId();
+        return "redirect:/mostrar-odt-sticker/" + ordenSticker.getId();*/
+        return null;
     }
 }

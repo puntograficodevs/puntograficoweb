@@ -72,10 +72,11 @@ public class LonaComunController {
 
     @PostMapping("/api/creacion-lona-comun")
     public String creacionProducto(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         LonaComun lonaComun = lonaComunService.crear(request);
         OrdenLonaComun ordenLonaComun = ordenLonaComunService.crear(ordenTrabajo, lonaComun);
 
-        return "redirect:/mostrar-odt-lona-comun/" + ordenLonaComun.getId();
+        return "redirect:/mostrar-odt-lona-comun/" + ordenLonaComun.getId();*/
+        return null;
     }
 }

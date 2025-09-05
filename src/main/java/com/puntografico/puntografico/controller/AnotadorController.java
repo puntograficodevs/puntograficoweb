@@ -69,11 +69,12 @@ public class AnotadorController {
 
     @PostMapping("/api/creacion-anotador")
     public String creacionAnotador(HttpServletRequest request) {
-        AnotadorDTO anotadorDTO = armarDTO(request);
+        /*AnotadorDTO anotadorDTO = armarDTO(request);
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         Anotador anotador = anotadorService.crear(anotadorDTO);
         OrdenAnotador ordenAnotador = ordenAnotadorService.crear(ordenTrabajo, anotador);
-        return "redirect:/mostrar-odt-anotador/" + ordenAnotador.getId();
+        return "redirect:/mostrar-odt-anotador/" + ordenAnotador.getId();*/
+        return null;
     }
 
     private AnotadorDTO armarDTO(HttpServletRequest request) {

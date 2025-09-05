@@ -74,9 +74,10 @@ public class SobreController {
 
     @PostMapping("/api/creacion-sobre")
     public String creacionSobre(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         Sobre sobre = sobreService.crear(request);
         OrdenSobre ordenSobre = ordenSobreService.crear(ordenTrabajo, sobre);
-        return "redirect:/mostrar-odt-sobre/" + ordenSobre.getId();
+        return "redirect:/mostrar-odt-sobre/" + ordenSobre.getId();*/
+        return null;
     }
 }

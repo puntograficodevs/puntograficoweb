@@ -70,10 +70,11 @@ public class OtroController {
 
     @PostMapping("/api/creacion-otro")
     public String creacionProducto(HttpServletRequest request) {
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
+        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
         Otro otro = otroService.crear(request);
         OrdenOtro ordenOtro = ordenOtroService.crear(ordenTrabajo, otro);
 
-        return "redirect:/mostrar-odt-otro/" + ordenOtro.getId();
+        return "redirect:/mostrar-odt-otro/" + ordenOtro.getId();*/
+        return null;
     }
 }
