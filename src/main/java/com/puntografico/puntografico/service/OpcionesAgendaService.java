@@ -4,6 +4,7 @@ import com.puntografico.puntografico.domain.TipoColorAgenda;
 import com.puntografico.puntografico.domain.TipoTapaAgenda;
 import com.puntografico.puntografico.repository.TipoColorAgendaRepository;
 import com.puntografico.puntografico.repository.TipoTapaAgendaRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -11,18 +12,12 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional @AllArgsConstructor
 public class OpcionesAgendaService {
 
     private final TipoTapaAgendaRepository tipoTapaAgendaRepository;
 
     private final TipoColorAgendaRepository tipoColorAgendaRepository;
-
-    public OpcionesAgendaService(TipoTapaAgendaRepository tipoTapaAgendaRepository,
-                                 TipoColorAgendaRepository tipoColorAgendaRepository) {
-        this.tipoTapaAgendaRepository = tipoTapaAgendaRepository;
-        this.tipoColorAgendaRepository = tipoColorAgendaRepository;
-    }
 
     public List<TipoTapaAgenda> buscarTodosTipoTapaAgenda() {
         return tipoTapaAgendaRepository.findAll();

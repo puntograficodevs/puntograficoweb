@@ -78,19 +78,9 @@ public class AgendaController {
 
     @PostMapping("/api/creacion-agenda")
     public String creacionAgenda(HttpServletRequest request) {
-        String idOrdenStr = request.getParameter("idOrden");
+        Long idOrden = buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        Long idOrden = null;
-        if (idOrdenStr != null && !idOrdenStr.isBlank()) {
-            try {
-                idOrden = Long.parseLong(idOrdenStr);
-            } catch (NumberFormatException e) {
-                throw new RuntimeException("Id Orden inválido: " + idOrdenStr);
-            }
-        }
-
-        OrdenAgenda ordenAgendaExistente = (idOrden != null) ?
-                ordenAgendaService.buscarPorOrdenId(idOrden) : null;
+        OrdenAgenda ordenAgendaExistente = (idOrden != null) ? ordenAgendaService.buscarPorOrdenId(idOrden) : null;
         Long idOrdenTrabajo = (ordenAgendaExistente != null) ? ordenAgendaExistente.getOrdenTrabajo().getId() : null;
         Long idAgenda = (ordenAgendaExistente != null) ? ordenAgendaExistente.getAgenda().getId() : null;
         Long idOrdenAgenda = (ordenAgendaExistente != null) ? ordenAgendaExistente.getId() : null;
@@ -102,6 +92,20 @@ public class AgendaController {
         OrdenAgenda ordenAgenda = ordenAgendaService.guardar(ordenTrabajo, agenda, idOrdenAgenda);
 
         return "redirect:/mostrar-odt-agenda/" + ordenAgenda.getId();
+    }
+
+    private Long buscarOrdenIdSiExiste(String idOrdenDesdeRequest) {
+        Long idOrden = null;
+
+        if (idOrdenDesdeRequest != null && !idOrdenDesdeRequest.isBlank()) {
+            try {
+                idOrden = Long.parseLong(idOrdenDesdeRequest);
+            } catch (NumberFormatException e) {
+                throw new RuntimeException("Id Orden inválido: " + idOrdenDesdeRequest);
+            }
+        }
+
+        return idOrden;
     }
 
     private AgendaDTO armarDTO(HttpServletRequest request) {

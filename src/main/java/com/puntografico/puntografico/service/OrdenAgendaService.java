@@ -4,17 +4,16 @@ import com.puntografico.puntografico.domain.Agenda;
 import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.OrdenAgendaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OrdenAgendaService {
 
-    @Autowired
-    private OrdenAgendaRepository ordenAgendaRepository;
+    private final OrdenAgendaRepository ordenAgendaRepository;
 
     public OrdenAgenda guardar(OrdenTrabajo ordenTrabajo, Agenda agenda, Long idOrdenAgenda) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
