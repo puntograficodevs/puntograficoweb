@@ -16,10 +16,10 @@ public class AnotadorService {
     @Autowired
     private AnotadorRepository anotadorRepository;
 
-    public Anotador crear(AnotadorDTO anotadorDTO) {
+    public Anotador guardar(AnotadorDTO anotadorDTO, Long idAnotador) {
         validarAnotadorDTO(anotadorDTO);
 
-        Anotador anotador = new Anotador();
+        Anotador anotador = (idAnotador != null) ? anotadorRepository.findById(idAnotador).get() : new Anotador();
         anotador.setCantidadHojas(anotadorDTO.getCantidadHojas());
         anotador.setMedida(anotadorDTO.getMedida());
         anotador.setTipoTapa(anotadorDTO.getTipoTapa());

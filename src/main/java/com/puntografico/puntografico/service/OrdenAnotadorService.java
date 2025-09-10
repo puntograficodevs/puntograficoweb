@@ -18,11 +18,11 @@ public class OrdenAnotadorService {
     @Autowired
     private OrdenAnotadorRepository ordenAnotadorRepository;
 
-    public OrdenAnotador crear(OrdenTrabajo ordenTrabajo, Anotador anotador) {
+    public OrdenAnotador guardar(OrdenTrabajo ordenTrabajo, Anotador anotador, Long idOrdenAnotador) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(anotador, "Debe venir una agenda para enlazar");
 
-        OrdenAnotador ordenAnotador = new OrdenAnotador();
+        OrdenAnotador ordenAnotador = (idOrdenAnotador != null) ? ordenAnotadorRepository.findById(idOrdenAnotador).get() : new OrdenAnotador();
         ordenAnotador.setCantidad(anotador.getCantidad());
         ordenAnotador.setOrdenTrabajo(ordenTrabajo);
         ordenAnotador.setAnotador(anotador);

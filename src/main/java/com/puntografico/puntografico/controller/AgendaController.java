@@ -3,6 +3,7 @@ package com.puntografico.puntografico.controller;
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.dto.AgendaDTO;
 import com.puntografico.puntografico.service.*;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,23 +13,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class AgendaController {
 
-    @Autowired
     private AgendaService agendaService;
 
-    @Autowired
     private MedioPagoService medioPagoService;
 
-    @Autowired
     private OpcionesAgendaService opcionesAgendaService;
 
-    @Autowired
     private OrdenTrabajoService ordenTrabajoService;
 
-    @Autowired
     private OrdenAgendaService ordenAgendaService;
+
+    private ProductoService productoService;
 
     @GetMapping({"/crear-odt-agenda", "/crear-odt-agenda/{idOrden}"})
     public String verCrearOdtAgenda(
@@ -78,14 +76,14 @@ public class AgendaController {
 
     @PostMapping("/api/creacion-agenda")
     public String creacionAgenda(HttpServletRequest request) {
-        Long idOrden = buscarOrdenIdSiExiste(request.getParameter("idOrden"));
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
         OrdenAgenda ordenAgendaExistente = (idOrden != null) ? ordenAgendaService.buscarPorOrdenId(idOrden) : null;
         Long idOrdenTrabajo = (ordenAgendaExistente != null) ? ordenAgendaExistente.getOrdenTrabajo().getId() : null;
         Long idAgenda = (ordenAgendaExistente != null) ? ordenAgendaExistente.getAgenda().getId() : null;
         Long idOrdenAgenda = (ordenAgendaExistente != null) ? ordenAgendaExistente.getId() : null;
 
-        AgendaDTO agendaDTO = armarDTO(request);
+        AgendaDTO agendaDTO = armarAgendaDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
         Agenda agenda = agendaService.guardar(agendaDTO, idAgenda);
@@ -94,21 +92,7 @@ public class AgendaController {
         return "redirect:/mostrar-odt-agenda/" + ordenAgenda.getId();
     }
 
-    private Long buscarOrdenIdSiExiste(String idOrdenDesdeRequest) {
-        Long idOrden = null;
-
-        if (idOrdenDesdeRequest != null && !idOrdenDesdeRequest.isBlank()) {
-            try {
-                idOrden = Long.parseLong(idOrdenDesdeRequest);
-            } catch (NumberFormatException e) {
-                throw new RuntimeException("Id Orden inválido: " + idOrdenDesdeRequest);
-            }
-        }
-
-        return idOrden;
-    }
-
-    private AgendaDTO armarDTO(HttpServletRequest request) {
+    private AgendaDTO armarAgendaDTO(HttpServletRequest request) {
         AgendaDTO agendaDTO = new AgendaDTO();
         agendaDTO.setCantidadHojas(Integer.parseInt(request.getParameter("cantidadHojas")));
         agendaDTO.setTipoTapaAgendaId(Long.parseLong(request.getParameter("tipoTapaAgenda.id")));

@@ -18,6 +18,9 @@ document.addEventListener("DOMContentLoaded", function () {
       case "agenda":
         window.location.href = `/crear-odt-agenda/${idOrden}`;
         break;
+      case "anotador":
+        window.location.href = `/crear-odt-anotador/${idOrden}`;
+        break;
       default:
         console.warn("Tipo de producto no manejado:", tipoProducto);
     }

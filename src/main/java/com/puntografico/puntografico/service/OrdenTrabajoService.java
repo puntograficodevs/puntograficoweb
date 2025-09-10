@@ -46,7 +46,7 @@ public class OrdenTrabajoService {
 
             asignarValoresDelPago(ordenTrabajo, total, abonado, resta);
             asignarMedioPago(ordenTrabajo, medioPagoIdStr);
-        } else {
+        } else if (!esCreacion && (request.getParameter("nuevoTotal")) != null) {
             Integer totalNuevo = Integer.parseInt(request.getParameter("nuevoTotal"));
             total = totalNuevo != null ? totalNuevo : ordenTrabajo.getTotal();
             abonado = ordenTrabajo.getAbonado();

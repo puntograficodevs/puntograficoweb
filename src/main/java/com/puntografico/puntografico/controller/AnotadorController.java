@@ -1,11 +1,10 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.AgendaDTO;
 import com.puntografico.puntografico.dto.AnotadorDTO;
-import com.puntografico.puntografico.service.AnotadorService;
-import com.puntografico.puntografico.service.MedioPagoService;
-import com.puntografico.puntografico.service.OrdenAnotadorService;
-import com.puntografico.puntografico.service.OrdenTrabajoService;
+import com.puntografico.puntografico.service.*;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,34 +16,37 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class AnotadorController {
 
-    @Autowired
-    private MedioPagoService medioPagoService;
+    private final MedioPagoService medioPagoService;
 
-    @Autowired
-    private OrdenAnotadorService ordenAnotadorService;
+    private final OrdenAnotadorService ordenAnotadorService;
 
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
+    private final OrdenTrabajoService ordenTrabajoService;
 
-    @Autowired
-    private AnotadorService anotadorService;
+    private final AnotadorService anotadorService;
+
+    private final ProductoService productoService;
 
 
-    @GetMapping("/crear-odt-anotador")
-    public String verCrearOdtAnotador(HttpSession session, Model model) {
+    @GetMapping({"/crear-odt-anotador", "/crear-odt-anotador/{idOrden}"})
+    public String verCrearOdtAnotador(HttpSession session, Model model, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
+        OrdenAnotador ordenAnotador = (idOrden != null) ? ordenAnotadorService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenAnotador != null) ? ordenAnotador.getOrdenTrabajo() : new OrdenTrabajo();
+        Anotador anotador = (ordenAnotador != null) ? ordenAnotador.getAnotador() : new Anotador();
+
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
         model.addAttribute("empleado", empleado);
-        model.addAttribute("anotador", new Anotador());
+        model.addAttribute("anotador", anotador);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
         model.addAttribute("listaMediosDePago", listaMediosDePago);
 
         return "crear-odt-anotador";
@@ -69,15 +71,23 @@ public class AnotadorController {
 
     @PostMapping("/api/creacion-anotador")
     public String creacionAnotador(HttpServletRequest request) {
-        /*AnotadorDTO anotadorDTO = armarDTO(request);
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        Anotador anotador = anotadorService.crear(anotadorDTO);
-        OrdenAnotador ordenAnotador = ordenAnotadorService.crear(ordenTrabajo, anotador);
-        return "redirect:/mostrar-odt-anotador/" + ordenAnotador.getId();*/
-        return null;
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
+
+        OrdenAnotador ordenAnotadorExistente = (idOrden != null) ? ordenAnotadorService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenAnotadorExistente != null) ? ordenAnotadorExistente.getOrdenTrabajo().getId() : null;
+        Long idAnotador = (ordenAnotadorExistente != null) ? ordenAnotadorExistente.getAnotador().getId() : null;
+        Long idOrdenAnotador = (ordenAnotadorExistente != null) ? ordenAnotadorExistente.getId() : null;
+
+        AnotadorDTO anotadorDTO = armarAnotadorDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        Anotador anotador = anotadorService.guardar(anotadorDTO, idAnotador);
+        OrdenAnotador ordenAnotador = ordenAnotadorService.guardar(ordenTrabajo, anotador, idOrdenAnotador);
+
+        return "redirect:/mostrar-odt-anotador/" + ordenAnotador.getId();
     }
 
-    private AnotadorDTO armarDTO(HttpServletRequest request) {
+    private AnotadorDTO armarAnotadorDTO(HttpServletRequest request) {
         AnotadorDTO anotadorDTO = new AnotadorDTO();
 
         anotadorDTO.setMedida(request.getParameter("medida"));
