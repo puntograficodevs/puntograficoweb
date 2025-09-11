@@ -2,36 +2,29 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class TarjetaService {
 
-    @Autowired
-    private TarjetaRepository tarjetaRepository;
+    private final TarjetaRepository tarjetaRepository;
 
-    @Autowired
-    private TipoPapelTarjetaRepository tipoPapelTarjetaRepository;
+    private final TipoPapelTarjetaRepository tipoPapelTarjetaRepository;
 
-    @Autowired
-    private TipoColorTarjetaRepository tipoColorTarjetaRepository;
+    private final TipoColorTarjetaRepository tipoColorTarjetaRepository;
 
-    @Autowired
-    private TipoFazTarjetaRepository tipoFazTarjetaRepository;
+    private final TipoFazTarjetaRepository tipoFazTarjetaRepository;
 
-    @Autowired
-    private TipoLaminadoTarjetaRepository tipoLaminadoTarjetaRepository;
+    private final TipoLaminadoTarjetaRepository tipoLaminadoTarjetaRepository;
 
-    @Autowired
-    private MedidaTarjetaRepository medidaTarjetaRepository;
+    private final MedidaTarjetaRepository medidaTarjetaRepository;
 
-    @Autowired
-    private CantidadTarjetaRepository cantidadTarjetaRepository;
+    private final CantidadTarjetaRepository cantidadTarjetaRepository;
 
     public Tarjeta crear(HttpServletRequest request) {
         String tipoPapelTarjetaString = request.getParameter("tipoPapelTarjeta.id");

@@ -6,23 +6,18 @@ import com.puntografico.puntografico.domain.TipoColorHojasMembreteadas;
 import com.puntografico.puntografico.repository.CantidadHojasMembreteadasRepository;
 import com.puntografico.puntografico.repository.MedidaHojasMembreteadasRepository;
 import com.puntografico.puntografico.repository.TipoColorHojasMembreteadasRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OpcionesHojasMembreteadasService {
 
     private final MedidaHojasMembreteadasRepository medidaHojasMembreteadasRepository;
     private final TipoColorHojasMembreteadasRepository tipoColorHojasMembreteadasRepository;
     private final CantidadHojasMembreteadasRepository cantidadHojasMembreteadasRepository;
-
-    public OpcionesHojasMembreteadasService(MedidaHojasMembreteadasRepository medidaHojasMembreteadasRepository, TipoColorHojasMembreteadasRepository tipoColorHojasMembreteadasRepository, CantidadHojasMembreteadasRepository cantidadHojasMembreteadasRepository) {
-        this.medidaHojasMembreteadasRepository = medidaHojasMembreteadasRepository;
-        this.tipoColorHojasMembreteadasRepository = tipoColorHojasMembreteadasRepository;
-        this.cantidadHojasMembreteadasRepository = cantidadHojasMembreteadasRepository;
-    }
 
     public List<MedidaHojasMembreteadas> buscarTodosMedidaHojasMembreteadas() {
         return medidaHojasMembreteadasRepository.findAll();

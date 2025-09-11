@@ -2,12 +2,13 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OpcionesImpresionService {
 
     private final TipoColorImpresionRepository tipoColorImpresionRepository;
@@ -16,15 +17,6 @@ public class OpcionesImpresionService {
     private final TipoPapelImpresionRepository tipoPapelImpresionRepository;
     private final CantidadImpresionRepository cantidadImpresionRepository;
     private final TipoImpresionRepository tipoImpresionRepository;
-
-    public OpcionesImpresionService(TipoColorImpresionRepository tipoColorImpresionRepository, TamanioHojaImpresionRepository tamanioHojaImpresionRepository, TipoFazImpresionRepository tipoFazImpresionRepository, TipoPapelImpresionRepository tipoPapelImpresionRepository, CantidadImpresionRepository cantidadImpresionRepository, TipoImpresionRepository tipoImpresionRepository) {
-        this.tipoColorImpresionRepository = tipoColorImpresionRepository;
-        this.tamanioHojaImpresionRepository = tamanioHojaImpresionRepository;
-        this.tipoFazImpresionRepository = tipoFazImpresionRepository;
-        this.tipoPapelImpresionRepository = tipoPapelImpresionRepository;
-        this.cantidadImpresionRepository = cantidadImpresionRepository;
-        this.tipoImpresionRepository = tipoImpresionRepository;
-    }
 
     public List<TipoColorImpresion> buscarTodosTipoColorImpresion() {
         return tipoColorImpresionRepository.findAll();

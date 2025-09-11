@@ -8,27 +8,23 @@ import com.puntografico.puntografico.repository.CantidadStickerRepository;
 import com.puntografico.puntografico.repository.MedidaStickerRepository;
 import com.puntografico.puntografico.repository.StickerRepository;
 import com.puntografico.puntografico.repository.TipoTroqueladoStickerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class StickerService {
 
-    @Autowired
-    private StickerRepository stickerRepository;
+    private final StickerRepository stickerRepository;
 
-    @Autowired
-    private TipoTroqueladoStickerRepository tipoTroqueladoStickerRepository;
+    private final TipoTroqueladoStickerRepository tipoTroqueladoStickerRepository;
 
-    @Autowired
-    private CantidadStickerRepository cantidadStickerRepository;
+    private final CantidadStickerRepository cantidadStickerRepository;
 
-    @Autowired
-    private MedidaStickerRepository medidaStickerRepository;
+    private final MedidaStickerRepository medidaStickerRepository;
 
     public Sticker crear(HttpServletRequest request) {
         String tipoTroqueladoStickerString = request.getParameter("tipoTroqueladoSticker.id");

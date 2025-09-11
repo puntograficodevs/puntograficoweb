@@ -3,21 +3,20 @@ package com.puntografico.puntografico.service;
 import com.puntografico.puntografico.domain.Anotador;
 import com.puntografico.puntografico.dto.AnotadorDTO;
 import com.puntografico.puntografico.repository.AnotadorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
 @Service
-@Transactional
+@Transactional @AllArgsConstructor
 public class AnotadorService {
 
-    @Autowired
-    private AnotadorRepository anotadorRepository;
+    private final AnotadorRepository anotadorRepository;
 
     public Anotador guardar(AnotadorDTO anotadorDTO, Long idAnotador) {
-        validarAnotadorDTO(anotadorDTO);
+        validarDTO(anotadorDTO);
 
         Anotador anotador = (idAnotador != null) ? anotadorRepository.findById(idAnotador).get() : new Anotador();
         anotador.setCantidadHojas(anotadorDTO.getCantidadHojas());
@@ -31,7 +30,7 @@ public class AnotadorService {
         return anotadorRepository.save(anotador);
     }
 
-    private void validarAnotadorDTO(AnotadorDTO anotadorDTO) {
+    private void validarDTO(AnotadorDTO anotadorDTO) {
         Assert.notNull(anotadorDTO.getCantidadHojas(), "La cantidad de hojas es un dato obligatorio.");
         Assert.notNull(anotadorDTO.getTipoTapa(), "El tipo de tapa es un dato obligatorio.");
         Assert.notNull(anotadorDTO.getCantidad(), "La cantidad es un dato obligatorio.");

@@ -4,21 +4,19 @@ import com.puntografico.puntografico.domain.SelloMadera;
 import com.puntografico.puntografico.domain.TamanioSelloMadera;
 import com.puntografico.puntografico.repository.SelloMaderaRepository;
 import com.puntografico.puntografico.repository.TamanioSelloMaderaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class SelloMaderaService {
 
-    @Autowired
-    private SelloMaderaRepository selloMaderaRepository;
+    private final SelloMaderaRepository selloMaderaRepository;
 
-    @Autowired
-    private TamanioSelloMaderaRepository tamanioSelloMaderaRepository;
+    private final TamanioSelloMaderaRepository tamanioSelloMaderaRepository;
 
     public SelloMadera crear(HttpServletRequest request) {
 

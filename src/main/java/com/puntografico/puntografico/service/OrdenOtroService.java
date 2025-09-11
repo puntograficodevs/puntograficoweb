@@ -5,17 +5,16 @@ import com.puntografico.puntografico.domain.Otro;
 import com.puntografico.puntografico.domain.OrdenOtro;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.OrdenOtroRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OrdenOtroService {
 
-    @Autowired
-    private OrdenOtroRepository ordenOtroRepository;
+    private final OrdenOtroRepository ordenOtroRepository;
 
     public OrdenOtro crear(OrdenTrabajo ordenTrabajo, Otro otro) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");

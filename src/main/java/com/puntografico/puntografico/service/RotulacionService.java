@@ -6,24 +6,21 @@ import com.puntografico.puntografico.domain.TipoRotulacion;
 import com.puntografico.puntografico.repository.RotulacionRepository;
 import com.puntografico.puntografico.repository.TipoCorteRotulacionRepository;
 import com.puntografico.puntografico.repository.TipoRotulacionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class RotulacionService {
 
-    @Autowired
-    private RotulacionRepository rotulacionRepository;
+    private final RotulacionRepository rotulacionRepository;
 
-    @Autowired
-    private TipoRotulacionRepository tipoRotulacionRepository;
+    private final TipoRotulacionRepository tipoRotulacionRepository;
 
-    @Autowired
-    private TipoCorteRotulacionRepository tipoCorteRotulacionRepository;
+    private final TipoCorteRotulacionRepository tipoCorteRotulacionRepository;
 
     public Rotulacion crear(HttpServletRequest request) {
         String medida = request.getParameter("medida");

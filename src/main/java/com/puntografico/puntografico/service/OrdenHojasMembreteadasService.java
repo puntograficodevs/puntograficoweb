@@ -5,17 +5,16 @@ import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenHojasMembreteadas;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.OrdenHojasMembreteadasRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OrdenHojasMembreteadasService {
 
-    @Autowired
-    private OrdenHojasMembreteadasRepository ordenHojasMembreteadasRepository;
+    private final OrdenHojasMembreteadasRepository ordenHojasMembreteadasRepository;
 
     public OrdenHojasMembreteadas crear(OrdenTrabajo ordenTrabajo, HojasMembreteadas hojasMembreteadas) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");

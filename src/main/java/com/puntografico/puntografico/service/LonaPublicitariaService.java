@@ -2,24 +2,21 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class LonaPublicitariaService {
 
-    @Autowired
-    private LonaPublicitariaRepository lonaPublicitariaRepository;
+    private final LonaPublicitariaRepository lonaPublicitariaRepository;
 
-    @Autowired
-    private MedidaLonaPublicitariaRepository medidaLonaPublicitariaRepository;
+    private final MedidaLonaPublicitariaRepository medidaLonaPublicitariaRepository;
 
-    @Autowired
-    private TipoLonaPublicitariaRepository tipoLonaPublicitariaRepository;
+    private final TipoLonaPublicitariaRepository tipoLonaPublicitariaRepository;
 
     public LonaPublicitaria crear(HttpServletRequest request) {
         String medidaLonaPublicitariaString = request.getParameter("medidaLonaPublicitaria.id");

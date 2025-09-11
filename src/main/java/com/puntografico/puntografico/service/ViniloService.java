@@ -2,7 +2,7 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -10,26 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service
-@Transactional
+@Transactional @AllArgsConstructor
 public class ViniloService {
 
-    @Autowired
-    private ViniloRepository viniloRepository;
+    private final ViniloRepository viniloRepository;
 
-    @Autowired
-    private TipoViniloRepository tipoViniloRepository;
+    private final TipoViniloRepository tipoViniloRepository;
 
-    @Autowired
-    private TipoAdicionalViniloRepository tipoAdicionalViniloRepository;
+    private final TipoAdicionalViniloRepository tipoAdicionalViniloRepository;
 
-    @Autowired
-    private TipoCorteViniloRepository tipoCorteViniloRepository;
+    private final TipoCorteViniloRepository tipoCorteViniloRepository;
 
-    @Autowired
-    private MedidaViniloRepository medidaViniloRepository;
+    private final MedidaViniloRepository medidaViniloRepository;
 
-    @Autowired
-    private CantidadViniloRepository cantidadViniloRepository;
+    private final CantidadViniloRepository cantidadViniloRepository;
 
     public Vinilo crear(HttpServletRequest request) {
         String tipoViniloString = request.getParameter("tipoVinilo.id");

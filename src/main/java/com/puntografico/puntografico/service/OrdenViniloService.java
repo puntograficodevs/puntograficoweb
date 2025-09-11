@@ -2,18 +2,17 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.OrdenViniloRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
 @Service
-@Transactional
+@Transactional @AllArgsConstructor
 public class OrdenViniloService {
 
-    @Autowired
-    private OrdenViniloRepository ordenViniloRepository;
+    private final OrdenViniloRepository ordenViniloRepository;
 
     public OrdenVinilo crear(OrdenTrabajo ordenTrabajo, Vinilo vinilo) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");

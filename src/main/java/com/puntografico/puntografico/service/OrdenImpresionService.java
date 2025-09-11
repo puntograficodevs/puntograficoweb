@@ -1,21 +1,19 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.Impresion;
-import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenImpresion;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.OrdenImpresionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OrdenImpresionService {
 
-    @Autowired
-    private OrdenImpresionRepository ordenImpresionRepository;
+    private final OrdenImpresionRepository ordenImpresionRepository;
 
     public OrdenImpresion crear(OrdenTrabajo ordenTrabajo, Impresion impresion) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");

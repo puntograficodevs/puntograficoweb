@@ -2,16 +2,15 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.Rol;
 import com.puntografico.puntografico.repository.RolRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class RolService {
 
-    @Autowired
-    private RolRepository rolRepository;
+    private final RolRepository rolRepository;
 
     public Rol buscarPorId(Long id) {
         return rolRepository.findById(id).get();

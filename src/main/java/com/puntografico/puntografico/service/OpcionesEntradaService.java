@@ -2,12 +2,13 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OpcionesEntradaService {
 
     private final TipoPapelEntradaRepository tipoPapelEntradaRepository;
@@ -17,16 +18,6 @@ public class OpcionesEntradaService {
     private final CantidadEntradaRepository cantidadEntradaRepository;
     private final NumeradoEntradaRepository numeradoEntradaRepository;
     private final TerminacionEntradaRepository terminacionEntradaRepository;
-
-    public OpcionesEntradaService(TipoPapelEntradaRepository tipoPapelEntradaRepository, TipoColorEntradaRepository tipoColorEntradaRepository, TipoTroqueladoEntradaRepository tipoTroqueladoEntradaRepository, MedidaEntradaRepository medidaEntradaRepository, CantidadEntradaRepository cantidadEntradaRepository, NumeradoEntradaRepository numeradoEntradaRepository, TerminacionEntradaRepository terminacionEntradaRepository) {
-        this.tipoPapelEntradaRepository = tipoPapelEntradaRepository;
-        this.tipoColorEntradaRepository = tipoColorEntradaRepository;
-        this.tipoTroqueladoEntradaRepository = tipoTroqueladoEntradaRepository;
-        this.medidaEntradaRepository = medidaEntradaRepository;
-        this.cantidadEntradaRepository = cantidadEntradaRepository;
-        this.numeradoEntradaRepository = numeradoEntradaRepository;
-        this.terminacionEntradaRepository = terminacionEntradaRepository;
-    }
 
     public List<TipoPapelEntrada> buscarTodosTipoPapelEntrada() {
         return tipoPapelEntradaRepository.findAll();

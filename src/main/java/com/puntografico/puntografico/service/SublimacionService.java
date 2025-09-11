@@ -6,24 +6,21 @@ import com.puntografico.puntografico.domain.Sublimacion;
 import com.puntografico.puntografico.repository.CantidadSublimacionRepository;
 import com.puntografico.puntografico.repository.MaterialSublimacionRepository;
 import com.puntografico.puntografico.repository.SublimacionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class SublimacionService {
 
-    @Autowired
-    private SublimacionRepository sublimacionRepository;
+    private final SublimacionRepository sublimacionRepository;
 
-    @Autowired
-    private MaterialSublimacionRepository materialSublimacionRepository;
+    private final MaterialSublimacionRepository materialSublimacionRepository;
 
-    @Autowired
-    private CantidadSublimacionRepository cantidadSublimacionRepository;
+    private final CantidadSublimacionRepository cantidadSublimacionRepository;
 
     public Sublimacion crear(HttpServletRequest request) {
         String materialSublimacionString = request.getParameter("materialSublimacion.id");

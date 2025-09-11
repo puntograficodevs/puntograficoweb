@@ -5,17 +5,16 @@ import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenLonaComun;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.OrdenLonaComunRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OrdenLonaComunService {
 
-    @Autowired
-    private OrdenLonaComunRepository ordenLonaComunRepository;
+    private final OrdenLonaComunRepository ordenLonaComunRepository;
 
     public OrdenLonaComun crear(OrdenTrabajo ordenTrabajo, LonaComun lonaComun) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");

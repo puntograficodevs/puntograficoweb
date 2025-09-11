@@ -8,27 +8,23 @@ import com.puntografico.puntografico.repository.CantidadCierraBolsasRepository;
 import com.puntografico.puntografico.repository.CierraBolsasRepository;
 import com.puntografico.puntografico.repository.MedidaCierraBolsasRepository;
 import com.puntografico.puntografico.repository.TipoTroqueladoCierraBolsasRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class CierraBolsasService {
 
-    @Autowired
-    private TipoTroqueladoCierraBolsasRepository tipoTroqueladoCierraBolsasRepository;
+    private final TipoTroqueladoCierraBolsasRepository tipoTroqueladoCierraBolsasRepository;
 
-    @Autowired
-    private MedidaCierraBolsasRepository medidaCierraBolsasRepository;
+    private final MedidaCierraBolsasRepository medidaCierraBolsasRepository;
 
-    @Autowired
-    private CantidadCierraBolsasRepository cantidadCierraBolsasRepository;
+    private final CantidadCierraBolsasRepository cantidadCierraBolsasRepository;
 
-    @Autowired
-    private CierraBolsasRepository cierraBolsasRepository;
+    private final CierraBolsasRepository cierraBolsasRepository;
 
     public CierraBolsas crear(HttpServletRequest request) {
         String tipoTroquelado = request.getParameter("tipoTroqueladoCierraBolsas.id");

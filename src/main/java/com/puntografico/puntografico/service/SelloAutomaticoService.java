@@ -4,21 +4,19 @@ import com.puntografico.puntografico.domain.ModeloSelloAutomatico;
 import com.puntografico.puntografico.domain.SelloAutomatico;
 import com.puntografico.puntografico.repository.ModeloSelloAutomaticoRepository;
 import com.puntografico.puntografico.repository.SelloAutomaticoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class SelloAutomaticoService {
 
-    @Autowired
-    private SelloAutomaticoRepository selloAutomaticoRepository;
+    private final SelloAutomaticoRepository selloAutomaticoRepository;
 
-    @Autowired
-    private ModeloSelloAutomaticoRepository modeloSelloAutomaticoRepository;
+    private final ModeloSelloAutomaticoRepository modeloSelloAutomaticoRepository;
 
     public SelloAutomatico crear(HttpServletRequest request) {
         String textoLineaUno = request.getParameter("textoLineaUno");

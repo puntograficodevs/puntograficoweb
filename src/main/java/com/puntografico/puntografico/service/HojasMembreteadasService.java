@@ -8,27 +8,23 @@ import com.puntografico.puntografico.repository.CantidadHojasMembreteadasReposit
 import com.puntografico.puntografico.repository.HojasMembreteadasRepository;
 import com.puntografico.puntografico.repository.MedidaHojasMembreteadasRepository;
 import com.puntografico.puntografico.repository.TipoColorHojasMembreteadasRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class HojasMembreteadasService {
 
-    @Autowired
-    private MedidaHojasMembreteadasRepository medidaHojasMembreteadasRepository;
+    private final MedidaHojasMembreteadasRepository medidaHojasMembreteadasRepository;
 
-    @Autowired
-    private TipoColorHojasMembreteadasRepository tipoColorHojasMembreteadasRepository;
+    private final TipoColorHojasMembreteadasRepository tipoColorHojasMembreteadasRepository;
 
-    @Autowired
-    private CantidadHojasMembreteadasRepository cantidadHojasMembreteadasRepository;
+    private final CantidadHojasMembreteadasRepository cantidadHojasMembreteadasRepository;
 
-    @Autowired
-    private HojasMembreteadasRepository hojasMembreteadasRepository;
+    private final HojasMembreteadasRepository hojasMembreteadasRepository;
 
     public HojasMembreteadas crear(HttpServletRequest request) {
         String cantidadHojasString = request.getParameter("cantidadHojas");

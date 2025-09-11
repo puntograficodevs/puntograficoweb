@@ -1,21 +1,19 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.Combo;
-import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenCombo;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.OrdenComboRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OrdenComboService {
 
-    @Autowired
-    private OrdenComboRepository ordenComboRepository;
+    private final OrdenComboRepository ordenComboRepository;
 
     public OrdenCombo crear(OrdenTrabajo ordenTrabajo, Combo combo) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");

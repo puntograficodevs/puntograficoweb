@@ -2,12 +2,13 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OpcionesEtiquetaService {
 
     private final TipoPapelEtiquetaRepository tipoPapelEtiquetaRepository;
@@ -16,15 +17,6 @@ public class OpcionesEtiquetaService {
     private final TipoFazEtiquetaRepository tipoFazEtiquetaRepository;
     private final CantidadEtiquetaRepository cantidadEtiquetaRepository;
     private final MedidaEtiquetaRepository medidaEtiquetaRepository;
-
-    public OpcionesEtiquetaService(TipoPapelEtiquetaRepository tipoPapelEtiquetaRepository, TipoLaminadoEtiquetaRepository tipoLaminadoEtiquetaRepository, TamanioPerforacionRepository tamanioPerforacionRepository, TipoFazEtiquetaRepository tipoFazEtiquetaRepository, CantidadEtiquetaRepository cantidadEtiquetaRepository, MedidaEtiquetaRepository medidaEtiquetaRepository) {
-        this.tipoPapelEtiquetaRepository = tipoPapelEtiquetaRepository;
-        this.tipoLaminadoEtiquetaRepository = tipoLaminadoEtiquetaRepository;
-        this.tamanioPerforacionRepository = tamanioPerforacionRepository;
-        this.tipoFazEtiquetaRepository = tipoFazEtiquetaRepository;
-        this.cantidadEtiquetaRepository = cantidadEtiquetaRepository;
-        this.medidaEtiquetaRepository = medidaEtiquetaRepository;
-    }
 
     public List<TipoPapelEtiqueta> buscarTodosTipoPapelEtiqueta() {
         return tipoPapelEtiquetaRepository.findAll();

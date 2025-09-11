@@ -2,7 +2,7 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -10,23 +10,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service
-@Transactional
+@Transactional @AllArgsConstructor
 public class FlybannerService {
 
-    @Autowired
-    private TipoFazFlybannerRepository tipoFazFlybannerRepository;
+    private final TipoFazFlybannerRepository tipoFazFlybannerRepository;
 
-    @Autowired
-    private AlturaFlybannerRepository alturaFlybannerRepository;
+    private final AlturaFlybannerRepository alturaFlybannerRepository;
 
-    @Autowired
-    private BanderaFlybannerRepository banderaFlybannerRepository;
+    private final BanderaFlybannerRepository banderaFlybannerRepository;
 
-    @Autowired
-    private TipoBaseFlybannerRepository tipoBaseFlybannerRepository;
+    private final TipoBaseFlybannerRepository tipoBaseFlybannerRepository;
 
-    @Autowired
-    private FlybannerRepository flybannerRepository;
+    private final FlybannerRepository flybannerRepository;
 
     public Flybanner crear(HttpServletRequest request) {
         String tipoFazFlybannerString = request.getParameter("tipoFazFlybanner.id");

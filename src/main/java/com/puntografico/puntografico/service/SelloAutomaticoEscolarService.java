@@ -1,14 +1,10 @@
 package com.puntografico.puntografico.service;
 
-import com.puntografico.puntografico.domain.ModeloSelloAutomatico;
 import com.puntografico.puntografico.domain.ModeloSelloAutomaticoEscolar;
-import com.puntografico.puntografico.domain.SelloAutomatico;
 import com.puntografico.puntografico.domain.SelloAutomaticoEscolar;
 import com.puntografico.puntografico.repository.ModeloSelloAutomaticoEscolarRepository;
-import com.puntografico.puntografico.repository.ModeloSelloAutomaticoRepository;
 import com.puntografico.puntografico.repository.SelloAutomaticoEscolarRepository;
-import com.puntografico.puntografico.repository.SelloAutomaticoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -16,14 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service
-@Transactional
+@Transactional @AllArgsConstructor
 public class SelloAutomaticoEscolarService {
 
-    @Autowired
-    private SelloAutomaticoEscolarRepository selloAutomaticoEscolarRepository;
+    private final SelloAutomaticoEscolarRepository selloAutomaticoEscolarRepository;
 
-    @Autowired
-    private ModeloSelloAutomaticoEscolarRepository modeloSelloAutomaticoEscolarRepository;
+    private final ModeloSelloAutomaticoEscolarRepository modeloSelloAutomaticoEscolarRepository;
 
     public SelloAutomaticoEscolar crear(HttpServletRequest request) {
         String textoLineaUno = request.getParameter("textoLineaUno");

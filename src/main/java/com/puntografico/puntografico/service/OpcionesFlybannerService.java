@@ -8,25 +8,19 @@ import com.puntografico.puntografico.repository.AlturaFlybannerRepository;
 import com.puntografico.puntografico.repository.BanderaFlybannerRepository;
 import com.puntografico.puntografico.repository.TipoBaseFlybannerRepository;
 import com.puntografico.puntografico.repository.TipoFazFlybannerRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OpcionesFlybannerService {
 
     private final TipoFazFlybannerRepository tipoFazFlybannerRepository;
     private final AlturaFlybannerRepository alturaFlybannerRepository;
     private final BanderaFlybannerRepository banderaFlybannerRepository;
     private final TipoBaseFlybannerRepository tipoBaseFlybannerRepository;
-
-    public OpcionesFlybannerService(TipoFazFlybannerRepository tipoFazFlybannerRepository, AlturaFlybannerRepository alturaFlybannerRepository, BanderaFlybannerRepository banderaFlybannerRepository, TipoBaseFlybannerRepository tipoBaseFlybannerRepository) {
-        this.tipoFazFlybannerRepository = tipoFazFlybannerRepository;
-        this.alturaFlybannerRepository = alturaFlybannerRepository;
-        this.banderaFlybannerRepository = banderaFlybannerRepository;
-        this.tipoBaseFlybannerRepository = tipoBaseFlybannerRepository;
-    }
 
     public List<TipoFazFlybanner> buscarTodosTipoFazFlybaner() {
         return tipoFazFlybannerRepository.findAll();

@@ -1,22 +1,20 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.Flybanner;
-import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenFlybanner;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.OrdenFlybannerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
 @Service
-@Transactional
+@Transactional @AllArgsConstructor
 public class OrdenFlybannerService {
 
-    @Autowired
-    private OrdenFlybannerRepository ordenFlybannerRepository;
+    private final OrdenFlybannerRepository ordenFlybannerRepository;
 
     public OrdenFlybanner crear(OrdenTrabajo ordenTrabajo, Flybanner flybanner) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden para enlazar.");

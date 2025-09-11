@@ -2,12 +2,13 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OpcionesTalonarioService {
 
     private final TipoTalonarioRepository tipoTalonarioRepository;
@@ -17,16 +18,6 @@ public class OpcionesTalonarioService {
     private final MedidaTalonarioRepository medidaTalonarioRepository;
     private final TipoPapelTalonarioRepository tipoPapelTalonarioRepository;
     private final CantidadTalonarioRepository cantidadTalonarioRepository;
-
-    public OpcionesTalonarioService(TipoTalonarioRepository tipoTalonarioRepository, TipoTroqueladoTalonarioRepository tipoTroqueladoTalonarioRepository, ModoTalonarioRepository modoTalonarioRepository, TipoColorTalonarioRepository tipoColorTalonarioRepository, MedidaTalonarioRepository medidaTalonarioRepository, TipoPapelTalonarioRepository tipoPapelTalonarioRepository, CantidadTalonarioRepository cantidadTalonarioRepository) {
-        this.tipoTalonarioRepository = tipoTalonarioRepository;
-        this.tipoTroqueladoTalonarioRepository = tipoTroqueladoTalonarioRepository;
-        this.modoTalonarioRepository = modoTalonarioRepository;
-        this.tipoColorTalonarioRepository = tipoColorTalonarioRepository;
-        this.medidaTalonarioRepository = medidaTalonarioRepository;
-        this.tipoPapelTalonarioRepository = tipoPapelTalonarioRepository;
-        this.cantidadTalonarioRepository = cantidadTalonarioRepository;
-    }
 
     public List<TipoTalonario> buscarTodosTipoTalonario() {
         return tipoTalonarioRepository.findAll();

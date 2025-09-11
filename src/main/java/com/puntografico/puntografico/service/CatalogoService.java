@@ -6,24 +6,21 @@ import com.puntografico.puntografico.domain.TipoLaminadoCatalogo;
 import com.puntografico.puntografico.repository.CatalogoRepository;
 import com.puntografico.puntografico.repository.TipoFazCatalogoRepository;
 import com.puntografico.puntografico.repository.TipoLaminadoCatalogoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class CatalogoService {
 
-    @Autowired
-    private CatalogoRepository catalogoRepository;
+    private final CatalogoRepository catalogoRepository;
 
-    @Autowired
-    private TipoLaminadoCatalogoRepository tipoLaminadoCatalogoRepository;
+    private final TipoLaminadoCatalogoRepository tipoLaminadoCatalogoRepository;
 
-    @Autowired
-    private TipoFazCatalogoRepository tipoFazCatalogoRepository;
+    private final TipoFazCatalogoRepository tipoFazCatalogoRepository;
 
     public Catalogo crear(HttpServletRequest request) {
         String tipoPapel = request.getParameter("tipoPapel");

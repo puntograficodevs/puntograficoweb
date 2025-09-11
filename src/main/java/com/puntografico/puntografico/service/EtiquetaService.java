@@ -2,36 +2,29 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class EtiquetaService {
 
-    @Autowired
-    private EtiquetaRepository etiquetaRepository;
+    private final EtiquetaRepository etiquetaRepository;
 
-    @Autowired
-    private TipoPapelEtiquetaRepository tipoPapelEtiquetaRepository;
+    private final TipoPapelEtiquetaRepository tipoPapelEtiquetaRepository;
 
-    @Autowired
-    private TipoLaminadoEtiquetaRepository tipoLaminadoEtiquetaRepository;
+    private final TipoLaminadoEtiquetaRepository tipoLaminadoEtiquetaRepository;
 
-    @Autowired
-    private TamanioPerforacionRepository tamanioPerforacionRepository;
+    private final TamanioPerforacionRepository tamanioPerforacionRepository;
 
-    @Autowired
-    private TipoFazEtiquetaRepository tipoFazEtiquetaRepository;
+    private final TipoFazEtiquetaRepository tipoFazEtiquetaRepository;
 
-    @Autowired
-    private CantidadEtiquetaRepository cantidadEtiquetaRepository;
+    private final CantidadEtiquetaRepository cantidadEtiquetaRepository;
 
-    @Autowired
-    private MedidaEtiquetaRepository medidaEtiquetaRepository;
+    private final MedidaEtiquetaRepository medidaEtiquetaRepository;
 
     public Etiqueta crear(HttpServletRequest request) {
         String tipoPapelEtiquetaString = request.getParameter("tipoPapelEtiqueta.id");

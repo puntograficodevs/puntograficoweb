@@ -8,27 +8,23 @@ import com.puntografico.puntografico.repository.RifasBonosContribucionRepository
 import com.puntografico.puntografico.repository.TipoColorRifaRepository;
 import com.puntografico.puntografico.repository.TipoPapelRifaRepository;
 import com.puntografico.puntografico.repository.TipoTroqueladoRifaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class RifasBonosContribucionService {
 
-    @Autowired
-    private RifasBonosContribucionRepository rifasBonosContribucionRepository;
+    private final RifasBonosContribucionRepository rifasBonosContribucionRepository;
 
-    @Autowired
-    private TipoPapelRifaRepository tipoPapelRifaRepository;
+    private final TipoPapelRifaRepository tipoPapelRifaRepository;
 
-    @Autowired
-    private TipoColorRifaRepository tipoColorRifaRepository;
+    private final TipoColorRifaRepository tipoColorRifaRepository;
 
-    @Autowired
-    private TipoTroqueladoRifaRepository tipoTroqueladoRifaRepository;
+    private final TipoTroqueladoRifaRepository tipoTroqueladoRifaRepository;
 
     public RifasBonosContribucion crear(HttpServletRequest request) {
         String medida = request.getParameter("medida");

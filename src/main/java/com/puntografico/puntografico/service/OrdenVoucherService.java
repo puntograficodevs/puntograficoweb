@@ -2,17 +2,16 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.OrdenVoucherRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OrdenVoucherService {
 
-    @Autowired
-    private OrdenVoucherRepository ordenVoucherRepository;
+    private final OrdenVoucherRepository ordenVoucherRepository;
 
     public OrdenVoucher crear(OrdenTrabajo ordenTrabajo, Voucher voucher) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");

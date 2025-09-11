@@ -5,21 +5,19 @@ import com.puntografico.puntografico.domain.TipoColorAgenda;
 import com.puntografico.puntografico.domain.TipoTapaAgenda;
 import com.puntografico.puntografico.dto.AgendaDTO;
 import com.puntografico.puntografico.repository.AgendaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
 @Service
-@Transactional
+@Transactional @AllArgsConstructor
 public class AgendaService {
 
-    @Autowired
-    private AgendaRepository agendaRepository;
+    private final AgendaRepository agendaRepository;
 
-    @Autowired
-    private OpcionesAgendaService opcionesAgendaService;
+    private final OpcionesAgendaService opcionesAgendaService;
 
     public Agenda guardar(AgendaDTO agendaDTO, Long idAgenda) {
         validarAgendaDTO(agendaDTO);
@@ -39,11 +37,6 @@ public class AgendaService {
         agenda.setConAdicionalDisenio(agendaDTO.getConAdicionalDisenio());
 
         return agendaRepository.save(agenda);
-    }
-
-    public Agenda buscarPorId(Long id) {
-        Assert.notNull(agendaRepository.findById(id).get(), "La agenda debe existir en base de datos.");
-        return agendaRepository.findById(id).get();
     }
 
     private void validarAgendaDTO(AgendaDTO agendaDTO) {

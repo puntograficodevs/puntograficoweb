@@ -1,22 +1,20 @@
 package com.puntografico.puntografico.service;
 
-import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenSelloAutomaticoEscolar;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.domain.SelloAutomaticoEscolar;
 import com.puntografico.puntografico.repository.OrdenSelloAutomaticoEscolarRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
 @Service
-@Transactional
+@Transactional @AllArgsConstructor
 public class OrdenSelloAutomaticoEscolarService {
 
-    @Autowired
-    private OrdenSelloAutomaticoEscolarRepository ordenSelloAutomaticoEscolarRepository;
+    private final OrdenSelloAutomaticoEscolarRepository ordenSelloAutomaticoEscolarRepository;
 
     public OrdenSelloAutomaticoEscolar crear(OrdenTrabajo ordenTrabajo, SelloAutomaticoEscolar selloAutomaticoEscolar) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");

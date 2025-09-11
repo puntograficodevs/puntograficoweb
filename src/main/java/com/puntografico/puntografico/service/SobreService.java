@@ -8,27 +8,23 @@ import com.puntografico.puntografico.repository.CantidadSobreRepository;
 import com.puntografico.puntografico.repository.MedidaSobreRepository;
 import com.puntografico.puntografico.repository.SobreRepository;
 import com.puntografico.puntografico.repository.TipoColorSobreRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class SobreService {
 
-    @Autowired
-    private SobreRepository sobreRepository;
+    private final SobreRepository sobreRepository;
 
-    @Autowired
-    private MedidaSobreRepository medidaSobreRepository;
+    private final MedidaSobreRepository medidaSobreRepository;
 
-    @Autowired
-    private TipoColorSobreRepository tipoColorSobreRepository;
+    private final TipoColorSobreRepository tipoColorSobreRepository;
 
-    @Autowired
-    private CantidadSobreRepository cantidadSobreRepository;
+    private final CantidadSobreRepository cantidadSobreRepository;
 
     public Sobre crear(HttpServletRequest request) {
         String medidaSobreString = request.getParameter("medidaSobre.id");

@@ -6,24 +6,21 @@ import com.puntografico.puntografico.domain.TipoLonaComun;
 import com.puntografico.puntografico.repository.LonaComunRepository;
 import com.puntografico.puntografico.repository.MedidaLonaComunRepository;
 import com.puntografico.puntografico.repository.TipoLonaComunRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class LonaComunService {
 
-    @Autowired
-    private LonaComunRepository lonaComunRepository;
+    private final LonaComunRepository lonaComunRepository;
 
-    @Autowired
-    private MedidaLonaComunRepository medidaLonaComunRepository;
+    private final MedidaLonaComunRepository medidaLonaComunRepository;
 
-    @Autowired
-    private TipoLonaComunRepository tipoLonaComunRepository;
+    private final TipoLonaComunRepository tipoLonaComunRepository;
 
     public LonaComun crear(HttpServletRequest request) {
         String medidaLonaComunString = request.getParameter("medidaLonaComun.id");

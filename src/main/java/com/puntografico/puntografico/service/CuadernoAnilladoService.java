@@ -6,24 +6,21 @@ import com.puntografico.puntografico.domain.TipoTapaCuadernoAnillado;
 import com.puntografico.puntografico.repository.CuadernoAnilladoRepository;
 import com.puntografico.puntografico.repository.MedidaCuadernoAnilladoRepository;
 import com.puntografico.puntografico.repository.TipoTapaCuadernoAnilladoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class CuadernoAnilladoService {
 
-    @Autowired
-    private CuadernoAnilladoRepository cuadernoAnilladoRepository;
+    private final CuadernoAnilladoRepository cuadernoAnilladoRepository;
 
-    @Autowired
-    private TipoTapaCuadernoAnilladoRepository tipoTapaCuadernoAnilladoRepository;
+    private final TipoTapaCuadernoAnilladoRepository tipoTapaCuadernoAnilladoRepository;
 
-    @Autowired
-    private MedidaCuadernoAnilladoRepository medidaCuadernoAnilladoRepository;
+    private final MedidaCuadernoAnilladoRepository medidaCuadernoAnilladoRepository;
 
     public CuadernoAnillado crear(HttpServletRequest request) {
         String cantidadHojasString = request.getParameter("cantidadHojas");

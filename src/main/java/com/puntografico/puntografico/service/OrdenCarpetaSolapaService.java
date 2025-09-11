@@ -3,16 +3,16 @@ package com.puntografico.puntografico.service;
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.OrdenAgendaRepository;
 import com.puntografico.puntografico.repository.OrdenCarpetaSolapaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OrdenCarpetaSolapaService {
-    @Autowired
-    private OrdenCarpetaSolapaRepository ordenCarpetaSolapaRepository;
+
+    private final OrdenCarpetaSolapaRepository ordenCarpetaSolapaRepository;
 
     public OrdenCarpetaSolapa crear(OrdenTrabajo ordenTrabajo, CarpetaSolapa carpetaSolapa) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");

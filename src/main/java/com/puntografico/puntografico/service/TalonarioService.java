@@ -2,39 +2,31 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class TalonarioService {
 
-    @Autowired
-    private TipoTalonarioRepository tipoTalonarioRepository;
+    private final TipoTalonarioRepository tipoTalonarioRepository;
 
-    @Autowired
-    private TipoTroqueladoTalonarioRepository tipoTroqueladoTalonarioRepository;
+    private final TipoTroqueladoTalonarioRepository tipoTroqueladoTalonarioRepository;
 
-    @Autowired
-    private ModoTalonarioRepository modoTalonarioRepository;
+    private final ModoTalonarioRepository modoTalonarioRepository;
 
-    @Autowired
-    private TipoColorTalonarioRepository tipoColorTalonarioRepository;
+    private final TipoColorTalonarioRepository tipoColorTalonarioRepository;
 
-    @Autowired
-    private MedidaTalonarioRepository medidaTalonarioRepository;
+    private final MedidaTalonarioRepository medidaTalonarioRepository;
 
-    @Autowired
-    private TipoPapelTalonarioRepository tipoPapelTalonarioRepository;
+    private final TipoPapelTalonarioRepository tipoPapelTalonarioRepository;
 
-    @Autowired
-    private CantidadTalonarioRepository cantidadTalonarioRepository;
+    private final CantidadTalonarioRepository cantidadTalonarioRepository;
 
-    @Autowired
-    private TalonarioRepository talonarioRepository;
+    private final TalonarioRepository talonarioRepository;
 
     public Talonario crear(HttpServletRequest request) {
         String tipoTalonarioString = request.getParameter("tipoTalonario.id");

@@ -1,21 +1,19 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.CuadernoAnillado;
-import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenCuadernoAnillado;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.OrdenCuadernoAnilladoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OrdenCuadernoAnilladoService {
 
-    @Autowired
-    private OrdenCuadernoAnilladoRepository ordenCuadernoAnilladoRepository;
+    private final OrdenCuadernoAnilladoRepository ordenCuadernoAnilladoRepository;
 
     public OrdenCuadernoAnillado crear(OrdenTrabajo ordenTrabajo, CuadernoAnillado cuadernoAnillado) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");

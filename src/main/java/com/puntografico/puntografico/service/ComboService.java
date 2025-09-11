@@ -4,7 +4,7 @@ import com.puntografico.puntografico.domain.Combo;
 import com.puntografico.puntografico.domain.TipoCombo;
 import com.puntografico.puntografico.repository.ComboRepository;
 import com.puntografico.puntografico.repository.TipoComboRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -12,14 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service
-@Transactional
+@Transactional @AllArgsConstructor
 public class ComboService {
 
-    @Autowired
-    private ComboRepository comboRepository;
+    private final ComboRepository comboRepository;
 
-    @Autowired
-    private TipoComboRepository tipoComboRepository;
+    private final TipoComboRepository tipoComboRepository;
 
     public Combo crear(HttpServletRequest request) {
         String tipoComboString = request.getParameter("tipoCombo.id");

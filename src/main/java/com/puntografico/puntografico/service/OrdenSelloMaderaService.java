@@ -2,17 +2,16 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.OrdenSelloMaderaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OrdenSelloMaderaService {
 
-    @Autowired
-    private OrdenSelloMaderaRepository ordenSelloMaderaRepository;
+    private final OrdenSelloMaderaRepository ordenSelloMaderaRepository;
 
     public OrdenSelloMadera crear(OrdenTrabajo ordenTrabajo, SelloMadera selloMadera) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");

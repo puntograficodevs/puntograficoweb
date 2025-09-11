@@ -2,12 +2,13 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OpcionesTarjetaService {
 
     private final TipoPapelTarjetaRepository tipoPapelTarjetaRepository;
@@ -16,15 +17,6 @@ public class OpcionesTarjetaService {
     private final TipoLaminadoTarjetaRepository tipoLaminadoTarjetaRepository;
     private final MedidaTarjetaRepository medidaTarjetaRepository;
     private final CantidadTarjetaRepository cantidadTarjetaRepository;
-
-    public OpcionesTarjetaService(TipoPapelTarjetaRepository tipoPapelTarjetaRepository, TipoColorTarjetaRepository tipoColorTarjetaRepository, TipoFazTarjetaRepository tipoFazTarjetaRepository, TipoLaminadoTarjetaRepository tipoLaminadoTarjetaRepository, MedidaTarjetaRepository medidaTarjetaRepository, CantidadTarjetaRepository cantidadTarjetaRepository) {
-        this.tipoPapelTarjetaRepository = tipoPapelTarjetaRepository;
-        this.tipoColorTarjetaRepository = tipoColorTarjetaRepository;
-        this.tipoFazTarjetaRepository = tipoFazTarjetaRepository;
-        this.tipoLaminadoTarjetaRepository = tipoLaminadoTarjetaRepository;
-        this.medidaTarjetaRepository = medidaTarjetaRepository;
-        this.cantidadTarjetaRepository = cantidadTarjetaRepository;
-    }
 
     public List<TipoPapelTarjeta> buscarTodosTipoPapelTarjeta() {
         return tipoPapelTarjetaRepository.findAll();

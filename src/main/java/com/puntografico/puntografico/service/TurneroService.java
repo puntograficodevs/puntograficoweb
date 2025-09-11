@@ -2,27 +2,23 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class TurneroService {
 
-    @Autowired
-    private MedidaTurneroRepository medidaTurneroRepository;
+    private final MedidaTurneroRepository medidaTurneroRepository;
 
-    @Autowired
-    private TipoColorTurneroRepository tipoColorTurneroRepository;
+    private final TipoColorTurneroRepository tipoColorTurneroRepository;
 
-    @Autowired
-    private CantidadTurneroRepository cantidadTurneroRepository;
+    private final CantidadTurneroRepository cantidadTurneroRepository;
 
-    @Autowired
-    private TurneroRepository turneroRepository;
+    private final TurneroRepository turneroRepository;
 
     public Turnero crear(HttpServletRequest request) {
         String cantidadHojasString = request.getParameter("cantidadHojas");

@@ -2,36 +2,29 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class FolletoService {
 
-    @Autowired
-    private FolletoRepository folletoRepository;
+    private final FolletoRepository folletoRepository;
 
-    @Autowired
-    private TipoPapelFolletoRepository tipoPapelFolletoRepository;
+    private final TipoPapelFolletoRepository tipoPapelFolletoRepository;
 
-    @Autowired
-    private TipoColorFolletoRepository tipoColorFolletoRepository;
+    private final TipoColorFolletoRepository tipoColorFolletoRepository;
 
-    @Autowired
-    private TipoFazFolletoRepository tipoFazFolletoRepository;
+    private final TipoFazFolletoRepository tipoFazFolletoRepository;
 
-    @Autowired
-    private TamanioHojaFolletoRepository tamanioHojaFolletoRepository;
+    private final TamanioHojaFolletoRepository tamanioHojaFolletoRepository;
 
-    @Autowired
-    private TipoFolletoRepository tipoFolletoRepository;
+    private final TipoFolletoRepository tipoFolletoRepository;
 
-    @Autowired
-    private CantidadFolletoRepository cantidadFolletoRepository;
+    private final CantidadFolletoRepository cantidadFolletoRepository;
 
     public Folleto crear(HttpServletRequest request) {
         String tipoPapelFolletoString = request.getParameter("tipoPapelFolleto.id");

@@ -2,30 +2,25 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class VoucherService {
 
-    @Autowired
-    private VoucherRepository voucherRepository;
+    private final VoucherRepository voucherRepository;
 
-    @Autowired
-    private MedidaVoucherRepository medidaVoucherRepository;
+    private final MedidaVoucherRepository medidaVoucherRepository;
 
-    @Autowired
-    private TipoPapelVoucherRepository tipoPapelVoucherRepository;
+    private final TipoPapelVoucherRepository tipoPapelVoucherRepository;
 
-    @Autowired
-    private TipoFazVoucherRepository tipoFazVoucherRepository;
+    private final TipoFazVoucherRepository tipoFazVoucherRepository;
 
-    @Autowired
-    private CantidadVoucherRepository cantidadVoucherRepository;
+    private final CantidadVoucherRepository cantidadVoucherRepository;
 
     public Voucher crear(HttpServletRequest request) {
         String medidaVoucherString = request.getParameter("medidaVoucher.id");

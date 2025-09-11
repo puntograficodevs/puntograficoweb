@@ -2,36 +2,29 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class ImpresionService {
 
-    @Autowired
-    private ImpresionRepository impresionRepository;
+    private final ImpresionRepository impresionRepository;
 
-    @Autowired
-    private TipoColorImpresionRepository tipoColorImpresionRepository;
+    private final TipoColorImpresionRepository tipoColorImpresionRepository;
 
-    @Autowired
-    private TamanioHojaImpresionRepository tamanioHojaImpresionRepository;
+    private final TamanioHojaImpresionRepository tamanioHojaImpresionRepository;
 
-    @Autowired
-    private TipoFazImpresionRepository tipoFazImpresionRepository;
+    private final TipoFazImpresionRepository tipoFazImpresionRepository;
 
-    @Autowired
-    private TipoPapelImpresionRepository tipoPapelImpresionRepository;
+    private final TipoPapelImpresionRepository tipoPapelImpresionRepository;
 
-    @Autowired
-    private CantidadImpresionRepository cantidadImpresionRepository;
+    private final CantidadImpresionRepository cantidadImpresionRepository;
 
-    @Autowired
-    private TipoImpresionRepository tipoImpresionRepository;
+    private final TipoImpresionRepository tipoImpresionRepository;
 
     public Impresion crear(HttpServletRequest request) {
         String tipoColorImpresionString = request.getParameter("tipoColorImpresion.id");

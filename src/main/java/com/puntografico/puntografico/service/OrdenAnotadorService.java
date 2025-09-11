@@ -5,6 +5,7 @@ import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenAnotador;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.OrdenAnotadorRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -12,11 +13,10 @@ import org.springframework.util.Assert;
 import javax.transaction.Transactional;
 
 @Service
-@Transactional
+@Transactional @AllArgsConstructor
 public class OrdenAnotadorService {
 
-    @Autowired
-    private OrdenAnotadorRepository ordenAnotadorRepository;
+    private final OrdenAnotadorRepository ordenAnotadorRepository;
 
     public OrdenAnotador guardar(OrdenTrabajo ordenTrabajo, Anotador anotador, Long idOrdenAnotador) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");

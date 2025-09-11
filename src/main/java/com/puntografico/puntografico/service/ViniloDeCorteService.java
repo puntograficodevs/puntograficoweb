@@ -1,25 +1,22 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.TraeMaterialVinilo;
-import com.puntografico.puntografico.domain.Vinilo;
 import com.puntografico.puntografico.domain.ViniloDeCorte;
 import com.puntografico.puntografico.repository.TraeMaterialViniloRepository;
 import com.puntografico.puntografico.repository.ViniloDeCorteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class ViniloDeCorteService {
 
-    @Autowired
-    private ViniloDeCorteRepository viniloDeCorteRepository;
+    private final ViniloDeCorteRepository viniloDeCorteRepository;
 
-    @Autowired
-    private TraeMaterialViniloRepository traeMaterialViniloRepository;
+    private final TraeMaterialViniloRepository traeMaterialViniloRepository;
 
     public ViniloDeCorte crear(HttpServletRequest request) {
         String traeMaterialViniloString = request.getParameter("traeMaterialVinilo.id");

@@ -2,17 +2,16 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.OrdenTurneroRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OrdenTurneroService {
 
-    @Autowired
-    private OrdenTurneroRepository ordenTurneroRepository;
+    private final OrdenTurneroRepository ordenTurneroRepository;
 
     public OrdenTurnero crear(OrdenTrabajo ordenTrabajo, Turnero turnero) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");

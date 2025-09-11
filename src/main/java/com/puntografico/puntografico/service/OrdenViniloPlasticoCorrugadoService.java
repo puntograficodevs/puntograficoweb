@@ -5,17 +5,16 @@ import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.domain.OrdenViniloPlasticoCorrugado;
 import com.puntografico.puntografico.domain.ViniloPlasticoCorrugado;
 import com.puntografico.puntografico.repository.OrdenViniloPlasticoCorrugadoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OrdenViniloPlasticoCorrugadoService {
 
-    @Autowired
-    private OrdenViniloPlasticoCorrugadoRepository ordenViniloPlasticoCorrugadoRepository;
+    private final OrdenViniloPlasticoCorrugadoRepository ordenViniloPlasticoCorrugadoRepository;
 
     public OrdenViniloPlasticoCorrugado crear(OrdenTrabajo ordenTrabajo, ViniloPlasticoCorrugado viniloPlasticoCorrugado) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");

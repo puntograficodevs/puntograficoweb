@@ -2,39 +2,31 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class EntradaService {
 
-    @Autowired
-    private EntradaRepository entradaRepository;
+    private final EntradaRepository entradaRepository;
 
-    @Autowired
-    private TipoPapelEntradaRepository tipoPapelEntradaRepository;
+    private final TipoPapelEntradaRepository tipoPapelEntradaRepository;
 
-    @Autowired
-    private TipoColorEntradaRepository tipoColorEntradaRepository;
+    private final TipoColorEntradaRepository tipoColorEntradaRepository;
 
-    @Autowired
-    private TipoTroqueladoEntradaRepository tipoTroqueladoEntradaRepository;
+    private final TipoTroqueladoEntradaRepository tipoTroqueladoEntradaRepository;
 
-    @Autowired
-    private MedidaEntradaRepository medidaEntradaRepository;
+    private final MedidaEntradaRepository medidaEntradaRepository;
 
-    @Autowired
-    private CantidadEntradaRepository cantidadEntradaRepository;
+    private final CantidadEntradaRepository cantidadEntradaRepository;
 
-    @Autowired
-    private NumeradoEntradaRepository numeradoEntradaRepository;
+    private final NumeradoEntradaRepository numeradoEntradaRepository;
 
-    @Autowired
-    private TerminacionEntradaRepository terminacionEntradaRepository;
+    private final TerminacionEntradaRepository terminacionEntradaRepository;
 
     public Entrada crear(HttpServletRequest request) {
         String tipoPapelEntradaString = request.getParameter("tipoPapelEntrada.id");

@@ -2,12 +2,13 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OpcionesViniloService {
 
     private final TipoViniloRepository tipoViniloRepository;
@@ -15,14 +16,6 @@ public class OpcionesViniloService {
     private final TipoCorteViniloRepository tipoCorteViniloRepository;
     private final MedidaViniloRepository medidaViniloRepository;
     private final CantidadViniloRepository cantidadViniloRepository;
-
-    public OpcionesViniloService(TipoViniloRepository tipoViniloRepository, TipoAdicionalViniloRepository tipoAdicionalViniloRepository, TipoCorteViniloRepository tipoCorteViniloRepository, MedidaViniloRepository medidaViniloRepository, CantidadViniloRepository cantidadViniloRepository) {
-        this.tipoViniloRepository = tipoViniloRepository;
-        this.tipoAdicionalViniloRepository = tipoAdicionalViniloRepository;
-        this.tipoCorteViniloRepository = tipoCorteViniloRepository;
-        this.medidaViniloRepository = medidaViniloRepository;
-        this.cantidadViniloRepository = cantidadViniloRepository;
-    }
 
     public List<TipoVinilo> buscarTodosTipoVinilo() {
         return tipoViniloRepository.findAll();

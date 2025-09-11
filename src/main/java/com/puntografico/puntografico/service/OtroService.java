@@ -4,21 +4,19 @@ import com.puntografico.puntografico.domain.Otro;
 import com.puntografico.puntografico.domain.TipoColorOtro;
 import com.puntografico.puntografico.repository.OtroRepository;
 import com.puntografico.puntografico.repository.TipoColorOtroRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OtroService {
 
-    @Autowired
-    private OtroRepository otroRepository;
+    private final OtroRepository otroRepository;
 
-    @Autowired
-    private TipoColorOtroRepository tipoColorOtroRepository;
+    private final TipoColorOtroRepository tipoColorOtroRepository;
 
     public Otro crear(HttpServletRequest request) {
         String tipoColorOtroString = request.getParameter("tipoColorOtro.id");

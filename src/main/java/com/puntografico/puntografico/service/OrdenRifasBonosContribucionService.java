@@ -1,21 +1,19 @@
 package com.puntografico.puntografico.service;
 
-import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenRifasBonosContribucion;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.domain.RifasBonosContribucion;
 import com.puntografico.puntografico.repository.OrdenRifasBonosContribucionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OrdenRifasBonosContribucionService {
 
-    @Autowired
-    private OrdenRifasBonosContribucionRepository ordenRifasBonosContribucionRepository;
+    private final OrdenRifasBonosContribucionRepository ordenRifasBonosContribucionRepository;
 
     public OrdenRifasBonosContribucion crear (OrdenTrabajo ordenTrabajo, RifasBonosContribucion rifasBonosContribucion) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");

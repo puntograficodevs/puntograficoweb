@@ -5,17 +5,16 @@ import com.puntografico.puntografico.domain.OrdenSublimacion;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.domain.Sublimacion;
 import com.puntografico.puntografico.repository.OrdenSublimacionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OrdenSublimacionService {
 
-    @Autowired
-    private OrdenSublimacionRepository ordenSublimacionRepository;
+    private final OrdenSublimacionRepository ordenSublimacionRepository;
 
     public OrdenSublimacion crear(OrdenTrabajo ordenTrabajo, Sublimacion sublimacion) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");

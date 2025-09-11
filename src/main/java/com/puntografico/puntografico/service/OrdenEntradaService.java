@@ -1,21 +1,19 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.Entrada;
-import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenEntrada;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.OrdenEntradaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
-@Service @Transactional
+@Service @Transactional @AllArgsConstructor
 public class OrdenEntradaService {
 
-    @Autowired
-    private OrdenEntradaRepository ordenEntradaRepository;
+    private final OrdenEntradaRepository ordenEntradaRepository;
 
     public OrdenEntrada crear(OrdenTrabajo ordenTrabajo, Entrada entrada) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
