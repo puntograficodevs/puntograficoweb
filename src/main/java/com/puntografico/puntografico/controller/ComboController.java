@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.ComboDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,38 +14,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class ComboController {
 
-    @Autowired
-    private MedioPagoService medioPagoService;
+    private final MedioPagoService medioPagoService;
+    private final OrdenComboService ordenComboService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final OpcionesComboService opcionesComboService;
+    private final ComboService comboService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private OrdenComboService ordenComboService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private OpcionesComboService opcionesComboService;
-
-    @Autowired
-    private ComboService comboService;
-
-    @GetMapping("/crear-odt-combo")
-    public String verCrearOdtCombo(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-combo", "/crear-odt-combo/{idOrden}"})
+    public String verCrearOdtCombo(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenCombo ordenCombo = (idOrden != null) ? ordenComboService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenCombo != null) ? ordenCombo.getOrdenTrabajo() : new OrdenTrabajo();
+        Combo combo = (ordenCombo != null) ? ordenCombo.getCombo() : new Combo();
 
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
         List<TipoCombo> listaTipoCombo = opcionesComboService.buscarTodosTipoCombo();
 
-        model.addAttribute("combo", new Combo());
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
+        model.addAttribute("combo", combo);
         model.addAttribute("listaMediosDePago", listaMediosDePago);
         model.addAttribute("listaTipoCombo", listaTipoCombo);
 
@@ -70,12 +67,30 @@ public class ComboController {
 
     @PostMapping("/api/creacion-combo")
     public String creacionCombo(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        Combo combo = comboService.crear(request);
-        OrdenCombo ordenCombo = ordenComboService.crear(ordenTrabajo, combo);
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return "redirect:/mostrar-odt-combo/" + ordenCombo.getId();*/
+        OrdenCombo ordenComboExistente = (idOrden != null) ? ordenComboService.buscarPorOrdenId(idOrden): null;
+        Long idOrdenTrabajo = (ordenComboExistente != null) ? ordenComboExistente.getOrdenTrabajo().getId() : null;
+        Long idCombo = (ordenComboExistente != null) ? ordenComboExistente.getCombo().getId() : null;
+        Long idOrdenCombo = (ordenComboExistente != null) ? ordenComboExistente.getId() : null;
 
-        return null;
+        ComboDTO comboDTO = armarComboDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        Combo combo = comboService.guardar(comboDTO, idCombo);
+        OrdenCombo ordenCombo = ordenComboService.guardar(ordenTrabajo, combo, idOrdenCombo);
+
+        return "redirect:/mostrar-odt-combo/" + ordenCombo.getId();
+    }
+
+    private ComboDTO armarComboDTO(HttpServletRequest request) {
+        ComboDTO comboDTO = new ComboDTO();
+        comboDTO.setTipoComboId(Long.parseLong(request.getParameter("tipoCombo.id")));
+        comboDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        comboDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        comboDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        comboDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+
+        return comboDTO;
     }
 }

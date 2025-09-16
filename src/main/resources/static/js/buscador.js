@@ -30,6 +30,9 @@ document.addEventListener("DOMContentLoaded", function () {
       case "cierra bolsas":
         window.location.href = `/crear-odt-cierra-bolsas/${idOrden}`;
         break;
+      case "combo":
+        window.location.href = `/crear-odt-combo/${idOrden}`;
+        break;
       default:
         console.warn("Tipo de producto no manejado:", tipoProducto);
     }

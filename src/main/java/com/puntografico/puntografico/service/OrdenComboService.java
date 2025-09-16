@@ -15,11 +15,11 @@ public class OrdenComboService {
 
     private final OrdenComboRepository ordenComboRepository;
 
-    public OrdenCombo crear(OrdenTrabajo ordenTrabajo, Combo combo) {
+    public OrdenCombo guardar(OrdenTrabajo ordenTrabajo, Combo combo, Long idOrdenCombo) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(combo, "Debe venir un combo para enlazar.");
 
-        OrdenCombo ordenCombo = new OrdenCombo();
+        OrdenCombo ordenCombo = (idOrdenCombo != null) ? ordenComboRepository.findById(idOrdenCombo).get() : new OrdenCombo();
         ordenCombo.setCantidad(combo.getCantidad());
         ordenCombo.setOrdenTrabajo(ordenTrabajo);
         ordenCombo.setCombo(combo);
