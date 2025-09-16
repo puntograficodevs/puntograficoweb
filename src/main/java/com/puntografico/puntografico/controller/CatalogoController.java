@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.CatalogoDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,39 +14,41 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class CatalogoController {
 
-    @Autowired
-    private OpcionesCatalogoService opcionesCatalogoService;
+    private final OpcionesCatalogoService opcionesCatalogoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
+    private final MedioPagoService medioPagoService;
 
-    @Autowired
-    private OrdenCatalogoService ordenCatalogoService;
+    private final OrdenCatalogoService ordenCatalogoService;
 
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
+    private final OrdenTrabajoService ordenTrabajoService;
 
-    @Autowired
-    private CatalogoService catalogoService;
+    private final CatalogoService catalogoService;
 
-    @GetMapping("/crear-odt-catalogo")
-    public String verCrearOdtCatalogo(Model model, HttpSession session) {
+    private final ProductoService productoService;
+
+    @GetMapping({"/crear-odt-catalogo", "/crear-odt-catalogo/{idOrden}"})
+    public String verCrearOdtCatalogo(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenCatalogo ordenCatalogo = (idOrden != null) ? ordenCatalogoService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenCatalogo != null) ? ordenCatalogo.getOrdenTrabajo() : new OrdenTrabajo();
+        Catalogo catalogo = (ordenCatalogo != null) ? ordenCatalogo.getCatalogo() : new Catalogo();
+
 
         List<TipoFazCatalogo> listaTipoFazCatalogo = opcionesCatalogoService.buscarTodosTipoFazCatalogo();
         List<TipoLaminadoCatalogo> listaTipoLaminadoCatalogo = opcionesCatalogoService.buscarTodosTipoLaminadoCatalogo();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("catalogo", new Catalogo());
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
+        model.addAttribute("catalogo", catalogo);
         model.addAttribute("listaTipoFazCatalogo", listaTipoFazCatalogo);
         model.addAttribute("listaTipoLaminadoCatalogo", listaTipoLaminadoCatalogo);
         model.addAttribute("listaMediosDePago", listaMediosDePago);
@@ -61,10 +64,10 @@ public class CatalogoController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
 
         OrdenCatalogo ordenCatalogo = ordenCatalogoService.buscarPorId(ordenCatalogoId);
 
+        model.addAttribute("empleado", empleado);
         model.addAttribute("ordenCatalogo", ordenCatalogo);
 
         return "mostrar-odt-catalogo";
@@ -72,11 +75,32 @@ public class CatalogoController {
 
     @PostMapping("/api/creacion-catalogo")
     public String creacionCatalogo(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        Catalogo catalogo = catalogoService.crear(request);
-        OrdenCatalogo ordenCatalogo = ordenCatalogoService.crear(ordenTrabajo, catalogo);
-        return "redirect:/mostrar-odt-catalogo/" + ordenCatalogo.getId();*/
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return null;
+        OrdenCatalogo ordenCatalogoExistente = (idOrden != null) ? ordenCatalogoService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenCatalogoExistente != null) ? ordenCatalogoExistente.getOrdenTrabajo().getId() : null;
+        Long idCatalogo = (ordenCatalogoExistente != null) ? ordenCatalogoExistente.getCatalogo().getId() : null;
+        Long idOrdenCatalogo = (ordenCatalogoExistente != null) ? ordenCatalogoExistente.getId() : null;
+
+        CatalogoDTO catalogoDTO = armarCatalogoDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        Catalogo catalogo = catalogoService.guardar(catalogoDTO, idCatalogo);
+        OrdenCatalogo ordenCatalogo = ordenCatalogoService.guardar(ordenTrabajo, catalogo, idOrdenCatalogo);
+
+        return "redirect:/mostrar-odt-catalogo/" + ordenCatalogo.getId();
+    }
+
+    private CatalogoDTO armarCatalogoDTO(HttpServletRequest request) {
+        CatalogoDTO catalogoDTO = new CatalogoDTO();
+        catalogoDTO.setTipoLaminadoCatalogoId(Long.parseLong(request.getParameter("tipoLaminadoCatalogo.id")));
+        catalogoDTO.setTipoFazCatalogoId(Long.parseLong(request.getParameter("tipoFazCatalogo.id")));
+        catalogoDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        catalogoDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        catalogoDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        catalogoDTO.setTipoPapel(request.getParameter("tipoPapel"));
+        catalogoDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+
+        return catalogoDTO;
     }
 }

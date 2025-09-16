@@ -2,7 +2,7 @@ package com.puntografico.puntografico.controller.rest;
 
 import com.puntografico.puntografico.domain.PlantillaAgenda;
 import com.puntografico.puntografico.repository.PlantillaAgendaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,12 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
-@RestController
+@RestController @AllArgsConstructor
 @RequestMapping("/api/plantilla-agenda")
 public class PlantillaAgendaRestController {
 
-    @Autowired
-    private PlantillaAgendaRepository plantillaAgendaRepository;
+    private final PlantillaAgendaRepository plantillaAgendaRepository;
 
     @GetMapping("/precio")
     public ResponseEntity<Integer> obtenerPrecio(

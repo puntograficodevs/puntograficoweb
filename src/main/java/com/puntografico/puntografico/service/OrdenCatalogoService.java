@@ -13,11 +13,11 @@ public class OrdenCatalogoService {
 
     private final OrdenCatalogoRepository ordenCatalogoRepository;
 
-    public OrdenCatalogo crear(OrdenTrabajo ordenTrabajo, Catalogo catalogo) {
+    public OrdenCatalogo guardar(OrdenTrabajo ordenTrabajo, Catalogo catalogo, Long idOrdenCatalogo) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(catalogo, "Debe venir un catálogo para enlazar");
 
-        OrdenCatalogo ordenCatalogo = new OrdenCatalogo();
+        OrdenCatalogo ordenCatalogo = (idOrdenCatalogo != null) ? ordenCatalogoRepository.findById(idOrdenCatalogo).get() : new OrdenCatalogo();
         ordenCatalogo.setCantidad(catalogo.getCantidad());
         ordenCatalogo.setOrdenTrabajo(ordenTrabajo);
         ordenCatalogo.setCatalogo(catalogo);

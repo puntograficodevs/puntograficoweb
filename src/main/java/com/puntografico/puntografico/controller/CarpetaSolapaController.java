@@ -3,7 +3,7 @@ package com.puntografico.puntografico.controller;
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.dto.CarpetaSolapaDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,38 +14,40 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class CarpetaSolapaController {
 
-    @Autowired
-    private OpcionesCarpetaSolapaService opcionesCarpetaSolapaService;
+    private final OpcionesCarpetaSolapaService opcionesCarpetaSolapaService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
+    private final MedioPagoService medioPagoService;
 
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
+    private final OrdenTrabajoService ordenTrabajoService;
 
-    @Autowired
-    private CarpetaSolapaService carpetaSolapaService;
+    private final CarpetaSolapaService carpetaSolapaService;
 
-    @Autowired
-    private OrdenCarpetaSolapaService ordenCarpetaSolapaService;
+    private final OrdenCarpetaSolapaService ordenCarpetaSolapaService;
 
-    @GetMapping("/crear-odt-carpeta-solapa")
-    public String verCrearOdtCarpetaSolapa(Model model, HttpSession session) {
+    private final ProductoService productoService;
+
+    @GetMapping({"/crear-odt-carpeta-solapa", "/crear-odt-carpeta-solapa/{idOrden}"})
+    public String verCrearOdtCarpetaSolapa(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenCarpetaSolapa ordenCarpetaSolapa = (idOrden != null) ? ordenCarpetaSolapaService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenCarpetaSolapa != null) ? ordenCarpetaSolapa.getOrdenTrabajo() : new OrdenTrabajo();
+        CarpetaSolapa carpetaSolapa = (ordenCarpetaSolapa != null) ? ordenCarpetaSolapa.getCarpetaSolapa() : new CarpetaSolapa();
+
         List<TipoFazCarpetaSolapa> listaTipoFazCarpetaSolapa = opcionesCarpetaSolapaService.buscarTodosTipoFazCarpetaSolapa();
         List<TipoLaminadoCarpetaSolapa> listaTipoLaminadoCarpetaSolapa = opcionesCarpetaSolapaService.buscarTodosTipoLaminadoCarpetaSolapa();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("carpetaSolapa", new CarpetaSolapa());
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
+        model.addAttribute("carpetaSolapa", carpetaSolapa);
         model.addAttribute("listaTipoFazCarpetaSolapa", listaTipoFazCarpetaSolapa);
         model.addAttribute("listaTipoLaminadoCarpetaSolapa", listaTipoLaminadoCarpetaSolapa);
         model.addAttribute("listaMediosDePago", listaMediosDePago);
@@ -61,10 +63,9 @@ public class CarpetaSolapaController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
-
         OrdenCarpetaSolapa ordenCarpetaSolapa = ordenCarpetaSolapaService.buscarPorId(ordenCarpetaSolapaId);
 
+        model.addAttribute("empleado", empleado);
         model.addAttribute("ordenCarpetaSolapa", ordenCarpetaSolapa);
 
         return "mostrar-odt-carpeta-solapa";
@@ -72,16 +73,23 @@ public class CarpetaSolapaController {
 
     @PostMapping("/api/creacion-carpeta-solapa")
     public String creacionCarpetaSolapa(HttpServletRequest request) {
-        /*CarpetaSolapaDTO carpetaSolapaDTO = armarDTO(request);
-        OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        CarpetaSolapa carpetaSolapa = carpetaSolapaService.crear(carpetaSolapaDTO);
-        OrdenCarpetaSolapa ordenCarpetaSolapa = ordenCarpetaSolapaService.crear(ordenTrabajo, carpetaSolapa);
-        return "redirect:/mostrar-odt-carpeta-solapa/" + ordenCarpetaSolapa.getId();*/
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return null;
+        OrdenCarpetaSolapa ordenCarpetaSolapaExistente = (idOrden != null) ? ordenCarpetaSolapaService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenCarpetaSolapaExistente != null) ? ordenCarpetaSolapaExistente.getOrdenTrabajo().getId() : null;
+        Long idCarpetaSolapa = (ordenCarpetaSolapaExistente != null) ? ordenCarpetaSolapaExistente.getCarpetaSolapa().getId() : null;
+        Long idOrdenCarpetaSolapa = (ordenCarpetaSolapaExistente != null) ? ordenCarpetaSolapaExistente.getId() : null;
+
+        CarpetaSolapaDTO carpetaSolapaDTO = armarCarpetaSolapaDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        CarpetaSolapa carpetaSolapa = carpetaSolapaService.guardar(carpetaSolapaDTO, idCarpetaSolapa);
+        OrdenCarpetaSolapa ordenCarpetaSolapa = ordenCarpetaSolapaService.guardar(ordenTrabajo, carpetaSolapa, idOrdenCarpetaSolapa);
+
+        return "redirect:/mostrar-odt-carpeta-solapa/" + ordenCarpetaSolapa.getId();
     }
 
-    private CarpetaSolapaDTO armarDTO(HttpServletRequest request) {
+    private CarpetaSolapaDTO armarCarpetaSolapaDTO(HttpServletRequest request) {
         CarpetaSolapaDTO carpetaSolapaDTO = new CarpetaSolapaDTO();
         carpetaSolapaDTO.setTipoFazCarpetaSolapaId(Long.parseLong(request.getParameter("tipoFazCarpetaSolapa.id")));
         carpetaSolapaDTO.setTipoLaminadoCarpetaSolapaId(Long.parseLong(request.getParameter("tipoLaminadoCarpetaSolapa.id")));

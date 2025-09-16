@@ -4,7 +4,6 @@ import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.dto.AgendaDTO;
 import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,17 +15,17 @@ import java.util.List;
 @Controller @AllArgsConstructor
 public class AgendaController {
 
-    private AgendaService agendaService;
+    private final AgendaService agendaService;
 
-    private MedioPagoService medioPagoService;
+    private final MedioPagoService medioPagoService;
 
-    private OpcionesAgendaService opcionesAgendaService;
+    private final OpcionesAgendaService opcionesAgendaService;
 
-    private OrdenTrabajoService ordenTrabajoService;
+    private final OrdenTrabajoService ordenTrabajoService;
 
-    private OrdenAgendaService ordenAgendaService;
+    private final OrdenAgendaService ordenAgendaService;
 
-    private ProductoService productoService;
+    private final ProductoService productoService;
 
     @GetMapping({"/crear-odt-agenda", "/crear-odt-agenda/{idOrden}"})
     public String verCrearOdtAgenda(

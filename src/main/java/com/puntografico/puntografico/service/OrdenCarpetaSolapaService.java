@@ -1,7 +1,6 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
-import com.puntografico.puntografico.repository.OrdenAgendaRepository;
 import com.puntografico.puntografico.repository.OrdenCarpetaSolapaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,11 +13,11 @@ public class OrdenCarpetaSolapaService {
 
     private final OrdenCarpetaSolapaRepository ordenCarpetaSolapaRepository;
 
-    public OrdenCarpetaSolapa crear(OrdenTrabajo ordenTrabajo, CarpetaSolapa carpetaSolapa) {
+    public OrdenCarpetaSolapa guardar(OrdenTrabajo ordenTrabajo, CarpetaSolapa carpetaSolapa, Long idOrdenCarpetaSolapa) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(carpetaSolapa, "Debe venir una carpeta con solapas para enlazar.");
 
-        OrdenCarpetaSolapa ordenCarpetaSolapa = new OrdenCarpetaSolapa();
+        OrdenCarpetaSolapa ordenCarpetaSolapa = (idOrdenCarpetaSolapa != null) ? ordenCarpetaSolapaRepository.findById(idOrdenCarpetaSolapa).get() : new OrdenCarpetaSolapa();
         ordenCarpetaSolapa.setCantidad(carpetaSolapa.getCantidad());
         ordenCarpetaSolapa.setOrdenTrabajo(ordenTrabajo);
         ordenCarpetaSolapa.setCarpetaSolapa(carpetaSolapa);

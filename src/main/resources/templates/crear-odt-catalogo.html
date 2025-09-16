@@ -12,7 +12,7 @@
 <div th:replace="fragments/navbar :: navbar"></div>
 
 <div class="container mt-5">
-  <h2>Crear orden - Catálogo</h2>
+  <h2 th:text="${ordenTrabajo.id} != null ? 'Editar orden - Catálogo' : 'Crear orden - Catálogo'"></h2>
 
   <form method="post" action="/api/creacion-catalogo">
     <!-- DATOS DEL CLIENTE -->
@@ -21,15 +21,15 @@
       <div class="row mb-3">
         <div class="col-md-6">
           <label for="nombreCliente" class="form-label">Nombre del cliente *</label>
-          <input type="text" class="form-control" name="nombreCliente" id="nombreCliente" placeholder="Ej: Juan Pérez" required>
+          <input type="text" class="form-control" name="nombreCliente" id="nombreCliente" th:value="${ordenTrabajo.nombreCliente}" placeholder="Ej: Juan Pérez" required>
         </div>
         <div class="col-md-4">
           <label for="telefonoCliente" class="form-label">Teléfono del cliente *</label>
-          <input type="text" class="form-control" name="telefonoCliente" id="telefonoCliente" placeholder="Ej: 1123952892" required>
+          <input type="text" class="form-control" name="telefonoCliente" id="telefonoCliente" th:value="${ordenTrabajo.telefonoCliente}" placeholder="Ej: 1123952892" required>
         </div>
         <div class="col-md-2 d-flex align-items-end">
           <div class="form-check">
-            <input type="checkbox" class="form-check-input" name="esCuentaCorriente" id="esCuentaCorriente">
+            <input type="checkbox" class="form-check-input" name="esCuentaCorriente" id="esCuentaCorriente" th:checked="${ordenTrabajo.esCuentaCorriente}">
             <label class="form-check-label" for="esCuentaCorriente">¿CC?</label>
           </div>
         </div>
@@ -38,42 +38,44 @@
       <div class="row mb-3">
         <div class="col-md-6">
           <label for="fechaEntrega" class="form-label">Fecha de entrega *</label>
-          <input type="date" class="form-control" name="fechaEntrega" id="fechaEntrega" required>
+          <input type="date" class="form-control" name="fechaEntrega" id="fechaEntrega" th:value="${ordenTrabajo.fechaEntrega}" required>
         </div>
         <div class="col-md-4">
           <label for="horaEntrega" class="form-label">Hora de entrega</label>
-          <input type="text" class="form-control" name="horaEntrega" id="horaEntrega" placeholder="Ej: 11:30 pm">
+          <input type="text" class="form-control" name="horaEntrega" id="horaEntrega" th:value="${ordenTrabajo.horaEntrega}" placeholder="Ej: 11:30 pm">
         </div>
         <div class="col-md-2 d-flex align-items-end">
           <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="toggleFechaMuestra">
+            <input type="checkbox" class="form-check-input" id="toggleFechaMuestra" th:checked="${ordenTrabajo.fechaMuestra != null}">
             <label class="form-check-label" for="toggleFechaMuestra">¿Muestra?</label>
           </div>
         </div>
       </div>
 
-      <div class="row mb-3 d-none" id="fechaMuestraRow">
+      <div class="row mb-3" th:classappend="${ordenTrabajo.fechaMuestra != null} ? '' : 'd-none'" id="fechaMuestraRow">
         <div class="col-md-6">
           <label for="fechaMuestra" class="form-label">Fecha de muestra</label>
-          <input type="date" class="form-control" name="fechaMuestra" id="fechaMuestra">
+          <input type="date" class="form-control" name="fechaMuestra" id="fechaMuestra" th:value="${ordenTrabajo.fechaMuestra}">
         </div>
       </div>
     </div>
 
     <!-- DATOS DEL CATÁLOGO -->
     <input type="hidden" name="tipoProducto" value="catálogo">
+    <input type="hidden" name="idOrden" th:value="${ordenTrabajo != null ? ordenTrabajo.id : ''}">
+
     <div class="contenedor-datos-odt">
       <h5 class="mt-4 datos-del-producto">Datos del Producto</h5>
       <div class="row mb-3">
         <div class="col-md-12">
           <label for="catalogo-tipo-papel" class="form-label">Tipo de papel *</label>
-          <input type="text" class="form-control" id="catalogo-tipo-papel" name="tipoPapel" required placeholder="Ej: Ilustración 300gr">
+          <input type="text" class="form-control" id="catalogo-tipo-papel" th:value="${catalogo.tipoPapel}" name="tipoPapel" required placeholder="Ej: Ilustración 300gr">
         </div>
       </div>
       <div class="row mb-3">
         <div class="col-md-12">
           <label for="catalogo-cantidad" class="form-label">Cantidad *</label>
-          <input type="number" class="form-control" id="catalogo-cantidad" name="cantidad" required min="1" placeholder="0">
+          <input type="number" class="form-control" id="catalogo-cantidad" th:value="${catalogo.cantidad}" name="cantidad" required min="1" placeholder="0">
         </div>
       </div>
       <div class="row mb-3">
@@ -82,7 +84,8 @@
           <div class="d-flex flex-column gap-1">
             <div th:each="laminado : ${listaTipoLaminadoCatalogo}" class="form-check">
               <input class="form-check-input" type="radio" name="tipoLaminadoCatalogo.id"
-                     th:id="'laminado-' + ${laminado.id}" th:value="${laminado.id}" required>
+                     th:id="'laminado-' + ${laminado.id}" th:value="${laminado.id}"
+                     th:checked="${catalogo.tipoLaminadoCatalogo != null} ? ${laminado.id} == ${catalogo.tipoLaminadoCatalogo.id} : false" required>
               <label class="form-check-label" th:for="'laminado-' + ${laminado.id}" th:text="${laminado.laminado}"></label>
             </div>
           </div>
@@ -94,7 +97,8 @@
           <div class="d-flex flex-column gap-1">
             <div th:each="faz : ${listaTipoFazCatalogo}" class="form-check">
               <input class="form-check-input" type="radio" name="tipoFazCatalogo.id"
-                     th:id="'faz-' + ${faz.id}" th:value="${faz.id}" required>
+                     th:id="'faz-' + ${faz.id}" th:value="${faz.id}"
+                     th:checked="${catalogo.tipoFazCatalogo != null} ? ${faz.id} == ${catalogo.tipoFazCatalogo.id} : false" required>
               <label class="form-check-label" th:for="'faz-' + ${faz.id}" th:text="${faz.tipo}"></label>
             </div>
           </div>
@@ -103,18 +107,59 @@
       <div class="row mb-3">
         <div class="col-md-12">
           <label for="catalogo-enlace-archivo" class="form-label">Enlace del Archivo</label>
-          <input type="url" class="form-control" name="enlaceArchivo" id="catalogo-enlace-archivo" placeholder="Ej: http://drive.google.com/archivo.pdf">
+          <input type="url" class="form-control" th:value="${catalogo.enlaceArchivo}" name="enlaceArchivo" id="catalogo-enlace-archivo" placeholder="Ej: http://drive.google.com/archivo.pdf">
         </div>
       </div>
       <div class="row mb-3">
         <div class="col-md-12">
           <label for="catalogo-informacion-adicional" class="form-label">Información adicional</label>
-          <textarea class="form-control" name="informacionAdicional" id="catalogo-informacion-adicional" rows="1" placeholder="Inserte aquí más info."></textarea>
+          <textarea class="form-control" th:value="${catalogo.informacionAdicional}" name="informacionAdicional" id="catalogo-informacion-adicional" rows="1" placeholder="Inserte aquí más info."></textarea>
         </div>
       </div>
     </div>
 
-    <div class="contenedor-datos-odt">
+    <div class="contenedor-datos-odt" th:if="${ordenTrabajo.id}">
+      <h5 class="mt-4 datos-de-pago">Datos de Pago</h5>
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label for="total" class="form-label">Total *</label>
+          <input type="number" class="form-control" id="totalPrevio" th:value="${ordenTrabajo.total}" readonly>
+        </div>
+        <div class="col-md-4">
+          <label for="abonado" class="form-label">Abonado *</label>
+          <input type="number" class="form-control" id="abonadoPrevio" th:value="${ordenTrabajo.abonado}" readonly>
+        </div>
+        <div class="col-md-4">
+          <label for="resta" class="form-label">Resta</label>
+          <input type="number" class="form-control" id="restaPrevio" th:value="${ordenTrabajo.resta}" readonly>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarTotalModal">
+        Editar total
+      </button>
+
+      <div class="modal fade" id="editarTotalModal" tabindex="-1" aria-labelledby="editarTotalModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editarTotalModalLabel">Editar Total</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+              <label for="nuevoTotal" class="form-label">Total</label>
+              <input type="number" class="form-control" id="nuevoTotal" th:value="${ordenTrabajo.total}">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-primary" id="guardarTotalModal">Guardar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contenedor-datos-odt" th:if="${ordenTrabajo.id} == null">
       <!-- DATOS DE PAGO -->
       <h5 class="mt-4 datos-de-pago">Datos de Pago</h5>
       <div class="row mb-3">
@@ -181,6 +226,35 @@
 </div>
 
 
+<script>
+  document.getElementById('guardarTotalModal').addEventListener('click', function() {
+      // Tomar valor del modal
+      const nuevoTotal = document.getElementById('nuevoTotal').value;
+
+      // Crear input hidden o actualizar si ya existe
+      let inputHidden = document.querySelector('input[name="nuevoTotal"]');
+      if (!inputHidden) {
+          inputHidden = document.createElement('input');
+          inputHidden.type = 'hidden';
+          inputHidden.name = 'nuevoTotal';
+          document.querySelector('form').appendChild(inputHidden);
+      }
+      inputHidden.value = nuevoTotal;
+
+      // Cerrar modal
+      const modalEl = document.getElementById('editarTotalModal');
+      const modal = bootstrap.Modal.getInstance(modalEl);
+      modal.hide();
+
+      // Enviar formulario
+      document.querySelector('form').submit();
+  });
+</script>
+
 <script th:src="@{/js/crear-catalogo.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJ+Y7Vu8y+6ie4EnWz9Z2Jv3C92iZgfH1lwCk="
+        crossorigin="anonymous"></script>
 </body>
 </html>

@@ -2,109 +2,77 @@ package com.puntografico.puntografico.controller.rest;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController @AllArgsConstructor
 @RequestMapping("/api/orden")
 public class OrdenRestController {
 
-    @Autowired
-    private OrdenAgendaService ordenAgendaService;
+    private final OrdenAgendaService ordenAgendaService;
 
-    @Autowired
-    private OrdenAnotadorService ordenAnotadorService;
+    private final OrdenAnotadorService ordenAnotadorService;
 
-    @Autowired
-    private OrdenCarpetaSolapaService ordenCarpetaSolapaService;
+    private final OrdenCarpetaSolapaService ordenCarpetaSolapaService;
 
-    @Autowired
-    private OrdenCatalogoService ordenCatalogoService;
+    private final OrdenCatalogoService ordenCatalogoService;
 
-    @Autowired
-    private OrdenCierraBolsasService ordenCierraBolsasService;
+    private final OrdenCierraBolsasService ordenCierraBolsasService;
 
-    @Autowired
-    private OrdenComboService ordenComboService;
+    private final OrdenComboService ordenComboService;
 
-    @Autowired
-    private OrdenCuadernoAnilladoService ordenCuadernoAnilladoService;
+    private final OrdenCuadernoAnilladoService ordenCuadernoAnilladoService;
 
-    @Autowired
-    private OrdenEntradaService ordenEntradaService;
+    private final OrdenEntradaService ordenEntradaService;
 
-    @Autowired
-    private OrdenEtiquetaService ordenEtiquetaService;
+    private final OrdenEtiquetaService ordenEtiquetaService;
 
-    @Autowired
-    private OrdenFlybannerService ordenFlybannerService;
+    private final OrdenFlybannerService ordenFlybannerService;
 
-    @Autowired
-    private OrdenFolletoService ordenFolletoService;
+    private final OrdenFolletoService ordenFolletoService;
 
-    @Autowired
-    private OrdenHojasMembreteadasService ordenHojasMembreteadasService;
+    private final OrdenHojasMembreteadasService ordenHojasMembreteadasService;
 
-    @Autowired
-    private OrdenImpresionService ordenImpresionService;
+    private final OrdenImpresionService ordenImpresionService;
 
-    @Autowired
-    private OrdenLonaComunService ordenLonaComunService;
+    private final OrdenLonaComunService ordenLonaComunService;
 
-    @Autowired
-    private OrdenLonaPublicitariaService ordenLonaPublicitariaService;
+    private final OrdenLonaPublicitariaService ordenLonaPublicitariaService;
 
-    @Autowired
-    private OrdenOtroService ordenOtroService;
+    private final OrdenOtroService ordenOtroService;
 
-    @Autowired
-    private OrdenRifasBonosContribucionService ordenRifasBonosContribucionService;
+    private final OrdenRifasBonosContribucionService ordenRifasBonosContribucionService;
 
-    @Autowired
-    private OrdenRotulacionService ordenRotulacionService;
+    private final OrdenRotulacionService ordenRotulacionService;
 
-    @Autowired
-    private OrdenSelloAutomaticoService ordenSelloAutomaticoService;
+    private final OrdenSelloAutomaticoService ordenSelloAutomaticoService;
 
-    @Autowired
-    private OrdenSelloAutomaticoEscolarService ordenSelloAutomaticoEscolarService;
+    private final OrdenSelloAutomaticoEscolarService ordenSelloAutomaticoEscolarService;
 
-    @Autowired
-    private OrdenSelloMaderaService ordenSelloMaderaService;
+    private final OrdenSelloMaderaService ordenSelloMaderaService;
 
-    @Autowired
-    private OrdenSobreService ordenSobreService;
+    private final OrdenSobreService ordenSobreService;
 
-    @Autowired
-    private OrdenStickerService ordenStickerService;
+    private final OrdenStickerService ordenStickerService;
 
-    @Autowired
-    private OrdenSublimacionService ordenSublimacionService;
+    private final OrdenSublimacionService ordenSublimacionService;
 
-    @Autowired
-    private OrdenTalonarioService ordenTalonarioService;
+    private final OrdenTalonarioService ordenTalonarioService;
 
-    @Autowired
-    private OrdenTarjetaService ordenTarjetaService;
+    private final OrdenTarjetaService ordenTarjetaService;
 
-    @Autowired
-    private OrdenTurneroService ordenTurneroService;
+    private final OrdenTurneroService ordenTurneroService;
 
-    @Autowired
-    private OrdenViniloService ordenViniloService;
+    private final OrdenViniloService ordenViniloService;
 
-    @Autowired
-    private OrdenViniloDeCorteService ordenViniloDeCorteService;
+    private final OrdenViniloDeCorteService ordenViniloDeCorteService;
 
-    @Autowired
-    private OrdenViniloPlasticoCorrugadoService ordenViniloPlasticoCorrugadoService;
+    private final OrdenViniloPlasticoCorrugadoService ordenViniloPlasticoCorrugadoService;
 
-    @Autowired
-    private OrdenVoucherService ordenVoucherService;
+    private final OrdenVoucherService ordenVoucherService;
 
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
+    private final OrdenTrabajoService ordenTrabajoService;
 
     @GetMapping("/ordenAgenda/{ordenId}")
     public ResponseEntity<OrdenAgenda> getOrdenAgenda(@PathVariable Long ordenId) {

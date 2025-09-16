@@ -20,13 +20,13 @@ public class CarpetaSolapaService {
 
     private final OpcionesCarpetaSolapaService opcionesCarpetaSolapaService;
 
-    public CarpetaSolapa crear(CarpetaSolapaDTO carpetaSolapaDTO) {
+    public CarpetaSolapa guardar(CarpetaSolapaDTO carpetaSolapaDTO, Long idCarpetaSolapa) {
         validarCarpetaSolapaDTO(carpetaSolapaDTO);
 
         TipoLaminadoCarpetaSolapa tipoLaminadoCarpetaSolapa = opcionesCarpetaSolapaService.buscarTipoLaminadoCarpetaSolapaPorId(carpetaSolapaDTO.getTipoLaminadoCarpetaSolapaId());
         TipoFazCarpetaSolapa tipoFazCarpetaSolapa = opcionesCarpetaSolapaService.buscarTipoFazCarpetaSolapaPorId(carpetaSolapaDTO.getTipoFazCarpetaSolapaId());
 
-        CarpetaSolapa carpetaSolapa = new CarpetaSolapa();
+        CarpetaSolapa carpetaSolapa = (idCarpetaSolapa != null) ? carpetaSolapaRepository.findById(idCarpetaSolapa).get() : new CarpetaSolapa();
         carpetaSolapa.setTipoPapel(carpetaSolapaDTO.getTipoPapel());
         carpetaSolapa.setCantidad(carpetaSolapaDTO.getCantidad());
         carpetaSolapa.setEnlaceArchivo(carpetaSolapaDTO.getEnlaceArchivo());

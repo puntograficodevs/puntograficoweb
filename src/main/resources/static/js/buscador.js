@@ -21,6 +21,12 @@ document.addEventListener("DOMContentLoaded", function () {
       case "anotador":
         window.location.href = `/crear-odt-anotador/${idOrden}`;
         break;
+      case "carpeta con solapas":
+        window.location.href = `/crear-odt-carpeta-solapa/${idOrden}`;
+        break;
+      case "catálogo":
+        window.location.href = `/crear-odt-catalogo/${idOrden}`;
+        break;
       default:
         console.warn("Tipo de producto no manejado:", tipoProducto);
     }
