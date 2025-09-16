@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.CierraBolsasDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,40 +14,36 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class CierraBolsasController {
 
-    @Autowired
-    private OpcionesCierraBolsasService opcionesCierraBolsasService;
+    private final OpcionesCierraBolsasService opcionesCierraBolsasService;
+    private final MedioPagoService medioPagoService;
+    private final OrdenCierraBolsasService ordenCierraBolsasService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final CierraBolsasService cierraBolsasService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
-
-    @Autowired
-    private OrdenCierraBolsasService ordenCierraBolsasService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private CierraBolsasService cierraBolsasService;
-
-    @GetMapping("/crear-odt-cierra-bolsas")
-    public String verCrearOdtCierraBolsas(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-cierra-bolsas", "/crear-odt-cierra-bolsas/{idOrden}"})
+    public String verCrearOdtCierraBolsas(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenCierraBolsas ordenCierraBolsas = (idOrden != null) ? ordenCierraBolsasService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenCierraBolsas != null) ? ordenCierraBolsas.getOrdenTrabajo() : new OrdenTrabajo();
+        CierraBolsas cierraBolsas = (ordenCierraBolsas != null) ? ordenCierraBolsas.getCierraBolsas() : new CierraBolsas();
 
         List<TipoTroqueladoCierraBolsas> listaTipoTroqueladoCierraBolsas = opcionesCierraBolsasService.buscarTodosTipoTroqueladoCierraBolsas();
         List<MedidaCierraBolsas> listaMedidaCierraBolsas = opcionesCierraBolsasService.buscarTodosMedidaCierraBolsas();
         List<CantidadCierraBolsas> listaCantidadCierraBolsas = opcionesCierraBolsasService.buscarTodosCantidadCierraBolsas();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("cierraBolsas", new CierraBolsas());
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
+        model.addAttribute("cierraBolsas", cierraBolsas);
         model.addAttribute("listaTipoTroqueladoCierraBolsas", listaTipoTroqueladoCierraBolsas);
         model.addAttribute("listaMedidaCierraBolsas", listaMedidaCierraBolsas);
         model.addAttribute("listaCantidadCierraBolsas", listaCantidadCierraBolsas);
@@ -63,10 +60,10 @@ public class CierraBolsasController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
 
         OrdenCierraBolsas ordenCierraBolsas = ordenCierraBolsasService.buscarPorId(ordenCierraBolsasId);
 
+        model.addAttribute("empleado", empleado);
         model.addAttribute("ordenCierraBolsas", ordenCierraBolsas);
 
         return "mostrar-odt-cierra-bolsas";
@@ -74,11 +71,33 @@ public class CierraBolsasController {
 
     @PostMapping("/api/creacion-cierra-bolsas")
     public String creacionCierraBolsas(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        CierraBolsas cierraBolsas = cierraBolsasService.crear(request);
-        OrdenCierraBolsas ordenCierraBolsas = ordenCierraBolsasService.crear(ordenTrabajo, cierraBolsas);
-        return "redirect:/mostrar-odt-cierra-bolsas/" + ordenCierraBolsas.getId();*/
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return null;
+        OrdenCierraBolsas ordenCierraBolsasExistente = (idOrden != null) ? ordenCierraBolsasService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenCierraBolsasExistente != null) ? ordenCierraBolsasExistente.getOrdenTrabajo().getId() : null;
+        Long idCierraBolsas = (ordenCierraBolsasExistente != null) ? ordenCierraBolsasExistente.getCierraBolsas().getId() : null;
+        Long idOrdenCierraBolsas = (ordenCierraBolsasExistente != null) ? ordenCierraBolsasExistente.getId() : null;
+
+        CierraBolsasDTO cierraBolsasDTO = armarCierraBolsasDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        CierraBolsas cierraBolsas = cierraBolsasService.guardar(cierraBolsasDTO, idCierraBolsas);
+        OrdenCierraBolsas ordenCierraBolsas = ordenCierraBolsasService.guardar(ordenTrabajo, cierraBolsas, idOrdenCierraBolsas);
+
+        return "redirect:/mostrar-odt-cierra-bolsas/" + ordenCierraBolsas.getId();
+    }
+
+    private CierraBolsasDTO armarCierraBolsasDTO(HttpServletRequest request) {
+        CierraBolsasDTO cierraBolsasDTO = new CierraBolsasDTO();
+        cierraBolsasDTO.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
+        cierraBolsasDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        cierraBolsasDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        cierraBolsasDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        cierraBolsasDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        cierraBolsasDTO.setTipoTroqueladoCierraBolsasId(Long.parseLong(request.getParameter("tipoTroqueladoCierraBolsas.id")));
+        cierraBolsasDTO.setCantidadCierraBolsasId(Long.parseLong(request.getParameter("cantidadCierraBolsas.id")));
+        cierraBolsasDTO.setMedidaCierraBolsasId(Long.parseLong(request.getParameter("medidaCierraBolsas.id")));
+
+        return cierraBolsasDTO;
     }
 }

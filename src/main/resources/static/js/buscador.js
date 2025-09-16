@@ -27,6 +27,9 @@ document.addEventListener("DOMContentLoaded", function () {
       case "catálogo":
         window.location.href = `/crear-odt-catalogo/${idOrden}`;
         break;
+      case "cierra bolsas":
+        window.location.href = `/crear-odt-cierra-bolsas/${idOrden}`;
+        break;
       default:
         console.warn("Tipo de producto no manejado:", tipoProducto);
     }

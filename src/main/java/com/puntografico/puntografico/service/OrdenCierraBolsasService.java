@@ -13,11 +13,11 @@ public class OrdenCierraBolsasService {
 
     private final OrdenCierraBolsasRepository ordenCierraBolsasRepository;
 
-    public OrdenCierraBolsas crear(OrdenTrabajo ordenTrabajo, CierraBolsas cierraBolsas) {
+    public OrdenCierraBolsas guardar(OrdenTrabajo ordenTrabajo, CierraBolsas cierraBolsas, Long idOrdenCierraBolsas) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(cierraBolsas, "Debe venir un cierra bolsas para enlazar");
 
-        OrdenCierraBolsas ordenCierraBolsas = new OrdenCierraBolsas();
+        OrdenCierraBolsas ordenCierraBolsas = (idOrdenCierraBolsas != null) ? ordenCierraBolsasRepository.findById(idOrdenCierraBolsas).get() : new OrdenCierraBolsas();
         ordenCierraBolsas.setCantidad(cierraBolsas.getCantidad());
         ordenCierraBolsas.setOrdenTrabajo(ordenTrabajo);
         ordenCierraBolsas.setCierraBolsas(cierraBolsas);

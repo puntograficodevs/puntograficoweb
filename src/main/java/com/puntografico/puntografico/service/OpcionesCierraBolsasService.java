@@ -8,6 +8,7 @@ import com.puntografico.puntografico.repository.MedidaCierraBolsasRepository;
 import com.puntografico.puntografico.repository.TipoTroqueladoCierraBolsasRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -29,5 +30,23 @@ public class OpcionesCierraBolsasService {
 
     public List<CantidadCierraBolsas> buscarTodosCantidadCierraBolsas() {
         return cantidadCierraBolsasRepository.findAll();
+    }
+
+    public TipoTroqueladoCierraBolsas buscarTipoTroqueladoCierraBolsasPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+
+        return tipoTroqueladoCierraBolsasRepository.findById(id).get();
+    }
+
+    public MedidaCierraBolsas buscarMedidaCierraBolsasPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+
+        return medidaCierraBolsasRepository.findById(id).get();
+    }
+
+    public CantidadCierraBolsas buscarCantidadCierraBolsasPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+
+        return cantidadCierraBolsasRepository.findById(id).get();
     }
 }

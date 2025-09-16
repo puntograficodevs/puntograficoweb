@@ -4,6 +4,7 @@ import com.puntografico.puntografico.domain.CantidadCierraBolsas;
 import com.puntografico.puntografico.domain.CierraBolsas;
 import com.puntografico.puntografico.domain.MedidaCierraBolsas;
 import com.puntografico.puntografico.domain.TipoTroqueladoCierraBolsas;
+import com.puntografico.puntografico.dto.CierraBolsasDTO;
 import com.puntografico.puntografico.repository.CantidadCierraBolsasRepository;
 import com.puntografico.puntografico.repository.CierraBolsasRepository;
 import com.puntografico.puntografico.repository.MedidaCierraBolsasRepository;
@@ -12,7 +13,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service @Transactional @AllArgsConstructor
@@ -26,35 +26,36 @@ public class CierraBolsasService {
 
     private final CierraBolsasRepository cierraBolsasRepository;
 
-    public CierraBolsas crear(HttpServletRequest request) {
-        String tipoTroquelado = request.getParameter("tipoTroqueladoCierraBolsas.id");
-        String medida = request.getParameter("medidaCierraBolsas.id");
-        String opcionCantidad = request.getParameter("cantidadCierraBolsas.id");
-        String cantidad = request.getParameter("cantidad");
+    private final OpcionesCierraBolsasService opcionesCierraBolsasService;
 
-        Assert.notNull(tipoTroquelado, "El tipo de troquelado es un dato obligatorio.");
-        Assert.notNull(medida, "La medida es un dato obligatorio.");
-        Assert.notNull(opcionCantidad, "La opción de cantidad es un dato obligatorio.");
-        Assert.notNull(cantidad, "La cantidad es un dato obligatorio.");
+    public CierraBolsas guardar(CierraBolsasDTO cierraBolsasDTO, Long idCierraBolsas) {
+        validarCierraBolsasDTO(cierraBolsasDTO);
 
         CierraBolsas cierraBolsas = new CierraBolsas();
-        TipoTroqueladoCierraBolsas tipoTroqueladoCierraBolsas = tipoTroqueladoCierraBolsasRepository.findById(Long.parseLong(tipoTroquelado)).get();
-        MedidaCierraBolsas medidaCierraBolsas = medidaCierraBolsasRepository.findById(Long.parseLong(medida)).get();
-        CantidadCierraBolsas cantidadCierraBolsas = cantidadCierraBolsasRepository.findById(Long.parseLong(opcionCantidad)).get();
+        TipoTroqueladoCierraBolsas tipoTroqueladoCierraBolsas = opcionesCierraBolsasService.buscarTipoTroqueladoCierraBolsasPorId(cierraBolsasDTO.getTipoTroqueladoCierraBolsasId());
+        MedidaCierraBolsas medidaCierraBolsas = opcionesCierraBolsasService.buscarMedidaCierraBolsasPorId(cierraBolsasDTO.getMedidaCierraBolsasId());
+        CantidadCierraBolsas cantidadCierraBolsas = opcionesCierraBolsasService.buscarCantidadCierraBolsasPorId(cierraBolsasDTO.getCantidadCierraBolsasId());
+        Integer cantidad = cierraBolsasDTO.getCantidad();
 
-        if (cantidad.isBlank() || cantidad.isEmpty()) {
-            cantidad = cantidadCierraBolsas.getCantidad();
+        if (cantidad == null) {
+            cantidad = Integer.valueOf(cantidadCierraBolsas.getCantidad());
         }
 
         cierraBolsas.setTipoTroqueladoCierraBolsas(tipoTroqueladoCierraBolsas);
         cierraBolsas.setMedidaCierraBolsas(medidaCierraBolsas);
-        cierraBolsas.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
+        cierraBolsas.setMedidaPersonalizada(cierraBolsasDTO.getMedidaPersonalizada());
         cierraBolsas.setCantidadCierraBolsas(cantidadCierraBolsas);
-        cierraBolsas.setCantidad(Integer.parseInt(cantidad));
-        cierraBolsas.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
-        cierraBolsas.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
-        cierraBolsas.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        cierraBolsas.setCantidad(cantidad);
+        cierraBolsas.setEnlaceArchivo(cierraBolsasDTO.getEnlaceArchivo());
+        cierraBolsas.setConAdicionalDisenio(cierraBolsasDTO.getConAdicionalDisenio());
+        cierraBolsas.setInformacionAdicional(cierraBolsasDTO.getInformacionAdicional());
 
         return cierraBolsasRepository.save(cierraBolsas);
+    }
+
+    private void validarCierraBolsasDTO(CierraBolsasDTO cierraBolsasDTO) {
+        Assert.notNull(cierraBolsasDTO.getTipoTroqueladoCierraBolsasId(), "El tipo de troquelado es un dato obligatorio.");
+        Assert.notNull(cierraBolsasDTO.getMedidaCierraBolsasId(), "La medida es un dato obligatorio.");
+        Assert.notNull(cierraBolsasDTO.getCantidadCierraBolsasId(), "La opción de cantidad es un dato obligatorio.");
     }
 }
