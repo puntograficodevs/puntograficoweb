@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.CuadernoAnilladoDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,39 +14,35 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class CuadernoAnilladoController {
 
-    @Autowired
-    private OpcionesCuadernoAnilladoService opcionesCuadernoAnilladoService;
+    private final OpcionesCuadernoAnilladoService opcionesCuadernoAnilladoService;
+    private final MedioPagoService medioPagoService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final CuadernoAnilladoService cuadernoAnilladoService;
+    private final OrdenCuadernoAnilladoService ordenCuadernoAnilladoService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private CuadernoAnilladoService cuadernoAnilladoService;
-
-    @Autowired
-    private OrdenCuadernoAnilladoService ordenCuadernoAnilladoService;
-
-    @GetMapping("/crear-odt-cuaderno-anillado")
-    public String verCrearOdtCuadernoAnillado(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-cuaderno-anillado", "/crear-odt-cuaderno-anillado/{idOrden}"})
+    public String verCrearOdtCuadernoAnillado(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenCuadernoAnillado ordenCuadernoAnillado = (idOrden != null) ? ordenCuadernoAnilladoService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenCuadernoAnillado != null) ? ordenCuadernoAnillado.getOrdenTrabajo() : new OrdenTrabajo();
+        CuadernoAnillado cuadernoAnillado = (ordenCuadernoAnillado != null)? ordenCuadernoAnillado.getCuadernoAnillado() : new CuadernoAnillado();
 
         List<TipoTapaCuadernoAnillado> listaTipoTapaCuadernoAnillado = opcionesCuadernoAnilladoService.buscarTodosTipoTapaCuadernoAnillado();
         List<MedidaCuadernoAnillado> listaMedidaCuadernoAnillado = opcionesCuadernoAnilladoService.buscarTodosMedidaCuadernoAnillado();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("cuadernoAnillado", new CuadernoAnillado());
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
+        model.addAttribute("cuadernoAnillado", cuadernoAnillado);
         model.addAttribute("listaTipoTapaCuadernoAnillado", listaTipoTapaCuadernoAnillado);
         model.addAttribute("listaMedidaCuadernoAnillado", listaMedidaCuadernoAnillado);
         model.addAttribute("listaMediosDePago", listaMediosDePago);
@@ -72,11 +69,34 @@ public class CuadernoAnilladoController {
 
     @PostMapping("/api/creacion-cuaderno-anillado")
     public String creacionCuadernoAnillado(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        CuadernoAnillado cuadernoAnillado = cuadernoAnilladoService.crear(request);
-        OrdenCuadernoAnillado ordenCuadernoAnillado = ordenCuadernoAnilladoService.crear(ordenTrabajo, cuadernoAnillado);
-        return "redirect:/mostrar-odt-cuaderno-anillado/" + ordenCuadernoAnillado.getId();*/
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return null;
+        OrdenCuadernoAnillado ordenCuadernoAnilladoExistente = (idOrden != null) ? ordenCuadernoAnilladoService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenCuadernoAnilladoExistente != null) ? ordenCuadernoAnilladoExistente.getOrdenTrabajo().getId() : null;
+        Long idCuadernoAnillado = (ordenCuadernoAnilladoExistente != null) ? ordenCuadernoAnilladoExistente.getCuadernoAnillado().getId() : null;
+        Long idOrdenCuadernoAnillado = (ordenCuadernoAnilladoExistente != null) ? ordenCuadernoAnilladoExistente.getId() : null;
+
+        CuadernoAnilladoDTO cuadernoAnilladoDTO = armarCuadernoAnilladoDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        CuadernoAnillado cuadernoAnillado = cuadernoAnilladoService.guardar(cuadernoAnilladoDTO, idCuadernoAnillado);
+        OrdenCuadernoAnillado ordenCuadernoAnillado = ordenCuadernoAnilladoService.guardar(ordenTrabajo, cuadernoAnillado, idOrdenCuadernoAnillado);
+
+        return "redirect:/mostrar-odt-cuaderno-anillado/" + ordenCuadernoAnillado.getId();
+    }
+
+    private CuadernoAnilladoDTO armarCuadernoAnilladoDTO(HttpServletRequest request) {
+        CuadernoAnilladoDTO cuadernoAnilladoDTO = new CuadernoAnilladoDTO();
+        cuadernoAnilladoDTO.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
+        cuadernoAnilladoDTO.setTipoTapaPersonalizada(request.getParameter("tipoTapaPersonalizada"));
+        cuadernoAnilladoDTO.setCantidadHojas(Integer.parseInt(request.getParameter("cantidadHojas")));
+        cuadernoAnilladoDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        cuadernoAnilladoDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        cuadernoAnilladoDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        cuadernoAnilladoDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        cuadernoAnilladoDTO.setMedidaCuadernoAnilladoId(Long.parseLong(request.getParameter("medidaCuadernoAnillado.id")));
+        cuadernoAnilladoDTO.setTipoTapaCuadernoAnilladoId(Long.parseLong(request.getParameter("tipoTapaCuadernoAnillado.id")));
+
+        return cuadernoAnilladoDTO;
     }
 }

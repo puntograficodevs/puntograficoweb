@@ -33,6 +33,9 @@ document.addEventListener("DOMContentLoaded", function () {
       case "combo":
         window.location.href = `/crear-odt-combo/${idOrden}`;
         break;
+      case "cuaderno anillado":
+        window.location.href = `/crear-odt-cuaderno-anillado/${idOrden}`;
+        break;
       default:
         console.warn("Tipo de producto no manejado:", tipoProducto);
     }

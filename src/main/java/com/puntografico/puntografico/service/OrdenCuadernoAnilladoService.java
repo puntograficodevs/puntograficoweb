@@ -15,11 +15,11 @@ public class OrdenCuadernoAnilladoService {
 
     private final OrdenCuadernoAnilladoRepository ordenCuadernoAnilladoRepository;
 
-    public OrdenCuadernoAnillado crear(OrdenTrabajo ordenTrabajo, CuadernoAnillado cuadernoAnillado) {
+    public OrdenCuadernoAnillado guardar(OrdenTrabajo ordenTrabajo, CuadernoAnillado cuadernoAnillado, Long idOrdenCuadernoAnillado) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(cuadernoAnillado, "Debe venir un cuaderno anillado para enlazar.");
 
-        OrdenCuadernoAnillado ordenCuadernoAnillado = new OrdenCuadernoAnillado();
+        OrdenCuadernoAnillado ordenCuadernoAnillado = (idOrdenCuadernoAnillado != null) ? ordenCuadernoAnilladoRepository.findById(idOrdenCuadernoAnillado).get() : new OrdenCuadernoAnillado();
         ordenCuadernoAnillado.setCantidad(cuadernoAnillado.getCantidad());
         ordenCuadernoAnillado.setOrdenTrabajo(ordenTrabajo);
         ordenCuadernoAnillado.setCuadernoAnillado(cuadernoAnillado);

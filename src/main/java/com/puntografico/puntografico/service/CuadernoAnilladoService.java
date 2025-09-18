@@ -3,6 +3,7 @@ package com.puntografico.puntografico.service;
 import com.puntografico.puntografico.domain.CuadernoAnillado;
 import com.puntografico.puntografico.domain.MedidaCuadernoAnillado;
 import com.puntografico.puntografico.domain.TipoTapaCuadernoAnillado;
+import com.puntografico.puntografico.dto.CuadernoAnilladoDTO;
 import com.puntografico.puntografico.repository.CuadernoAnilladoRepository;
 import com.puntografico.puntografico.repository.MedidaCuadernoAnilladoRepository;
 import com.puntografico.puntografico.repository.TipoTapaCuadernoAnilladoRepository;
@@ -18,35 +19,32 @@ public class CuadernoAnilladoService {
 
     private final CuadernoAnilladoRepository cuadernoAnilladoRepository;
 
-    private final TipoTapaCuadernoAnilladoRepository tipoTapaCuadernoAnilladoRepository;
+    private final OpcionesCuadernoAnilladoService opcionesCuadernoAnilladoService;
 
-    private final MedidaCuadernoAnilladoRepository medidaCuadernoAnilladoRepository;
+    public CuadernoAnillado guardar(CuadernoAnilladoDTO cuadernoAnilladoDTO, Long idCuadernoAnillado) {
+        validarCuadernoAnilladoDTO(cuadernoAnilladoDTO);
 
-    public CuadernoAnillado crear(HttpServletRequest request) {
-        String cantidadHojasString = request.getParameter("cantidadHojas");
-        String cantidadString = request.getParameter("cantidad");
-        String tipoTapaCuadernoAnilladoString = request.getParameter("tipoTapaCuadernoAnillado.id");
-        String medidaCuadernoAnilladoString = request.getParameter("medidaCuadernoAnillado.id");
+        TipoTapaCuadernoAnillado tipoTapaCuadernoAnillado = opcionesCuadernoAnilladoService.buscarTipoTapaCuadernoAnilladoPorId(cuadernoAnilladoDTO.getTipoTapaCuadernoAnilladoId());
+        MedidaCuadernoAnillado medidaCuadernoAnillado = opcionesCuadernoAnilladoService.buscarMedidaCuadernoAnilladoPorId(cuadernoAnilladoDTO.getMedidaCuadernoAnilladoId());
 
-        Assert.notNull(cantidadHojasString, "La cantidad de hojas es un dato obligatorio.");
-        Assert.notNull(cantidadString, "La cantidad es un dato obligatorio.");
-        Assert.notNull(tipoTapaCuadernoAnilladoString, "El tipo de tapa es un dato obligatorio.");
-        Assert.notNull(medidaCuadernoAnilladoString, "La medida del cuaderno es un dato obligatorio.");
-
-        CuadernoAnillado cuadernoAnillado = new CuadernoAnillado();
-        TipoTapaCuadernoAnillado tipoTapaCuadernoAnillado = tipoTapaCuadernoAnilladoRepository.findById(Long.parseLong(tipoTapaCuadernoAnilladoString)).get();
-        MedidaCuadernoAnillado medidaCuadernoAnillado = medidaCuadernoAnilladoRepository.findById(Long.parseLong(medidaCuadernoAnilladoString)).get();
-
-        cuadernoAnillado.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
-        cuadernoAnillado.setTipoTapaPersonalizada(request.getParameter("tipoTapaPersonalizada"));
-        cuadernoAnillado.setCantidadHojas(Integer.parseInt(cantidadHojasString));
-        cuadernoAnillado.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
-        cuadernoAnillado.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
-        cuadernoAnillado.setInformacionAdicional(request.getParameter("informacionAdicional"));
-        cuadernoAnillado.setCantidad(Integer.parseInt(cantidadString));
+        CuadernoAnillado cuadernoAnillado = (idCuadernoAnillado != null) ? cuadernoAnilladoRepository.findById(idCuadernoAnillado).get() : new CuadernoAnillado();
+        cuadernoAnillado.setMedidaPersonalizada(cuadernoAnilladoDTO.getMedidaPersonalizada());
+        cuadernoAnillado.setTipoTapaPersonalizada(cuadernoAnilladoDTO.getTipoTapaPersonalizada());
+        cuadernoAnillado.setCantidadHojas(cuadernoAnilladoDTO.getCantidadHojas());
+        cuadernoAnillado.setEnlaceArchivo(cuadernoAnilladoDTO.getEnlaceArchivo());
+        cuadernoAnillado.setConAdicionalDisenio(cuadernoAnilladoDTO.getConAdicionalDisenio());
+        cuadernoAnillado.setInformacionAdicional(cuadernoAnilladoDTO.getInformacionAdicional());
+        cuadernoAnillado.setCantidad(cuadernoAnilladoDTO.getCantidad());
         cuadernoAnillado.setTipoTapaCuadernoAnillado(tipoTapaCuadernoAnillado);
         cuadernoAnillado.setMedidaCuadernoAnillado(medidaCuadernoAnillado);
 
         return cuadernoAnilladoRepository.save(cuadernoAnillado);
+    }
+
+    private void validarCuadernoAnilladoDTO(CuadernoAnilladoDTO cuadernoAnilladoDTO) {
+        Assert.notNull(cuadernoAnilladoDTO.getCantidadHojas(), "La cantidad de hojas es un dato obligatorio.");
+        Assert.notNull(cuadernoAnilladoDTO.getCantidad(), "La cantidad es un dato obligatorio.");
+        Assert.notNull(cuadernoAnilladoDTO.getTipoTapaCuadernoAnilladoId(), "El tipo de tapa es un dato obligatorio.");
+        Assert.notNull(cuadernoAnilladoDTO.getMedidaCuadernoAnilladoId(), "La medida del cuaderno es un dato obligatorio.");
     }
 }

@@ -6,6 +6,7 @@ import com.puntografico.puntografico.repository.MedidaCuadernoAnilladoRepository
 import com.puntografico.puntografico.repository.TipoTapaCuadernoAnilladoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -22,5 +23,15 @@ public class OpcionesCuadernoAnilladoService {
 
     public List<MedidaCuadernoAnillado> buscarTodosMedidaCuadernoAnillado() {
         return medidaCuadernoAnilladoRepository.findAll();
+    }
+
+    public TipoTapaCuadernoAnillado buscarTipoTapaCuadernoAnilladoPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return tipoTapaCuadernoAnilladoRepository.findById(id).get();
+    }
+
+    public MedidaCuadernoAnillado buscarMedidaCuadernoAnilladoPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return medidaCuadernoAnilladoRepository.findById(id).get();
     }
 }

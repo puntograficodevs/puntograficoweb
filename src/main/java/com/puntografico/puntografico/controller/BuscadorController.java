@@ -43,7 +43,7 @@ public class BuscadorController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        List<OrdenTrabajo> ordenesEncontradas = ordenTrabajoService.buscarTodasConIDONombreOTelefono(datoOrden);
+        List<OrdenTrabajo> ordenesEncontradas = ordenTrabajoService.buscarTodasConIDONombreOTelefono(datoOrden, empleado);
 
         model.addAttribute("ordenesEncontradas", ordenesEncontradas);
         model.addAttribute("empleado", empleado);

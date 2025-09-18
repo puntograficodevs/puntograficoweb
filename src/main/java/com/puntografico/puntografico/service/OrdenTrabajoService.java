@@ -249,8 +249,10 @@ public class OrdenTrabajoService {
         ordenTrabajoRepository.save(ordenTrabajo);
     }
 
-    public List<OrdenTrabajo> buscarTodasConIDONombreOTelefono(String datoOrden) {
+    public List<OrdenTrabajo> buscarTodasConIDONombreOTelefono(String datoOrden, Empleado empleado) {
         Set<OrdenTrabajo> ordenesEncontradas = new HashSet<>();
+        Empleado desarrollador = empleadoService.traerEmpleadoPorUsername("benpm");
+        Empleado community = empleadoService.traerEmpleadoPorUsername("maripm");
 
         try {
             Long posibleId = Long.parseLong(datoOrden);
@@ -262,7 +264,18 @@ public class OrdenTrabajoService {
             ordenTrabajoRepository.findByNombreClienteContainingIgnoreCaseOrTelefonoClienteContaining(datoOrden, datoOrden)
         );
 
-        return new ArrayList<>(ordenesEncontradas);
+        return ordenesEncontradas.stream()
+                .filter(orden -> {
+                    if (empleado.getId().equals(desarrollador.getId())) {
+                        return orden.getEmpleado().getId().equals(desarrollador.getId());
+                    } else if (empleado.getId().equals(community.getId())) {
+                        return !orden.getEmpleado().getId().equals(desarrollador.getId());
+                    } else {
+                        return !orden.getEmpleado().getId().equals(desarrollador.getId())
+                                && !orden.getEmpleado().getId().equals(community.getId());
+                    }
+                })
+                .toList();
     }
 
 }
