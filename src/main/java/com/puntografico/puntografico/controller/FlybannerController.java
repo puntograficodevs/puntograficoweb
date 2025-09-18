@@ -2,7 +2,7 @@ package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,33 +13,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class FlybannerController {
 
-    @Autowired
-    private OpcionesFlybannerService opcionesFlybannerService;
+    private final OpcionesFlybannerService opcionesFlybannerService;
+    private final MedioPagoService medioPagoService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final FlybannerService flybannerService;
+    private final OrdenFlybannerService ordenFlybannerService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private FlybannerService flybannerService;
-
-    @Autowired
-    private OrdenFlybannerService ordenFlybannerService;
-
-    @GetMapping("/crear-odt-flybanner")
-    public String verCrearOdtFlybanner(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-flybanner", "/crear-odt-flybanner/{idOrden}"})
+    public String verCrearOdtFlybanner(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenFlybanner ordenFlybanner = (idOrden != null) ? ordenFlybannerService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenFlybanner != null) ? ordenFlybanner.getOrdenTrabajo() : new OrdenTrabajo();
+        Flybanner flybanner = (ordenFlybanner != null) ? ordenFlybanner.getFlybanner() : new Flybanner();
 
         List<TipoFazFlybanner> listaTipoFazFlybanner = opcionesFlybannerService.buscarTodosTipoFazFlybaner();
         List<AlturaFlybanner> listaAlturaFlybanner = opcionesFlybannerService.buscarTodosAlturaFlybanner();
@@ -47,7 +41,9 @@ public class FlybannerController {
         List<TipoBaseFlybanner> listaTipoBaseFlybanner = opcionesFlybannerService.buscarTodosTipoBaseFlybanner();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("flybanner", new Flybanner());
+        model.addAttribute("flybanner", flybanner);
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
         model.addAttribute("listaTipoFazFlybanner", listaTipoFazFlybanner);
         model.addAttribute("listaAlturaFlybanner", listaAlturaFlybanner);
         model.addAttribute("listaBanderaFlybanner", listaBanderaFlybanner);
