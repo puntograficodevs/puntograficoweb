@@ -15,11 +15,11 @@ public class OrdenEtiquetaService {
 
     private final OrdenEtiquetaRepository ordenEtiquetaRepository;
 
-    public OrdenEtiqueta crear(OrdenTrabajo ordenTrabajo, Etiqueta etiqueta) {
+    public OrdenEtiqueta guardar(OrdenTrabajo ordenTrabajo, Etiqueta etiqueta, Long idOrdenEtiqueta) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(etiqueta, "Debe venir una etiqueta para enlazar.");
 
-        OrdenEtiqueta ordenEtiqueta = new OrdenEtiqueta();
+        OrdenEtiqueta ordenEtiqueta = (idOrdenEtiqueta != null) ? ordenEtiquetaRepository.findById(idOrdenEtiqueta).get() : new OrdenEtiqueta();
         ordenEtiqueta.setCantidad(etiqueta.getCantidad());
         ordenEtiqueta.setOrdenTrabajo(ordenTrabajo);
         ordenEtiqueta.setEtiqueta(etiqueta);

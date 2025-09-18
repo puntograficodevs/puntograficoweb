@@ -4,6 +4,7 @@ import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -45,5 +46,40 @@ public class OpcionesEntradaService {
 
     public List<TerminacionEntrada> buscarTodosTerminacionEntrada() {
         return terminacionEntradaRepository.findAll();
+    }
+
+    public TipoPapelEntrada buscarTipoPapelEntradaPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return tipoPapelEntradaRepository.findById(id).get();
+    }
+
+    public TipoColorEntrada buscarTipoColorEntradaPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return tipoColorEntradaRepository.findById(id).get();
+    }
+
+    public TipoTroqueladoEntrada buscarTipoTroqueladoEntradaPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return tipoTroqueladoEntradaRepository.findById(id).get();
+    }
+
+    public MedidaEntrada buscarMedidaEntradaPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return medidaEntradaRepository.findById(id).get();
+    }
+
+    public CantidadEntrada buscarCantidadEntradaPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return cantidadEntradaRepository.findById(id).get();
+    }
+
+    public NumeradoEntrada buscarNumeradoEntradaPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return numeradoEntradaRepository.findById(id).get();
+    }
+
+    public TerminacionEntrada buscarTerminacionEntradaPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return terminacionEntradaRepository.findById(id).get();
     }
 }

@@ -1,68 +1,41 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.EntradaDTO;
 import com.puntografico.puntografico.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service @Transactional @AllArgsConstructor
 public class EntradaService {
 
     private final EntradaRepository entradaRepository;
+    private final OpcionesEntradaService opcionesEntradaService;
 
-    private final TipoPapelEntradaRepository tipoPapelEntradaRepository;
+    public Entrada guardar(EntradaDTO entradaDTO, Long idEntrada) {
+        validarEntradaDTO(entradaDTO);
 
-    private final TipoColorEntradaRepository tipoColorEntradaRepository;
+        TipoPapelEntrada tipoPapelEntrada = opcionesEntradaService.buscarTipoPapelEntradaPorId(entradaDTO.getTipoPapelEntradaId());
+        TipoColorEntrada tipoColorEntrada = opcionesEntradaService.buscarTipoColorEntradaPorId(entradaDTO.getTipoColorEntradaId());
+        TipoTroqueladoEntrada tipoTroqueladoEntrada = opcionesEntradaService.buscarTipoTroqueladoEntradaPorId(entradaDTO.getTipoTroqueladoEntradaId());
+        MedidaEntrada medidaEntrada = opcionesEntradaService.buscarMedidaEntradaPorId(entradaDTO.getMedidaEntradaId());
+        CantidadEntrada cantidadEntrada = opcionesEntradaService.buscarCantidadEntradaPorId(entradaDTO.getCantidadEntradaId());
+        NumeradoEntrada numeradoEntrada = opcionesEntradaService.buscarNumeradoEntradaPorId(entradaDTO.getNumeradoEntradaId());
+        TerminacionEntrada terminacionEntrada = opcionesEntradaService.buscarTerminacionEntradaPorId(entradaDTO.getTerminacionEntradaId());
+        Integer cantidad = entradaDTO.getCantidad();
 
-    private final TipoTroqueladoEntradaRepository tipoTroqueladoEntradaRepository;
-
-    private final MedidaEntradaRepository medidaEntradaRepository;
-
-    private final CantidadEntradaRepository cantidadEntradaRepository;
-
-    private final NumeradoEntradaRepository numeradoEntradaRepository;
-
-    private final TerminacionEntradaRepository terminacionEntradaRepository;
-
-    public Entrada crear(HttpServletRequest request) {
-        String tipoPapelEntradaString = request.getParameter("tipoPapelEntrada.id");
-        String tipoColorEntradaString = request.getParameter("tipoColorEntrada.id");
-        String tipoTroqueladoEntradaString = request.getParameter("tipoTroqueladoEntrada.id");
-        String medidaEntradaString = request.getParameter("medidaEntrada.id");
-        String cantidadEntradaString = request.getParameter("cantidadEntrada.id");
-        String numeradoEntradaString = request.getParameter("numeradoEntrada.id");
-        String terminacionEntradaString = request.getParameter("terminacionEntrada.id");
-        String cantidadString = request.getParameter("cantidad");
-
-        Assert.notNull(tipoPapelEntradaString, "El tipo de papel es un dato obligatorio.");
-        Assert.notNull(tipoColorEntradaString, "El tipo de color es un dato obligatorio.");
-        Assert.notNull(tipoTroqueladoEntradaString, "El tipo de troquelado es un dato obligatorio.");
-        Assert.notNull(medidaEntradaString, "La medida es un dato obligatorio.");
-        Assert.notNull(numeradoEntradaString, "El numerado es un dato obligatorio.");
-        Assert.notNull(terminacionEntradaString, "La terminación es un dato obligatorio.");
-        Assert.notNull(cantidadString, "La cantidad es un dato obligatorio.");
-
-        Entrada entrada = new Entrada();
-        TipoPapelEntrada tipoPapelEntrada = tipoPapelEntradaRepository.findById(Long.parseLong(tipoPapelEntradaString)).get();
-        TipoColorEntrada tipoColorEntrada = tipoColorEntradaRepository.findById(Long.parseLong(tipoColorEntradaString)).get();
-        TipoTroqueladoEntrada tipoTroqueladoEntrada = tipoTroqueladoEntradaRepository.findById(Long.parseLong(tipoTroqueladoEntradaString)).get();
-        MedidaEntrada medidaEntrada = medidaEntradaRepository.findById(Long.parseLong(medidaEntradaString)).get();
-        CantidadEntrada cantidadEntrada = cantidadEntradaRepository.findById(Long.parseLong(cantidadEntradaString)).get();
-        NumeradoEntrada numeradoEntrada = numeradoEntradaRepository.findById(Long.parseLong(numeradoEntradaString)).get();
-        TerminacionEntrada terminacionEntrada = terminacionEntradaRepository.findById(Long.parseLong(terminacionEntradaString)).get();
-
-        if (cantidadString.isBlank() || cantidadString.isEmpty()) {
-            cantidadString = cantidadEntrada.getCantidad();
+        if (cantidad == null) {
+            cantidad = Integer.valueOf(cantidadEntrada.getCantidad());
         }
 
-        entrada.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
-        entrada.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
-        entrada.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
-        entrada.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        Entrada entrada = (idEntrada != null) ? entradaRepository.findById(idEntrada).get() : new Entrada();
+        entrada.setMedidaPersonalizada(entradaDTO.getMedidaPersonalizada());
+        entrada.setEnlaceArchivo(entradaDTO.getEnlaceArchivo());
+        entrada.setConAdicionalDisenio(entradaDTO.getConAdicionalDisenio());
+        entrada.setInformacionAdicional(entradaDTO.getInformacionAdicional());
         entrada.setTipoPapelEntrada(tipoPapelEntrada);
         entrada.setTipoColorEntrada(tipoColorEntrada);
         entrada.setTipoTroqueladoEntrada(tipoTroqueladoEntrada);
@@ -70,8 +43,18 @@ public class EntradaService {
         entrada.setCantidadEntrada(cantidadEntrada);
         entrada.setNumeradoEntrada(numeradoEntrada);
         entrada.setTerminacionEntrada(terminacionEntrada);
-        entrada.setCantidad(Integer.parseInt(cantidadString));
+        entrada.setCantidad(cantidad);
 
         return entradaRepository.save(entrada);
+    }
+
+    private void validarEntradaDTO(EntradaDTO entradaDTO) {
+        Assert.notNull(entradaDTO.getTipoPapelEntradaId(), "El tipo de papel es un dato obligatorio.");
+        Assert.notNull(entradaDTO.getTipoColorEntradaId(), "El tipo de color es un dato obligatorio.");
+        Assert.notNull(entradaDTO.getTipoTroqueladoEntradaId(), "El tipo de troquelado es un dato obligatorio.");
+        Assert.notNull(entradaDTO.getMedidaEntradaId(), "La medida es un dato obligatorio.");
+        Assert.notNull(entradaDTO.getNumeradoEntradaId(), "El numerado es un dato obligatorio.");
+        Assert.notNull(entradaDTO.getTerminacionEntradaId(), "La terminación es un dato obligatorio.");
+        Assert.notNull(entradaDTO.getCantidadEntradaId(), "La cantidad es un dato obligatorio.");
     }
 }

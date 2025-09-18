@@ -36,6 +36,12 @@ document.addEventListener("DOMContentLoaded", function () {
       case "cuaderno anillado":
         window.location.href = `/crear-odt-cuaderno-anillado/${idOrden}`;
         break;
+      case "entrada":
+        window.location.href = `/crear-odt-entrada/${idOrden}`;
+        break;
+      case "etiqueta":
+        window.location.href = `/crear-odt-etiqueta/${idOrden}`;
+        break;
       default:
         console.warn("Tipo de producto no manejado:", tipoProducto);
     }

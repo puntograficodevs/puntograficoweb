@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.EtiquetaDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,33 +14,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class EtiquetaController {
 
-    @Autowired
-    private OpcionesEtiquetaService opcionesEtiquetaService;
+    private final OpcionesEtiquetaService opcionesEtiquetaService;
+    private final MedioPagoService medioPagoService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final EtiquetaService etiquetaService;
+    private final OrdenEtiquetaService ordenEtiquetaService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private EtiquetaService etiquetaService;
-
-    @Autowired
-    private OrdenEtiquetaService ordenEtiquetaService;
-
-    @GetMapping("/crear-odt-etiqueta")
-    public String verCrearOdtEtiqueta(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-etiqueta", "/crear-odt-etiqueta/{idOrden}"})
+    public String verCrearOdtEtiqueta(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenEtiqueta ordenEtiqueta = (idOrden != null) ? ordenEtiquetaService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenEtiqueta != null) ? ordenEtiqueta.getOrdenTrabajo() : new OrdenTrabajo();
+        Etiqueta etiqueta = (ordenEtiqueta != null) ? ordenEtiqueta.getEtiqueta() : new Etiqueta();
 
         List<TipoPapelEtiqueta> listaTipoPapelEtiqueta = opcionesEtiquetaService.buscarTodosTipoPapelEtiqueta();
         List<TipoLaminadoEtiqueta> listaTipoLaminadoEtiqueta = opcionesEtiquetaService.buscarTodosTipoLaminadoEtiqueta();
@@ -49,7 +44,9 @@ public class EtiquetaController {
         List<MedidaEtiqueta> listaMedidaEtiqueta = opcionesEtiquetaService.buscarTodosMedidaEtiqueta();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("etiqueta", new Etiqueta());
+        model.addAttribute("etiqueta", etiqueta);
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
         model.addAttribute("listaTipoPapelEtiqueta", listaTipoPapelEtiqueta);
         model.addAttribute("listaTipoLaminadoEtiqueta", listaTipoLaminadoEtiqueta);
         model.addAttribute("listaTamanioPerforacion", listaTamanioPerforacion);
@@ -80,11 +77,38 @@ public class EtiquetaController {
 
     @PostMapping("/api/creacion-etiqueta")
     public String creacionEtiqueta(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        Etiqueta etiqueta = etiquetaService.crear(request);
-        OrdenEtiqueta ordenEtiqueta = ordenEtiquetaService.crear(ordenTrabajo, etiqueta);
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return "redirect:/mostrar-odt-etiqueta/" + ordenEtiqueta.getId();*/
-        return null;
+        OrdenEtiqueta ordenEtiquetaExistente = (idOrden != null) ? ordenEtiquetaService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenEtiquetaExistente != null) ? ordenEtiquetaExistente.getOrdenTrabajo().getId() : null;
+        Long idEtiqueta = (ordenEtiquetaExistente != null) ? ordenEtiquetaExistente.getEtiqueta().getId() : null;
+        Long idOrdenEtiqueta = (ordenEtiquetaExistente != null) ? ordenEtiquetaExistente.getId() : null;
+
+        EtiquetaDTO etiquetaDTO = armarEtiquetaDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        Etiqueta etiqueta = etiquetaService.guardar(etiquetaDTO, idEtiqueta);
+        OrdenEtiqueta ordenEtiqueta = ordenEtiquetaService.guardar(ordenTrabajo, etiqueta, idOrdenEtiqueta);
+
+        return "redirect:/mostrar-odt-etiqueta/" + ordenEtiqueta.getId();
+    }
+
+    private EtiquetaDTO armarEtiquetaDTO(HttpServletRequest request) {
+        EtiquetaDTO etiquetaDTO = new EtiquetaDTO();
+        etiquetaDTO.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
+        etiquetaDTO.setConPerforacionAdicional(request.getParameter("conPerforacionAdicional") != null);
+        etiquetaDTO.setConMarcaAdicional(request.getParameter("conMarcaAdicional") != null);
+        etiquetaDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        etiquetaDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        etiquetaDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        etiquetaDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        etiquetaDTO.setTipoPapelEtiquetaId(Long.parseLong(request.getParameter("tipoPapelEtiqueta.id")));
+        etiquetaDTO.setTipoLaminadoEtiquetaId(Long.parseLong(request.getParameter("tipoLaminadoEtiqueta.id")));
+        etiquetaDTO.setTamanioPerforacionId(Long.parseLong(request.getParameter("tamanioPerforacion.id")));
+        etiquetaDTO.setTipoFazEtiquetaId(Long.parseLong(request.getParameter("tipoFazEtiqueta.id")));
+        etiquetaDTO.setCantidadEtiquetaId(Long.parseLong(request.getParameter("cantidadEtiqueta.id")));
+        etiquetaDTO.setMedidaEtiquetaId(Long.parseLong(request.getParameter("medidaEtiqueta.id")));
+
+        return etiquetaDTO;
     }
 }

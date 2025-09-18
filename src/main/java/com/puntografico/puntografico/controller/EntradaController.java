@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.EntradaDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,33 +14,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class EntradaController {
 
-    @Autowired
-    private OpcionesEntradaService opcionesEntradaService;
+    private final OpcionesEntradaService opcionesEntradaService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
+    private final MedioPagoService medioPagoService;
 
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
+    private final OrdenTrabajoService ordenTrabajoService;
 
-    @Autowired
-    private EntradaService entradaService;
+    private final EntradaService entradaService;
 
-    @Autowired
-    private OrdenEntradaService ordenEntradaService;
+    private final OrdenEntradaService ordenEntradaService;
 
-    @GetMapping("/crear-odt-entrada")
-    public String verCrearOdtEntrada(Model model, HttpSession session) {
+    private final ProductoService productoService;
+
+    @GetMapping({"/crear-odt-entrada", "/crear-odt-entrada/{idOrden}"})
+    public String verCrearOdtEntrada(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenEntrada ordenEntrada = (idOrden != null) ? ordenEntradaService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenEntrada != null) ? ordenEntrada.getOrdenTrabajo() : new OrdenTrabajo();
+        Entrada entrada = (ordenEntrada != null) ? ordenEntrada.getEntrada() : new Entrada();
 
         List<TipoPapelEntrada> listaTipoPapelEntrada = opcionesEntradaService.buscarTodosTipoPapelEntrada();
         List<TipoColorEntrada> listaTipoColorEntrada = opcionesEntradaService.buscarTodosTipoColorEntrada();
@@ -50,7 +50,9 @@ public class EntradaController {
         List<TerminacionEntrada> listaTerminacionEntrada = opcionesEntradaService.buscarTodosTerminacionEntrada();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("entrada", new Entrada());
+        model.addAttribute("entrada", entrada);
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
         model.addAttribute("listaTipoPapelEntrada", listaTipoPapelEntrada);
         model.addAttribute("listaTipoColorEntrada", listaTipoColorEntrada);
         model.addAttribute("listaTipoTroqueladoEntrada", listaTipoTroqueladoEntrada);
@@ -82,11 +84,37 @@ public class EntradaController {
 
     @PostMapping("/api/creacion-entrada")
     public String creacionEntrada(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        Entrada entrada = entradaService.crear(request);
-        OrdenEntrada ordenEntrada = ordenEntradaService.crear(ordenTrabajo, entrada);
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return "redirect:/mostrar-odt-entrada/" + ordenEntrada.getId();*/
-        return null;
+        OrdenEntrada ordenEntradaExistente = (idOrden != null) ? ordenEntradaService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenEntradaExistente != null) ? ordenEntradaExistente.getOrdenTrabajo().getId() : null;
+        Long idEntrada = (ordenEntradaExistente != null) ? ordenEntradaExistente.getEntrada().getId() : null;
+        Long idOrdenEntrada = (ordenEntradaExistente != null) ? ordenEntradaExistente.getId() : null;
+
+        EntradaDTO entradaDTO = armarEntradaDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        Entrada entrada = entradaService.guardar(entradaDTO, idEntrada);
+        OrdenEntrada ordenEntrada = ordenEntradaService.guardar(ordenTrabajo, entrada, idOrdenEntrada);
+
+        return "redirect:/mostrar-odt-entrada/" + ordenEntrada.getId();
+    }
+
+    private EntradaDTO armarEntradaDTO(HttpServletRequest request) {
+        EntradaDTO entradaDTO = new EntradaDTO();
+        entradaDTO.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
+        entradaDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        entradaDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        entradaDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        entradaDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        entradaDTO.setTipoPapelEntradaId(Long.parseLong(request.getParameter("tipoPapelEntrada.id")));
+        entradaDTO.setTipoColorEntradaId(Long.parseLong(request.getParameter("tipoColorEntrada.id")));
+        entradaDTO.setTipoTroqueladoEntradaId(Long.parseLong(request.getParameter("tipoTroqueladoEntrada.id")));
+        entradaDTO.setMedidaEntradaId(Long.parseLong(request.getParameter("medidaEntrada.id")));
+        entradaDTO.setCantidadEntradaId(Long.parseLong(request.getParameter("cantidadEntrada.id")));
+        entradaDTO.setNumeradoEntradaId(Long.parseLong(request.getParameter("numeradoEntrada.id")));
+        entradaDTO.setTerminacionEntradaId(Long.parseLong(request.getParameter("terminacionEntrada.id")));
+
+        return entradaDTO;
     }
 }
