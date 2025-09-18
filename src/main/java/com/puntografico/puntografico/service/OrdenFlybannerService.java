@@ -16,11 +16,11 @@ public class OrdenFlybannerService {
 
     private final OrdenFlybannerRepository ordenFlybannerRepository;
 
-    public OrdenFlybanner crear(OrdenTrabajo ordenTrabajo, Flybanner flybanner) {
+    public OrdenFlybanner guardar(OrdenTrabajo ordenTrabajo, Flybanner flybanner, Long idOrdenFlybanner) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden para enlazar.");
         Assert.notNull(flybanner, "Debe venir un flybanner para enlazar.");
 
-        OrdenFlybanner ordenFlybanner = new OrdenFlybanner();
+        OrdenFlybanner ordenFlybanner = (idOrdenFlybanner != null) ? ordenFlybannerRepository.findById(idOrdenFlybanner).get() : new OrdenFlybanner();
         ordenFlybanner.setCantidad(flybanner.getCantidad());
         ordenFlybanner.setOrdenTrabajo(ordenTrabajo);
         ordenFlybanner.setFlybanner(flybanner);

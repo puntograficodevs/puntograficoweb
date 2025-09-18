@@ -1,6 +1,7 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.FlybannerDTO;
 import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -72,12 +73,33 @@ public class FlybannerController {
 
     @PostMapping("/api/creacion-flybanner")
     public String creacionProducto(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        Flybanner flybanner = flybannerService.crear(request);
-        OrdenFlybanner ordenFlybanner = ordenFlybannerService.crear(ordenTrabajo, flybanner);
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return "redirect:/mostrar-odt-flybanner/" + ordenFlybanner.getId();*/
+        OrdenFlybanner ordenFlybannerExistente = (idOrden != null) ? ordenFlybannerService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenFlybannerExistente != null) ? ordenFlybannerExistente.getOrdenTrabajo().getId() : null;
+        Long idFlybanner = (ordenFlybannerExistente != null) ? ordenFlybannerExistente.getFlybanner().getId() : null;
+        Long idOrdenFlybanner = (ordenFlybannerExistente != null) ? ordenFlybannerExistente.getId() : null;
 
-        return null;
+        FlybannerDTO flybannerDTO = armarFlybannerDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        Flybanner flybanner = flybannerService.guardar(flybannerDTO, idFlybanner);
+        OrdenFlybanner ordenFlybanner = ordenFlybannerService.guardar(ordenTrabajo, flybanner, idOrdenFlybanner);
+
+        return "redirect:/mostrar-odt-flybanner/" + ordenFlybanner.getId();
+    }
+
+    private FlybannerDTO armarFlybannerDTO(HttpServletRequest request) {
+        FlybannerDTO flybannerDTO = new FlybannerDTO();
+        flybannerDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        flybannerDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        flybannerDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        flybannerDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        flybannerDTO.setTipoFazFlybannerId(Long.parseLong(request.getParameter("tipoFazFlybanner.id")));
+        flybannerDTO.setAlturaFlybannerId(Long.parseLong(request.getParameter("alturaFlybanner.id")));
+        flybannerDTO.setBanderaFlybannerId(Long.parseLong(request.getParameter("banderaFlybanner.id")));
+        flybannerDTO.setTipoBaseFlybannerId(Long.parseLong(request.getParameter("tipoBaseFlybanner.id")));
+
+        return flybannerDTO;
     }
 }

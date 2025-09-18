@@ -1,56 +1,47 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.FlybannerDTO;
 import com.puntografico.puntografico.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service
 @Transactional @AllArgsConstructor
 public class FlybannerService {
 
-    private final TipoFazFlybannerRepository tipoFazFlybannerRepository;
-
-    private final AlturaFlybannerRepository alturaFlybannerRepository;
-
-    private final BanderaFlybannerRepository banderaFlybannerRepository;
-
-    private final TipoBaseFlybannerRepository tipoBaseFlybannerRepository;
-
     private final FlybannerRepository flybannerRepository;
+    private final OpcionesFlybannerService opcionesFlybannerService;
 
-    public Flybanner crear(HttpServletRequest request) {
-        String tipoFazFlybannerString = request.getParameter("tipoFazFlybanner.id");
-        String alturaFlybannerString = request.getParameter("alturaFlybanner.id");
-        String banderaFlybannerString = request.getParameter("banderaFlybanner.id");
-        String tipoBaseFlybannerString = request.getParameter("tipoBaseFlybanner.id");
-        String cantidadString = request.getParameter("cantidad");
+    public Flybanner guardar(FlybannerDTO flybannerDTO, Long idFlybanner) {
+        validarFlybannerDTO(flybannerDTO);
 
-        Assert.notNull(tipoFazFlybannerString, "tipoFazFlybannerString es un dato obligatorio.");
-        Assert.notNull(alturaFlybannerString, "alturaFlybannerString es un dato obligatorio.");
-        Assert.notNull(banderaFlybannerString, "banderaFlybannerString es un dato obligatorio.");
-        Assert.notNull(tipoBaseFlybannerString, "tipoBaseFlybannerString es un dato obligatorio.");
-        Assert.notNull(cantidadString, "cantidadString es un dato obligatorio.");
+        TipoFazFlybanner tipoFazFlybanner = opcionesFlybannerService.buscarTipoFazFlybannerPorId(flybannerDTO.getTipoFazFlybannerId());
+        AlturaFlybanner alturaFlybanner = opcionesFlybannerService.buscarAlturaFlybannerPorId(flybannerDTO.getAlturaFlybannerId());
+        BanderaFlybanner banderaFlybanner = opcionesFlybannerService.buscarBanderaFlybannerPorId(flybannerDTO.getBanderaFlybannerId());
+        TipoBaseFlybanner tipoBaseFlybanner = opcionesFlybannerService.buscarTipoBaseFlybannerPorId(flybannerDTO.getTipoBaseFlybannerId());
 
-        TipoFazFlybanner tipoFazFlybanner = tipoFazFlybannerRepository.findById(Long.parseLong(tipoFazFlybannerString)).get();
-        AlturaFlybanner alturaFlybanner = alturaFlybannerRepository.findById(Long.parseLong(alturaFlybannerString)).get();
-        BanderaFlybanner banderaFlybanner = banderaFlybannerRepository.findById(Long.parseLong(banderaFlybannerString)).get();
-        TipoBaseFlybanner tipoBaseFlybanner = tipoBaseFlybannerRepository.findById(Long.parseLong(tipoBaseFlybannerString)).get();
-
-        Flybanner flybanner = new Flybanner();
+        Flybanner flybanner = (idFlybanner != null) ? flybannerRepository.findById(idFlybanner).get() : new Flybanner();
         flybanner.setTipoFazFlybanner(tipoFazFlybanner);
         flybanner.setAlturaFlybanner(alturaFlybanner);
         flybanner.setBanderaFlybanner(banderaFlybanner);
         flybanner.setTipoBaseFlybanner(tipoBaseFlybanner);
-        flybanner.setCantidad(Integer.parseInt(cantidadString));
-        flybanner.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
-        flybanner.setInformacionAdicional(request.getParameter("informacionAdicional"));
-        flybanner.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        flybanner.setCantidad(flybannerDTO.getCantidad());
+        flybanner.setEnlaceArchivo(flybannerDTO.getEnlaceArchivo());
+        flybanner.setInformacionAdicional(flybannerDTO.getInformacionAdicional());
+        flybanner.setConAdicionalDisenio(flybannerDTO.getConAdicionalDisenio());
 
         return flybannerRepository.save(flybanner);
+    }
+
+    private void validarFlybannerDTO(FlybannerDTO flybannerDTO) {
+        Assert.notNull(flybannerDTO.getTipoFazFlybannerId(), "tipoFazFlybannerString es un dato obligatorio.");
+        Assert.notNull(flybannerDTO.getAlturaFlybannerId(), "alturaFlybannerString es un dato obligatorio.");
+        Assert.notNull(flybannerDTO.getBanderaFlybannerId(), "banderaFlybannerString es un dato obligatorio.");
+        Assert.notNull(flybannerDTO.getTipoBaseFlybannerId(), "tipoBaseFlybannerString es un dato obligatorio.");
+        Assert.notNull(flybannerDTO.getCantidad(), "cantidadString es un dato obligatorio.");
     }
 }

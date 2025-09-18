@@ -16,11 +16,11 @@ public class OrdenFolletoService {
 
     private final OrdenFolletoRepository ordenFolletoRepository;
 
-    public OrdenFolleto crear(OrdenTrabajo ordenTrabajo, Folleto folleto) {
+    public OrdenFolleto guardar(OrdenTrabajo ordenTrabajo, Folleto folleto, Long idOrdenFolleto) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(folleto, "Debe venir un folleto para enlazar.");
 
-        OrdenFolleto ordenFolleto = new OrdenFolleto();
+        OrdenFolleto ordenFolleto = (idOrdenFolleto != null) ? ordenFolletoRepository.findById(idOrdenFolleto).get() : new OrdenFolleto();
         ordenFolleto.setCantidad(folleto.getCantidad());
         ordenFolleto.setOrdenTrabajo(ordenTrabajo);
         ordenFolleto.setFolleto(folleto);

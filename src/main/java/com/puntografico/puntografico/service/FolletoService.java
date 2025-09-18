@@ -1,71 +1,58 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.FolletoDTO;
 import com.puntografico.puntografico.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service @Transactional @AllArgsConstructor
 public class FolletoService {
 
     private final FolletoRepository folletoRepository;
+    private final OpcionesFolletoService opcionesFolletoService;
 
-    private final TipoPapelFolletoRepository tipoPapelFolletoRepository;
+    public Folleto guardar(FolletoDTO folletoDTO, Long idFolleto) {
+        validarFolletoDTO(folletoDTO);
 
-    private final TipoColorFolletoRepository tipoColorFolletoRepository;
+        TipoPapelFolleto tipoPapelFolleto = opcionesFolletoService.buscarTipoPapelFolletoPorId(folletoDTO.getTipoPapelFolletoId());
+        TipoColorFolleto tipoColorFolleto = opcionesFolletoService.buscarTipoColorFolletoPorId(folletoDTO.getTipoColorFolletoId());
+        TipoFazFolleto tipoFazFolleto = opcionesFolletoService.buscarTipoFazFolletoPorId(folletoDTO.getTipoFazFolletoId());
+        TamanioHojaFolleto tamanioHojaFolleto = opcionesFolletoService.buscarTamanioHojaFolletoPorId(folletoDTO.getTamanioHojaFolletoId());
+        TipoFolleto tipoFolleto = opcionesFolletoService.buscarTipoFolletoPorId(folletoDTO.getTipoFolletoId());
+        CantidadFolleto cantidadFolleto = opcionesFolletoService.buscarCantidadFolletoPorId(folletoDTO.getCantidadFolletoId());
 
-    private final TipoFazFolletoRepository tipoFazFolletoRepository;
+        Integer cantidad = folletoDTO.getCantidad();
 
-    private final TamanioHojaFolletoRepository tamanioHojaFolletoRepository;
-
-    private final TipoFolletoRepository tipoFolletoRepository;
-
-    private final CantidadFolletoRepository cantidadFolletoRepository;
-
-    public Folleto crear(HttpServletRequest request) {
-        String tipoPapelFolletoString = request.getParameter("tipoPapelFolleto.id");
-        String tipoColorFolletoString = request.getParameter("tipoColorFolleto.id");
-        String tipoFazFolletoString = request.getParameter("tipoFazFolleto.id");
-        String tamanioHojaFolletoString = request.getParameter("tamanioHojaFolleto.id");
-        String tipoFolletoString = request.getParameter("tipoFolleto.id");
-        String cantidadFolletoString = request.getParameter("cantidadFolleto.id");
-        String cantidadString = request.getParameter("cantidad");
-
-        Assert.notNull(tipoPapelFolletoString, "tipoPapelFolletoString no puede venir vacío.");
-        Assert.notNull(tipoColorFolletoString, "tipoColorFolletoString no puede venir vacío.");
-        Assert.notNull(tipoFazFolletoString, "tipoFazFolletoString no puede venir vacío.");
-        Assert.notNull(tamanioHojaFolletoString, "tamanioHojaFolletoString no puede venir vacío.");
-        Assert.notNull(tipoFolletoString, "tipoFolletoString no puede venir vacío.");
-        Assert.notNull(cantidadFolletoString, "cantidadFolletoString no puede venir vacío.");
-
-        TipoPapelFolleto tipoPapelFolleto = tipoPapelFolletoRepository.findById(Long.parseLong(tipoPapelFolletoString)).get();
-        TipoColorFolleto tipoColorFolleto = tipoColorFolletoRepository.findById(Long.parseLong(tipoColorFolletoString)).get();
-        TipoFazFolleto tipoFazFolleto = tipoFazFolletoRepository.findById(Long.parseLong(tipoFazFolletoString)).get();
-        TamanioHojaFolleto tamanioHojaFolleto = tamanioHojaFolletoRepository.findById(Long.parseLong(tamanioHojaFolletoString)).get();
-        TipoFolleto tipoFolleto = tipoFolletoRepository.findById(Long.parseLong(tipoFolletoString)).get();
-        CantidadFolleto cantidadFolleto = cantidadFolletoRepository.findById(Long.parseLong(cantidadFolletoString)).get();
-
-        if (cantidadString.isEmpty() || cantidadString.isBlank()) {
-            cantidadString = cantidadFolleto.getCantidad();
+        if (cantidad == null) {
+            cantidad = Integer.valueOf(cantidadFolleto.getCantidad());
         }
 
-        Folleto folleto = new Folleto();
-        folleto.setConPlegado(request.getParameter("conPlegado") != null);
-        folleto.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
-        folleto.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
-        folleto.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        Folleto folleto = (idFolleto != null) ? folletoRepository.findById(idFolleto).get() : new Folleto();
+        folleto.setConPlegado(folletoDTO.getConPlegado());
+        folleto.setEnlaceArchivo(folletoDTO.getEnlaceArchivo());
+        folleto.setConAdicionalDisenio(folletoDTO.getConAdicionalDisenio());
+        folleto.setInformacionAdicional(folletoDTO.getInformacionAdicional());
         folleto.setTipoPapelFolleto(tipoPapelFolleto);
         folleto.setTipoColorFolleto(tipoColorFolleto);
         folleto.setTipoFazFolleto(tipoFazFolleto);
         folleto.setTamanioHojaFolleto(tamanioHojaFolleto);
         folleto.setTipoFolleto(tipoFolleto);
         folleto.setCantidadFolleto(cantidadFolleto);
-        folleto.setCantidad(Integer.parseInt(cantidadString));
+        folleto.setCantidad(cantidad);
 
         return folletoRepository.save(folleto);
+    }
+
+    private void validarFolletoDTO(FolletoDTO folletoDTO) {
+        Assert.notNull(folletoDTO.getTipoPapelFolletoId(), "tipoPapelFolletoString no puede venir vacío.");
+        Assert.notNull(folletoDTO.getTipoColorFolletoId(), "tipoColorFolletoString no puede venir vacío.");
+        Assert.notNull(folletoDTO.getTipoFazFolletoId(), "tipoFazFolletoString no puede venir vacío.");
+        Assert.notNull(folletoDTO.getTamanioHojaFolletoId(), "tamanioHojaFolletoString no puede venir vacío.");
+        Assert.notNull(folletoDTO.getTipoFolletoId(), "tipoFolletoString no puede venir vacío.");
+        Assert.notNull(folletoDTO.getCantidadFolletoId(), "cantidadFolletoString no puede venir vacío.");
     }
 }

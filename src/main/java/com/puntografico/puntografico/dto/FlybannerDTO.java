@@ -11,5 +11,5 @@ public class FlybannerDTO {
     private Long tipoFazFlybannerId;
     private Long alturaFlybannerId;
     private Long banderaFlybannerId;
-    private Long tipobaseFlybannerId;
+    private Long tipoBaseFlybannerId;
 }

@@ -10,6 +10,7 @@ import com.puntografico.puntografico.repository.TipoBaseFlybannerRepository;
 import com.puntografico.puntografico.repository.TipoFazFlybannerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -36,5 +37,25 @@ public class OpcionesFlybannerService {
 
     public List<TipoBaseFlybanner> buscarTodosTipoBaseFlybanner() {
         return tipoBaseFlybannerRepository.findAll();
+    }
+
+    public TipoFazFlybanner buscarTipoFazFlybannerPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return tipoFazFlybannerRepository.findById(id).get();
+    }
+
+    public AlturaFlybanner buscarAlturaFlybannerPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return alturaFlybannerRepository.findById(id).get();
+    }
+
+    public BanderaFlybanner buscarBanderaFlybannerPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return banderaFlybannerRepository.findById(id).get();
+    }
+
+    public TipoBaseFlybanner buscarTipoBaseFlybannerPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return tipoBaseFlybannerRepository.findById(id).get();
     }
 }

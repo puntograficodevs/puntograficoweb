@@ -4,6 +4,7 @@ import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -40,5 +41,30 @@ public class OpcionesFolletoService {
 
     public List<CantidadFolleto> buscarTodosCantidadFolleto() {
         return cantidadFolletoRepository.findAll();
+    }
+
+    public TipoPapelFolleto buscarTipoPapelFolletoPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return tipoPapelFolletoRepository.findById(id).get();
+    }
+    public TipoColorFolleto buscarTipoColorFolletoPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return tipoColorFolletoRepository.findById(id).get();
+    }
+    public TipoFazFolleto buscarTipoFazFolletoPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return tipoFazFolletoRepository.findById(id).get();
+    }
+    public TamanioHojaFolleto buscarTamanioHojaFolletoPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return tamanioHojaFolletoRepository.findById(id).get();
+    }
+    public TipoFolleto buscarTipoFolletoPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return tipoFolletoRepository.findById(id).get();
+    }
+    public CantidadFolleto buscarCantidadFolletoPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return cantidadFolletoRepository.findById(id).get();
     }
 }

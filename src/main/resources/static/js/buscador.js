@@ -42,6 +42,12 @@ document.addEventListener("DOMContentLoaded", function () {
       case "etiqueta":
         window.location.href = `/crear-odt-etiqueta/${idOrden}`;
         break;
+      case "flybanner":
+        window.location.href = `/crear-odt-flybanner/${idOrden}`;
+        break;
+      case "folleto":
+        window.location.href = `/crear-odt-folleto/${idOrden}`;
+        break;
       default:
         console.warn("Tipo de producto no manejado:", tipoProducto);
     }
