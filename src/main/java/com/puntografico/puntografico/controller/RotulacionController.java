@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.RotulacionDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,39 +14,35 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class RotulacionController {
 
-    @Autowired
-    private OpcionesRotulacionService opcionesRotulacionService;
+    private final OpcionesRotulacionService opcionesRotulacionService;
+    private final MedioPagoService medioPagoService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final RotulacionService rotulacionService;
+    private final OrdenRotulacionService ordenRotulacionService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private RotulacionService rotulacionService;
-
-    @Autowired
-    private OrdenRotulacionService ordenRotulacionService;
-
-    @GetMapping("/crear-odt-rotulacion")
-    public String verCrearOdtRotulacion(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-rotulacion", "/crear-odt-rotulacion/{idOrden}"})
+    public String verCrearOdtRotulacion(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenRotulacion ordenRotulacion = (idOrden != null) ? ordenRotulacionService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenRotulacion != null) ? ordenRotulacion.getOrdenTrabajo() : new OrdenTrabajo();
+        Rotulacion rotulacion = (ordenRotulacion != null) ? ordenRotulacion.getRotulacion() : new Rotulacion();
 
         List<TipoRotulacion> listaTipoRotulacion = opcionesRotulacionService.buscarTodosTipoRotulacion();
         List<TipoCorteRotulacion> listaTipoCorteRotulacion = opcionesRotulacionService.buscarTodosTipoCorteRotulacion();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("rotulacion", new Rotulacion());
+        model.addAttribute("rotulacion", rotulacion);
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
         model.addAttribute("listaTipoRotulacion", listaTipoRotulacion);
         model.addAttribute("listaTipoCorteRotulacion", listaTipoCorteRotulacion);
         model.addAttribute("listaMediosDePago", listaMediosDePago);
@@ -72,12 +69,35 @@ public class RotulacionController {
 
     @PostMapping("/api/creacion-rotulacion")
     public String creacionProducto(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        Rotulacion rotulacion = rotulacionService.crear(request);
-        OrdenRotulacion ordenRotulacion = ordenRotulacionService.crear(ordenTrabajo, rotulacion);
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return "redirect:/mostrar-odt-rotulacion/" + ordenRotulacion.getId();*/
+        OrdenRotulacion ordenRotulacionExistente = (idOrden != null) ? ordenRotulacionService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenRotulacionExistente != null) ? ordenRotulacionExistente.getOrdenTrabajo().getId() : null;
+        Long idRotulacion = (ordenRotulacionExistente != null) ? ordenRotulacionExistente.getRotulacion().getId() : null;
+        Long idOrdenRotulacion = (ordenRotulacionExistente != null) ? ordenRotulacionExistente.getId() : null;
 
-        return null;
+        RotulacionDTO rotulacionDTO = armarRotulacionDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        Rotulacion rotulacion = rotulacionService.guardar(rotulacionDTO, idRotulacion);
+        OrdenRotulacion ordenRotulacion = ordenRotulacionService.guardar(ordenTrabajo, rotulacion, idOrdenRotulacion);
+
+        return "redirect:/mostrar-odt-rotulacion/" + ordenRotulacion.getId();
+    }
+
+    private RotulacionDTO armarRotulacionDTO(HttpServletRequest request) {
+        RotulacionDTO rotulacionDTO = new RotulacionDTO();
+        rotulacionDTO.setEsLaminado(request.getParameter("esLaminado") != null);
+        rotulacionDTO.setHorarioRotulacion(request.getParameter("horarioRotulacion"));
+        rotulacionDTO.setDireccionRotulacion(request.getParameter("direccionRotulacion"));
+        rotulacionDTO.setMedida(request.getParameter("medida"));
+        rotulacionDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        rotulacionDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        rotulacionDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        rotulacionDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        rotulacionDTO.setTipoRotulacionId(Long.parseLong(request.getParameter("tipoRotulacion.id")));
+        rotulacionDTO.setTipoCorteRotulacionId(Long.parseLong(request.getParameter("tipoCorteRotulacion.id")));
+
+        return rotulacionDTO;
     }
 }

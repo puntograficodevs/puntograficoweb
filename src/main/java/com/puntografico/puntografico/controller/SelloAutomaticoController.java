@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.SelloAutomaticoDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,38 +14,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class SelloAutomaticoController {
 
-    @Autowired
-    private OpcionesSelloAutomaticoService opcionesSelloAutomaticoService;
+    private final OpcionesSelloAutomaticoService opcionesSelloAutomaticoService;
+    private final MedioPagoService medioPagoService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final SelloAutomaticoService selloAutomaticoService;
+    private final OrdenSelloAutomaticoService ordenSelloAutomaticoService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private SelloAutomaticoService selloAutomaticoService;
-
-    @Autowired
-    private OrdenSelloAutomaticoService ordenSelloAutomaticoService;
-
-    @GetMapping("/crear-odt-sello-automatico")
-    public String verCrearOdtSelloAutomatico(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-sello-automatico", "/crear-odt-sello-automatico/{idOrden}"})
+    public String verCrearOdtSelloAutomatico(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenSelloAutomatico ordenSelloAutomatico = (idOrden != null) ? ordenSelloAutomaticoService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenSelloAutomatico != null) ? ordenSelloAutomatico.getOrdenTrabajo() : new OrdenTrabajo();
+        SelloAutomatico selloAutomatico = (ordenSelloAutomatico != null) ? ordenSelloAutomatico.getSelloAutomatico() : new SelloAutomatico();
 
         List<ModeloSelloAutomatico> listaModeloSelloAutomatico = opcionesSelloAutomaticoService.buscarTodosModeloSelloAutomatico();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("selloAutomatico", new SelloAutomatico());
+        model.addAttribute("selloAutomatico", selloAutomatico);
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
         model.addAttribute("listaModeloSelloAutomatico", listaModeloSelloAutomatico);
         model.addAttribute("listaMediosDePago", listaMediosDePago);
 
@@ -70,11 +67,36 @@ public class SelloAutomaticoController {
 
     @PostMapping("/api/creacion-sello-automatico")
     public String creacionSelloAutomatico(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        SelloAutomatico selloAutomatico = selloAutomaticoService.crear(request);
-        OrdenSelloAutomatico ordenSelloAutomatico = ordenSelloAutomaticoService.crear(ordenTrabajo, selloAutomatico);
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return "redirect:/mostrar-odt-sello-automatico/" + ordenSelloAutomatico.getId();*/
-        return null;
+        OrdenSelloAutomatico ordenSelloAutomaticoExistente = (idOrden != null) ? ordenSelloAutomaticoService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenSelloAutomaticoExistente != null) ? ordenSelloAutomaticoExistente.getOrdenTrabajo().getId() : null;
+        Long idSelloAutomatico = (ordenSelloAutomaticoExistente != null) ? ordenSelloAutomaticoExistente.getSelloAutomatico().getId() : null;
+        Long idOrdenSelloAutomatico = (ordenSelloAutomaticoExistente != null) ? ordenSelloAutomaticoExistente.getId() : null;
+
+        SelloAutomaticoDTO selloAutomaticoDTO = armarSelloAutomaticoDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        SelloAutomatico selloAutomatico = selloAutomaticoService.guardar(selloAutomaticoDTO, idSelloAutomatico);
+        OrdenSelloAutomatico ordenSelloAutomatico = ordenSelloAutomaticoService.guardar(ordenTrabajo, selloAutomatico, idOrdenSelloAutomatico);
+
+        return "redirect:/mostrar-odt-sello-automatico/" + ordenSelloAutomatico.getId();
+    }
+
+    private SelloAutomaticoDTO armarSelloAutomaticoDTO(HttpServletRequest request) {
+        SelloAutomaticoDTO selloAutomaticoDTO = new SelloAutomaticoDTO();
+        selloAutomaticoDTO.setEsProfesional(request.getParameter("esProfesional") != null);
+        selloAutomaticoDTO.setEsParticular(request.getParameter("esParticular") != null);
+        selloAutomaticoDTO.setTextoLineaUno(request.getParameter("textoLineaUno"));
+        selloAutomaticoDTO.setTextoLineaDos(request.getParameter("textoLineaDos"));
+        selloAutomaticoDTO.setTextoLineaTres(request.getParameter("textoLineaTres"));
+        selloAutomaticoDTO.setTextoLineaCuatro(request.getParameter("textoLineaCuatro"));
+        selloAutomaticoDTO.setTipografiaLineaUno(request.getParameter("tipografiaLineaUno"));
+        selloAutomaticoDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        selloAutomaticoDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        selloAutomaticoDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        selloAutomaticoDTO.setModeloSelloAutomaticoId(Long.parseLong(request.getParameter("modeloSelloAutomatico.id")));
+
+        return selloAutomaticoDTO;
     }
 }

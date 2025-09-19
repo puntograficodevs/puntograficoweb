@@ -26,12 +26,16 @@ public class RifasBonosContribucionService {
         TipoColorRifa tipoColorRifa = opcionesRifasContribucionService.buscarTipoColorRifaPorId(rifasBonosContribucionDTO.getTipoColorRifaId());
 
         RifasBonosContribucion rifasBonosContribucion = (idRifasBonosContribucion != null) ? rifasBonosContribucionRepository.findById(idRifasBonosContribucion).get() : new RifasBonosContribucion();
-        rifasBonosContribucion.setConNumerado(rifasBonosContribucionDTO.getConNumerado());
+        boolean adicionalDisenio = (idRifasBonosContribucion != null) ? rifasBonosContribucion.isConAdicionalDisenio() : rifasBonosContribucionDTO.getConAdicionalDisenio();
+        boolean conNumerado = (idRifasBonosContribucion != null) ? rifasBonosContribucion.isConNumerado() : rifasBonosContribucionDTO.getConNumerado();
+        boolean conEncolado = (idRifasBonosContribucion != null) ? rifasBonosContribucion.isConEncolado() : rifasBonosContribucionDTO.getConEncolado();
+
+        rifasBonosContribucion.setConNumerado(conNumerado);
         rifasBonosContribucion.setDetalleNumerado(rifasBonosContribucionDTO.getDetalleNumerado());
-        rifasBonosContribucion.setConEncolado(rifasBonosContribucionDTO.getConEncolado());
+        rifasBonosContribucion.setConEncolado(conEncolado);
         rifasBonosContribucion.setMedida(rifasBonosContribucionDTO.getMedida());
         rifasBonosContribucion.setEnlaceArchivo(rifasBonosContribucionDTO.getEnlaceArchivo());
-        rifasBonosContribucion.setConAdicionalDisenio(rifasBonosContribucionDTO.getConAdicionalDisenio());
+        rifasBonosContribucion.setConAdicionalDisenio(adicionalDisenio);
         rifasBonosContribucion.setInformacionAdicional(rifasBonosContribucionDTO.getInformacionAdicional());
         rifasBonosContribucion.setCantidad(rifasBonosContribucionDTO.getCantidad());
         rifasBonosContribucion.setTipoPapelRifa(tipoPapelRifa);

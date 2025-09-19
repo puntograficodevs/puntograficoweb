@@ -72,7 +72,6 @@
           <a th:unless="${ordenSelloAutomatico.selloAutomatico.textoLineaCuatro == ''}"
              th:text="${ordenSelloAutomatico.selloAutomatico.textoLineaCuatro}"></a>
         </p>
-        <p><strong>Con adicional diseño: </strong><span th:text="${ordenSelloAutomatico.selloAutomatico.conAdicionalDisenio} ? 'Sí' : 'No'"></span></p>
         <p><strong>Enlace al archivo: </strong>
           <span th:if="${ordenSelloAutomatico.selloAutomatico.enlaceArchivo == ''}"> - </span>
           <a th:unless="${ordenSelloAutomatico.selloAutomatico.enlaceArchivo == ''}"

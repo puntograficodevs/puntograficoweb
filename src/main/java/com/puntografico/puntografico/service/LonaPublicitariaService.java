@@ -23,15 +23,24 @@ public class LonaPublicitariaService {
         TipoLonaPublicitaria tipoLonaPublicitaria = opcionesLonaPublicitariaService.buscarTipoLonaPublicitariaPorId(lonaPublicitariaDTO.getTipoLonaPublicitariaId());
 
         LonaPublicitaria lonaPublicitaria = (idLonaPublicitaria != null) ? lonaPublicitariaRepository.findById(idLonaPublicitaria).get() : new LonaPublicitaria();
+        boolean conAdicionalPortabanner = (idLonaPublicitaria != null) ? lonaPublicitaria.isConAdicionalPortabanner() : lonaPublicitariaDTO.getConAdicionalPortabanner();
+        boolean conOjales = (idLonaPublicitaria != null) ? lonaPublicitaria.isConOjales() : lonaPublicitariaDTO.getConOjales();
+        boolean conOjalesConRefuerzo = (idLonaPublicitaria != null) ? lonaPublicitaria.isConOjalesConRefuerzo() : lonaPublicitariaDTO.getConOjalesConRefuerzo();
+        boolean conBolsillos = (idLonaPublicitaria != null) ? lonaPublicitaria.isConBolsillos() : lonaPublicitariaDTO.getConBolsillos();
+        boolean conDemasiaParaTensado = (idLonaPublicitaria != null) ? lonaPublicitaria.isConDemasiaParaTensado() : lonaPublicitariaDTO.getConDemasiaParaTensado();
+        boolean conSolapado = (idLonaPublicitaria != null) ? lonaPublicitaria.isConSolapado() : lonaPublicitariaDTO.getConSolapado();
+        boolean adicionalDisenio = (idLonaPublicitaria != null) ? lonaPublicitaria.isConAdicionalDisenio() : lonaPublicitariaDTO.getConAdicionalDisenio();
+
+
         lonaPublicitaria.setMedidaLonaPublicitaria(medidaLonaPublicitaria);
         lonaPublicitaria.setTipoLonaPublicitaria(tipoLonaPublicitaria);
-        lonaPublicitaria.setConAdicionalPortabanner(lonaPublicitariaDTO.getConAdicionalPortabanner());
-        lonaPublicitaria.setConOjales(lonaPublicitariaDTO.getConOjales());
-        lonaPublicitaria.setConOjalesConRefuerzo(lonaPublicitariaDTO.getConOjalesConRefuerzo());
-        lonaPublicitaria.setConBolsillos(lonaPublicitariaDTO.getConBolsillos());
-        lonaPublicitaria.setConDemasiaParaTensado(lonaPublicitariaDTO.getConDemasiaParaTensado());
-        lonaPublicitaria.setConSolapado(lonaPublicitariaDTO.getConSolapado());
-        lonaPublicitaria.setConAdicionalDisenio(lonaPublicitariaDTO.getConAdicionalDisenio());
+        lonaPublicitaria.setConAdicionalPortabanner(conAdicionalPortabanner);
+        lonaPublicitaria.setConOjales(conOjales);
+        lonaPublicitaria.setConOjalesConRefuerzo(conOjalesConRefuerzo);
+        lonaPublicitaria.setConBolsillos(conBolsillos);
+        lonaPublicitaria.setConDemasiaParaTensado(conDemasiaParaTensado);
+        lonaPublicitaria.setConSolapado(conSolapado);
+        lonaPublicitaria.setConAdicionalDisenio(adicionalDisenio);
         lonaPublicitaria.setEnlaceArchivo(lonaPublicitariaDTO.getEnlaceArchivo());
         lonaPublicitaria.setInformacionAdicional(lonaPublicitariaDTO.getInformacionAdicional());
         lonaPublicitaria.setCantidad(lonaPublicitariaDTO.getCantidad());

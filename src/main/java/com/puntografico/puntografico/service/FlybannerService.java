@@ -25,6 +25,8 @@ public class FlybannerService {
         TipoBaseFlybanner tipoBaseFlybanner = opcionesFlybannerService.buscarTipoBaseFlybannerPorId(flybannerDTO.getTipoBaseFlybannerId());
 
         Flybanner flybanner = (idFlybanner != null) ? flybannerRepository.findById(idFlybanner).get() : new Flybanner();
+        boolean adicionalDisenio = (idFlybanner != null) ? flybanner.isConAdicionalDisenio() : flybannerDTO.getConAdicionalDisenio();
+
         flybanner.setTipoFazFlybanner(tipoFazFlybanner);
         flybanner.setAlturaFlybanner(alturaFlybanner);
         flybanner.setBanderaFlybanner(banderaFlybanner);
@@ -32,7 +34,7 @@ public class FlybannerService {
         flybanner.setCantidad(flybannerDTO.getCantidad());
         flybanner.setEnlaceArchivo(flybannerDTO.getEnlaceArchivo());
         flybanner.setInformacionAdicional(flybannerDTO.getInformacionAdicional());
-        flybanner.setConAdicionalDisenio(flybannerDTO.getConAdicionalDisenio());
+        flybanner.setConAdicionalDisenio(adicionalDisenio);
 
         return flybannerRepository.save(flybanner);
     }

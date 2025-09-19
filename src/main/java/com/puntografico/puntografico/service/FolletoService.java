@@ -32,9 +32,12 @@ public class FolletoService {
         }
 
         Folleto folleto = (idFolleto != null) ? folletoRepository.findById(idFolleto).get() : new Folleto();
-        folleto.setConPlegado(folletoDTO.getConPlegado());
+        boolean adicionalDisenio = (idFolleto != null) ? folleto.isConAdicionalDisenio() : folletoDTO.getConAdicionalDisenio();
+        boolean conPlegado = (idFolleto != null) ? folleto.isConPlegado() : folletoDTO.getConPlegado();
+
+        folleto.setConPlegado(conPlegado);
         folleto.setEnlaceArchivo(folletoDTO.getEnlaceArchivo());
-        folleto.setConAdicionalDisenio(folletoDTO.getConAdicionalDisenio());
+        folleto.setConAdicionalDisenio(adicionalDisenio);
         folleto.setInformacionAdicional(folletoDTO.getInformacionAdicional());
         folleto.setTipoPapelFolleto(tipoPapelFolleto);
         folleto.setTipoColorFolleto(tipoColorFolleto);

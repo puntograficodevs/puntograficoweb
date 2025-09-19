@@ -32,9 +32,11 @@ public class EntradaService {
         }
 
         Entrada entrada = (idEntrada != null) ? entradaRepository.findById(idEntrada).get() : new Entrada();
+        boolean adicionalDisenio = (idEntrada != null) ? entrada.isConAdicionalDisenio() : entradaDTO.getConAdicionalDisenio();
+
         entrada.setMedidaPersonalizada(entradaDTO.getMedidaPersonalizada());
         entrada.setEnlaceArchivo(entradaDTO.getEnlaceArchivo());
-        entrada.setConAdicionalDisenio(entradaDTO.getConAdicionalDisenio());
+        entrada.setConAdicionalDisenio(adicionalDisenio);
         entrada.setInformacionAdicional(entradaDTO.getInformacionAdicional());
         entrada.setTipoPapelEntrada(tipoPapelEntrada);
         entrada.setTipoColorEntrada(tipoColorEntrada);

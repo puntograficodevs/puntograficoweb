@@ -13,11 +13,11 @@ public class OrdenSelloMaderaService {
 
     private final OrdenSelloMaderaRepository ordenSelloMaderaRepository;
 
-    public OrdenSelloMadera crear(OrdenTrabajo ordenTrabajo, SelloMadera selloMadera) {
+    public OrdenSelloMadera guardar(OrdenTrabajo ordenTrabajo, SelloMadera selloMadera, Long idOrdenSelloMadera) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(selloMadera, "Debe venir un sello para enlazar.");
 
-        OrdenSelloMadera ordenSelloMadera = new OrdenSelloMadera();
+        OrdenSelloMadera ordenSelloMadera = (idOrdenSelloMadera != null) ? ordenSelloMaderaRepository.findById(idOrdenSelloMadera).get() : new OrdenSelloMadera();
         ordenSelloMadera.setSelloMadera(selloMadera);
         ordenSelloMadera.setOrdenTrabajo(ordenTrabajo);
         ordenSelloMadera.setCantidad(selloMadera.getCantidad());

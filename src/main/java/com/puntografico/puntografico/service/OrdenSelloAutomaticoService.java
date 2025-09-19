@@ -13,11 +13,11 @@ public class OrdenSelloAutomaticoService {
 
     private final OrdenSelloAutomaticoRepository ordenSelloAutomaticoRepository;
 
-    public OrdenSelloAutomatico crear(OrdenTrabajo ordenTrabajo, SelloAutomatico selloAutomatico) {
+    public OrdenSelloAutomatico guardar(OrdenTrabajo ordenTrabajo, SelloAutomatico selloAutomatico, Long idOrdenSelloAutomatico) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(selloAutomatico, "Debe venir un sello para enlazar.");
 
-        OrdenSelloAutomatico ordenSelloAutomatico = new OrdenSelloAutomatico();
+        OrdenSelloAutomatico ordenSelloAutomatico = (idOrdenSelloAutomatico != null) ? ordenSelloAutomaticoRepository.findById(idOrdenSelloAutomatico).get() : new OrdenSelloAutomatico();
         ordenSelloAutomatico.setSelloAutomatico(selloAutomatico);
         ordenSelloAutomatico.setOrdenTrabajo(ordenTrabajo);
         ordenSelloAutomatico.setCantidad(selloAutomatico.getCantidad());

@@ -36,10 +36,12 @@ public class HojasMembreteadasService {
         }
 
         HojasMembreteadas hojasMembreteadas = (idHojasMembreteadas != null) ? hojasMembreteadasRepository.findById(idHojasMembreteadas).get() : new HojasMembreteadas();
+        boolean adicionalDisenio = (idHojasMembreteadas != null) ? hojasMembreteadas.isConAdicionalDisenio() : hojasMembreteadasDTO.getConAdicionalDisenio();
+
         hojasMembreteadas.setMedidaPersonalizada(hojasMembreteadasDTO.getMedidaPersonalizada());
         hojasMembreteadas.setCantidadHojas(hojasMembreteadasDTO.getCantidadHojas());
         hojasMembreteadas.setEnlaceArchivo(hojasMembreteadasDTO.getEnlaceArchivo());
-        hojasMembreteadas.setConAdicionalDisenio(hojasMembreteadasDTO.getConAdicionalDisenio());
+        hojasMembreteadas.setConAdicionalDisenio(adicionalDisenio);
         hojasMembreteadas.setInformacionAdicional(hojasMembreteadasDTO.getInformacionAdicional());
         hojasMembreteadas.setMedidaHojasMembreteadas(medidaHojasMembreteadas);
         hojasMembreteadas.setTipoColorHojasMembreteadas(tipoColorHojasMembreteadas);

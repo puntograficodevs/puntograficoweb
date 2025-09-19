@@ -3,6 +3,7 @@ package com.puntografico.puntografico.service;
 import com.puntografico.puntografico.domain.Rotulacion;
 import com.puntografico.puntografico.domain.TipoCorteRotulacion;
 import com.puntografico.puntografico.domain.TipoRotulacion;
+import com.puntografico.puntografico.dto.RotulacionDTO;
 import com.puntografico.puntografico.repository.RotulacionRepository;
 import com.puntografico.puntografico.repository.TipoCorteRotulacionRepository;
 import com.puntografico.puntografico.repository.TipoRotulacionRepository;
@@ -17,41 +18,39 @@ import javax.transaction.Transactional;
 public class RotulacionService {
 
     private final RotulacionRepository rotulacionRepository;
+    private final OpcionesRotulacionService opcionesRotulacionService;
 
-    private final TipoRotulacionRepository tipoRotulacionRepository;
+    public Rotulacion guardar(RotulacionDTO rotulacionDTO, Long idRotulacion) {
+        validarRotulacionDTO(rotulacionDTO);
 
-    private final TipoCorteRotulacionRepository tipoCorteRotulacionRepository;
+        TipoRotulacion tipoRotulacion = opcionesRotulacionService.buscarTipoRotulacionPorId(rotulacionDTO.getTipoRotulacionId());
+        TipoCorteRotulacion tipoCorteRotulacion = opcionesRotulacionService.buscarTipoCorteRotulacionPorId(rotulacionDTO.getTipoCorteRotulacionId());
 
-    public Rotulacion crear(HttpServletRequest request) {
-        String medida = request.getParameter("medida");
-        String cantidad = request.getParameter("cantidad");
-        String horarioRotulacion = request.getParameter("horarioRotulacion");
-        String direccionRotulacion = request.getParameter("direccionRotulacion");
-        String tipoRotulacionString = request.getParameter("tipoRotulacion.id");
-        String tipoCorteRotulacionString = request.getParameter("tipoCorteRotulacion.id");
+        Rotulacion rotulacion = (idRotulacion != null) ? rotulacionRepository.findById(idRotulacion).get() : new Rotulacion();
+        boolean esLaminado = (idRotulacion != null) ? rotulacion.isEsLaminado() : rotulacionDTO.getEsLaminado();
+        boolean adicionalDisenio = (idRotulacion != null) ? rotulacion.isConAdicionalDisenio() : rotulacionDTO.getConAdicionalDisenio();
 
-        Assert.notNull(medida, "La medida es un dato obligatorio.");
-        Assert.notNull(cantidad, "La cantidad es un dato obligatorio.");
-        Assert.notNull(horarioRotulacion, "El horario de rotulación es un dato obligatorio.");
-        Assert.notNull(direccionRotulacion, "La dirección de rotulación es un dato obligatorio.");
-        Assert.notNull(tipoCorteRotulacionString, "El tipo de corte es un dato obligatorio.");
-        Assert.notNull(tipoRotulacionString, "El tipo de rotulación es un dato obligatorio.");
 
-        TipoRotulacion tipoRotulacion = tipoRotulacionRepository.findById(Long.parseLong(tipoRotulacionString)).get();
-        TipoCorteRotulacion tipoCorteRotulacion = tipoCorteRotulacionRepository.findById(Long.parseLong(tipoCorteRotulacionString)).get();
-
-        Rotulacion rotulacion = new Rotulacion();
-        rotulacion.setEsLaminado(request.getParameter("esLaminado") != null);
-        rotulacion.setHorarioRotulacion(horarioRotulacion);
-        rotulacion.setDireccionRotulacion(direccionRotulacion);
-        rotulacion.setMedida(medida);
-        rotulacion.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
-        rotulacion.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
-        rotulacion.setInformacionAdicional(request.getParameter("informacionAdicional"));
-        rotulacion.setCantidad(Integer.parseInt(cantidad));
+        rotulacion.setEsLaminado(esLaminado);
+        rotulacion.setHorarioRotulacion(rotulacionDTO.getHorarioRotulacion());
+        rotulacion.setDireccionRotulacion(rotulacionDTO.getDireccionRotulacion());
+        rotulacion.setMedida(rotulacionDTO.getMedida());
+        rotulacion.setEnlaceArchivo(rotulacionDTO.getEnlaceArchivo());
+        rotulacion.setConAdicionalDisenio(adicionalDisenio);
+        rotulacion.setInformacionAdicional(rotulacionDTO.getInformacionAdicional());
+        rotulacion.setCantidad(rotulacionDTO.getCantidad());
         rotulacion.setTipoRotulacion(tipoRotulacion);
         rotulacion.setTipoCorteRotulacion(tipoCorteRotulacion);
 
         return rotulacionRepository.save(rotulacion);
+    }
+
+    private void validarRotulacionDTO(RotulacionDTO rotulacionDTO) {
+        Assert.notNull(rotulacionDTO.getMedida(), "La medida es un dato obligatorio.");
+        Assert.notNull(rotulacionDTO.getCantidad(), "La cantidad es un dato obligatorio.");
+        Assert.notNull(rotulacionDTO.getHorarioRotulacion(), "El horario de rotulación es un dato obligatorio.");
+        Assert.notNull(rotulacionDTO.getDireccionRotulacion(), "La dirección de rotulación es un dato obligatorio.");
+        Assert.notNull(rotulacionDTO.getTipoCorteRotulacionId(), "El tipo de corte es un dato obligatorio.");
+        Assert.notNull(rotulacionDTO.getTipoRotulacionId(), "El tipo de rotulación es un dato obligatorio.");
     }
 }

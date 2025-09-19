@@ -1,9 +1,6 @@
 package com.puntografico.puntografico.service;
 
-import com.puntografico.puntografico.domain.Empleado;
-import com.puntografico.puntografico.domain.EstadoOrden;
-import com.puntografico.puntografico.domain.EstadoPago;
-import com.puntografico.puntografico.domain.OrdenTrabajo;
+import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.EstadoOrdenRepository;
 import com.puntografico.puntografico.repository.EstadoPagoRepository;
 import com.puntografico.puntografico.repository.MedioPagoRepository;
@@ -55,6 +52,8 @@ public class OrdenTrabajoService {
             asignarValoresDelPago(ordenTrabajo, total, abonado, resta);
         }
 
+        boolean necesitaFactura = (idOrdenTrabajo != null) ? ordenTrabajo.isNecesitaFactura() : (request.getParameter("necesitaFactura") != null);
+
         Empleado empleado = (Empleado) request.getSession().getAttribute("empleadoLogueado");
         ordenTrabajo.setEmpleado(empleado);
         ordenTrabajo.setFechaPedido(LocalDate.now());
@@ -63,7 +62,7 @@ public class OrdenTrabajoService {
         ordenTrabajo.setNombreCliente(request.getParameter("nombreCliente"));
         ordenTrabajo.setTelefonoCliente(request.getParameter("telefonoCliente"));
         ordenTrabajo.setEsCuentaCorriente(request.getParameter("esCuentaCorriente") != null);
-        ordenTrabajo.setNecesitaFactura(request.getParameter("necesitaFactura") != null);
+        ordenTrabajo.setNecesitaFactura(necesitaFactura);
         ordenTrabajo.setTipoProducto(request.getParameter("tipoProducto"));
 
         String fechaMuestraStr = request.getParameter("fechaMuestra");

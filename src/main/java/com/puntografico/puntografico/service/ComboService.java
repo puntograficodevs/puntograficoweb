@@ -23,8 +23,10 @@ public class ComboService {
         TipoCombo tipoCombo = opcionesComboService.buscarTipoComboPorId(comboDTO.getTipoComboId());
 
         Combo combo = (idCombo != null) ? comboRepository.findById(idCombo).get() : new Combo();
+        boolean adicionalDisenio = (idCombo != null) ? combo.isConAdicionalDisenio() : comboDTO.getConAdicionalDisenio();
+
         combo.setEnlaceArchivo(comboDTO.getEnlaceArchivo());
-        combo.setConAdicionalDisenio(comboDTO.getConAdicionalDisenio());
+        combo.setConAdicionalDisenio(adicionalDisenio);
         combo.setInformacionAdicional(comboDTO.getInformacionAdicional());
         combo.setTipoCombo(tipoCombo);
         combo.setCantidad(comboDTO.getCantidad());

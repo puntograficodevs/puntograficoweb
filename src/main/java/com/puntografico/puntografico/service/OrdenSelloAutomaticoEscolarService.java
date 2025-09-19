@@ -16,11 +16,11 @@ public class OrdenSelloAutomaticoEscolarService {
 
     private final OrdenSelloAutomaticoEscolarRepository ordenSelloAutomaticoEscolarRepository;
 
-    public OrdenSelloAutomaticoEscolar crear(OrdenTrabajo ordenTrabajo, SelloAutomaticoEscolar selloAutomaticoEscolar) {
+    public OrdenSelloAutomaticoEscolar guardar(OrdenTrabajo ordenTrabajo, SelloAutomaticoEscolar selloAutomaticoEscolar, Long idOrdenSelloAutomaticoEscolar) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(selloAutomaticoEscolar, "Debe venir un sello para enlazar.");
 
-        OrdenSelloAutomaticoEscolar ordenSelloAutomaticoEscolar = new OrdenSelloAutomaticoEscolar();
+        OrdenSelloAutomaticoEscolar ordenSelloAutomaticoEscolar = (idOrdenSelloAutomaticoEscolar != null) ? ordenSelloAutomaticoEscolarRepository.findById(idOrdenSelloAutomaticoEscolar).get() : new OrdenSelloAutomaticoEscolar();
         ordenSelloAutomaticoEscolar.setSelloAutomaticoEscolar(selloAutomaticoEscolar);
         ordenSelloAutomaticoEscolar.setOrdenTrabajo(ordenTrabajo);
         ordenSelloAutomaticoEscolar.setCantidad(selloAutomaticoEscolar.getCantidad());

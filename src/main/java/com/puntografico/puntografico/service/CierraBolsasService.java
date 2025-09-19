@@ -5,10 +5,7 @@ import com.puntografico.puntografico.domain.CierraBolsas;
 import com.puntografico.puntografico.domain.MedidaCierraBolsas;
 import com.puntografico.puntografico.domain.TipoTroqueladoCierraBolsas;
 import com.puntografico.puntografico.dto.CierraBolsasDTO;
-import com.puntografico.puntografico.repository.CantidadCierraBolsasRepository;
 import com.puntografico.puntografico.repository.CierraBolsasRepository;
-import com.puntografico.puntografico.repository.MedidaCierraBolsasRepository;
-import com.puntografico.puntografico.repository.TipoTroqueladoCierraBolsasRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -18,12 +15,6 @@ import javax.transaction.Transactional;
 @Service @Transactional @AllArgsConstructor
 public class CierraBolsasService {
 
-    private final TipoTroqueladoCierraBolsasRepository tipoTroqueladoCierraBolsasRepository;
-
-    private final MedidaCierraBolsasRepository medidaCierraBolsasRepository;
-
-    private final CantidadCierraBolsasRepository cantidadCierraBolsasRepository;
-
     private final CierraBolsasRepository cierraBolsasRepository;
 
     private final OpcionesCierraBolsasService opcionesCierraBolsasService;
@@ -32,6 +23,7 @@ public class CierraBolsasService {
         validarCierraBolsasDTO(cierraBolsasDTO);
 
         CierraBolsas cierraBolsas = new CierraBolsas();
+        boolean adicionalDisenio = (idCierraBolsas != null) ? cierraBolsas.isConAdicionalDisenio() : cierraBolsasDTO.getConAdicionalDisenio();
         TipoTroqueladoCierraBolsas tipoTroqueladoCierraBolsas = opcionesCierraBolsasService.buscarTipoTroqueladoCierraBolsasPorId(cierraBolsasDTO.getTipoTroqueladoCierraBolsasId());
         MedidaCierraBolsas medidaCierraBolsas = opcionesCierraBolsasService.buscarMedidaCierraBolsasPorId(cierraBolsasDTO.getMedidaCierraBolsasId());
         CantidadCierraBolsas cantidadCierraBolsas = opcionesCierraBolsasService.buscarCantidadCierraBolsasPorId(cierraBolsasDTO.getCantidadCierraBolsasId());
@@ -47,7 +39,7 @@ public class CierraBolsasService {
         cierraBolsas.setCantidadCierraBolsas(cantidadCierraBolsas);
         cierraBolsas.setCantidad(cantidad);
         cierraBolsas.setEnlaceArchivo(cierraBolsasDTO.getEnlaceArchivo());
-        cierraBolsas.setConAdicionalDisenio(cierraBolsasDTO.getConAdicionalDisenio());
+        cierraBolsas.setConAdicionalDisenio(adicionalDisenio);
         cierraBolsas.setInformacionAdicional(cierraBolsasDTO.getInformacionAdicional());
 
         return cierraBolsasRepository.save(cierraBolsas);

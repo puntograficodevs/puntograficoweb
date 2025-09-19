@@ -32,11 +32,15 @@ public class EtiquetaService {
         }
 
         Etiqueta etiqueta = (idEtiqueta != null) ? etiquetaRepository.findById(idEtiqueta).get() : new Etiqueta();
+        boolean conPerforacionAdicional = (idEtiqueta != null) ? etiqueta.isConPerforacionAdicional() : etiquetaDTO.getConPerforacionAdicional();
+        boolean conMarcaAdicional = (idEtiqueta != null) ? etiqueta.isConMarcaAdicional() : etiquetaDTO.getConMarcaAdicional();
+        boolean adicionalDisenio = (idEtiqueta != null) ? etiqueta.isConAdicionalDisenio() : etiquetaDTO.getConAdicionalDisenio();
+
         etiqueta.setMedidaPersonalizada(etiquetaDTO.getMedidaPersonalizada());
-        etiqueta.setConPerforacionAdicional(etiquetaDTO.getConPerforacionAdicional());
-        etiqueta.setConMarcaAdicional(etiquetaDTO.getConMarcaAdicional());
+        etiqueta.setConPerforacionAdicional(conPerforacionAdicional);
+        etiqueta.setConMarcaAdicional(conMarcaAdicional);
         etiqueta.setEnlaceArchivo(etiquetaDTO.getEnlaceArchivo());
-        etiqueta.setConAdicionalDisenio(etiquetaDTO.getConAdicionalDisenio());
+        etiqueta.setConAdicionalDisenio(adicionalDisenio);
         etiqueta.setInformacionAdicional(etiquetaDTO.getInformacionAdicional());
         etiqueta.setTipoPapelEtiqueta(tipoPapelEtiqueta);
         etiqueta.setTipoLaminadoEtiqueta(tipoLaminadoEtiqueta);

@@ -19,10 +19,12 @@ public class AnotadorService {
         validarDTO(anotadorDTO);
 
         Anotador anotador = (idAnotador != null) ? anotadorRepository.findById(idAnotador).get() : new Anotador();
+        boolean adicionalDisenio = (idAnotador != null) ? anotador.isConAdicionalDisenio() : anotadorDTO.getConAdicionalDisenio();
+
         anotador.setCantidadHojas(anotadorDTO.getCantidadHojas());
         anotador.setMedida(anotadorDTO.getMedida());
         anotador.setTipoTapa(anotadorDTO.getTipoTapa());
-        anotador.setConAdicionalDisenio(anotadorDTO.getConAdicionalDisenio());
+        anotador.setConAdicionalDisenio(adicionalDisenio);
         anotador.setEnlaceArchivo(anotadorDTO.getEnlaceArchivo());
         anotador.setInformacionAdicional(anotadorDTO.getInformacionAdicional());
         anotador.setCantidad(anotadorDTO.getCantidad());

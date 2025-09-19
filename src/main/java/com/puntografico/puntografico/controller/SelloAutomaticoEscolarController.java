@@ -1,8 +1,10 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.SelloAutomaticoDTO;
+import com.puntografico.puntografico.dto.SelloAutomaticoEscolarDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,38 +15,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class SelloAutomaticoEscolarController {
 
-    @Autowired
-    private OpcionesSelloAutomaticoEscolarService opcionesSelloAutomaticoEscolarService;
+    private final OpcionesSelloAutomaticoEscolarService opcionesSelloAutomaticoEscolarService;
+    private final MedioPagoService medioPagoService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final SelloAutomaticoEscolarService selloAutomaticoEscolarService;
+    private final OrdenSelloAutomaticoEscolarService ordenSelloAutomaticoEscolarService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private SelloAutomaticoEscolarService selloAutomaticoEscolarService;
-
-    @Autowired
-    private OrdenSelloAutomaticoEscolarService ordenSelloAutomaticoEscolarService;
-
-    @GetMapping("/crear-odt-sello-automatico-escolar")
-    public String verCrearOdtSelloAutomaticoEscolar(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-sello-automatico-escolar", "/crear-odt-sello-automatico-escolar/{idOrden}"})
+    public String verCrearOdtSelloAutomaticoEscolar(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenSelloAutomaticoEscolar ordenSelloAutomaticoEscolar = (idOrden != null) ? ordenSelloAutomaticoEscolarService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenSelloAutomaticoEscolar != null) ? ordenSelloAutomaticoEscolar.getOrdenTrabajo() : new OrdenTrabajo();
+        SelloAutomaticoEscolar selloAutomaticoEscolar = (ordenSelloAutomaticoEscolar != null) ? ordenSelloAutomaticoEscolar.getSelloAutomaticoEscolar() : new SelloAutomaticoEscolar();
 
         List<ModeloSelloAutomaticoEscolar> listaModeloSelloAutomaticoEscolar = opcionesSelloAutomaticoEscolarService.buscarTodosModeloSelloAutomaticoEscolar();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("selloAutomaticoEscolar", new SelloAutomaticoEscolar());
+        model.addAttribute("selloAutomaticoEscolar", selloAutomaticoEscolar);
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
         model.addAttribute("listaModeloSelloAutomaticoEscolar", listaModeloSelloAutomaticoEscolar);
         model.addAttribute("listaMediosDePago", listaMediosDePago);
 
@@ -70,12 +68,35 @@ public class SelloAutomaticoEscolarController {
 
     @PostMapping("/api/creacion-sello-automatico-escolar")
     public String creacionSelloAutomaticoEscolar(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        SelloAutomaticoEscolar selloAutomaticoEscolar = selloAutomaticoEscolarService.crear(request);
-        OrdenSelloAutomaticoEscolar ordenSelloAutomaticoEscolar = ordenSelloAutomaticoEscolarService.crear(ordenTrabajo, selloAutomaticoEscolar);
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return "redirect:/mostrar-odt-sello-automatico-escolar/" + ordenSelloAutomaticoEscolar.getId();*/
+        OrdenSelloAutomaticoEscolar ordenSelloAutomaticoEscolarExistente = (idOrden != null) ? ordenSelloAutomaticoEscolarService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenSelloAutomaticoEscolarExistente != null) ? ordenSelloAutomaticoEscolarExistente.getOrdenTrabajo().getId() : null;
+        Long idSelloAutomaticoEscolar = (ordenSelloAutomaticoEscolarExistente != null) ? ordenSelloAutomaticoEscolarExistente.getSelloAutomaticoEscolar().getId() : null;
+        Long idOrdenSelloAutomaticoEscolar = (ordenSelloAutomaticoEscolarExistente != null) ? ordenSelloAutomaticoEscolarExistente.getId() : null;
 
-        return null;
+        SelloAutomaticoEscolarDTO selloAutomaticoEscolarDTO = armarSelloAutomaticoEscolarDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        SelloAutomaticoEscolar selloAutomaticoEscolar = selloAutomaticoEscolarService.guardar(selloAutomaticoEscolarDTO, idSelloAutomaticoEscolar);
+        OrdenSelloAutomaticoEscolar ordenSelloAutomaticoEscolar = ordenSelloAutomaticoEscolarService.guardar(ordenTrabajo, selloAutomaticoEscolar, idOrdenSelloAutomaticoEscolar);
+
+        return "redirect:/mostrar-odt-sello-automatico-escolar/" + ordenSelloAutomaticoEscolar.getId();
+    }
+
+    private SelloAutomaticoEscolarDTO armarSelloAutomaticoEscolarDTO(HttpServletRequest request) {
+        SelloAutomaticoEscolarDTO selloAutomaticoEscolarDTO = new SelloAutomaticoEscolarDTO();
+        selloAutomaticoEscolarDTO.setTextoLineaUno(request.getParameter("textoLineaUno"));
+        selloAutomaticoEscolarDTO.setTextoLineaDos(request.getParameter("textoLineaDos"));
+        selloAutomaticoEscolarDTO.setTextoLineaTres(request.getParameter("textoLineaTres"));
+        selloAutomaticoEscolarDTO.setTipografia(request.getParameter("tipografia"));
+        selloAutomaticoEscolarDTO.setDibujo(request.getParameter("dibujo"));
+        selloAutomaticoEscolarDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        selloAutomaticoEscolarDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        selloAutomaticoEscolarDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        selloAutomaticoEscolarDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        selloAutomaticoEscolarDTO.setModeloSelloAutomaticoEscolarId(Long.parseLong(request.getParameter("modeloSelloAutomaticoEscolar.id")));
+
+        return selloAutomaticoEscolarDTO;
     }
 }

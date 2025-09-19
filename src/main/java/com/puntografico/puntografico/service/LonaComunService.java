@@ -25,15 +25,22 @@ public class LonaComunService {
         TipoLonaComun tipoLonaComun = opcionesLonaComunService.buscarTipoLonaComunPorId(lonaComunDTO.getTipoLonaComunId());
 
         LonaComun lonaComun = (idLonaComun != null) ? lonaComunRepository.findById(idLonaComun).get() :  new LonaComun();
+        boolean conOjales = (idLonaComun != null) ? lonaComun.isConOjales() : lonaComunDTO.getConOjales();
+        boolean conOjalesConRefuerzo = (idLonaComun != null) ? lonaComun.isConOjalesConRefuerzo() : lonaComunDTO.getConOjalesConRefuerzo();
+        boolean conBolsillos = (idLonaComun != null) ? lonaComun.isConBolsillos() : lonaComunDTO.getConBolsillos();
+        boolean conDemasiaParaTensado = (idLonaComun != null) ? lonaComun.isConDemasiaParaTensado() : lonaComunDTO.getConDemasiaParaTensado();
+        boolean conSolapado = (idLonaComun != null) ? lonaComun.isConSolapado() : lonaComunDTO.getConSolapado();
+        boolean adicionalDisenio = (idLonaComun != null) ? lonaComun.isConAdicionalDisenio() : lonaComunDTO.getConAdicionalDisenio();
+
         lonaComun.setMedidaLonaComun(medidaLonaComun);
         lonaComun.setTipoLonaComun(tipoLonaComun);
         lonaComun.setMedidaPersonalizada(lonaComunDTO.getMedidaPersonalizada());
-        lonaComun.setConOjales(lonaComunDTO.getConOjales());
-        lonaComun.setConOjalesConRefuerzo(lonaComunDTO.getConOjalesConRefuerzo());
-        lonaComun.setConBolsillos(lonaComunDTO.getConBolsillos());
-        lonaComun.setConDemasiaParaTensado(lonaComunDTO.getConDemasiaParaTensado());
-        lonaComun.setConSolapado(lonaComunDTO.getConSolapado());
-        lonaComun.setConAdicionalDisenio(lonaComunDTO.getConAdicionalDisenio());
+        lonaComun.setConOjales(conOjales);
+        lonaComun.setConOjalesConRefuerzo(conOjalesConRefuerzo);
+        lonaComun.setConBolsillos(conBolsillos);
+        lonaComun.setConDemasiaParaTensado(conDemasiaParaTensado);
+        lonaComun.setConSolapado(conSolapado);
+        lonaComun.setConAdicionalDisenio(adicionalDisenio);
         lonaComun.setEnlaceArchivo(lonaComunDTO.getEnlaceArchivo());
         lonaComun.setInformacionAdicional(lonaComunDTO.getInformacionAdicional());
         lonaComun.setCantidad(lonaComunDTO.getCantidad());

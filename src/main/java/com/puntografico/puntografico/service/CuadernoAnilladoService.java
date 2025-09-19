@@ -28,11 +28,13 @@ public class CuadernoAnilladoService {
         MedidaCuadernoAnillado medidaCuadernoAnillado = opcionesCuadernoAnilladoService.buscarMedidaCuadernoAnilladoPorId(cuadernoAnilladoDTO.getMedidaCuadernoAnilladoId());
 
         CuadernoAnillado cuadernoAnillado = (idCuadernoAnillado != null) ? cuadernoAnilladoRepository.findById(idCuadernoAnillado).get() : new CuadernoAnillado();
+        boolean adicionalDisenio = (idCuadernoAnillado != null) ? cuadernoAnillado.isConAdicionalDisenio() : cuadernoAnilladoDTO.getConAdicionalDisenio();
+
         cuadernoAnillado.setMedidaPersonalizada(cuadernoAnilladoDTO.getMedidaPersonalizada());
         cuadernoAnillado.setTipoTapaPersonalizada(cuadernoAnilladoDTO.getTipoTapaPersonalizada());
         cuadernoAnillado.setCantidadHojas(cuadernoAnilladoDTO.getCantidadHojas());
         cuadernoAnillado.setEnlaceArchivo(cuadernoAnilladoDTO.getEnlaceArchivo());
-        cuadernoAnillado.setConAdicionalDisenio(cuadernoAnilladoDTO.getConAdicionalDisenio());
+        cuadernoAnillado.setConAdicionalDisenio(adicionalDisenio);
         cuadernoAnillado.setInformacionAdicional(cuadernoAnilladoDTO.getInformacionAdicional());
         cuadernoAnillado.setCantidad(cuadernoAnilladoDTO.getCantidad());
         cuadernoAnillado.setTipoTapaCuadernoAnillado(tipoTapaCuadernoAnillado);

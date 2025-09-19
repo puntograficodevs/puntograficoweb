@@ -66,6 +66,18 @@ document.addEventListener("DOMContentLoaded", function () {
       case "rifa o bono":
         window.location.href = `/crear-odt-rifas-bonos-contribucion/${idOrden}`;
         break;
+      case "rotulación":
+        window.location.href = `/crear-odt-rotulacion/${idOrden}`;
+        break;
+      case "sello automático":
+        window.location.href = `/crear-odt-sello-automatico/${idOrden}`;
+        break;
+      case "sello automático escolar":
+            window.location.href = `/crear-odt-sello-automatico-escolar/${idOrden}`;
+            break;
+      case "sello de madera":
+        window.location.href = `/crear-odt-sello-madera/${idOrden}`;
+        break;
       default:
         console.warn("Tipo de producto no manejado:", tipoProducto);
     }

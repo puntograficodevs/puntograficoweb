@@ -2,13 +2,12 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.ModeloSelloAutomatico;
 import com.puntografico.puntografico.domain.SelloAutomatico;
-import com.puntografico.puntografico.repository.ModeloSelloAutomaticoRepository;
+import com.puntografico.puntografico.dto.SelloAutomaticoDTO;
 import com.puntografico.puntografico.repository.SelloAutomaticoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service @Transactional @AllArgsConstructor
@@ -16,34 +15,36 @@ public class SelloAutomaticoService {
 
     private final SelloAutomaticoRepository selloAutomaticoRepository;
 
-    private final ModeloSelloAutomaticoRepository modeloSelloAutomaticoRepository;
+    private final OpcionesSelloAutomaticoService opcionesSelloAutomaticoService;
 
-    public SelloAutomatico crear(HttpServletRequest request) {
-        String textoLineaUno = request.getParameter("textoLineaUno");
-        String tipografiaLineaUno = request.getParameter("tipografiaLineaUno");
-        String modeloSelloAutomaticoString = request.getParameter("modeloSelloAutomatico.id");
-        String cantidad = request.getParameter("cantidad");
+    public SelloAutomatico guardar(SelloAutomaticoDTO selloAutomaticoDTO, Long idSelloAutomatico) {
+        validarSelloAutomaticoDTO(selloAutomaticoDTO);
 
-        Assert.notNull(textoLineaUno, "El texto de la primera línea es obligatorio.");
-        Assert.notNull(tipografiaLineaUno, "La tipografía de la primer línea es obligatoria.");
-        Assert.notNull(modeloSelloAutomaticoString, "El modelo es un dato obligatorio.");
-        Assert.notNull(cantidad, "La cantidad es un dato obligatorio.");
+        ModeloSelloAutomatico modeloSelloAutomatico = opcionesSelloAutomaticoService.buscarModeloSelloAutomaticoPorId(selloAutomaticoDTO.getModeloSelloAutomaticoId());
 
-        ModeloSelloAutomatico modeloSelloAutomatico = modeloSelloAutomaticoRepository.findById(Long.parseLong(modeloSelloAutomaticoString)).get();
+        SelloAutomatico selloAutomatico = (idSelloAutomatico != null) ? selloAutomaticoRepository.findById(idSelloAutomatico).get() : new SelloAutomatico();
+        boolean esParticular = (idSelloAutomatico != null) ? selloAutomatico.isEsParticular() : selloAutomaticoDTO.getEsParticular();
+        boolean esProfesional = (idSelloAutomatico != null) ? selloAutomatico.isEsProfesional() : selloAutomaticoDTO.getEsProfesional();
 
-        SelloAutomatico selloAutomatico = new SelloAutomatico();
-        selloAutomatico.setEsProfesional(request.getParameter("esProfesional") != null);
-        selloAutomatico.setEsParticular(request.getParameter("esParticular") != null);
-        selloAutomatico.setTextoLineaUno(textoLineaUno);
-        selloAutomatico.setTextoLineaDos(request.getParameter("textoLineaDos"));
-        selloAutomatico.setTextoLineaTres(request.getParameter("textoLineaTres"));
-        selloAutomatico.setTextoLineaCuatro(request.getParameter("textoLineaCuatro"));
-        selloAutomatico.setTipografiaLineaUno(tipografiaLineaUno);
-        selloAutomatico.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
-        selloAutomatico.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        selloAutomatico.setEsProfesional(esProfesional);
+        selloAutomatico.setEsParticular(esParticular);
+        selloAutomatico.setTextoLineaUno(selloAutomaticoDTO.getTextoLineaUno());
+        selloAutomatico.setTextoLineaDos(selloAutomaticoDTO.getTextoLineaDos());
+        selloAutomatico.setTextoLineaTres(selloAutomaticoDTO.getTextoLineaTres());
+        selloAutomatico.setTextoLineaCuatro(selloAutomaticoDTO.getTextoLineaCuatro());
+        selloAutomatico.setTipografiaLineaUno(selloAutomaticoDTO.getTipografiaLineaUno());
+        selloAutomatico.setEnlaceArchivo(selloAutomaticoDTO.getEnlaceArchivo());
+        selloAutomatico.setInformacionAdicional(selloAutomaticoDTO.getInformacionAdicional());
         selloAutomatico.setModeloSelloAutomatico(modeloSelloAutomatico);
-        selloAutomatico.setCantidad(Integer.parseInt(cantidad));
+        selloAutomatico.setCantidad(selloAutomaticoDTO.getCantidad());
 
         return selloAutomaticoRepository.save(selloAutomatico);
+    }
+
+    private void validarSelloAutomaticoDTO(SelloAutomaticoDTO selloAutomaticoDTO) {
+        Assert.notNull(selloAutomaticoDTO.getTextoLineaUno(), "El texto de la primera línea es obligatorio.");
+        Assert.notNull(selloAutomaticoDTO.getTipografiaLineaUno(), "La tipografía de la primer línea es obligatoria.");
+        Assert.notNull(selloAutomaticoDTO.getModeloSelloAutomaticoId(), "El modelo es un dato obligatorio.");
+        Assert.notNull(selloAutomaticoDTO.getCantidad(), "La cantidad es un dato obligatorio.");
     }
 }

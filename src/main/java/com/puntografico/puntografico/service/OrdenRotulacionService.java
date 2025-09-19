@@ -13,11 +13,11 @@ public class OrdenRotulacionService {
 
     private final OrdenRotulacionRepository ordenRotulacionRepository;
 
-    public OrdenRotulacion crear(OrdenTrabajo ordenTrabajo, Rotulacion rotulacion) {
+    public OrdenRotulacion guardar(OrdenTrabajo ordenTrabajo, Rotulacion rotulacion, Long idOrdenRotulacion) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(rotulacion, "Debe venir una rotulacion para enlazar.");
 
-        OrdenRotulacion ordenRotulacion = new OrdenRotulacion();
+        OrdenRotulacion ordenRotulacion = (idOrdenRotulacion != null) ? ordenRotulacionRepository.findById(idOrdenRotulacion).get() : new OrdenRotulacion();
         ordenRotulacion.setRotulacion(rotulacion);
         ordenRotulacion.setOrdenTrabajo(ordenTrabajo);
         ordenRotulacion.setCantidad(rotulacion.getCantidad());

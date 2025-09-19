@@ -2,13 +2,12 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.SelloMadera;
 import com.puntografico.puntografico.domain.TamanioSelloMadera;
+import com.puntografico.puntografico.dto.SelloMaderaDTO;
 import com.puntografico.puntografico.repository.SelloMaderaRepository;
-import com.puntografico.puntografico.repository.TamanioSelloMaderaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service @Transactional @AllArgsConstructor
@@ -16,29 +15,32 @@ public class SelloMaderaService {
 
     private final SelloMaderaRepository selloMaderaRepository;
 
-    private final TamanioSelloMaderaRepository tamanioSelloMaderaRepository;
+    private final OpcionesSelloMaderaService opcionesSelloMaderaService;
 
-    public SelloMadera crear(HttpServletRequest request) {
+    public SelloMadera guardar(SelloMaderaDTO selloMaderaDTO, Long idSelloMadera) {
+        validarSelloMaderaDTO(selloMaderaDTO);
 
-        String tamanioSelloMaderaString = request.getParameter("tamanioSelloMadera.id");
-        String cantidad = request.getParameter("cantidad");
+        TamanioSelloMadera tamanioSelloMadera = opcionesSelloMaderaService.buscarTamanioSelloMaderaPorId(selloMaderaDTO.getTamanioSelloMaderaId());
 
-        Assert.notNull(tamanioSelloMaderaString, "El tamaño es un dato obligatorio.");
-        Assert.notNull(cantidad, "La cantidad es un dato obligatorio.");
+        SelloMadera selloMadera = (idSelloMadera != null) ? selloMaderaRepository.findById(idSelloMadera).get() : new SelloMadera();
+        boolean adicionalPerilla = (idSelloMadera != null) ? selloMadera.isConAdicionalPerilla() : selloMaderaDTO.getConAdicionalPerilla();
+        boolean adicionalDisenio = (idSelloMadera != null) ? selloMadera.isConAdicionalDisenio() : selloMaderaDTO.getConAdicionalDisenio();
 
-        TamanioSelloMadera tamanioSelloMadera = tamanioSelloMaderaRepository.findById(Long.parseLong(tamanioSelloMaderaString)).get();
-
-        SelloMadera selloMadera = new SelloMadera();
-        selloMadera.setTamanioPersonalizado(request.getParameter("tamanioPersonalizado"));
-        selloMadera.setConAdicionalPerilla(request.getParameter("conAdicionalPerilla") != null);
-        selloMadera.setDetalleSello(request.getParameter("detalleSello"));
-        selloMadera.setTipografiaLineaUno(request.getParameter("tipografiaLineaUno"));
-        selloMadera.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
-        selloMadera.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
-        selloMadera.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        selloMadera.setTamanioPersonalizado(selloMaderaDTO.getTamanioPersonalizado());
+        selloMadera.setConAdicionalPerilla(adicionalPerilla);
+        selloMadera.setDetalleSello(selloMaderaDTO.getDetalleSello());
+        selloMadera.setTipografiaLineaUno(selloMaderaDTO.getTipografiaLineaUno());
+        selloMadera.setEnlaceArchivo(selloMaderaDTO.getEnlaceArchivo());
+        selloMadera.setConAdicionalDisenio(adicionalDisenio);
+        selloMadera.setInformacionAdicional(selloMaderaDTO.getInformacionAdicional());
         selloMadera.setTamanioSelloMadera(tamanioSelloMadera);
-        selloMadera.setCantidad(Integer.parseInt(cantidad));
+        selloMadera.setCantidad(selloMaderaDTO.getCantidad());
 
         return selloMaderaRepository.save(selloMadera);
+    }
+
+    private void validarSelloMaderaDTO(SelloMaderaDTO selloMaderaDTO) {
+        Assert.notNull(selloMaderaDTO.getTamanioSelloMaderaId(), "El tamaño es un dato obligatorio.");
+        Assert.notNull(selloMaderaDTO.getCantidad(), "La cantidad es un dato obligatorio.");
     }
 }

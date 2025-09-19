@@ -25,12 +25,14 @@ public class CatalogoService {
         TipoLaminadoCatalogo tipoLaminadoCatalogo = opcionesCatalogoService.buscarTipoLaminadoCatalogoPorId(catalogoDTO.getTipoLaminadoCatalogoId());
 
         Catalogo catalogo = (idCatalogo != null) ? catalogoRepository.findById(idCatalogo).get() : new Catalogo();
+        boolean adicionalDisenio = (idCatalogo != null) ? catalogo.isConAdicionalDisenio() : catalogoDTO.getConAdicionalDisenio();
+
         catalogo.setTipoPapel(catalogoDTO.getTipoPapel());
         catalogo.setTipoFazCatalogo(tipoFazCatalogo);
         catalogo.setTipoLaminadoCatalogo(tipoLaminadoCatalogo);
         catalogo.setEnlaceArchivo(catalogoDTO.getEnlaceArchivo());
         catalogo.setInformacionAdicional(catalogoDTO.getInformacionAdicional());
-        catalogo.setConAdicionalDisenio(catalogoDTO.getConAdicionalDisenio());
+        catalogo.setConAdicionalDisenio(adicionalDisenio);
         catalogo.setCantidad(catalogoDTO.getCantidad());
 
         return catalogoRepository.save(catalogo);
