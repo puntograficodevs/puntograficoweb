@@ -51,6 +51,9 @@ document.addEventListener("DOMContentLoaded", function () {
       case "hojas membretadas":
         window.location.href = `/crear-odt-hojas-membreteadas/${idOrden}`;
         break;
+      case "impresion":
+        window.location.href = `/crear-odt-impresion/${idOrden}`;
+        break;
       default:
         console.warn("Tipo de producto no manejado:", tipoProducto);
     }

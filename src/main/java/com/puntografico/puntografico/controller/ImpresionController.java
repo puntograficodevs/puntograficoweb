@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.ImpresionDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,33 +14,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class ImpresionController {
 
-    @Autowired
-    private OpcionesImpresionService opcionesImpresionService;
+    private final OpcionesImpresionService opcionesImpresionService;
+    private final MedioPagoService medioPagoService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final ImpresionService impresionService;
+    private final OrdenImpresionService ordenImpresionService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private ImpresionService impresionService;
-
-    @Autowired
-    private OrdenImpresionService ordenImpresionService;
-
-    @GetMapping("/crear-odt-impresion")
-    public String verCrearOdtImpresion(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-impresion", "/crear-odt-impresion/{idOrden}"})
+    public String verCrearOdtImpresion(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenImpresion ordenImpresion = (idOrden != null) ? ordenImpresionService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenImpresion != null) ? ordenImpresion.getOrdenTrabajo() : new OrdenTrabajo();
+        Impresion impresion = (ordenImpresion != null) ? ordenImpresion.getImpresion() : new Impresion();
 
         List<TipoColorImpresion> listaTipoColorImpresion = opcionesImpresionService.buscarTodosTipoColorImpresion();
         List<TamanioHojaImpresion> listaTamanioHojaImpresion = opcionesImpresionService.buscarTodosTamanioHojaImpresion();
@@ -49,7 +44,9 @@ public class ImpresionController {
         List<TipoImpresion> listaTipoImpresion = opcionesImpresionService.buscarTodosTipoImpresion();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("impresion", new Impresion());
+        model.addAttribute("impresion", impresion);
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
         model.addAttribute("listaTipoColorImpresion", listaTipoColorImpresion);
         model.addAttribute("listaTamanioHojaImpresion", listaTamanioHojaImpresion);
         model.addAttribute("listaTipoFazImpresion", listaTipoFazImpresion);
@@ -80,11 +77,35 @@ public class ImpresionController {
 
     @PostMapping("/api/creacion-impresion")
     public String creacionImpresion(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        Impresion impresion = impresionService.crear(request);
-        OrdenImpresion ordenImpresion = ordenImpresionService.crear(ordenTrabajo, impresion);
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return "redirect:/mostrar-odt-impresion/" + ordenImpresion.getId();*/
-        return null;
+        OrdenImpresion ordenImpresionExistente = (idOrden != null) ? ordenImpresionService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenImpresionExistente != null) ? ordenImpresionExistente.getOrdenTrabajo().getId() : null;
+        Long idImpresion =  (ordenImpresionExistente != null) ? ordenImpresionExistente.getImpresion().getId() : null;
+        Long idOrdenImpresion = (ordenImpresionExistente != null) ? ordenImpresionExistente.getId() : null;
+
+        ImpresionDTO impresionDTO = armarImpresionDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        Impresion impresion = impresionService.guardar(impresionDTO, idImpresion);
+        OrdenImpresion ordenImpresion = ordenImpresionService.guardar(ordenTrabajo, impresion, idOrdenImpresion);
+
+        return "redirect:/mostrar-odt-impresion/" + ordenImpresion.getId();
+    }
+
+    private ImpresionDTO armarImpresionDTO(HttpServletRequest request) {
+        ImpresionDTO impresionDTO = new ImpresionDTO();
+        impresionDTO.setEsAnillado(request.getParameter("esAnillado") != null);
+        impresionDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        impresionDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        impresionDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        impresionDTO.setTipoColorImpresionId(Long.parseLong(request.getParameter("tipoColorImpresion.id")));
+        impresionDTO.setTamanioHojaImpresionId(Long.parseLong(request.getParameter("tamaniohojaImpresion.id")));
+        impresionDTO.setTipoFazImpresionId(Long.parseLong(request.getParameter("tipoFazImpresion.id")));
+        impresionDTO.setTipoPapelImpresionId(Long.parseLong(request.getParameter("tipoPapelimpresion..id")));
+        impresionDTO.setCantidadImpresionId(Long.parseLong(request.getParameter("cantidadImpresion.id")));
+        impresionDTO.setTipoImpresionId(Long.parseLong(request.getParameter("tipoImpresion.id")));
+
+        return impresionDTO;
     }
 }

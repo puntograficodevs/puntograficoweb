@@ -15,11 +15,11 @@ public class OrdenImpresionService {
 
     private final OrdenImpresionRepository ordenImpresionRepository;
 
-    public OrdenImpresion crear(OrdenTrabajo ordenTrabajo, Impresion impresion) {
+    public OrdenImpresion guardar(OrdenTrabajo ordenTrabajo, Impresion impresion, Long idOrdenImpresion) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(impresion, "Debe venir una impresión para enlazar.");
 
-        OrdenImpresion ordenImpresion = new OrdenImpresion();
+        OrdenImpresion ordenImpresion = (idOrdenImpresion != null) ? ordenImpresionRepository.findById(idOrdenImpresion).get() : new OrdenImpresion();
         ordenImpresion.setCantidad(impresion.getCantidad());
         ordenImpresion.setOrdenTrabajo(ordenTrabajo);
         ordenImpresion.setImpresion(impresion);
