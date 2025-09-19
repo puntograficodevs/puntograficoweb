@@ -48,6 +48,9 @@ document.addEventListener("DOMContentLoaded", function () {
       case "folleto":
         window.location.href = `/crear-odt-folleto/${idOrden}`;
         break;
+      case "hojas membretadas":
+        window.location.href = `/crear-odt-hojas-membreteadas/${idOrden}`;
+        break;
       default:
         console.warn("Tipo de producto no manejado:", tipoProducto);
     }

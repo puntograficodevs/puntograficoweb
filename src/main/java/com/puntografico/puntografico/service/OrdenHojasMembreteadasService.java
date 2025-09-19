@@ -1,7 +1,6 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.HojasMembreteadas;
-import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.OrdenHojasMembreteadas;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
 import com.puntografico.puntografico.repository.OrdenHojasMembreteadasRepository;
@@ -16,11 +15,11 @@ public class OrdenHojasMembreteadasService {
 
     private final OrdenHojasMembreteadasRepository ordenHojasMembreteadasRepository;
 
-    public OrdenHojasMembreteadas crear(OrdenTrabajo ordenTrabajo, HojasMembreteadas hojasMembreteadas) {
+    public OrdenHojasMembreteadas guardar(OrdenTrabajo ordenTrabajo, HojasMembreteadas hojasMembreteadas, Long idOrdenHojasMembreteadas) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(hojasMembreteadas, "Debe venir una hoja membreteada para enlazar.");
 
-        OrdenHojasMembreteadas ordenHojasMembreteadas = new OrdenHojasMembreteadas();
+        OrdenHojasMembreteadas ordenHojasMembreteadas = (idOrdenHojasMembreteadas != null) ? ordenHojasMembreteadasRepository.findById(idOrdenHojasMembreteadas).get() : new OrdenHojasMembreteadas();
         ordenHojasMembreteadas.setCantidad(hojasMembreteadas.getCantidad());
         ordenHojasMembreteadas.setOrdenTrabajo(ordenTrabajo);
         ordenHojasMembreteadas.setHojasMembreteadas(hojasMembreteadas);

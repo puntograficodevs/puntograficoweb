@@ -4,6 +4,7 @@ import com.puntografico.puntografico.domain.CantidadHojasMembreteadas;
 import com.puntografico.puntografico.domain.HojasMembreteadas;
 import com.puntografico.puntografico.domain.MedidaHojasMembreteadas;
 import com.puntografico.puntografico.domain.TipoColorHojasMembreteadas;
+import com.puntografico.puntografico.dto.HojasMembreteadasDTO;
 import com.puntografico.puntografico.repository.CantidadHojasMembreteadasRepository;
 import com.puntografico.puntografico.repository.HojasMembreteadasRepository;
 import com.puntografico.puntografico.repository.MedidaHojasMembreteadasRepository;
@@ -18,45 +19,40 @@ import javax.transaction.Transactional;
 @Service @Transactional @AllArgsConstructor
 public class HojasMembreteadasService {
 
-    private final MedidaHojasMembreteadasRepository medidaHojasMembreteadasRepository;
-
-    private final TipoColorHojasMembreteadasRepository tipoColorHojasMembreteadasRepository;
-
-    private final CantidadHojasMembreteadasRepository cantidadHojasMembreteadasRepository;
+    private final OpcionesHojasMembreteadasService opcionesHojasMembreteadasService;
 
     private final HojasMembreteadasRepository hojasMembreteadasRepository;
 
-    public HojasMembreteadas crear(HttpServletRequest request) {
-        String cantidadHojasString = request.getParameter("cantidadHojas");
-        String medidaHojasMembreteadasString = request.getParameter("medidaHojasMembreteadas.id");
-        String tipoColorHojasMembreteadasString = request.getParameter("tipoColorHojasMembreteadas.id");
-        String cantidadHojasMembreteadasString = request.getParameter("cantidadHojasMembreteadas.id");
-        String cantidadString = request.getParameter("cantidad");
+    public HojasMembreteadas guardar(HojasMembreteadasDTO hojasMembreteadasDTO, Long idHojasMembreteadas) {
+        validarHojasMembreteadasDTO(hojasMembreteadasDTO);
 
-        Assert.notNull(medidaHojasMembreteadasString, "medidaHojasMembreteadasString es un dato obligatorio.");
-        Assert.notNull(tipoColorHojasMembreteadasString, "tipoColorHojasMembreteadasString es un dato obligatorio.");
-        Assert.notNull(cantidadHojasMembreteadasString, "cantidadHojasMembreteadasString es un dato obligatorio.");
-        Assert.notNull(cantidadHojasString, "cantidadHojas es un dato obligatorio.");
+        MedidaHojasMembreteadas medidaHojasMembreteadas = opcionesHojasMembreteadasService.buscarMedidaHojasMembreteadasPorId(hojasMembreteadasDTO.getMedidaHojasMembreteadasId());
+        TipoColorHojasMembreteadas tipoColorHojasMembreteadas = opcionesHojasMembreteadasService.buscarTipoColorHojasMembreteadasPorId(hojasMembreteadasDTO.getTipoColorHojasMembreteadasId());
+        CantidadHojasMembreteadas cantidadHojasMembreteadas = opcionesHojasMembreteadasService.buscarCantidadHojasMembreteadasPorId(hojasMembreteadasDTO.getCantidadHojasMembreteadasId());
+        Integer cantidad = hojasMembreteadasDTO.getCantidad();
 
-        MedidaHojasMembreteadas medidaHojasMembreteadas = medidaHojasMembreteadasRepository.findById(Long.parseLong(medidaHojasMembreteadasString)).get();
-        TipoColorHojasMembreteadas tipoColorHojasMembreteadas = tipoColorHojasMembreteadasRepository.findById(Long.parseLong(tipoColorHojasMembreteadasString)).get();
-        CantidadHojasMembreteadas cantidadHojasMembreteadas = cantidadHojasMembreteadasRepository.findById(Long.parseLong(cantidadHojasMembreteadasString)).get();
-
-        if (cantidadString.isBlank() || cantidadString.isEmpty()) {
-            cantidadString = cantidadHojasMembreteadas.getCantidad();
+        if (cantidad == null) {
+            cantidad = Integer.valueOf(cantidadHojasMembreteadas.getCantidad());
         }
 
-        HojasMembreteadas hojasMembreteadas = new HojasMembreteadas();
-        hojasMembreteadas.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
-        hojasMembreteadas.setCantidadHojas(Integer.parseInt(cantidadHojasString));
-        hojasMembreteadas.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
-        hojasMembreteadas.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
-        hojasMembreteadas.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        HojasMembreteadas hojasMembreteadas = (idHojasMembreteadas != null) ? hojasMembreteadasRepository.findById(idHojasMembreteadas).get() : new HojasMembreteadas();
+        hojasMembreteadas.setMedidaPersonalizada(hojasMembreteadasDTO.getMedidaPersonalizada());
+        hojasMembreteadas.setCantidadHojas(hojasMembreteadasDTO.getCantidadHojas());
+        hojasMembreteadas.setEnlaceArchivo(hojasMembreteadasDTO.getEnlaceArchivo());
+        hojasMembreteadas.setConAdicionalDisenio(hojasMembreteadasDTO.getConAdicionalDisenio());
+        hojasMembreteadas.setInformacionAdicional(hojasMembreteadasDTO.getInformacionAdicional());
         hojasMembreteadas.setMedidaHojasMembreteadas(medidaHojasMembreteadas);
         hojasMembreteadas.setTipoColorHojasMembreteadas(tipoColorHojasMembreteadas);
         hojasMembreteadas.setCantidadHojasMembreteadas(cantidadHojasMembreteadas);
-        hojasMembreteadas.setCantidad(Integer.parseInt(cantidadString));
+        hojasMembreteadas.setCantidad(cantidad);
 
         return hojasMembreteadasRepository.save(hojasMembreteadas);
+    }
+
+    private void validarHojasMembreteadasDTO(HojasMembreteadasDTO hojasMembreteadasDTO) {
+        Assert.notNull(hojasMembreteadasDTO.getMedidaHojasMembreteadasId(), "medidaHojasMembreteadasString es un dato obligatorio.");
+        Assert.notNull(hojasMembreteadasDTO.getTipoColorHojasMembreteadasId(), "tipoColorHojasMembreteadasString es un dato obligatorio.");
+        Assert.notNull(hojasMembreteadasDTO.getCantidadHojasMembreteadasId(), "cantidadHojasMembreteadasString es un dato obligatorio.");
+        Assert.notNull(hojasMembreteadasDTO.getCantidadHojas(), "cantidadHojas es un dato obligatorio.");
     }
 }
