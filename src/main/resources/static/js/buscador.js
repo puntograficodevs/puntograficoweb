@@ -54,6 +54,18 @@ document.addEventListener("DOMContentLoaded", function () {
       case "impresion":
         window.location.href = `/crear-odt-impresion/${idOrden}`;
         break;
+      case "lona común":
+        window.location.href = `/crear-odt-lona-comun/${idOrden}`;
+        break;
+      case "lona publicitaria":
+        window.location.href = `/crear-odt-lona-publicitaria/${idOrden}`;
+        break;
+      case "sin categoría":
+        window.location.href = `/crear-odt-otro/${idOrden}`;
+        break;
+      case "rifa o bono":
+        window.location.href = `/crear-odt-rifas-bonos-contribucion/${idOrden}`;
+        break;
       default:
         console.warn("Tipo de producto no manejado:", tipoProducto);
     }

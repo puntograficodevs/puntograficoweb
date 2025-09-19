@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.OtroDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,38 +14,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class OtroController {
 
-    @Autowired
-    private OpcionesOtroService opcionesOtroService;
+    private final OpcionesOtroService opcionesOtroService;
+    private final MedioPagoService medioPagoService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final OtroService otroService;
+    private final OrdenOtroService ordenOtroService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private OtroService otroService;
-
-    @Autowired
-    private OrdenOtroService ordenOtroService;
-
-    @GetMapping("/crear-odt-otro")
-    public String verCrearOdtOtro(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-otro", "/crear-odt-otro/{idOrden}"})
+    public String verCrearOdtOtro(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenOtro ordenOtro = (idOrden != null) ? ordenOtroService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenOtro != null) ? ordenOtro.getOrdenTrabajo() : new OrdenTrabajo();
+        Otro otro = (ordenOtro != null) ? ordenOtro.getOtro() : new Otro();
 
         List<TipoColorOtro> listaTipoColorOtro = opcionesOtroService.buscarTodosTipoColorOtro();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("otro", new Otro());
+        model.addAttribute("otro", otro);
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
         model.addAttribute("listaTipoColorOtro", listaTipoColorOtro);
         model.addAttribute("listaMediosDePago", listaMediosDePago);
 
@@ -70,11 +67,31 @@ public class OtroController {
 
     @PostMapping("/api/creacion-otro")
     public String creacionProducto(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        Otro otro = otroService.crear(request);
-        OrdenOtro ordenOtro = ordenOtroService.crear(ordenTrabajo, otro);
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return "redirect:/mostrar-odt-otro/" + ordenOtro.getId();*/
-        return null;
+        OrdenOtro ordenOtroExistente = (idOrden != null) ? ordenOtroService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenOtroExistente != null) ? ordenOtroExistente.getOrdenTrabajo().getId() : null;
+        Long idOtro = (ordenOtroExistente != null) ? ordenOtroExistente.getOtro().getId() : null;
+        Long idOrdenOtro = (ordenOtroExistente != null) ? ordenOtroExistente.getId() : null;
+
+        OtroDTO otroDTO = armarOtroDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        Otro otro = otroService.guardar(otroDTO, idOtro);
+        OrdenOtro ordenOtro = ordenOtroService.guardar(ordenTrabajo, otro, idOrdenOtro);
+
+        return "redirect:/mostrar-odt-otro/" + ordenOtro.getId();
+    }
+
+    private OtroDTO armarOtroDTO(HttpServletRequest request) {
+        OtroDTO otroDTO = new OtroDTO();
+        otroDTO.setMedida(request.getParameter("medida"));
+        otroDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        otroDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        otroDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        otroDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        otroDTO.setTipoColorOtroId(Long.parseLong(request.getParameter("tipoColorOtro.id")));
+
+        return otroDTO;
     }
 }

@@ -16,11 +16,11 @@ public class OrdenLonaComunService {
 
     private final OrdenLonaComunRepository ordenLonaComunRepository;
 
-    public OrdenLonaComun crear(OrdenTrabajo ordenTrabajo, LonaComun lonaComun) {
+    public OrdenLonaComun guardar(OrdenTrabajo ordenTrabajo, LonaComun lonaComun, Long idOrdenLonaComun) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(lonaComun, "Debe venir una lona común para enlazar.");
 
-        OrdenLonaComun ordenLonaComun = new OrdenLonaComun();
+        OrdenLonaComun ordenLonaComun = (idOrdenLonaComun != null) ? ordenLonaComunRepository.findById(idOrdenLonaComun).get() : new OrdenLonaComun();
         ordenLonaComun.setLonaComun(lonaComun);
         ordenLonaComun.setOrdenTrabajo(ordenTrabajo);
         ordenLonaComun.setCantidad(lonaComun.getCantidad());

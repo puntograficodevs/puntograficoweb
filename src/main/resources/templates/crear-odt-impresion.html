@@ -149,7 +149,7 @@
             <label for="cantidad" class="form-label">Cantidad de <b>páginas</b> *</label>
             <input type="number" class="form-control" th:value="${impresion.cantidad}" name="cantidad" id="cantidad" placeholder="0">
           </div>
-          <input type="hidden" name="cantidadImpresion.id" id="cantidadImpresionId">
+          <input type="hidden" name="cantidadImpresion.id" th:value="${impresion.cantidadImpresion.id}" id="cantidadImpresionId">
         </div>
       </div>
     </div>

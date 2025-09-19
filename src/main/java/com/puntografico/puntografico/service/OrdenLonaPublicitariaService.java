@@ -16,11 +16,11 @@ public class OrdenLonaPublicitariaService {
 
     private final OrdenLonaPublicitariaRepository ordenLonaPublicitariaRepository;
 
-    public OrdenLonaPublicitaria crear(OrdenTrabajo ordenTrabajo, LonaPublicitaria lonaPublicitaria) {
+    public OrdenLonaPublicitaria guardar(OrdenTrabajo ordenTrabajo, LonaPublicitaria lonaPublicitaria, Long idOrdenLonaPublicitaria) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(lonaPublicitaria, "Debe venir una lona publicitaria para enlazar.");
 
-        OrdenLonaPublicitaria ordenLonaPublicitaria = new OrdenLonaPublicitaria();
+        OrdenLonaPublicitaria ordenLonaPublicitaria = (idOrdenLonaPublicitaria != null) ? ordenLonaPublicitariaRepository.findById(idOrdenLonaPublicitaria).get() : new OrdenLonaPublicitaria();
         ordenLonaPublicitaria.setLonaPublicitaria(lonaPublicitaria);
         ordenLonaPublicitaria.setOrdenTrabajo(ordenTrabajo);
         ordenLonaPublicitaria.setCantidad(lonaPublicitaria.getCantidad());

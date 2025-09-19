@@ -30,4 +30,14 @@ public class OpcionesRifasContribucionService {
     public List<TipoColorRifa> buscarTodosTipoColorRifa() {
         return tipoColorRifaRepository.findAll();
     }
+
+    public TipoPapelRifa buscarTipoPapelRifaPorId(Long id) {
+        return tipoPapelRifaRepository.findById(id).get();
+    }
+    public TipoColorRifa buscarTipoColorRifaPorId(Long id) {
+        return tipoColorRifaRepository.findById(id).get();
+    }
+    public TipoTroqueladoRifa buscarTipoTroqueladoRifaPorId(Long id) {
+        return tipoTroqueladoRifaRepository.findById(id).get();
+    }
 }

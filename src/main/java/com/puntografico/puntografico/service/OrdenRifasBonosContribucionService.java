@@ -15,11 +15,11 @@ public class OrdenRifasBonosContribucionService {
 
     private final OrdenRifasBonosContribucionRepository ordenRifasBonosContribucionRepository;
 
-    public OrdenRifasBonosContribucion crear (OrdenTrabajo ordenTrabajo, RifasBonosContribucion rifasBonosContribucion) {
+    public OrdenRifasBonosContribucion guardar(OrdenTrabajo ordenTrabajo, RifasBonosContribucion rifasBonosContribucion, Long idOrdenRifasBonosContribucion) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(rifasBonosContribucion, "Debe venir una rifa o un bono contribución para enlazar.");
 
-        OrdenRifasBonosContribucion ordenRifasBonosContribucion = new OrdenRifasBonosContribucion();
+        OrdenRifasBonosContribucion ordenRifasBonosContribucion = (idOrdenRifasBonosContribucion != null) ? ordenRifasBonosContribucionRepository.findById(idOrdenRifasBonosContribucion).get() : new OrdenRifasBonosContribucion();
         ordenRifasBonosContribucion.setOrdenTrabajo(ordenTrabajo);
         ordenRifasBonosContribucion.setRifasBonosContribucion(rifasBonosContribucion);
         ordenRifasBonosContribucion.setCantidad(rifasBonosContribucion.getCantidad());

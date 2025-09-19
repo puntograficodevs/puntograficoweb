@@ -100,9 +100,9 @@ public class ImpresionController {
         impresionDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
         impresionDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
         impresionDTO.setTipoColorImpresionId(Long.parseLong(request.getParameter("tipoColorImpresion.id")));
-        impresionDTO.setTamanioHojaImpresionId(Long.parseLong(request.getParameter("tamaniohojaImpresion.id")));
+        impresionDTO.setTamanioHojaImpresionId(Long.parseLong(request.getParameter("tamanioHojaImpresion.id")));
         impresionDTO.setTipoFazImpresionId(Long.parseLong(request.getParameter("tipoFazImpresion.id")));
-        impresionDTO.setTipoPapelImpresionId(Long.parseLong(request.getParameter("tipoPapelimpresion..id")));
+        impresionDTO.setTipoPapelImpresionId(Long.parseLong(request.getParameter("tipoPapelImpresion.id")));
         impresionDTO.setCantidadImpresionId(Long.parseLong(request.getParameter("cantidadImpresion.id")));
         impresionDTO.setTipoImpresionId(Long.parseLong(request.getParameter("tipoImpresion.id")));
 

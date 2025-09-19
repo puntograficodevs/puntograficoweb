@@ -12,7 +12,7 @@ public class LonaComunDTO {
     private Boolean conSolapado;
     private String enlaceArchivo;
     private Boolean conAdicionalDisenio;
-    private String infromacionAdicional;
+    private String informacionAdicional;
     private Integer cantidad;
     private Long medidaLonaComunId;
     private Long tipoLonaComunId;

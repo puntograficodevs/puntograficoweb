@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.LonaComunDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,39 +14,35 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class LonaComunController {
 
-    @Autowired
-    private OpcionesLonaComunService opcionesLonaComunService;
+    private final OpcionesLonaComunService opcionesLonaComunService;
+    private final MedioPagoService medioPagoService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final LonaComunService lonaComunService;
+    private final OrdenLonaComunService ordenLonaComunService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private LonaComunService lonaComunService;
-
-    @Autowired
-    private OrdenLonaComunService ordenLonaComunService;
-
-    @GetMapping("/crear-odt-lona-comun")
-    public String verCrearOdtLonaComun(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-lona-comun", "/crear-odt-lona-comun/{idOrden}"})
+    public String verCrearOdtLonaComun(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenLonaComun ordenLonaComun = (idOrden != null) ? ordenLonaComunService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenLonaComun != null) ? ordenLonaComun.getOrdenTrabajo() : new OrdenTrabajo();
+        LonaComun lonaComun = (ordenLonaComun != null) ? ordenLonaComun.getLonaComun() : new LonaComun();
 
         List<MedidaLonaComun> listaMedidaLonaComun = opcionesLonaComunService.buscarTodosMedidaLonaComun();
         List<TipoLonaComun> listaTipoLonaComun = opcionesLonaComunService.buscarTodosTipoLonaComun();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("lonaComun", new LonaComun());
+        model.addAttribute("lonaComun", lonaComun);
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
         model.addAttribute("listaMedidaLonaComun", listaMedidaLonaComun);
         model.addAttribute("listaTipoLonaComun", listaTipoLonaComun);
         model.addAttribute("listaMediosDePago", listaMediosDePago);
@@ -72,11 +69,37 @@ public class LonaComunController {
 
     @PostMapping("/api/creacion-lona-comun")
     public String creacionProducto(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        LonaComun lonaComun = lonaComunService.crear(request);
-        OrdenLonaComun ordenLonaComun = ordenLonaComunService.crear(ordenTrabajo, lonaComun);
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return "redirect:/mostrar-odt-lona-comun/" + ordenLonaComun.getId();*/
-        return null;
+        OrdenLonaComun ordenLonaComunExistente = (idOrden != null) ? ordenLonaComunService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenLonaComunExistente != null) ? ordenLonaComunExistente.getOrdenTrabajo().getId() : null;
+        Long idLonaComun = (ordenLonaComunExistente != null) ? ordenLonaComunExistente.getLonaComun().getId() : null;
+        Long idOrdenLonaComoun = (ordenLonaComunExistente != null) ? ordenLonaComunExistente.getId() : null;
+
+        LonaComunDTO lonaComunDTO = armarLonaComunDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        LonaComun lonaComun = lonaComunService.guardar(lonaComunDTO, idLonaComun);
+        OrdenLonaComun ordenLonaComun = ordenLonaComunService.guardar(ordenTrabajo, lonaComun, idOrdenLonaComoun);
+
+        return "redirect:/mostrar-odt-lona-comun/" + ordenLonaComun.getId();
+    }
+
+    private LonaComunDTO armarLonaComunDTO(HttpServletRequest request) {
+        LonaComunDTO lonaComunDTO = new LonaComunDTO();
+        lonaComunDTO.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
+        lonaComunDTO.setConOjales(request.getParameter("conOjales") != null);
+        lonaComunDTO.setConOjalesConRefuerzo(request.getParameter("conOjalesConRefuerzo") != null);
+        lonaComunDTO.setConBolsillos(request.getParameter("conBolsillos") != null);
+        lonaComunDTO.setConDemasiaParaTensado(request.getParameter("conDemasiaParaTensado") != null);
+        lonaComunDTO.setConSolapado(request.getParameter("conSolapado") != null);
+        lonaComunDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        lonaComunDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        lonaComunDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        lonaComunDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        lonaComunDTO.setMedidaLonaComunId(Long.parseLong(request.getParameter("medidaLonaComun.id")));
+        lonaComunDTO.setTipoLonaComunId(Long.parseLong(request.getParameter("tipoLonaComun.id")));
+
+        return lonaComunDTO;
     }
 }

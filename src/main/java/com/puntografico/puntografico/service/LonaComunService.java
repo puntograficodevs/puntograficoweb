@@ -3,14 +3,12 @@ package com.puntografico.puntografico.service;
 import com.puntografico.puntografico.domain.LonaComun;
 import com.puntografico.puntografico.domain.MedidaLonaComun;
 import com.puntografico.puntografico.domain.TipoLonaComun;
+import com.puntografico.puntografico.dto.LonaComunDTO;
 import com.puntografico.puntografico.repository.LonaComunRepository;
-import com.puntografico.puntografico.repository.MedidaLonaComunRepository;
-import com.puntografico.puntografico.repository.TipoLonaComunRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service @Transactional @AllArgsConstructor
@@ -18,37 +16,34 @@ public class LonaComunService {
 
     private final LonaComunRepository lonaComunRepository;
 
-    private final MedidaLonaComunRepository medidaLonaComunRepository;
+    private final OpcionesLonaComunService opcionesLonaComunService;
 
-    private final TipoLonaComunRepository tipoLonaComunRepository;
+    public LonaComun guardar(LonaComunDTO lonaComunDTO, Long idLonaComun) {
+        validarLonaComunDTO(lonaComunDTO);
 
-    public LonaComun crear(HttpServletRequest request) {
-        String medidaLonaComunString = request.getParameter("medidaLonaComun.id");
-        String tipoLonaComunString = request.getParameter("tipoLonaComun.id");
-        String cantidadString = request.getParameter("cantidad");
+        MedidaLonaComun medidaLonaComun = opcionesLonaComunService.buscarMedidaLonaComunPorId(lonaComunDTO.getMedidaLonaComunId());
+        TipoLonaComun tipoLonaComun = opcionesLonaComunService.buscarTipoLonaComunPorId(lonaComunDTO.getTipoLonaComunId());
 
-        Assert.notNull(medidaLonaComunString, "La medida es un dato obligatorio.");
-        Assert.notNull(tipoLonaComunString, "El tipo de lona es un dato obligatorio.");
-        Assert.notNull(cantidadString, "La cantidad es un dato obligatorio.");
-
-        MedidaLonaComun medidaLonaComun = medidaLonaComunRepository.findById(Long.parseLong(medidaLonaComunString)).get();
-        TipoLonaComun tipoLonaComun = tipoLonaComunRepository.findById(Long.parseLong(tipoLonaComunString)).get();
-
-        LonaComun lonaComun = new LonaComun();
+        LonaComun lonaComun = (idLonaComun != null) ? lonaComunRepository.findById(idLonaComun).get() :  new LonaComun();
         lonaComun.setMedidaLonaComun(medidaLonaComun);
         lonaComun.setTipoLonaComun(tipoLonaComun);
-        lonaComun.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
-        lonaComun.setConOjales(request.getParameter("conOjales") != null);
-        lonaComun.setConOjalesConRefuerzo(request.getParameter("conOjalesConRefuerzo") != null);
-        lonaComun.setConBolsillos(request.getParameter("conBolsillos") != null);
-        lonaComun.setConDemasiaParaTensado(request.getParameter("conDemasiaParaTensado") != null);
-        lonaComun.setConSolapado(request.getParameter("conSolapado") != null);
-        lonaComun.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
-        lonaComun.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
-        lonaComun.setInformacionAdicional(request.getParameter("informacionAdicional"));
-        lonaComun.setCantidad(Integer.parseInt(cantidadString));
+        lonaComun.setMedidaPersonalizada(lonaComunDTO.getMedidaPersonalizada());
+        lonaComun.setConOjales(lonaComunDTO.getConOjales());
+        lonaComun.setConOjalesConRefuerzo(lonaComunDTO.getConOjalesConRefuerzo());
+        lonaComun.setConBolsillos(lonaComunDTO.getConBolsillos());
+        lonaComun.setConDemasiaParaTensado(lonaComunDTO.getConDemasiaParaTensado());
+        lonaComun.setConSolapado(lonaComunDTO.getConSolapado());
+        lonaComun.setConAdicionalDisenio(lonaComunDTO.getConAdicionalDisenio());
+        lonaComun.setEnlaceArchivo(lonaComunDTO.getEnlaceArchivo());
+        lonaComun.setInformacionAdicional(lonaComunDTO.getInformacionAdicional());
+        lonaComun.setCantidad(lonaComunDTO.getCantidad());
 
         return lonaComunRepository.save(lonaComun);
     }
 
+    private void validarLonaComunDTO(LonaComunDTO lonaComunDTO) {
+        Assert.notNull(lonaComunDTO.getMedidaLonaComunId(), "La medida es un dato obligatorio.");
+        Assert.notNull(lonaComunDTO.getTipoLonaComunId(), "El tipo de lona es un dato obligatorio.");
+        Assert.notNull(lonaComunDTO.getCantidad(), "La cantidad es un dato obligatorio.");
+    }
 }

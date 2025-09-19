@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.RifasBonosContribucionDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,40 +14,36 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class RifasBonosContribucionController {
 
-    @Autowired
-    private OpcionesRifasContribucionService opcionesRifasContribucionService;
+    private final OpcionesRifasContribucionService opcionesRifasContribucionService;
+    private final MedioPagoService medioPagoService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final RifasBonosContribucionService rifasBonosContribucionService;
+    private final OrdenRifasBonosContribucionService ordenRifasBonosContribucionService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private RifasBonosContribucionService rifasBonosContribucionService;
-
-    @Autowired
-    private OrdenRifasBonosContribucionService ordenRifasBonosContribucionService;
-
-    @GetMapping("/crear-odt-rifas-bonos-contribucion")
-    public String verCrearOdtRifasBonosContribucion(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-rifas-bonos-contribucion", "/crear-odt-rifas-bonos-contribucion/{idOrden}"})
+    public String verCrearOdtRifasBonosContribucion(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenRifasBonosContribucion ordenRifasBonosContribucion = (idOrden != null) ? ordenRifasBonosContribucionService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenRifasBonosContribucion != null) ? ordenRifasBonosContribucion.getOrdenTrabajo() : new OrdenTrabajo();
+        RifasBonosContribucion rifasBonosContribucion = (ordenRifasBonosContribucion != null) ? ordenRifasBonosContribucion.getRifasBonosContribucion() : new RifasBonosContribucion();
 
         List<TipoPapelRifa> listaTipoPapelRifa = opcionesRifasContribucionService.buscarTodosTipoPapelRifa();
         List<TipoTroqueladoRifa> listaTipoTroqueladoRifa = opcionesRifasContribucionService.buscarTodosTipoTroqueladoRifa();
         List<TipoColorRifa> listaTipoColorRifa = opcionesRifasContribucionService.buscarTodosTipoColorRifa();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("rifasBonosContribucion", new RifasBonosContribucion());
+        model.addAttribute("rifasBonosContribucion", rifasBonosContribucion);
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
         model.addAttribute("listaTipoPapelRifa", listaTipoPapelRifa);
         model.addAttribute("listaTipoTroqueladoRifa", listaTipoTroqueladoRifa);
         model.addAttribute("listaTipoColorRifa", listaTipoColorRifa);
@@ -74,12 +71,36 @@ public class RifasBonosContribucionController {
 
     @PostMapping("/api/creacion-rifas-bonos-contribucion")
     public String creacionProducto(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        RifasBonosContribucion rifasBonosContribucion = rifasBonosContribucionService.crear(request);
-        OrdenRifasBonosContribucion ordenRifasBonosContribucion = ordenRifasBonosContribucionService.crear(ordenTrabajo, rifasBonosContribucion);
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return "redirect:/mostrar-odt-rifas-bonos-contribucion/" + ordenRifasBonosContribucion.getId();*/
-        return null;
+        OrdenRifasBonosContribucion ordenRifasBonosContribucionExistente = (idOrden != null) ? ordenRifasBonosContribucionService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenRifasBonosContribucionExistente != null) ? ordenRifasBonosContribucionExistente.getOrdenTrabajo().getId() : null;
+        Long idRifasBonosContribucion = (ordenRifasBonosContribucionExistente != null) ? ordenRifasBonosContribucionExistente.getRifasBonosContribucion().getId() : null;
+        Long idOrdenRifasBonosContribucion = (ordenRifasBonosContribucionExistente != null) ? ordenRifasBonosContribucionExistente.getId() : null;
+
+        RifasBonosContribucionDTO rifasBonosContribucionDTO = armarRifasBonosContribucionDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        RifasBonosContribucion rifasBonosContribucion = rifasBonosContribucionService.guardar(rifasBonosContribucionDTO, idRifasBonosContribucion);
+        OrdenRifasBonosContribucion ordenRifasBonosContribucion = ordenRifasBonosContribucionService.guardar(ordenTrabajo, rifasBonosContribucion, idOrdenRifasBonosContribucion);
+
+        return "redirect:/mostrar-odt-rifas-bonos-contribucion/" + ordenRifasBonosContribucion.getId();
     }
 
+    private RifasBonosContribucionDTO armarRifasBonosContribucionDTO(HttpServletRequest request) {
+        RifasBonosContribucionDTO rifasBonosContribucionDTO = new RifasBonosContribucionDTO();
+        rifasBonosContribucionDTO.setConNumerado(request.getParameter("conNumerado") != null);
+        rifasBonosContribucionDTO.setDetalleNumerado(request.getParameter("detalleNumerado"));
+        rifasBonosContribucionDTO.setConEncolado(request.getParameter("conEncolado") != null);
+        rifasBonosContribucionDTO.setMedida(request.getParameter("medida"));
+        rifasBonosContribucionDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        rifasBonosContribucionDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        rifasBonosContribucionDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        rifasBonosContribucionDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        rifasBonosContribucionDTO.setTipoPapelRifaId(Long.parseLong(request.getParameter("tipoPapelRifa.id")));
+        rifasBonosContribucionDTO.setTipoTroqueladoRifaId(Long.parseLong(request.getParameter("tipoTroqueladoRifa.id")));
+        rifasBonosContribucionDTO.setTipoColorRifaId(Long.parseLong(request.getParameter("tipoColorRifa.id")));
+
+        return rifasBonosContribucionDTO;
+    }
 }

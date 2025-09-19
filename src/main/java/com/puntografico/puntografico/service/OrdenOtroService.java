@@ -16,11 +16,11 @@ public class OrdenOtroService {
 
     private final OrdenOtroRepository ordenOtroRepository;
 
-    public OrdenOtro crear(OrdenTrabajo ordenTrabajo, Otro otro) {
+    public OrdenOtro guardar(OrdenTrabajo ordenTrabajo, Otro otro, Long idOrdenOtro) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(otro, "Debe venir algo para enlazar.");
 
-        OrdenOtro ordenOtro = new OrdenOtro();
+        OrdenOtro ordenOtro = (idOrdenOtro != null) ? ordenOtroRepository.findById(idOrdenOtro).get() : new OrdenOtro();
         ordenOtro.setCantidad(otro.getCantidad());
         ordenOtro.setOrdenTrabajo(ordenTrabajo);
         ordenOtro.setOtro(otro);

@@ -1,14 +1,14 @@
 package com.puntografico.puntografico.service;
 
+import com.puntografico.puntografico.domain.OrdenOtro;
 import com.puntografico.puntografico.domain.Otro;
 import com.puntografico.puntografico.domain.TipoColorOtro;
+import com.puntografico.puntografico.dto.OtroDTO;
 import com.puntografico.puntografico.repository.OtroRepository;
-import com.puntografico.puntografico.repository.TipoColorOtroRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service @Transactional @AllArgsConstructor
@@ -16,26 +16,26 @@ public class OtroService {
 
     private final OtroRepository otroRepository;
 
-    private final TipoColorOtroRepository tipoColorOtroRepository;
+    private final OpcionesOtroService opcionesOtroService;
 
-    public Otro crear(HttpServletRequest request) {
-        String tipoColorOtroString = request.getParameter("tipoColorOtro.id");
-        String cantidadString = request.getParameter("cantidad");
+    public Otro guardar(OtroDTO otroDTO, Long idOtro) {
+        validarOtroDTO(otroDTO);
 
-        Assert.notNull(tipoColorOtroString, "tipoColorOtroString es un dato obligatorio.");
-        Assert.notNull(cantidadString, "cantidadString es un dato obligatorio.");
+        TipoColorOtro tipoColorOtro = opcionesOtroService.buscarTipoColorOtroPorId(otroDTO.getTipoColorOtroId());
 
-        TipoColorOtro tipoColorOtro = tipoColorOtroRepository.findById(Long.parseLong(tipoColorOtroString)).get();
-        int cantidad = Integer.parseInt(cantidadString);
-
-        Otro otro = new Otro();
-        otro.setMedida(request.getParameter("medida"));
-        otro.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
-        otro.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
-        otro.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        Otro otro = (idOtro != null) ? otroRepository.findById(idOtro).get() : new Otro();
+        otro.setMedida(otroDTO.getMedida());
+        otro.setEnlaceArchivo(otroDTO.getEnlaceArchivo());
+        otro.setConAdicionalDisenio(otroDTO.getConAdicionalDisenio());
+        otro.setInformacionAdicional(otroDTO.getInformacionAdicional());
         otro.setTipoColorOtro(tipoColorOtro);
-        otro.setCantidad(cantidad);
+        otro.setCantidad(otroDTO.getCantidad());
 
         return otroRepository.save(otro);
+    }
+
+    private void validarOtroDTO(OtroDTO otroDTO) {
+        Assert.notNull(otroDTO.getTipoColorOtroId(), "tipoColorOtroString es un dato obligatorio.");
+        Assert.notNull(otroDTO.getCantidad(), "cantidadString es un dato obligatorio.");
     }
 }
