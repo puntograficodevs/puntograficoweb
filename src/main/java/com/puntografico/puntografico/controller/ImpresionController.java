@@ -6,6 +6,7 @@ import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -107,5 +108,14 @@ public class ImpresionController {
         impresionDTO.setTipoImpresionId(Long.parseLong(request.getParameter("tipoImpresion.id")));
 
         return impresionDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-impresion/{idOrden}")
+    public void eliminarOrdenImpresion(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenImpresion ordenImpresion = ordenImpresionService.buscarPorOrdenId(idOrden);
+
+        ordenImpresionService.eliminar(ordenImpresion.getId());
+        ordenTrabajoService.eliminar(ordenImpresion.getOrdenTrabajo().getId());
+        ordenImpresionService.eliminar(ordenImpresion.getImpresion().getId());
     }
 }

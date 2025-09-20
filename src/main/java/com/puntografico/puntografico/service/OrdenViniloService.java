@@ -34,4 +34,9 @@ public class OrdenViniloService {
     public OrdenVinilo buscarPorOrdenId(Long id) {
         return ordenViniloRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenViniloRepository.deleteById(id);
+    }
 }

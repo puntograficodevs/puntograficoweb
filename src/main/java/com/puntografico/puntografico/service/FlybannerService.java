@@ -46,4 +46,9 @@ public class FlybannerService {
         Assert.notNull(flybannerDTO.getTipoBaseFlybannerId(), "tipoBaseFlybannerString es un dato obligatorio.");
         Assert.notNull(flybannerDTO.getCantidad(), "cantidadString es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        flybannerRepository.deleteById(id);
+    }
 }

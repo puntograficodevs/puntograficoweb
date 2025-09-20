@@ -51,4 +51,9 @@ public class SobreService {
         Assert.notNull(sobreDTO.getTipoColorSobreId(), "tipoColorSobre es un dato obligatorio.");
         Assert.notNull(sobreDTO.getCantidadSobreId(), "cantidadSobre es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        sobreRepository.deleteById(id);
+    }
 }

@@ -6,6 +6,7 @@ import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -103,5 +104,14 @@ public class VoucherController {
         voucherDTO.setCantidadVoucherId(Long.parseLong(request.getParameter("cantidadVoucher.id")));
 
         return voucherDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-voucher/{idOrden}")
+    public void eliminarOrdenVoucher(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenVoucher ordenVoucher = ordenVoucherService.buscarPorOrdenId(idOrden);
+
+        ordenVoucherService.eliminar(ordenVoucher.getId());
+        ordenTrabajoService.eliminar(ordenVoucher.getOrdenTrabajo().getId());
+        voucherService.eliminar(ordenVoucher.getVoucher().getId());
     }
 }

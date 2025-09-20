@@ -47,4 +47,9 @@ public class SelloAutomaticoEscolarService {
         Assert.notNull(selloAutomaticoEscolarDTO.getModeloSelloAutomaticoEscolarId(), "El modelo es un dato obligatorio.");
         Assert.notNull(selloAutomaticoEscolarDTO.getCantidad(), "La cantidad es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        selloAutomaticoEscolarRepository.deleteById(id);
+    }
 }

@@ -35,4 +35,9 @@ public class OrdenComboService {
     public OrdenCombo buscarPorOrdenId(Long id) {
         return ordenComboRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenComboRepository.deleteById(id);
+    }
 }

@@ -32,4 +32,9 @@ public class OrdenTurneroService {
     public OrdenTurnero buscarPorOrdenId(Long id) {
         return ordenTurneroRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenTurneroRepository.deleteById(id);
+    }
 }

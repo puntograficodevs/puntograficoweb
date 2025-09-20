@@ -7,6 +7,7 @@ import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -98,5 +99,14 @@ public class SelloAutomaticoEscolarController {
         selloAutomaticoEscolarDTO.setModeloSelloAutomaticoEscolarId(Long.parseLong(request.getParameter("modeloSelloAutomaticoEscolar.id")));
 
         return selloAutomaticoEscolarDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-sello-automatico-escolar/{idOrden}")
+    public void eliminarOrdenSelloAutomaticoEscolar(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenSelloAutomaticoEscolar ordenSelloAutomaticoEscolar = ordenSelloAutomaticoEscolarService.buscarPorOrdenId(idOrden);
+
+        ordenSelloAutomaticoEscolarService.eliminar(ordenSelloAutomaticoEscolar.getId());
+        ordenTrabajoService.eliminar(ordenSelloAutomaticoEscolar.getOrdenTrabajo().getId());
+        selloAutomaticoEscolarService.eliminar(ordenSelloAutomaticoEscolar.getSelloAutomaticoEscolar().getId());
     }
 }

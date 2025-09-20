@@ -7,6 +7,7 @@ import com.puntografico.puntografico.repository.MedioPagoRepository;
 import com.puntografico.puntografico.repository.OrdenTrabajoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -278,4 +279,8 @@ public class OrdenTrabajoService {
                 .toList();
     }
 
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenTrabajoRepository.deleteById(id);
+    }
 }

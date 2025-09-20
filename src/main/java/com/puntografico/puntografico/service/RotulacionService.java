@@ -53,4 +53,9 @@ public class RotulacionService {
         Assert.notNull(rotulacionDTO.getTipoCorteRotulacionId(), "El tipo de corte es un dato obligatorio.");
         Assert.notNull(rotulacionDTO.getTipoRotulacionId(), "El tipo de rotulación es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        rotulacionRepository.deleteById(id);
+    }
 }

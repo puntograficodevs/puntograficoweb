@@ -47,4 +47,9 @@ public class AgendaService {
         Assert.notNull(agendaDTO.getTipoColorAgendaId(), "El tipo de color es un dato obligatorio.");
         Assert.notNull(agendaDTO.getCantidad(), "La cantidad es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        agendaRepository.deleteById(id);
+    }
 }

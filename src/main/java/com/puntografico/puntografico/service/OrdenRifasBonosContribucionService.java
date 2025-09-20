@@ -35,4 +35,9 @@ public class OrdenRifasBonosContribucionService {
     public OrdenRifasBonosContribucion buscarPorOrdenId(Long id) {
         return ordenRifasBonosContribucionRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenRifasBonosContribucionRepository.deleteById(id);
+    }
 }

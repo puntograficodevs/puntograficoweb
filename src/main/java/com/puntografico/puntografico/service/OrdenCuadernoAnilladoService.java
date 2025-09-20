@@ -35,4 +35,9 @@ public class OrdenCuadernoAnilladoService {
     public OrdenCuadernoAnillado buscarPorOrdenId(Long id) {
         return ordenCuadernoAnilladoRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenCuadernoAnilladoRepository.deleteById(id);
+    }
 }

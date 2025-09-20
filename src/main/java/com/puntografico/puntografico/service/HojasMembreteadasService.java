@@ -57,4 +57,9 @@ public class HojasMembreteadasService {
         Assert.notNull(hojasMembreteadasDTO.getCantidadHojasMembreteadasId(), "cantidadHojasMembreteadasString es un dato obligatorio.");
         Assert.notNull(hojasMembreteadasDTO.getCantidadHojas(), "cantidadHojas es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        hojasMembreteadasRepository.deleteById(id);
+    }
 }

@@ -67,4 +67,9 @@ public class TalonarioService {
         Assert.notNull(talonarioDTO.getTipoPapelTalonarioId(), "tipoPapelTalonarioString es un dato obligatorio.");
         Assert.notNull(talonarioDTO.getCantidadTalonarioId(), " es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        talonarioRepository.deleteById(id);
+    }
 }

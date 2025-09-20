@@ -6,6 +6,7 @@ import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -102,5 +103,14 @@ public class RifasBonosContribucionController {
         rifasBonosContribucionDTO.setTipoColorRifaId(Long.parseLong(request.getParameter("tipoColorRifa.id")));
 
         return rifasBonosContribucionDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-rifa-bono-contribucion/{idOrden}")
+    public void eliminarOrdenRifaBonoContribucion(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenRifasBonosContribucion ordenRifasBonosContribucion = ordenRifasBonosContribucionService.buscarPorOrdenId(idOrden);
+
+        ordenRifasBonosContribucionService.eliminar(ordenRifasBonosContribucion.getId());
+        ordenTrabajoService.eliminar(ordenRifasBonosContribucion.getOrdenTrabajo().getId());
+        rifasBonosContribucionService.eliminar(ordenRifasBonosContribucion.getRifasBonosContribucion().getId());
     }
 }

@@ -6,6 +6,7 @@ import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -99,5 +100,14 @@ public class RotulacionController {
         rotulacionDTO.setTipoCorteRotulacionId(Long.parseLong(request.getParameter("tipoCorteRotulacion.id")));
 
         return rotulacionDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-rotulacion/{idOrden}")
+    public void eliminarOrdenRotulacion(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenRotulacion ordenRotulacion = ordenRotulacionService.buscarPorOrdenId(idOrden);
+
+        ordenRotulacionService.eliminar(ordenRotulacion.getId());
+        ordenTrabajoService.eliminar(ordenRotulacion.getOrdenTrabajo().getId());
+        rotulacionService.eliminar(ordenRotulacion.getRotulacion().getId());
     }
 }

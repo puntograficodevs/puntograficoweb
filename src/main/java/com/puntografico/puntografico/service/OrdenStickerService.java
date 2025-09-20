@@ -33,4 +33,9 @@ public class OrdenStickerService {
     public OrdenSticker buscarPorOrdenId(Long id) {
         return ordenStickerRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenStickerRepository.deleteById(id);
+    }
 }

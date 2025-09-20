@@ -61,4 +61,9 @@ public class EtiquetaService {
         Assert.notNull(etiquetaDTO.getMedidaEtiquetaId(), "La medida es un dato obligatorio.");
         Assert.notNull(etiquetaDTO.getCantidadEtiquetaId(), "La cantidad es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        etiquetaRepository.deleteById(id);
+    }
 }

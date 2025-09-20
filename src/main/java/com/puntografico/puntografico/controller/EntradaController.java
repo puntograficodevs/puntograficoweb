@@ -6,6 +6,7 @@ import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -116,5 +117,14 @@ public class EntradaController {
         entradaDTO.setTerminacionEntradaId(Long.parseLong(request.getParameter("terminacionEntrada.id")));
 
         return entradaDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-entrada/{idOrden}")
+    public void eliminarOrdenEntrada(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenEntrada ordenEntrada = ordenEntradaService.buscarPorOrdenId(idOrden);
+
+        ordenEntradaService.eliminar(ordenEntrada.getId());
+        ordenTrabajoService.eliminar(ordenEntrada.getOrdenTrabajo().getId());
+        entradaService.eliminar(ordenEntrada.getEntrada().getId());
     }
 }

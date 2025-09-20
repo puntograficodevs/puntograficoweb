@@ -37,4 +37,9 @@ public class OrdenFlybannerService {
     public OrdenFlybanner buscarPorOrdenId(Long id) {
         return ordenFlybannerRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenFlybannerRepository.deleteById(id);
+    }
 }

@@ -6,6 +6,7 @@ import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -102,5 +103,14 @@ public class CatalogoController {
         catalogoDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
 
         return catalogoDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-catalogo/{idOrden}")
+    public void eliminarOrdenCatalogo(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenCatalogo ordenCatalogo = ordenCatalogoService.buscarPorOrdenId(idOrden);
+
+        ordenCatalogoService.eliminar(ordenCatalogo.getId());
+        ordenTrabajoService.eliminar(ordenCatalogo.getOrdenTrabajo().getId());
+        catalogoService.eliminar(ordenCatalogo.getCatalogo().getId());
     }
 }

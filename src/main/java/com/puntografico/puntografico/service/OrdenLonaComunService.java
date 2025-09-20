@@ -36,4 +36,9 @@ public class OrdenLonaComunService {
     public OrdenLonaComun buscarPorOrdenId(Long id) {
         return ordenLonaComunRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenLonaComunRepository.deleteById(id);
+    }
 }

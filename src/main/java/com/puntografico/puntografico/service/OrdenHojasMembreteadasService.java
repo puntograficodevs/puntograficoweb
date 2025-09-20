@@ -35,4 +35,9 @@ public class OrdenHojasMembreteadasService {
         return ordenHojasMembreteadasRepository.findByOrdenTrabajo_Id(id);
     }
 
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenHojasMembreteadasRepository.deleteById(id);
+    }
+
 }

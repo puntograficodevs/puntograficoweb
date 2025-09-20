@@ -36,4 +36,9 @@ public class OrdenSublimacionService {
     public OrdenSublimacion buscarPorOrdenId(Long id) {
         return ordenSublimacionRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenSublimacionRepository.deleteById(id);
+    }
 }

@@ -33,4 +33,9 @@ public class OrdenTarjetaService {
     public OrdenTarjeta buscarPorOrdenId(Long id) {
         return ordenTarjetaRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenTarjetaRepository.deleteById(id);
+    }
 }

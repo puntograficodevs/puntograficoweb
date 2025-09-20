@@ -53,4 +53,9 @@ public class LonaComunService {
         Assert.notNull(lonaComunDTO.getTipoLonaComunId(), "El tipo de lona es un dato obligatorio.");
         Assert.notNull(lonaComunDTO.getCantidad(), "La cantidad es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        lonaComunRepository.deleteById(id);
+    }
 }

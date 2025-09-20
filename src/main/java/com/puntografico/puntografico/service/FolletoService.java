@@ -58,4 +58,9 @@ public class FolletoService {
         Assert.notNull(folletoDTO.getTipoFolletoId(), "tipoFolletoString no puede venir vacío.");
         Assert.notNull(folletoDTO.getCantidadFolletoId(), "cantidadFolletoString no puede venir vacío.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        folletoRepository.deleteById(id);
+    }
 }

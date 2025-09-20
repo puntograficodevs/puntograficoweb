@@ -6,6 +6,7 @@ import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -95,5 +96,14 @@ public class SublimacionController {
         sublimacionDTO.setCantidadSublimacionId(Long.parseLong(request.getParameter("cantidadSublimacion.id")));
 
         return sublimacionDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-sublimacion/{idOrden}")
+    public void eliminarOrdenSublimacion(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenSublimacion ordenSublimacion = ordenSublimacionService.buscarPorOrdenId(idOrden);
+
+        ordenSublimacionService.eliminar(ordenSublimacion.getId());
+        ordenTrabajoService.eliminar(ordenSublimacion.getOrdenTrabajo().getId());
+        sublimacionService.eliminar(ordenSublimacion.getSublimacion().getId());
     }
 }

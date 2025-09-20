@@ -50,4 +50,9 @@ public class TurneroService {
         Assert.notNull(turneroDTO.getCantidadTurneroId(), "cantidadTurneroString es un dato obligatorio.");
         Assert.notNull(turneroDTO.getCantidadHojas(), "cantidadHojas es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        turneroRepository.deleteById(id);
+    }
 }

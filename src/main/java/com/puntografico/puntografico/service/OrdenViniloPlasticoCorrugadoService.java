@@ -36,4 +36,9 @@ public class OrdenViniloPlasticoCorrugadoService {
     public OrdenViniloPlasticoCorrugado buscarPorOrdenId(Long id) {
         return ordenViniloPlasticoCorrugadoRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenViniloPlasticoCorrugadoRepository.deleteById(id);
+    }
 }

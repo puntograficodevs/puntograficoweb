@@ -50,4 +50,9 @@ public class StickerService {
         Assert.notNull(stickerDTO.getTipoTroqueladoStickerId(), "tipoTroqueladoStickerString es un dato obligatorio.");
         Assert.notNull(stickerDTO.getCantidadStickerId(), "cantidadStickerString es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        stickerRepository.deleteById(id);
+    }
 }

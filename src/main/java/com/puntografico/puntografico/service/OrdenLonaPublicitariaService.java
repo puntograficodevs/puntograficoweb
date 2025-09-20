@@ -36,4 +36,9 @@ public class OrdenLonaPublicitariaService {
     public OrdenLonaPublicitaria buscarPorOrdenId(Long id) {
         return ordenLonaPublicitariaRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenLonaPublicitariaRepository.deleteById(id);
+    }
 }

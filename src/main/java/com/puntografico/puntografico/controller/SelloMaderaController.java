@@ -6,6 +6,7 @@ import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -96,5 +97,14 @@ public class SelloMaderaController {
         selloMaderaDTO.setTamanioSelloMaderaId(Long.parseLong(request.getParameter("tamanioSelloMadera.id")));
 
         return selloMaderaDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-sello-madera/{idOrden}")
+    public void eliminarOrdenSelloMadera(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenSelloMadera ordenSelloMadera = ordenSelloMaderaService.buscarPorOrdenId(idOrden);
+
+        ordenSelloMaderaService.eliminar(ordenSelloMadera.getId());
+        ordenTrabajoService.eliminar(ordenSelloMadera.getOrdenTrabajo().getId());
+        selloMaderaService.eliminar(ordenSelloMadera.getSelloMadera().getId());
     }
 }

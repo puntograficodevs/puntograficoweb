@@ -6,6 +6,7 @@ import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -100,5 +101,14 @@ public class CarpetaSolapaController {
         carpetaSolapaDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
 
         return carpetaSolapaDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-carpeta-solapa/{idOrden}")
+    public void eliminarOrdenCarpetaSolapa(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenCarpetaSolapa ordenCarpetaSolapa = ordenCarpetaSolapaService.buscarPorOrdenId(idOrden);
+
+        ordenCarpetaSolapaService.eliminar(ordenCarpetaSolapa.getId());
+        ordenTrabajoService.eliminar(ordenCarpetaSolapa.getOrdenTrabajo().getId());
+        carpetaSolapaService.eliminar(ordenCarpetaSolapa.getCarpetaSolapa().getId());
     }
 }

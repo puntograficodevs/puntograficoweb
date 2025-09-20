@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller @AllArgsConstructor
@@ -104,5 +105,14 @@ public class AgendaController {
         agendaDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
 
         return agendaDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-agenda/{idOrden}")
+    public void eliminarOrdenAgenda(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenAgenda ordenAgenda = ordenAgendaService.buscarPorOrdenId(idOrden);
+
+        ordenAgendaService.eliminar(ordenAgenda.getId());
+        ordenTrabajoService.eliminar(ordenAgenda.getOrdenTrabajo().getId());
+        agendaService.eliminar(ordenAgenda.getAgenda().getId());
     }
 }

@@ -35,4 +35,9 @@ public class OrdenEtiquetaService {
     public OrdenEtiqueta buscarPorOrdenId(Long id) {
         return ordenEtiquetaRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenEtiquetaRepository.deleteById(id);
+    }
 }

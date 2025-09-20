@@ -35,4 +35,9 @@ public class OrdenImpresionService {
     public OrdenImpresion buscarPorOrdenId(Long id) {
         return ordenImpresionRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenImpresionRepository.deleteById(id);
+    }
 }

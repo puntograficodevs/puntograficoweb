@@ -6,6 +6,7 @@ import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -115,5 +116,14 @@ public class TalonarioController {
         talonarioDTO.setCantidadTalonarioId(Long.parseLong(request.getParameter("cantidadTalonario.id")));
 
         return talonarioDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-talonario/{idOrden}")
+    public void eliminarOrdenTalonario(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenTalonario ordenTalonario = ordenTalonarioService.buscarPorOrdenId(idOrden);
+
+        ordenTalonarioService.eliminar(ordenTalonario.getId());
+        ordenTrabajoService.eliminar(ordenTalonario.getOrdenTrabajo().getId());
+        talonarioService.eliminar(ordenTalonario.getTalonario().getId());
     }
 }

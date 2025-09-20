@@ -53,4 +53,10 @@ public class ImpresionService {
         Assert.notNull(impresionDTO.getCantidad(), "cantidadString es un campo obligatorio.");
         Assert.notNull(impresionDTO.getCantidadImpresionId(), "cantidadImpresionString es un campo obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        impresionRepository.deleteById(id);
+    }
 }
+

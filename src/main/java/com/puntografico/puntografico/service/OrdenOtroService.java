@@ -36,4 +36,9 @@ public class OrdenOtroService {
     public OrdenOtro buscarPorOrdenId(Long id) {
         return ordenOtroRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenOtroRepository.deleteById(id);
+    }
 }

@@ -46,4 +46,9 @@ public class SublimacionService {
         Assert.notNull(sublimacionDTO.getMaterialSublimacionId(), "materialSublimacionString es un dato obligatorio.");
         Assert.notNull(sublimacionDTO.getCantidadSublimacionId(), "cantidadSublimacionString es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        sublimacionRepository.deleteById(id);
+    }
 }

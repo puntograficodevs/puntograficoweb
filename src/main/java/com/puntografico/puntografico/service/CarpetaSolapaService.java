@@ -46,4 +46,9 @@ public class CarpetaSolapaService {
         Assert.notNull(carpetaSolapaDTO.getTipoLaminadoCarpetaSolapaId(), "El tipo de laminado es un dato obligatorio.");
         Assert.notNull(carpetaSolapaDTO.getTipoFazCarpetaSolapaId(), "El tipo de faz es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        carpetaSolapaRepository.deleteById(id);
+    }
 }

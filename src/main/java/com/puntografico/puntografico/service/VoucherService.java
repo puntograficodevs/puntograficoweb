@@ -51,4 +51,9 @@ public class VoucherService {
         Assert.notNull(voucherDTO.getTipoFazVoucherId(), "tipoFazVoucherString es un dato obligatorio.");
         Assert.notNull(voucherDTO.getCantidadVoucherId(), "cantidadVoucherString es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        voucherRepository.deleteById(id);
+    }
 }

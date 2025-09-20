@@ -37,4 +37,9 @@ public class AnotadorService {
         Assert.notNull(anotadorDTO.getTipoTapa(), "El tipo de tapa es un dato obligatorio.");
         Assert.notNull(anotadorDTO.getCantidad(), "La cantidad es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        anotadorRepository.deleteById(id);
+    }
 }

@@ -6,6 +6,7 @@ import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -99,5 +100,14 @@ public class SobreController {
         sobreDTO.setCantidadSobreId(Long.parseLong(request.getParameter("cantidadSobre.id")));
 
         return sobreDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-sobre/{idOrden}")
+    public void eliminarOrdenSobre(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenSobre ordenSobre = ordenSobreService.buscarPorOrdenId(idOrden);
+
+        ordenSobreService.eliminar(ordenSobre.getId());
+        ordenTrabajoService.eliminar(ordenSobre.getOrdenTrabajo().getId());
+        sobreService.eliminar(ordenSobre.getSobre().getId());
     }
 }

@@ -33,4 +33,9 @@ public class OrdenSelloMaderaService {
     public OrdenSelloMadera buscarPorOrdenId(Long id) {
         return ordenSelloMaderaRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenSelloMaderaRepository.deleteById(id);
+    }
 }

@@ -43,4 +43,9 @@ public class SelloMaderaService {
         Assert.notNull(selloMaderaDTO.getTamanioSelloMaderaId(), "El tamaño es un dato obligatorio.");
         Assert.notNull(selloMaderaDTO.getCantidad(), "La cantidad es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        selloMaderaRepository.deleteById(id);
+    }
 }

@@ -33,4 +33,9 @@ public class OrdenCarpetaSolapaService {
     public OrdenCarpetaSolapa buscarPorOrdenId(Long id) {
         return ordenCarpetaSolapaRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenCarpetaSolapaRepository.deleteById(id);
+    }
 }

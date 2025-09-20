@@ -38,4 +38,9 @@ public class ComboService {
         Assert.notNull(comboDTO.getTipoComboId(), "El tipo de combo es un dato obligatorio.");
         Assert.notNull(comboDTO.getCantidad(), "La cantidad es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        comboRepository.deleteById(id);
+    }
 }

@@ -33,4 +33,9 @@ public class OrdenSelloAutomaticoService {
     public OrdenSelloAutomatico buscarPorOrdenId(Long id) {
         return ordenSelloAutomaticoRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenSelloAutomaticoRepository.deleteById(id);
+    }
 }

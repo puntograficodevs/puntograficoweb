@@ -49,4 +49,9 @@ public class CuadernoAnilladoService {
         Assert.notNull(cuadernoAnilladoDTO.getTipoTapaCuadernoAnilladoId(), "El tipo de tapa es un dato obligatorio.");
         Assert.notNull(cuadernoAnilladoDTO.getMedidaCuadernoAnilladoId(), "La medida del cuaderno es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        cuadernoAnilladoRepository.deleteById(id);
+    }
 }

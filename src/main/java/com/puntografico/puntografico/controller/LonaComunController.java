@@ -6,6 +6,7 @@ import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -101,5 +102,14 @@ public class LonaComunController {
         lonaComunDTO.setTipoLonaComunId(Long.parseLong(request.getParameter("tipoLonaComun.id")));
 
         return lonaComunDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-lona-comun/{idOrden}")
+    public void eliminarOrdenLonaComun(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenLonaComun ordenLonaComun = ordenLonaComunService.buscarPorOrdenId(idOrden);
+
+        ordenLonaComunService.eliminar(ordenLonaComun.getId());
+        ordenTrabajoService.eliminar(ordenLonaComun.getOrdenTrabajo().getId());
+        lonaComunService.eliminar(ordenLonaComun.getLonaComun().getId());
     }
 }

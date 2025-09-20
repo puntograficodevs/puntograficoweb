@@ -36,4 +36,9 @@ public class OrdenTalonarioService {
     public OrdenTalonario buscarPorOrdenId(Long id) {
         return ordenTalonarioRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenTalonarioRepository.deleteById(id);
+    }
 }

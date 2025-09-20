@@ -35,4 +35,9 @@ public class OrdenEntradaService {
     public OrdenEntrada buscarPorOrdenId(Long id) {
         return ordenEntradaRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenEntradaRepository.deleteById(id);
+    }
 }

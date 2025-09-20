@@ -43,4 +43,9 @@ public class ViniloPlasticoCorrugadoService {
         Assert.notNull(viniloPlasticoCorrugadoDTO.getMedidaViniloPlasticoCorrugadoId(), "medidaViniloPlasticoCorrugadoString es un dato obligatorio.");
         Assert.notNull(viniloPlasticoCorrugadoDTO.getCantidad(), "cantidadString es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        viniloPlasticoCorrugadoRepository.deleteById(id);
+    }
 }

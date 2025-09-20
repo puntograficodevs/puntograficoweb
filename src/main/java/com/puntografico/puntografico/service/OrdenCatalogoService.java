@@ -33,4 +33,9 @@ public class OrdenCatalogoService {
     public OrdenCatalogo buscarPorOrdenId(Long id) {
         return ordenCatalogoRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenCatalogoRepository.deleteById(id);
+    }
 }

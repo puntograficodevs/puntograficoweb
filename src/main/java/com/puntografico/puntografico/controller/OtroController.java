@@ -6,6 +6,7 @@ import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -93,5 +94,14 @@ public class OtroController {
         otroDTO.setTipoColorOtroId(Long.parseLong(request.getParameter("tipoColorOtro.id")));
 
         return otroDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-otro/{idOrden}")
+    public void eliminarOrdenOtro(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenOtro ordenOtro = ordenOtroService.buscarPorOrdenId(idOrden);
+
+        ordenOtroService.eliminar(ordenOtro.getId());
+        ordenTrabajoService.eliminar(ordenOtro.getOrdenTrabajo().getId());
+        otroService.eliminar(ordenOtro.getOtro().getId());
     }
 }

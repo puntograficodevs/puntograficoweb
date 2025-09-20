@@ -6,6 +6,7 @@ import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -100,5 +101,14 @@ public class TurneroController {
         turneroDTO.setMedidaTurneroId(Long.parseLong(request.getParameter("medidaTurnero.id")));
 
         return turneroDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-turnero/{idOrden}")
+    public void eliminarOrdenTurnero(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenTurnero ordenTurnero = ordenTurneroService.buscarPorOrdenId(idOrden);
+
+        ordenTurneroService.eliminar(ordenTurnero.getId());
+        ordenTrabajoService.eliminar(ordenTurnero.getOrdenTrabajo().getId());
+        turneroService.eliminar(ordenTurnero.getTurnero().getId());
     }
 }

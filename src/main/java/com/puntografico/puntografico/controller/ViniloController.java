@@ -6,6 +6,7 @@ import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -105,5 +106,14 @@ public class ViniloController {
         viniloDTO.setCantidadViniloId(Long.parseLong(request.getParameter("cantidadVinilo.id")));
 
         return viniloDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-vinilo/{idOrden}")
+    public void eliminarOrdenVinilo(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenVinilo ordenVinilo = ordenViniloService.buscarPorOrdenId(idOrden);
+
+        ordenViniloService.eliminar(ordenVinilo.getId());
+        ordenTrabajoService.eliminar(ordenVinilo.getOrdenTrabajo().getId());
+        viniloService.eliminar(ordenVinilo.getVinilo().getId());
     }
 }

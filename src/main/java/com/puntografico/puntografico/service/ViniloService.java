@@ -55,4 +55,9 @@ public class ViniloService {
         Assert.notNull(viniloDTO.getMedidaViniloId(), "medidaViniloString es un dato obligatorio.");
         Assert.notNull(viniloDTO.getCantidadViniloId(), "cantidadViniloString es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        viniloRepository.deleteById(id);
+    }
 }

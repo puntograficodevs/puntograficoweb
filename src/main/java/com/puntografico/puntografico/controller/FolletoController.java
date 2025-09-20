@@ -6,6 +6,7 @@ import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -108,5 +109,14 @@ public class FolletoController {
         folletoDTO.setCantidadFolletoId(Long.parseLong(request.getParameter("cantidadFolleto.id")));
 
         return folletoDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-folleto/{idOrden}")
+    public void eliminarOrdenFolleto(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenFolleto ordenFolleto = ordenFolletoService.buscarPorOrdenId(idOrden);
+
+        ordenFolletoService.eliminar(ordenFolleto.getId());
+        ordenTrabajoService.eliminar(ordenFolleto.getOrdenTrabajo().getId());
+        folletoService.eliminar(ordenFolleto.getFolleto().getId());
     }
 }

@@ -52,4 +52,9 @@ public class RifasBonosContribucionService {
         Assert.notNull(rifasBonosContribucionDTO.getTipoTroqueladoRifaId(), "El tipo de troquelado es un dato obligatorio.");
         Assert.notNull(rifasBonosContribucionDTO.getTipoColorRifaId(), "El tipo de color es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        rifasBonosContribucionRepository.deleteById(id);
+    }
 }

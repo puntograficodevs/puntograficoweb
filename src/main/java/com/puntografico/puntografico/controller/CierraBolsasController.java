@@ -6,6 +6,7 @@ import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -99,5 +100,14 @@ public class CierraBolsasController {
         cierraBolsasDTO.setMedidaCierraBolsasId(Long.parseLong(request.getParameter("medidaCierraBolsas.id")));
 
         return cierraBolsasDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-cierra-bolsas/{idOrden}")
+    public void eliminarOrdenCierraBolsas(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenCierraBolsas ordenCierraBolsas = ordenCierraBolsasService.buscarPorOrdenId(idOrden);
+
+        ordenCierraBolsasService.eliminar(ordenCierraBolsas.getId());
+        ordenTrabajoService.eliminar(ordenCierraBolsas.getOrdenTrabajo().getId());
+        cierraBolsasService.eliminar(ordenCierraBolsas.getCierraBolsas().getId());
     }
 }

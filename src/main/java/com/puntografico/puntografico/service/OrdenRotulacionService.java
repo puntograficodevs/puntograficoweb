@@ -33,4 +33,9 @@ public class OrdenRotulacionService {
     public OrdenRotulacion buscarPorOrdenId(Long id) {
         return ordenRotulacionRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenRotulacionRepository.deleteById(id);
+    }
 }

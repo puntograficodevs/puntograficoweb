@@ -6,6 +6,7 @@ import com.puntografico.puntografico.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -92,5 +93,14 @@ public class ComboController {
         comboDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
 
         return comboDTO;
+    }
+
+    @DeleteMapping("/api/eliminar-orden-combo/{idOrden}")
+    public void eliminarOrdenCombo(Model model, HttpSession session, @PathVariable Long idOrden) {
+        OrdenCombo ordenCombo = ordenComboService.buscarPorOrdenId(idOrden);
+
+        ordenComboService.eliminar(ordenCombo.getId());
+        ordenTrabajoService.eliminar(ordenCombo.getOrdenTrabajo().getId());
+        comboService.eliminar(ordenCombo.getCombo().getId());
     }
 }

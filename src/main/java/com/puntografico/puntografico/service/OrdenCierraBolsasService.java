@@ -33,4 +33,9 @@ public class OrdenCierraBolsasService {
     public OrdenCierraBolsas buscarPorOrdenId(Long id) {
         return ordenCierraBolsasRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenCierraBolsasRepository.deleteById(id);
+    }
 }

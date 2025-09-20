@@ -43,6 +43,10 @@ public class CatalogoService {
         Assert.notNull(catalogoDTO.getTipoLaminadoCatalogoId(), "El tipo de laminado es un dato obligatorio.");
         Assert.notNull(catalogoDTO.getTipoFazCatalogoId(), "El tipo de faz es un dato obligatorio.");
         Assert.notNull(catalogoDTO.getCantidad(), "La cantidad es un dato obligatorio.");
+    }
 
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        catalogoRepository.deleteById(id);
     }
 }

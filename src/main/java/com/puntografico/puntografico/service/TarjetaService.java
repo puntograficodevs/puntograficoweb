@@ -58,4 +58,9 @@ public class TarjetaService {
         Assert.notNull(tarjetaDTO.getMedidaTarjetaId(), "medidaTarjetaString es un dato obligatorio.");
         Assert.notNull(tarjetaDTO.getCantidadTarjetaId(), "cantidadTarjetaString es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        tarjetaRepository.deleteById(id);
+    }
 }

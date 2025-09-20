@@ -34,3 +34,11 @@
 .editar-btn:hover {
     background-color: #D4B803;
 }
+
+.eliminar-btn {
+    background-color: #E52987;
+}
+
+.eliminar-btn:hover {
+    background-color: #B41C68;
+}

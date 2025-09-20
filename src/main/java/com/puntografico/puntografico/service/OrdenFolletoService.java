@@ -36,4 +36,9 @@ public class OrdenFolletoService {
     public OrdenFolleto buscarPorOrdenId(Long id) {
         return ordenFolletoRepository.findByOrdenTrabajo_Id(id);
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        ordenFolletoRepository.deleteById(id);
+    }
 }

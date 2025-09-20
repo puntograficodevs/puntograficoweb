@@ -53,4 +53,9 @@ public class LonaPublicitariaService {
         Assert.notNull(lonaPublicitariaDTO.getTipoLonaPublicitariaId(), "El tipo de lona es un dato obligatorio.");
         Assert.notNull(lonaPublicitariaDTO.getCantidad(), "La cantidad es un dato obligatorio.");
     }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        lonaPublicitariaRepository.deleteById(id);
+    }
 }
