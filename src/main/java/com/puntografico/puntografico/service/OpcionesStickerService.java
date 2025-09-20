@@ -8,6 +8,7 @@ import com.puntografico.puntografico.repository.MedidaStickerRepository;
 import com.puntografico.puntografico.repository.TipoTroqueladoStickerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -29,5 +30,18 @@ public class OpcionesStickerService {
 
     public List<MedidaSticker> buscarTodosMedidaSticker() {
         return medidaStickerRepository.findAll();
+    }
+
+    public TipoTroqueladoSticker buscarTipoTroqueladoStickerPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return tipoTroqueladoStickerRepository.findById(id).get();
+    }
+    public CantidadSticker buscarCantidadStickerPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return cantidadStickerRepository.findById(id).get();
+    }
+    public MedidaSticker buscarMedidaStickerPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return medidaStickerRepository.findById(id).get();
     }
 }

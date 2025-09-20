@@ -16,11 +16,11 @@ public class OrdenSublimacionService {
 
     private final OrdenSublimacionRepository ordenSublimacionRepository;
 
-    public OrdenSublimacion crear(OrdenTrabajo ordenTrabajo, Sublimacion sublimacion) {
+    public OrdenSublimacion guardar(OrdenTrabajo ordenTrabajo, Sublimacion sublimacion, Long idOrdenSublimacion) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(sublimacion, "Debe venir un sublimacion para enlazar.");
 
-        OrdenSublimacion ordenSublimacion = new OrdenSublimacion();
+        OrdenSublimacion ordenSublimacion = (idOrdenSublimacion != null) ? ordenSublimacionRepository.findById(idOrdenSublimacion).get() : new OrdenSublimacion();
         ordenSublimacion.setCantidad(sublimacion.getCantidad());
         ordenSublimacion.setOrdenTrabajo(ordenTrabajo);
         ordenSublimacion.setSublimacion(sublimacion);

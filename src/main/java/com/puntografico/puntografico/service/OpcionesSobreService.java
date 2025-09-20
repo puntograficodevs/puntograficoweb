@@ -8,6 +8,7 @@ import com.puntografico.puntografico.repository.MedidaSobreRepository;
 import com.puntografico.puntografico.repository.TipoColorSobreRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -29,5 +30,18 @@ public class OpcionesSobreService {
 
     public List<CantidadSobre> buscarTodosCantidadSobre() {
         return cantidadSobreRepository.findAll();
+    }
+
+    public MedidaSobre buscarMedidaSobrePorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return medidaSobreRepository.findById(id).get();
+    }
+    public TipoColorSobre buscarTipoColorSobrePorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return tipoColorSobreRepository.findById(id).get();
+    }
+    public CantidadSobre buscarCantidadSobrePorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return cantidadSobreRepository.findById(id).get();
     }
 }

@@ -78,6 +78,15 @@ document.addEventListener("DOMContentLoaded", function () {
       case "sello de madera":
         window.location.href = `/crear-odt-sello-madera/${idOrden}`;
         break;
+      case "sobre":
+        window.location.href = `/crear-odt-sobre/${idOrden}`;
+        break;
+      case "sticker":
+        window.location.href = `/crear-odt-sticker/${idOrden}`;
+        break;
+      case "sublimación":
+        window.location.href = `/crear-odt-sublimacion/${idOrden}`;
+        break;
       default:
         console.warn("Tipo de producto no manejado:", tipoProducto);
     }

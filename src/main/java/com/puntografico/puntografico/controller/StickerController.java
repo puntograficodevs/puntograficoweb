@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.StickerDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,40 +14,36 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class StickerController {
 
-    @Autowired
-    private StickerService stickerService;
+    private final StickerService stickerService;
+    private final MedioPagoService medioPagoService;
+    private final OpcionesStickerService opcionesStickerService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final OrdenStickerService ordenStickerService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
-
-    @Autowired
-    private OpcionesStickerService opcionesStickerService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private OrdenStickerService ordenStickerService;
-
-    @GetMapping("/crear-odt-sticker")
-    public String verCrearOdtSticker(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-sticker", "/crear-odt-sticker/{idOrden}"})
+    public String verCrearOdtSticker(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenSticker ordenSticker = (idOrden != null) ? ordenStickerService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenSticker != null) ? ordenSticker.getOrdenTrabajo() : new OrdenTrabajo();
+        Sticker sticker = (ordenSticker != null) ? ordenSticker.getSticker() : new Sticker();
 
         List<TipoTroqueladoSticker> listaTipoTroqueladoSticker = opcionesStickerService.buscarTodosTipoTroqueladoSticker();
         List<CantidadSticker> listaCantidadSticker = opcionesStickerService.buscarTodosCantidadSticker();
         List<MedidaSticker> listaMedidaSticker = opcionesStickerService.buscarTodosMedidaSticker();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("sticker", new Sticker());
+        model.addAttribute("sticker", sticker);
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
         model.addAttribute("listaTipoTroqueladoSticker", listaTipoTroqueladoSticker);
         model.addAttribute("listaCantidadSticker", listaCantidadSticker);
         model.addAttribute("listaMedidaSticker", listaMedidaSticker);
@@ -74,10 +71,33 @@ public class StickerController {
 
     @PostMapping("/api/creacion-sticker")
     public String creacionSticker(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        Sticker sticker = stickerService.crear(request);
-        OrdenSticker ordenSticker = ordenStickerService.crear(ordenTrabajo, sticker);
-        return "redirect:/mostrar-odt-sticker/" + ordenSticker.getId();*/
-        return null;
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
+
+        OrdenSticker ordenStickerExistente = (idOrden != null) ? ordenStickerService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenSticker = (ordenStickerExistente != null) ? ordenStickerExistente.getId() : null;
+        Long idOrdenTrabajo = (ordenStickerExistente != null) ? ordenStickerExistente.getOrdenTrabajo().getId() : null;
+        Long idSticker = (ordenStickerExistente != null) ? ordenStickerExistente.getSticker().getId() : null;
+
+        StickerDTO stickerDTO = armarStickerDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        Sticker sticker = stickerService.guardar(stickerDTO, idSticker);
+        OrdenSticker ordenSticker = ordenStickerService.guardar(ordenTrabajo, sticker, idOrdenSticker);
+
+        return "redirect:/mostrar-odt-sticker/" + ordenSticker.getId();
+    }
+
+    private StickerDTO armarStickerDTO(HttpServletRequest request) {
+        StickerDTO stickerDTO = new StickerDTO();
+        stickerDTO.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
+        stickerDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        stickerDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        stickerDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        stickerDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        stickerDTO.setTipoTroqueladoStickerId(Long.parseLong(request.getParameter("tipoTroqueladoSticker.id")));
+        stickerDTO.setCantidadStickerId(Long.parseLong(request.getParameter("cantidadSticker.id")));
+        stickerDTO.setMedidaStickerId(Long.parseLong(request.getParameter("medidaSticker.id")));
+
+        return stickerDTO;
     }
 }

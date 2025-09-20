@@ -4,60 +4,51 @@ import com.puntografico.puntografico.domain.CantidadSobre;
 import com.puntografico.puntografico.domain.MedidaSobre;
 import com.puntografico.puntografico.domain.Sobre;
 import com.puntografico.puntografico.domain.TipoColorSobre;
-import com.puntografico.puntografico.repository.CantidadSobreRepository;
-import com.puntografico.puntografico.repository.MedidaSobreRepository;
+import com.puntografico.puntografico.dto.SobreDTO;
 import com.puntografico.puntografico.repository.SobreRepository;
-import com.puntografico.puntografico.repository.TipoColorSobreRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service @Transactional @AllArgsConstructor
 public class SobreService {
 
     private final SobreRepository sobreRepository;
+    private final OpcionesSobreService opcionesSobreService;
 
-    private final MedidaSobreRepository medidaSobreRepository;
+    public Sobre guardar(SobreDTO sobreDTO, Long idSobre) {
+        validarSobreDTO(sobreDTO);
 
-    private final TipoColorSobreRepository tipoColorSobreRepository;
+        MedidaSobre medidaSobre = opcionesSobreService.buscarMedidaSobrePorId(sobreDTO.getMedidaSobreId());
+        TipoColorSobre tipoColorSobre = opcionesSobreService.buscarTipoColorSobrePorId(sobreDTO.getTipoColorSobreId());
+        CantidadSobre cantidadSobre = opcionesSobreService.buscarCantidadSobrePorId(sobreDTO.getCantidadSobreId());
 
-    private final CantidadSobreRepository cantidadSobreRepository;
+        Integer cantidad = sobreDTO.getCantidad();
 
-    public Sobre crear(HttpServletRequest request) {
-        String medidaSobreString = request.getParameter("medidaSobre.id");
-        String tipoColorSobreString = request.getParameter("tipoColorSobre.id");
-        String cantidadSobreString = request.getParameter("cantidadSobre.id");
-        String cantidadString = request.getParameter("cantidad");
-
-        Assert.notNull(medidaSobreString, "medidaSobre es un dato obligatorio.");
-        Assert.notNull(tipoColorSobreString, "tipoColorSobre es un dato obligatorio.");
-        Assert.notNull(cantidadSobreString, "cantidadSobre es un dato obligatorio.");
-
-        MedidaSobre medidaSobre = medidaSobreRepository.findById(Long.parseLong(medidaSobreString)).get();
-        TipoColorSobre tipoColorSobre = tipoColorSobreRepository.findById(Long.parseLong(tipoColorSobreString)).get();
-        CantidadSobre cantidadSobre = cantidadSobreRepository.findById(Long.parseLong(cantidadSobreString)).get();
-
-        int cantidad;
-
-        if (cantidadSobre.getId() != 4) {
-            cantidad = Integer.parseInt(cantidadSobre.getCantidad());
-        } else {
-            cantidad = Integer.parseInt(cantidadString);
+        if (cantidad == null) {
+            cantidad = Integer.valueOf(cantidadSobre.getCantidad());
         }
 
-        Sobre sobre = new Sobre();
-        sobre.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
-        sobre.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
-        sobre.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
-        sobre.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        Sobre sobre = (idSobre != null) ? sobreRepository.findById(idSobre).get() : new Sobre();
+        boolean adicionalDisenio = (idSobre != null) ? sobre.isConAdicionalDisenio() : sobreDTO.getConAdicionalDisenio();
+
+        sobre.setMedidaPersonalizada(sobreDTO.getMedidaPersonalizada());
+        sobre.setEnlaceArchivo(sobreDTO.getEnlaceArchivo());
+        sobre.setConAdicionalDisenio(adicionalDisenio);
+        sobre.setInformacionAdicional(sobreDTO.getInformacionAdicional());
         sobre.setMedidaSobre(medidaSobre);
         sobre.setTipoColorSobre(tipoColorSobre);
         sobre.setCantidadSobre(cantidadSobre);
         sobre.setCantidad(cantidad);
 
         return sobreRepository.save(sobre);
+    }
+
+    private void validarSobreDTO(SobreDTO sobreDTO) {
+        Assert.notNull(sobreDTO.getMedidaSobreId(), "medidaSobre es un dato obligatorio.");
+        Assert.notNull(sobreDTO.getTipoColorSobreId(), "tipoColorSobre es un dato obligatorio.");
+        Assert.notNull(sobreDTO.getCantidadSobreId(), "cantidadSobre es un dato obligatorio.");
     }
 }

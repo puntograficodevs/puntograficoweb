@@ -13,11 +13,11 @@ public class OrdenStickerService {
 
     private final OrdenStickerRepository ordenStickerRepository;
 
-    public OrdenSticker crear(OrdenTrabajo ordenTrabajo, Sticker sticker) {
+    public OrdenSticker guardar(OrdenTrabajo ordenTrabajo, Sticker sticker, Long idOrdenSticker) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(sticker, "Debe venir un sticker para enlazar.");
 
-        OrdenSticker ordenSticker = new OrdenSticker();
+        OrdenSticker ordenSticker = (idOrdenSticker != null) ? ordenStickerRepository.findById(idOrdenSticker).get() : new OrdenSticker();
         ordenSticker.setCantidad(sticker.getCantidad());
         ordenSticker.setOrdenTrabajo(ordenTrabajo);
         ordenSticker.setSticker(sticker);

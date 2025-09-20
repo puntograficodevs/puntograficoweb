@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.SublimacionDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,39 +14,35 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class SublimacionController {
 
-    @Autowired
-    private SublimacionService sublimacionService;
+    private final SublimacionService sublimacionService;
+    private final MedioPagoService medioPagoService;
+    private final OpcionesSublimacionService opcionesSublimacionService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final OrdenSublimacionService ordenSublimacionService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
-
-    @Autowired
-    private OpcionesSublimacionService opcionesSublimacionService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private OrdenSublimacionService ordenSublimacionService;
-
-    @GetMapping("/crear-odt-sublimacion")
-    public String verCrearOdtSublimacion(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-sublimacion", "/crear-odt-sublimacion/{idOrden}"})
+    public String verCrearOdtSublimacion(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenSublimacion ordenSublimacion = (idOrden != null) ? ordenSublimacionService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenSublimacion != null) ? ordenSublimacion.getOrdenTrabajo() : new OrdenTrabajo();
+        Sublimacion sublimacion = (ordenSublimacion != null) ? ordenSublimacion.getSublimacion() : new Sublimacion();
 
         List<MaterialSublimacion> listaMaterialSublimacion = opcionesSublimacionService.buscarTodosMaterialSublimacion();
         List<CantidadSublimacion> listaCantidadSublimacion = opcionesSublimacionService.buscarTodosCantidadSublimacion();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("sublimacion", new Sublimacion());
+        model.addAttribute("sublimacion", sublimacion);
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
         model.addAttribute("listaMaterialSublimacion", listaMaterialSublimacion);
         model.addAttribute("listaCantidadSublimacion", listaCantidadSublimacion);
         model.addAttribute("listaMediosDePago", listaMediosDePago);
@@ -72,11 +69,31 @@ public class SublimacionController {
 
     @PostMapping("/api/creacion-sublimacion")
     public String creacionSublimacion(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        Sublimacion sublimacion = sublimacionService.crear(request);
-        OrdenSublimacion ordenSublimacion = ordenSublimacionService.crear(ordenTrabajo, sublimacion);
-        return "redirect:/mostrar-odt-sublimacion/" + ordenSublimacion.getId();*/
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return null;
+        OrdenSublimacion ordenSublimacionExistente = (idOrden != null) ? ordenSublimacionService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenSublimacionExistente != null) ? ordenSublimacionExistente.getOrdenTrabajo().getId() : null;
+        Long idSublimacion = (ordenSublimacionExistente != null) ? ordenSublimacionExistente.getSublimacion().getId() : null;
+        Long idOrdensublimacion = (ordenSublimacionExistente != null) ? ordenSublimacionExistente.getId() : null;
+
+        SublimacionDTO sublimacionDTO = armarSublimacionDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        Sublimacion sublimacion = sublimacionService.guardar(sublimacionDTO, idSublimacion);
+        OrdenSublimacion ordenSublimacion = ordenSublimacionService.guardar(ordenTrabajo, sublimacion, idOrdensublimacion);
+
+        return "redirect:/mostrar-odt-sublimacion/" + ordenSublimacion.getId();
+    }
+
+    private SublimacionDTO armarSublimacionDTO(HttpServletRequest request) {
+        SublimacionDTO sublimacionDTO = new SublimacionDTO();
+        sublimacionDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        sublimacionDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        sublimacionDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        sublimacionDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        sublimacionDTO.setMaterialSublimacionId(Long.parseLong(request.getParameter("materialSublimacion.id")));
+        sublimacionDTO.setCantidadSublimacionId(Long.parseLong(request.getParameter("cantidadSublimacion.id")));
+
+        return sublimacionDTO;
     }
 }

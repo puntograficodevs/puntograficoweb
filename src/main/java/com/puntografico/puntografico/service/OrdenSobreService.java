@@ -13,11 +13,11 @@ public class OrdenSobreService {
 
     private final OrdenSobreRepository ordenSobreRepository;
 
-    public OrdenSobre crear(OrdenTrabajo ordenTrabajo, Sobre sobre) {
+    public OrdenSobre guardar(OrdenTrabajo ordenTrabajo, Sobre sobre, Long idOrdenSobre) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(sobre, "Debe venir un sobre para enlazar.");
 
-        OrdenSobre ordenSobre = new OrdenSobre();
+        OrdenSobre ordenSobre = (idOrdenSobre != null) ? ordenSobreRepository.findById(idOrdenSobre).get() : new OrdenSobre();
         ordenSobre.setCantidad(sobre.getCantidad());
         ordenSobre.setOrdenTrabajo(ordenTrabajo);
         ordenSobre.setSobre(sobre);

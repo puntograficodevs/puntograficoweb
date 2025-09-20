@@ -3,52 +3,47 @@ package com.puntografico.puntografico.service;
 import com.puntografico.puntografico.domain.CantidadSublimacion;
 import com.puntografico.puntografico.domain.MaterialSublimacion;
 import com.puntografico.puntografico.domain.Sublimacion;
-import com.puntografico.puntografico.repository.CantidadSublimacionRepository;
-import com.puntografico.puntografico.repository.MaterialSublimacionRepository;
+import com.puntografico.puntografico.dto.SublimacionDTO;
 import com.puntografico.puntografico.repository.SublimacionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service @Transactional @AllArgsConstructor
 public class SublimacionService {
 
     private final SublimacionRepository sublimacionRepository;
+    private final OpcionesSublimacionService opcionesSublimacionService;
 
-    private final MaterialSublimacionRepository materialSublimacionRepository;
+    public Sublimacion guardar(SublimacionDTO sublimacionDTO, Long idSublimacion) {
+        validarSublimacionDTO(sublimacionDTO);
 
-    private final CantidadSublimacionRepository cantidadSublimacionRepository;
+        MaterialSublimacion materialSublimacion = opcionesSublimacionService.buscarMaterialSublimacionPorId(sublimacionDTO.getMaterialSublimacionId());
+        CantidadSublimacion cantidadSublimacion = opcionesSublimacionService.buscarCantidadSublimacionPorId(sublimacionDTO.getCantidadSublimacionId());
 
-    public Sublimacion crear(HttpServletRequest request) {
-        String materialSublimacionString = request.getParameter("materialSublimacion.id");
-        String cantidadSublimacionString = request.getParameter("cantidadSublimacion.id");
-        String cantidadString = request.getParameter("cantidad");
+        Integer cantidad = sublimacionDTO.getCantidad();
 
-        Assert.notNull(materialSublimacionString, "materialSublimacionString es un dato obligatorio.");
-        Assert.notNull(cantidadSublimacionString, "cantidadSublimacionString es un dato obligatorio.");
-
-        MaterialSublimacion materialSublimacion = materialSublimacionRepository.findById(Long.parseLong(materialSublimacionString)).get();
-        CantidadSublimacion cantidadSublimacion = cantidadSublimacionRepository.findById(Long.parseLong(cantidadSublimacionString)).get();
-
-        int cantidad;
-
-        if (cantidadSublimacion.getId() != 6) {
-            cantidad = Integer.parseInt(cantidadSublimacion.getCantidad());
-        } else {
-            cantidad = Integer.parseInt(cantidadString);
+        if (cantidad == null) {
+            cantidad = Integer.valueOf(cantidadSublimacion.getCantidad());
         }
 
-        Sublimacion sublimacion = new Sublimacion();
-        sublimacion.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
-        sublimacion.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
-        sublimacion.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        Sublimacion sublimacion = (idSublimacion != null) ? sublimacionRepository.findById(idSublimacion).get() : new Sublimacion();
+        boolean adicionalDisenio = (idSublimacion != null) ? sublimacion.isConAdicionalDisenio() : sublimacionDTO.getConAdicionalDisenio();
+
+        sublimacion.setEnlaceArchivo(sublimacionDTO.getEnlaceArchivo());
+        sublimacion.setConAdicionalDisenio(adicionalDisenio);
+        sublimacion.setInformacionAdicional(sublimacionDTO.getInformacionAdicional());
         sublimacion.setMaterialSublimacion(materialSublimacion);
         sublimacion.setCantidadSublimacion(cantidadSublimacion);
         sublimacion.setCantidad(cantidad);
 
         return sublimacionRepository.save(sublimacion);
+    }
+
+    private void validarSublimacionDTO(SublimacionDTO sublimacionDTO) {
+        Assert.notNull(sublimacionDTO.getMaterialSublimacionId(), "materialSublimacionString es un dato obligatorio.");
+        Assert.notNull(sublimacionDTO.getCantidadSublimacionId(), "cantidadSublimacionString es un dato obligatorio.");
     }
 }
