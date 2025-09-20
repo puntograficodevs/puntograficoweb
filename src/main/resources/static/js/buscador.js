@@ -96,6 +96,9 @@ document.addEventListener("DOMContentLoaded", function () {
       case "turnero":
         window.location.href = `/crear-odt-turnero/${idOrden}`;
         break;
+      case "vinilo":
+        window.location.href = `/crear-odt-vinilo/${idOrden}`;
+        break;
       default:
         console.warn("Tipo de producto no manejado:", tipoProducto);
     }

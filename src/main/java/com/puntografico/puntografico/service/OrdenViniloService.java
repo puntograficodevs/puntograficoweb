@@ -14,11 +14,11 @@ public class OrdenViniloService {
 
     private final OrdenViniloRepository ordenViniloRepository;
 
-    public OrdenVinilo crear(OrdenTrabajo ordenTrabajo, Vinilo vinilo) {
+    public OrdenVinilo guardar(OrdenTrabajo ordenTrabajo, Vinilo vinilo, Long idOrdenVinilo) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(vinilo, "Debe venir un vinilo para enlazar.");
 
-        OrdenVinilo ordenVinilo = new OrdenVinilo();
+        OrdenVinilo ordenVinilo = (idOrdenVinilo != null) ? ordenViniloRepository.findById(idOrdenVinilo).get() : new OrdenVinilo();
         ordenVinilo.setCantidad(vinilo.getCantidad());
         ordenVinilo.setOrdenTrabajo(ordenTrabajo);
         ordenVinilo.setVinilo(vinilo);

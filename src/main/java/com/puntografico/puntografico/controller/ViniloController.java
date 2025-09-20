@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.ViniloDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,33 +14,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class ViniloController {
 
-    @Autowired
-    private OpcionesViniloService opcionesViniloService;
+    private final OpcionesViniloService opcionesViniloService;
+    private final MedioPagoService medioPagoService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final ViniloService viniloService;
+    private final OrdenViniloService ordenViniloService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private ViniloService viniloService;
-
-    @Autowired
-    private OrdenViniloService ordenViniloService;
-
-    @GetMapping("/crear-odt-vinilo")
-    public String verCrearOdtVinilo(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-vinilo", "/crear-odt-vinilo/{idOrden}"})
+    public String verCrearOdtVinilo(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenVinilo ordenVinilo = (idOrden != null) ? ordenViniloService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenVinilo != null) ? ordenVinilo.getOrdenTrabajo() : new OrdenTrabajo();
+        Vinilo vinilo = (ordenVinilo != null) ? ordenVinilo.getVinilo() : new Vinilo();
 
         List<TipoVinilo> listaTipoVinilo = opcionesViniloService.buscarTodosTipoVinilo();
         List<TipoAdicionalVinilo> listaTipoAdicionalVinilo = opcionesViniloService.buscarTodosTipoAdicionalVinilo();
@@ -48,7 +43,9 @@ public class ViniloController {
         List<CantidadVinilo> listaCantidadVinilo = opcionesViniloService.buscarTodosCantidadVinilo();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("vinilo", new Vinilo());
+        model.addAttribute("vinilo", vinilo);
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
         model.addAttribute("listaTipoVinilo", listaTipoVinilo);
         model.addAttribute("listaTipoAdicionalVinilo", listaTipoAdicionalVinilo);
         model.addAttribute("listaTipoCorteVinilo", listaTipoCorteVinilo);
@@ -78,12 +75,35 @@ public class ViniloController {
 
     @PostMapping("/api/creacion-vinilo")
     public String creacionProducto(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        Vinilo vinilo = viniloService.crear(request);
-        OrdenVinilo ordenVinilo = ordenViniloService.crear(ordenTrabajo, vinilo);
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return "redirect:/mostrar-odt-vinilo/" + ordenVinilo.getId();*/
+        OrdenVinilo ordenViniloExistente = (idOrden != null) ? ordenViniloService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenViniloExistente != null) ? ordenViniloExistente.getOrdenTrabajo().getId() : null;
+        Long idVinilo = (ordenViniloExistente != null) ? ordenViniloExistente.getVinilo().getId() : null;
+        Long idOrdenVinilo = (ordenViniloExistente != null) ? ordenViniloExistente.getId() : null;
 
-        return null;
+        ViniloDTO viniloDTO = armarViniloDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        Vinilo vinilo = viniloService.guardar(viniloDTO, idVinilo);
+        OrdenVinilo ordenVinilo = ordenViniloService.guardar(ordenTrabajo, vinilo, idOrdenVinilo);
+
+        return "redirect:/mostrar-odt-vinilo/" + ordenVinilo.getId();
+    }
+
+    private ViniloDTO armarViniloDTO(HttpServletRequest request) {
+        ViniloDTO viniloDTO = new ViniloDTO();
+        viniloDTO.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
+        viniloDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        viniloDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        viniloDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        viniloDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        viniloDTO.setTipoViniloId(Long.parseLong(request.getParameter("tipoVinilo.id")));
+        viniloDTO.setTipoAdicionalViniloId(Long.parseLong(request.getParameter("tipoAdicionalVinilo.id")));
+        viniloDTO.setTipoCorteViniloId(Long.parseLong(request.getParameter("tipoCorteVinilo.id")));
+        viniloDTO.setMedidaViniloId(Long.parseLong(request.getParameter("medidaVinilo.id")));
+        viniloDTO.setCantidadViniloId(Long.parseLong(request.getParameter("cantidadVinilo.id")));
+
+        return viniloDTO;
     }
 }
