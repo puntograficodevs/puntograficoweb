@@ -99,6 +99,15 @@ document.addEventListener("DOMContentLoaded", function () {
       case "vinilo":
         window.location.href = `/crear-odt-vinilo/${idOrden}`;
         break;
+      case "vinilo de corte":
+        window.location.href = `/crear-odt-vinilo-de-corte/${idOrden}`;
+        break;
+      case "vinilo con plástico corrugado":
+        window.location.href = `/crear-odt-vinilo-plastico-corrugado/${idOrden}`;
+        break;
+      case "voucher":
+        window.location.href = `/crear-odt-voucher/${idOrden}`;
+        break;
       default:
         console.warn("Tipo de producto no manejado:", tipoProducto);
     }

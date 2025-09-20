@@ -1,58 +1,41 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.VoucherDTO;
 import com.puntografico.puntografico.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service @Transactional @AllArgsConstructor
 public class VoucherService {
 
     private final VoucherRepository voucherRepository;
+    private final OpcionesVoucherService opcionesVoucherService;
 
-    private final MedidaVoucherRepository medidaVoucherRepository;
+    public Voucher guardar(VoucherDTO voucherDTO, Long idVoucher) {
+        validarVoucherDTO(voucherDTO);
 
-    private final TipoPapelVoucherRepository tipoPapelVoucherRepository;
+        MedidaVoucher medidaVoucher = opcionesVoucherService.buscarMedidaVoucherPorId(voucherDTO.getMedidaVoucherId());
+        TipoPapelVoucher tipoPapelVoucher = opcionesVoucherService.buscarTipoPapelVoucherPorId(voucherDTO.getTipoPapelVoucherId());
+        TipoFazVoucher tipoFazVoucher = opcionesVoucherService.buscarTipoFazVoucherPorId(voucherDTO.getTipoFazVoucherId());
+        CantidadVoucher cantidadVoucher = opcionesVoucherService.buscarCantidadVoucherPorId(voucherDTO.getCantidadVoucherId());
+        Integer cantidad = voucherDTO.getCantidad();
 
-    private final TipoFazVoucherRepository tipoFazVoucherRepository;
-
-    private final CantidadVoucherRepository cantidadVoucherRepository;
-
-    public Voucher crear(HttpServletRequest request) {
-        String medidaVoucherString = request.getParameter("medidaVoucher.id");
-        String tipoPapelVoucherString = request.getParameter("tipoPapelVoucher.id");
-        String tipoFazVoucherString = request.getParameter("tipoFazVoucher.id");
-        String cantidadVoucherString = request.getParameter("cantidadVoucher.id");
-        String cantidadString = request.getParameter("cantidad");
-
-        Assert.notNull(medidaVoucherString, "medidaVoucherString es un dato obligatorio.");
-        Assert.notNull(tipoPapelVoucherString, "tipoPapelVoucherString es un dato obligatorio.");
-        Assert.notNull(tipoFazVoucherString, "tipoFazVoucherString es un dato obligatorio.");
-        Assert.notNull(cantidadVoucherString, "cantidadVoucherString es un dato obligatorio.");
-
-        MedidaVoucher medidaVoucher = medidaVoucherRepository.findById(Long.parseLong(medidaVoucherString)).get();
-        TipoPapelVoucher tipoPapelVoucher = tipoPapelVoucherRepository.findById(Long.parseLong(tipoPapelVoucherString)).get();
-        TipoFazVoucher tipoFazVoucher = tipoFazVoucherRepository.findById(Long.parseLong(tipoFazVoucherString)).get();
-        CantidadVoucher cantidadVoucher = cantidadVoucherRepository.findById(Long.parseLong(cantidadVoucherString)).get();
-
-        int cantidad;
-
-        if (cantidadVoucher.getId() != 4) {
-            cantidad = Integer.parseInt(cantidadVoucher.getCantidad());
-        } else {
-            cantidad = Integer.parseInt(cantidadString);
+        if (cantidad == null) {
+            cantidad = Integer.valueOf(cantidadVoucher.getCantidad());
         }
 
-        Voucher voucher = new Voucher();
-        voucher.setTipoPapelPersonalizado(request.getParameter("tipoPapelPersonalizado"));
-        voucher.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
-        voucher.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
-        voucher.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
-        voucher.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        Voucher voucher = (idVoucher != null) ? voucherRepository.findById(idVoucher).get() : new Voucher();
+        boolean adicionalDisenio = (idVoucher != null) ? voucher.isConAdicionalDisenio() : voucherDTO.getConAdicionalDisenio();
+
+        voucher.setTipoPapelPersonalizado(voucherDTO.getTipoPapelPersonalizado());
+        voucher.setMedidaPersonalizada(voucherDTO.getMedidaPersonalizada());
+        voucher.setEnlaceArchivo(voucherDTO.getEnlaceArchivo());
+        voucher.setConAdicionalDisenio(adicionalDisenio);
+        voucher.setInformacionAdicional(voucherDTO.getInformacionAdicional());
         voucher.setMedidaVoucher(medidaVoucher);
         voucher.setTipoPapelVoucher(tipoPapelVoucher);
         voucher.setTipoFazVoucher(tipoFazVoucher);
@@ -60,5 +43,12 @@ public class VoucherService {
         voucher.setCantidad(cantidad);
 
         return voucherRepository.save(voucher);
+    }
+
+    private void validarVoucherDTO(VoucherDTO voucherDTO) {
+        Assert.notNull(voucherDTO.getMedidaVoucherId(), "medidaVoucherString es un dato obligatorio.");
+        Assert.notNull(voucherDTO.getTipoPapelVoucherId(), "tipoPapelVoucherString es un dato obligatorio.");
+        Assert.notNull(voucherDTO.getTipoFazVoucherId(), "tipoFazVoucherString es un dato obligatorio.");
+        Assert.notNull(voucherDTO.getCantidadVoucherId(), "cantidadVoucherString es un dato obligatorio.");
     }
 }

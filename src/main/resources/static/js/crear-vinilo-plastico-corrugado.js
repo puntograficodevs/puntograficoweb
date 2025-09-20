@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
       // Inicializamos valores visibles
-      cantidadVinilosInput.value = 1;
       precioDisenioInput.value = 0;
       precioImpuestosInput.value = 0;
       totalInput.value = 0;

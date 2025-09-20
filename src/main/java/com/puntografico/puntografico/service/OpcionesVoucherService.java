@@ -10,6 +10,7 @@ import com.puntografico.puntografico.repository.TipoFazVoucherRepository;
 import com.puntografico.puntografico.repository.TipoPapelVoucherRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -36,5 +37,22 @@ public class OpcionesVoucherService {
 
     public List<CantidadVoucher> buscarTodosCantidadVoucher() {
         return cantidadVoucherRepository.findAll();
+    }
+
+    public MedidaVoucher buscarMedidaVoucherPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return medidaVoucherRepository.findById(id).get();
+    }
+    public TipoPapelVoucher buscarTipoPapelVoucherPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return tipoPapelVoucherRepository.findById(id).get();
+    }
+    public TipoFazVoucher buscarTipoFazVoucherPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return tipoFazVoucherRepository.findById(id).get();
+    }
+    public CantidadVoucher buscarCantidadVoucherPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return cantidadVoucherRepository.findById(id).get();
     }
 }

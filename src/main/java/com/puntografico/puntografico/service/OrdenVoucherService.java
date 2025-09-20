@@ -13,11 +13,11 @@ public class OrdenVoucherService {
 
     private final OrdenVoucherRepository ordenVoucherRepository;
 
-    public OrdenVoucher crear(OrdenTrabajo ordenTrabajo, Voucher voucher) {
+    public OrdenVoucher guardar(OrdenTrabajo ordenTrabajo, Voucher voucher, Long idOrdenVoucher) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(voucher, "Debe venir un voucher para enlazar.");
 
-        OrdenVoucher ordenVoucher = new OrdenVoucher();
+        OrdenVoucher ordenVoucher = (idOrdenVoucher != null) ? ordenVoucherRepository.findById(idOrdenVoucher).get() : new OrdenVoucher();
         ordenVoucher.setCantidad(voucher.getCantidad());
         ordenVoucher.setOrdenTrabajo(ordenTrabajo);
         ordenVoucher.setVoucher(voucher);

@@ -16,11 +16,11 @@ public class OrdenViniloDeCorteService {
 
     private final OrdenViniloDeCorteRepository ordenViniloDeCorteRepository;
 
-    public OrdenViniloDeCorte crear(OrdenTrabajo ordenTrabajo, ViniloDeCorte viniloDeCorte) {
+    public OrdenViniloDeCorte guardar(OrdenTrabajo ordenTrabajo, ViniloDeCorte viniloDeCorte, Long idOrdenViniloDeCorte) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(viniloDeCorte, "Debe venir un vinilo de corte para enlazar.");
 
-        OrdenViniloDeCorte ordenViniloDeCorte = new OrdenViniloDeCorte();
+        OrdenViniloDeCorte ordenViniloDeCorte = (idOrdenViniloDeCorte != null) ? ordenViniloDeCorteRepository.findById(idOrdenViniloDeCorte).get() : new OrdenViniloDeCorte();
         ordenViniloDeCorte.setCantidad(viniloDeCorte.getCantidad());
         ordenViniloDeCorte.setOrdenTrabajo(ordenTrabajo);
         ordenViniloDeCorte.setViniloDeCorte(viniloDeCorte);

@@ -16,11 +16,11 @@ public class OrdenViniloPlasticoCorrugadoService {
 
     private final OrdenViniloPlasticoCorrugadoRepository ordenViniloPlasticoCorrugadoRepository;
 
-    public OrdenViniloPlasticoCorrugado crear(OrdenTrabajo ordenTrabajo, ViniloPlasticoCorrugado viniloPlasticoCorrugado) {
+    public OrdenViniloPlasticoCorrugado guardar(OrdenTrabajo ordenTrabajo, ViniloPlasticoCorrugado viniloPlasticoCorrugado, Long idOrdenViniloPlasticoCorrugado) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(viniloPlasticoCorrugado, "Debe venir un vinilo plastico corrugado para enlazar.");
 
-        OrdenViniloPlasticoCorrugado ordenViniloPlasticoCorrugado = new OrdenViniloPlasticoCorrugado();
+        OrdenViniloPlasticoCorrugado ordenViniloPlasticoCorrugado = (idOrdenViniloPlasticoCorrugado != null) ? ordenViniloPlasticoCorrugadoRepository.findById(idOrdenViniloPlasticoCorrugado).get() : new OrdenViniloPlasticoCorrugado();
         ordenViniloPlasticoCorrugado.setCantidad(viniloPlasticoCorrugado.getCantidad());
         ordenViniloPlasticoCorrugado.setOrdenTrabajo(ordenTrabajo);
         ordenViniloPlasticoCorrugado.setViniloPlasticoCorrugado(viniloPlasticoCorrugado);

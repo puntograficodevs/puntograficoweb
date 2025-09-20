@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.VoucherDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,33 +14,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class VoucherController {
 
-    @Autowired
-    private OpcionesVoucherService opcionesVoucherService;
+    private final OpcionesVoucherService opcionesVoucherService;
+    private final MedioPagoService medioPagoService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final VoucherService voucherService;
+    private final OrdenVoucherService ordenVoucherService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private VoucherService voucherService;
-
-    @Autowired
-    private OrdenVoucherService ordenVoucherService;
-
-    @GetMapping("/crear-odt-voucher")
-    public String verCrearOdtVoucher(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-voucher", "/crear-odt-voucher/{idOrden}"})
+    public String verCrearOdtVoucher(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenVoucher ordenVoucher = (idOrden != null) ? ordenVoucherService.buscarPorOrdenId(idOrden) : null;
+        Voucher voucher = (ordenVoucher != null) ? ordenVoucher.getVoucher() : new Voucher();
+        OrdenTrabajo ordenTrabajo = (ordenVoucher != null) ? ordenVoucher.getOrdenTrabajo() : new OrdenTrabajo();
 
         List<MedidaVoucher> listaMedidaVoucher = opcionesVoucherService.buscarTodosMedidaVoucher();
         List<TipoPapelVoucher> listaTipoPapelVoucher = opcionesVoucherService.buscarTodosTipoPapelVoucher();
@@ -47,7 +42,9 @@ public class VoucherController {
         List<CantidadVoucher> listaCantidadVoucher = opcionesVoucherService.buscarTodosCantidadVoucher();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("voucher", new Voucher());
+        model.addAttribute("voucher", voucher);
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
         model.addAttribute("listaMedidaVoucher", listaMedidaVoucher);
         model.addAttribute("listaTipoPapelVoucher", listaTipoPapelVoucher);
         model.addAttribute("listaTipoFazVoucher", listaTipoFazVoucher);
@@ -76,11 +73,35 @@ public class VoucherController {
 
     @PostMapping("/api/creacion-voucher")
     public String creacionProducto(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        Voucher voucher = voucherService.crear(request);
-        OrdenVoucher ordenVoucher = ordenVoucherService.crear(ordenTrabajo, voucher);
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return "redirect:/mostrar-odt-voucher/" + ordenVoucher.getId();*/
-        return null;
+        OrdenVoucher ordenVoucherExistente = (idOrden != null) ? ordenVoucherService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenVoucherExistente != null) ? ordenVoucherExistente.getOrdenTrabajo().getId() : null;
+        Long idVoucher = (ordenVoucherExistente != null) ? ordenVoucherExistente.getVoucher().getId() : null;
+        Long idOrdenVoucher = (ordenVoucherExistente != null) ? ordenVoucherExistente.getId() : null;
+
+        VoucherDTO voucherDTO = armarVoucherDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        Voucher voucher = voucherService.guardar(voucherDTO, idVoucher);
+        OrdenVoucher ordenVoucher = ordenVoucherService.guardar(ordenTrabajo, voucher, idOrdenVoucher);
+
+        return "redirect:/mostrar-odt-voucher/" + ordenVoucher.getId();
+    }
+
+    private VoucherDTO armarVoucherDTO(HttpServletRequest request) {
+        VoucherDTO voucherDTO = new VoucherDTO();
+        voucherDTO.setTipoPapelPersonalizado(request.getParameter("tipoPapelPersonalizado"));
+        voucherDTO.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
+        voucherDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        voucherDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        voucherDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        voucherDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        voucherDTO.setMedidaVoucherId(Long.parseLong(request.getParameter("medidaVoucher.id")));
+        voucherDTO.setTipoPapelVoucherId(Long.parseLong(request.getParameter("tipoPapelVoucher.id")));
+        voucherDTO.setTipoFazVoucherId(Long.parseLong(request.getParameter("tipoFazVoucher.id")));
+        voucherDTO.setCantidadVoucherId(Long.parseLong(request.getParameter("cantidadVoucher.id")));
+
+        return voucherDTO;
     }
 }

@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.ViniloPlasticoCorrugadoDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,38 +14,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class ViniloPlasticoCorrugadoController {
 
-    @Autowired
-    private OpcionesViniloPlasticoCorrugadoService opcionesViniloPlasticoCorrugadoService;
+    private final OpcionesViniloPlasticoCorrugadoService opcionesViniloPlasticoCorrugadoService;
+    private final MedioPagoService medioPagoService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final ViniloPlasticoCorrugadoService viniloPlasticoCorrugadoService;
+    private final OrdenViniloPlasticoCorrugadoService ordenViniloPlasticoCorrugadoService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private ViniloPlasticoCorrugadoService viniloPlasticoCorrugadoService;
-
-    @Autowired
-    private OrdenViniloPlasticoCorrugadoService ordenViniloPlasticoCorrugadoService;
-
-    @GetMapping("/crear-odt-vinilo-plastico-corrugado")
-    public String verCrearOdtViniloPlasticoCorrugado(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-vinilo-plastico-corrugado", "/crear-odt-vinilo-plastico-corrugado/{idOrden}"})
+    public String verCrearOdtViniloPlasticoCorrugado(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenViniloPlasticoCorrugado ordenViniloPlasticoCorrugado = (idOrden != null) ? ordenViniloPlasticoCorrugadoService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenViniloPlasticoCorrugado != null) ? ordenViniloPlasticoCorrugado.getOrdenTrabajo() : new OrdenTrabajo();
+        ViniloPlasticoCorrugado viniloPlasticoCorrugado = (ordenViniloPlasticoCorrugado != null) ? ordenViniloPlasticoCorrugado.getViniloPlasticoCorrugado() : new ViniloPlasticoCorrugado();
 
         List<MedidaViniloPlasticoCorrugado> listaMedidaViniloPlasticoCorrugado = opcionesViniloPlasticoCorrugadoService.buscarTodosMedidaViniloPlasticoCorrugado();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("viniloPlasticoCorrugado", new ViniloPlasticoCorrugado());
+        model.addAttribute("viniloPlasticoCorrugado", viniloPlasticoCorrugado);
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
         model.addAttribute("listaMedidaViniloPlasticoCorrugado", listaMedidaViniloPlasticoCorrugado);
         model.addAttribute("listaMediosDePago", listaMediosDePago);
 
@@ -70,12 +67,32 @@ public class ViniloPlasticoCorrugadoController {
 
     @PostMapping("/api/creacion-vinilo-plastico-corrugado")
     public String creacionProducto(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        ViniloPlasticoCorrugado viniloPlasticoCorrugado = viniloPlasticoCorrugadoService.crear(request);
-        OrdenViniloPlasticoCorrugado ordenViniloPlasticoCorrugado = ordenViniloPlasticoCorrugadoService.crear(ordenTrabajo, viniloPlasticoCorrugado);
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return "redirect:/mostrar-odt-vinilo-plastico-corrugado/" + ordenViniloPlasticoCorrugado.getId();*/
+        OrdenViniloPlasticoCorrugado ordenViniloPlasticoCorrugadoExistente = (idOrden != null) ? ordenViniloPlasticoCorrugadoService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenViniloPlasticoCorrugadoExistente != null) ? ordenViniloPlasticoCorrugadoExistente.getOrdenTrabajo().getId() : null;
+        Long idViniloPlasticoCorrugado = (ordenViniloPlasticoCorrugadoExistente != null) ? ordenViniloPlasticoCorrugadoExistente.getViniloPlasticoCorrugado().getId() : null;
+        Long idOrdenViniloPlasticoCorrugado = (ordenViniloPlasticoCorrugadoExistente != null) ? ordenViniloPlasticoCorrugadoExistente.getId() : null;
 
-        return null;
+        ViniloPlasticoCorrugadoDTO viniloPlasticoCorrugadoDTO = armarViniloPlasticoCorrugadoDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        ViniloPlasticoCorrugado viniloPlasticoCorrugado = viniloPlasticoCorrugadoService.guardar(viniloPlasticoCorrugadoDTO, idViniloPlasticoCorrugado);
+        OrdenViniloPlasticoCorrugado ordenViniloPlasticoCorrugado = ordenViniloPlasticoCorrugadoService.guardar(ordenTrabajo, viniloPlasticoCorrugado, idOrdenViniloPlasticoCorrugado);
+
+        return "redirect:/mostrar-odt-vinilo-plastico-corrugado/" + ordenViniloPlasticoCorrugado.getId();
+    }
+
+    private ViniloPlasticoCorrugadoDTO armarViniloPlasticoCorrugadoDTO(HttpServletRequest request) {
+        ViniloPlasticoCorrugadoDTO viniloPlasticoCorrugadoDTO = new ViniloPlasticoCorrugadoDTO();
+        viniloPlasticoCorrugadoDTO.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
+        viniloPlasticoCorrugadoDTO.setConOjales(request.getParameter("conOjales") != null);
+        viniloPlasticoCorrugadoDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        viniloPlasticoCorrugadoDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        viniloPlasticoCorrugadoDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        viniloPlasticoCorrugadoDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        viniloPlasticoCorrugadoDTO.setMedidaViniloPlasticoCorrugadoId(Long.parseLong(request.getParameter("medidaViniloPlasticoCorrugado.id")));
+
+        return viniloPlasticoCorrugadoDTO;
     }
 }

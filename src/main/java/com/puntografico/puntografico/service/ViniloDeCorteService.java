@@ -2,13 +2,12 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.TraeMaterialVinilo;
 import com.puntografico.puntografico.domain.ViniloDeCorte;
-import com.puntografico.puntografico.repository.TraeMaterialViniloRepository;
+import com.puntografico.puntografico.dto.ViniloDeCorteDTO;
 import com.puntografico.puntografico.repository.ViniloDeCorteRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service @Transactional @AllArgsConstructor
@@ -16,30 +15,35 @@ public class ViniloDeCorteService {
 
     private final ViniloDeCorteRepository viniloDeCorteRepository;
 
-    private final TraeMaterialViniloRepository traeMaterialViniloRepository;
+    private final OpcionesViniloDeCorteService opcionesViniloDeCorteService;
 
-    public ViniloDeCorte crear(HttpServletRequest request) {
-        String traeMaterialViniloString = request.getParameter("traeMaterialVinilo.id");
-        String cantidadString = request.getParameter("cantidad");
+    public ViniloDeCorte guardar(ViniloDeCorteDTO viniloDeCorteDTO, Long idViniloDeCorte) {
+        validarViniloDeCorteDTO(viniloDeCorteDTO);
 
-        Assert.notNull(traeMaterialViniloString, "traeMaterialViniloString es un dato obligatorio.");
-        Assert.notNull(cantidadString, "cantidadString es un dato obligatorio.");
+        TraeMaterialVinilo traeMaterialVinilo = opcionesViniloDeCorteService.buscarTraeMaterialViniloPorId(viniloDeCorteDTO.getTraeMaterialViniloId());
 
-        TraeMaterialVinilo traeMaterialVinilo = traeMaterialViniloRepository.findById(Long.parseLong(traeMaterialViniloString)).get();
-        int cantidad = Integer.parseInt(cantidadString);
+        ViniloDeCorte viniloDeCorte = (idViniloDeCorte != null) ? viniloDeCorteRepository.findById(idViniloDeCorte).get() : new ViniloDeCorte();
+        boolean adicionalDisenio = (idViniloDeCorte != null) ? viniloDeCorte.isConAdicionalDisenio() : viniloDeCorteDTO.getConAdicionalDisenio();
+        boolean esPromocional = (idViniloDeCorte != null) ? viniloDeCorte.isEsPromocional() : viniloDeCorteDTO.getEsPromocional();
+        boolean esOracal = (idViniloDeCorte != null) ? viniloDeCorte.isEsOracal() : viniloDeCorteDTO.getEsOracal();
+        boolean conColocacion = (idViniloDeCorte != null) ? viniloDeCorte.isConColocacion() : viniloDeCorteDTO.getConColocacion();
 
-        ViniloDeCorte viniloDeCorte = new ViniloDeCorte();
-        viniloDeCorte.setEsPromocional(request.getParameter("esPromocional") != null);
-        viniloDeCorte.setEsOracal(request.getParameter("esOracal") != null);
-        viniloDeCorte.setCodigoColor(request.getParameter("codigoColor"));
-        viniloDeCorte.setConColocacion(request.getParameter("conColocacion") != null);
-        viniloDeCorte.setMedida(request.getParameter("medida"));
-        viniloDeCorte.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
-        viniloDeCorte.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
-        viniloDeCorte.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        viniloDeCorte.setEsPromocional(esPromocional);
+        viniloDeCorte.setEsOracal(esOracal);
+        viniloDeCorte.setCodigoColor(viniloDeCorteDTO.getCodigoColor());
+        viniloDeCorte.setConColocacion(conColocacion);
+        viniloDeCorte.setMedida(viniloDeCorteDTO.getMedida());
+        viniloDeCorte.setEnlaceArchivo(viniloDeCorteDTO.getEnlaceArchivo());
+        viniloDeCorte.setConAdicionalDisenio(adicionalDisenio);
+        viniloDeCorte.setInformacionAdicional(viniloDeCorteDTO.getInformacionAdicional());
         viniloDeCorte.setTraeMaterialVinilo(traeMaterialVinilo);
-        viniloDeCorte.setCantidad(cantidad);
+        viniloDeCorte.setCantidad(viniloDeCorteDTO.getCantidad());
 
         return viniloDeCorteRepository.save(viniloDeCorte);
+    }
+
+    private void validarViniloDeCorteDTO(ViniloDeCorteDTO viniloDeCorteDTO) {
+        Assert.notNull(viniloDeCorteDTO.getTraeMaterialViniloId(), "traeMaterialViniloString es un dato obligatorio.");
+        Assert.notNull(viniloDeCorteDTO.getCantidad(), "cantidadString es un dato obligatorio.");
     }
 }

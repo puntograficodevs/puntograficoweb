@@ -2,6 +2,7 @@ package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.MedidaViniloPlasticoCorrugado;
 import com.puntografico.puntografico.domain.ViniloPlasticoCorrugado;
+import com.puntografico.puntografico.dto.ViniloPlasticoCorrugadoDTO;
 import com.puntografico.puntografico.repository.MedidaViniloPlasticoCorrugadoRepository;
 import com.puntografico.puntografico.repository.ViniloPlasticoCorrugadoRepository;
 import lombok.AllArgsConstructor;
@@ -16,26 +17,30 @@ public class ViniloPlasticoCorrugadoService {
 
     private final ViniloPlasticoCorrugadoRepository viniloPlasticoCorrugadoRepository;
 
-    private final MedidaViniloPlasticoCorrugadoRepository medidaViniloPlasticoCorrugadoRepository;
+    private final OpcionesViniloPlasticoCorrugadoService opcionesViniloPlasticoCorrugadoService;
 
-    public ViniloPlasticoCorrugado crear(HttpServletRequest request) {
-        String medidaViniloPlasticoCorrugadoString = request.getParameter("medidaViniloPlasticoCorrugado.id");
-        String cantidadString = request.getParameter("cantidad");
+    public ViniloPlasticoCorrugado guardar(ViniloPlasticoCorrugadoDTO viniloPlasticoCorrugadoDTO, Long idViniloPlasticoCorrugado) {
+        validarViniloPlasticoCorrugadoDTO(viniloPlasticoCorrugadoDTO);
 
-        Assert.notNull(medidaViniloPlasticoCorrugadoString, "medidaViniloPlasticoCorrugadoString es un dato obligatorio.");
-        Assert.notNull(cantidadString, "cantidadString es un dato obligatorio.");
+        MedidaViniloPlasticoCorrugado medidaViniloPlasticoCorrugado = opcionesViniloPlasticoCorrugadoService.buscarMedidaViniloPlasticoCorrugadoPorId(viniloPlasticoCorrugadoDTO.getMedidaViniloPlasticoCorrugadoId());
 
-        MedidaViniloPlasticoCorrugado medidaViniloPlasticoCorrugado = medidaViniloPlasticoCorrugadoRepository.findById(Long.parseLong(medidaViniloPlasticoCorrugadoString)).get();
+        ViniloPlasticoCorrugado viniloPlasticoCorrugado = (idViniloPlasticoCorrugado != null) ? viniloPlasticoCorrugadoRepository.findById(idViniloPlasticoCorrugado).get() : new ViniloPlasticoCorrugado();
+        boolean adicionalDisenio = (idViniloPlasticoCorrugado != null) ? viniloPlasticoCorrugado.isConAdicionalDisenio() : viniloPlasticoCorrugadoDTO.getConAdicionalDisenio();
+        boolean conOjales = (idViniloPlasticoCorrugado != null) ? viniloPlasticoCorrugado.isConOjales() : viniloPlasticoCorrugadoDTO.getConOjales();
 
-        ViniloPlasticoCorrugado viniloPlasticoCorrugado = new ViniloPlasticoCorrugado();
-        viniloPlasticoCorrugado.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
-        viniloPlasticoCorrugado.setConOjales(request.getParameter("conOjales") != null);
-        viniloPlasticoCorrugado.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
-        viniloPlasticoCorrugado.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
-        viniloPlasticoCorrugado.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        viniloPlasticoCorrugado.setMedidaPersonalizada(viniloPlasticoCorrugadoDTO.getMedidaPersonalizada());
+        viniloPlasticoCorrugado.setConOjales(conOjales);
+        viniloPlasticoCorrugado.setEnlaceArchivo(viniloPlasticoCorrugadoDTO.getEnlaceArchivo());
+        viniloPlasticoCorrugado.setConAdicionalDisenio(adicionalDisenio);
+        viniloPlasticoCorrugado.setInformacionAdicional(viniloPlasticoCorrugadoDTO.getInformacionAdicional());
         viniloPlasticoCorrugado.setMedidaViniloPlasticoCorrugado(medidaViniloPlasticoCorrugado);
-        viniloPlasticoCorrugado.setCantidad(Integer.parseInt(cantidadString));
+        viniloPlasticoCorrugado.setCantidad(viniloPlasticoCorrugadoDTO.getCantidad());
 
         return viniloPlasticoCorrugadoRepository.save(viniloPlasticoCorrugado);
+    }
+
+    private void validarViniloPlasticoCorrugadoDTO(ViniloPlasticoCorrugadoDTO viniloPlasticoCorrugadoDTO) {
+        Assert.notNull(viniloPlasticoCorrugadoDTO.getMedidaViniloPlasticoCorrugadoId(), "medidaViniloPlasticoCorrugadoString es un dato obligatorio.");
+        Assert.notNull(viniloPlasticoCorrugadoDTO.getCantidad(), "cantidadString es un dato obligatorio.");
     }
 }
