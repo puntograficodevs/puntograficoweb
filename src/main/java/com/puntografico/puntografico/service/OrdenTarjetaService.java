@@ -13,11 +13,11 @@ public class OrdenTarjetaService {
 
     private final OrdenTarjetaRepository ordenTarjetaRepository;
 
-    public OrdenTarjeta crear(OrdenTrabajo ordenTrabajo, Tarjeta tarjeta) {
+    public OrdenTarjeta guardar(OrdenTrabajo ordenTrabajo, Tarjeta tarjeta, Long idOrdenTarjeta) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(tarjeta, "Debe venir una tarjeta para enlazar.");
 
-        OrdenTarjeta ordenTarjeta = new OrdenTarjeta();
+        OrdenTarjeta ordenTarjeta = (idOrdenTarjeta != null) ? ordenTarjetaRepository.findById(idOrdenTarjeta).get() : new OrdenTarjeta();
         ordenTarjeta.setCantidad(tarjeta.getCantidad());
         ordenTarjeta.setOrdenTrabajo(ordenTrabajo);
         ordenTarjeta.setTarjeta(tarjeta);

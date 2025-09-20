@@ -13,11 +13,11 @@ public class OrdenTurneroService {
 
     private final OrdenTurneroRepository ordenTurneroRepository;
 
-    public OrdenTurnero crear(OrdenTrabajo ordenTrabajo, Turnero turnero) {
+    public OrdenTurnero guardar(OrdenTrabajo ordenTrabajo, Turnero turnero, Long idOrdenTurnero) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(turnero, "Debe venir un turnero para enlazar.");
 
-        OrdenTurnero ordenTurnero = new OrdenTurnero();
+        OrdenTurnero ordenTurnero = (idOrdenTurnero != null) ? ordenTurneroRepository.findById(idOrdenTurnero).get() : new OrdenTurnero();
         ordenTurnero.setCantidad(turnero.getCantidad());
         ordenTurnero.setOrdenTrabajo(ordenTrabajo);
         ordenTurnero.setTurnero(turnero);

@@ -4,6 +4,7 @@ import com.puntografico.puntografico.domain.*;
 import com.puntografico.puntografico.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -40,5 +41,30 @@ public class OpcionesTarjetaService {
 
     public List<CantidadTarjeta> buscarTodosCantidadTarjeta() {
         return cantidadTarjetaRepository.findAll();
+    }
+
+    public TipoPapelTarjeta buscarTipoPapelTarjetaPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return tipoPapelTarjetaRepository.findById(id).get();
+    }
+    public TipoColorTarjeta buscarTipoColorTarjetaPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return tipoColorTarjetaRepository.findById(id).get();
+    }
+    public TipoFazTarjeta buscarTipoFazTarjetaPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return tipoFazTarjetaRepository.findById(id).get();
+    }
+    public TipoLaminadoTarjeta buscarTipoLaminadoTarjetaPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return tipoLaminadoTarjetaRepository.findById(id).get();
+    }
+    public MedidaTarjeta buscarMedidaTarjetaPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return medidaTarjetaRepository.findById(id).get();
+    }
+    public CantidadTarjeta buscarCantidadTarjetaPorId(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        return cantidadTarjetaRepository.findById(id).get();
     }
 }

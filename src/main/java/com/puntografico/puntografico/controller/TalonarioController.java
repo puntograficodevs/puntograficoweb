@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.TalonarioDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,33 +14,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class TalonarioController {
 
-    @Autowired
-    private TalonarioService talonarioService;
+    private final TalonarioService talonarioService;
+    private final MedioPagoService medioPagoService;
+    private final OpcionesTalonarioService opcionesTalonarioService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final OrdenTalonarioService ordenTalonarioService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
-
-    @Autowired
-    private OpcionesTalonarioService opcionesTalonarioService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private OrdenTalonarioService ordenTalonarioService;
-
-    @GetMapping("/crear-odt-talonario")
-    public String verCrearOdtTalonario(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-talonario", "/crear-odt-talonario/{idOrden}"})
+    public String verCrearOdtTalonario(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
-            return "redirect:/"; // Si no hay sesión, lo manda al login
+            return "redirect:/";
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenTalonario ordenTalonario = (idOrden != null) ? ordenTalonarioService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenTalonario != null) ? ordenTalonario.getOrdenTrabajo() : new OrdenTrabajo();
+        Talonario talonario = (ordenTalonario != null) ? ordenTalonario.getTalonario() : new Talonario();
 
         List<TipoTalonario> listaTipoTalonario = opcionesTalonarioService.buscarTodosTipoTalonario();
         List<TipoTroqueladoTalonario> listaTipoTroqueladoTalonario = opcionesTalonarioService.buscarTodosTipoTroqueladoTalonario();
@@ -50,7 +45,9 @@ public class TalonarioController {
         List<CantidadTalonario> listaCantidadTalonario = opcionesTalonarioService.buscarTodosCantidadTalonario();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("talonario", new Talonario());
+        model.addAttribute("talonario", talonario);
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
         model.addAttribute("listaTipoTalonario", listaTipoTalonario);
         model.addAttribute("listaTipoTroqueladoTalonario", listaTipoTroqueladoTalonario);
         model.addAttribute("listaModoTalonario", listaModoTalonario);
@@ -82,11 +79,41 @@ public class TalonarioController {
 
     @PostMapping("/api/creacion-talonario")
     public String creacionTalonario(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        Talonario talonario = talonarioService.crear(request);
-        OrdenTalonario ordenTalonario = ordenTalonarioService.crear(ordenTrabajo, talonario);
-        return "redirect:/mostrar-odt-talonario/" + ordenTalonario.getId();*/
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return null;
+        OrdenTalonario ordenTalonarioExistente = (idOrden != null) ? ordenTalonarioService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenTalonarioExistente != null) ? ordenTalonarioExistente.getOrdenTrabajo().getId() : null;
+        Long idTalonario = (ordenTalonarioExistente != null) ? ordenTalonarioExistente.getTalonario().getId() : null;
+        Long idOrdenTalonario = (ordenTalonarioExistente != null) ? ordenTalonarioExistente.getId() : null;
+
+        TalonarioDTO talonarioDTO = armarTalonarioDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        Talonario talonario = talonarioService.guardar(talonarioDTO, idTalonario);
+        OrdenTalonario ordenTalonario = ordenTalonarioService.guardar(ordenTrabajo, talonario, idOrdenTalonario);
+
+        return "redirect:/mostrar-odt-talonario/" + ordenTalonario.getId();
+    }
+
+    private TalonarioDTO armarTalonarioDTO(HttpServletRequest request) {
+        TalonarioDTO talonarioDTO = new TalonarioDTO();
+        talonarioDTO.setConNumerado(request.getParameter("conNumerado") != null);
+        talonarioDTO.setCantidadHojas(Integer.parseInt(request.getParameter("cantidadHojas")));
+        talonarioDTO.setDetalleNumerado(request.getParameter("detalleNumerado"));
+        talonarioDTO.setEsEncolado(request.getParameter("esEncolado") != null);
+        talonarioDTO.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
+        talonarioDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        talonarioDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        talonarioDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        talonarioDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        talonarioDTO.setTipoTalonarioId(Long.parseLong(request.getParameter("tipoTalonario.id")));
+        talonarioDTO.setTipoTroqueladoTalonarioId(Long.parseLong(request.getParameter("tipoTroqueladoTalonario.id")));
+        talonarioDTO.setModoTalonarioId(Long.parseLong(request.getParameter("modoTalonario.id")));
+        talonarioDTO.setTipoColorTalonarioId(Long.parseLong(request.getParameter("tipoColorTalonario.id")));
+        talonarioDTO.setMedidaTalonarioId(Long.parseLong(request.getParameter("medidaTalonario.id")));
+        talonarioDTO.setTipoPapelTalonarioId(Long.parseLong(request.getParameter("tipoPapelTalonario.id")));
+        talonarioDTO.setCantidadTalonarioId(Long.parseLong(request.getParameter("cantidadTalonario.id")));
+
+        return talonarioDTO;
     }
 }

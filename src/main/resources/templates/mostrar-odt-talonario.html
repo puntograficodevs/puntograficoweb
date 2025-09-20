@@ -65,6 +65,8 @@
                       </span>
         </p>
         <p><strong>Adicional diseño: </strong><span th:text="${ordenTalonario.talonario.conAdicionalDisenio} ? 'Sí' : 'No'"></span></p>
+        <p><strong>Con numerado: </strong><span th:text="${ordenTalonario.talonario.conNumerado} ? 'Sí' : 'No'"></span></p>
+        <p><strong>Es encolado: </strong><span th:text="${ordenTalonario.talonario.esEncolado} ? 'Sí' : 'No'"></span></p>
         <p><strong>Enlace al archivo: </strong>
           <span th:if="${ordenTalonario.talonario.enlaceArchivo == ''}"> - </span>
           <a th:unless="${ordenTalonario.talonario.enlaceArchivo == ''}"

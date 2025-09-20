@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.TurneroDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,40 +14,36 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class TurneroController {
 
-    @Autowired
-    private OpcionesTurneroService opcionesTurneroService;
+    private final OpcionesTurneroService opcionesTurneroService;
+    private final MedioPagoService medioPagoService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final TurneroService turneroService;
+    private final OrdenTurneroService ordenTurneroService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private TurneroService turneroService;
-
-    @Autowired
-    private OrdenTurneroService ordenTurneroService;
-
-    @GetMapping("/crear-odt-turnero")
-    public String verCreadOdtTurnero(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-turnero", "/crear-odt-turnero/{idOrden}"})
+    public String verCreadOdtTurnero(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenTurnero ordenTurnero = (idOrden != null) ? ordenTurneroService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenTurnero != null) ? ordenTurnero.getOrdenTrabajo() : new OrdenTrabajo();
+        Turnero turnero = (ordenTurnero != null) ? ordenTurnero.getTurnero() : new Turnero();
 
         List<MedidaTurnero> listaMedidaTurnero = opcionesTurneroService.buscarTodosMedidaTurnero();
         List<TipoColorTurnero> listaTipoColorTurnero = opcionesTurneroService.buscarTodosTipoColorTurnero();
         List<CantidadTurnero> listaCantidadTurnero = opcionesTurneroService.buscarTodosCantidadTurnero();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("turnero", new Turnero());
+        model.addAttribute("turnero", turnero);
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
         model.addAttribute("listaMedidaTurnero", listaMedidaTurnero);
         model.addAttribute("listaTipoColorTurnero", listaTipoColorTurnero);
         model.addAttribute("listaCantidadTurnero", listaCantidadTurnero);
@@ -74,12 +71,34 @@ public class TurneroController {
 
     @PostMapping("/api/creacion-turnero")
     public String creacionProducto(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        Turnero turnero = turneroService.crear(request);
-        OrdenTurnero ordenTurnero = ordenTurneroService.crear(ordenTrabajo, turnero);
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
 
-        return "redirect:/mostrar-odt-turnero/" + ordenTurnero.getId();*/
+        OrdenTurnero ordenTurneroExistente = (idOrden != null) ? ordenTurneroService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenTurneroExistente != null) ? ordenTurneroExistente.getOrdenTrabajo().getId() : null;
+        Long idTurnero = (ordenTurneroExistente != null) ? ordenTurneroExistente.getTurnero().getId() : null;
+        Long idOrdenTurnero = (ordenTurneroExistente != null) ? ordenTurneroExistente.getId() : null;
 
-        return null;
+        TurneroDTO turneroDTO = armarTurneroDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        Turnero turnero = turneroService.guardar(turneroDTO, idTurnero);
+        OrdenTurnero ordenTurnero = ordenTurneroService.guardar(ordenTrabajo, turnero, idOrdenTurnero);
+
+        return "redirect:/mostrar-odt-turnero/" + ordenTurnero.getId();
+    }
+
+    private TurneroDTO armarTurneroDTO(HttpServletRequest request) {
+        TurneroDTO turneroDTO = new TurneroDTO();
+        turneroDTO.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
+        turneroDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        turneroDTO.setCantidadHojas(Integer.parseInt(request.getParameter("cantidadHojas")));
+        turneroDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        turneroDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        turneroDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        turneroDTO.setTipoColorTurneroId(Long.parseLong(request.getParameter("tipoColorTurnero.id")));
+        turneroDTO.setCantidadTurneroId(Long.parseLong(request.getParameter("cantidadTurnero.id")));
+        turneroDTO.setMedidaTurneroId(Long.parseLong(request.getParameter("medidaTurnero.id")));
+
+        return turneroDTO;
     }
 }

@@ -87,6 +87,15 @@ document.addEventListener("DOMContentLoaded", function () {
       case "sublimación":
         window.location.href = `/crear-odt-sublimacion/${idOrden}`;
         break;
+      case "talonario":
+        window.location.href = `/crear-odt-talonario/${idOrden}`;
+        break;
+      case "tarjeta":
+        window.location.href = `/crear-odt-tarjeta/${idOrden}`;
+        break;
+      case "turnero":
+        window.location.href = `/crear-odt-turnero/${idOrden}`;
+        break;
       default:
         console.warn("Tipo de producto no manejado:", tipoProducto);
     }

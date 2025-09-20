@@ -1,76 +1,51 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.TalonarioDTO;
 import com.puntografico.puntografico.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service @Transactional @AllArgsConstructor
 public class TalonarioService {
 
-    private final TipoTalonarioRepository tipoTalonarioRepository;
-
-    private final TipoTroqueladoTalonarioRepository tipoTroqueladoTalonarioRepository;
-
-    private final ModoTalonarioRepository modoTalonarioRepository;
-
-    private final TipoColorTalonarioRepository tipoColorTalonarioRepository;
-
-    private final MedidaTalonarioRepository medidaTalonarioRepository;
-
-    private final TipoPapelTalonarioRepository tipoPapelTalonarioRepository;
-
-    private final CantidadTalonarioRepository cantidadTalonarioRepository;
+    private final OpcionesTalonarioService opcionesTalonarioService;
 
     private final TalonarioRepository talonarioRepository;
 
-    public Talonario crear(HttpServletRequest request) {
-        String tipoTalonarioString = request.getParameter("tipoTalonario.id");
-        String tipoTroqueladoTalonarioString = request.getParameter("tipoTroqueladoTalonario.id");
-        String modoTalonarioString = request.getParameter("modoTalonario.id");
-        String tipoColorTalonarioString = request.getParameter("tipoColorTalonario.id");
-        String medidaTalonarioString = request.getParameter("medidaTalonario.id");
-        String tipoPapelTalonarioString = request.getParameter("tipoPapelTalonario.id");
-        String cantidadTalonarioString = request.getParameter("cantidadTalonario.id");
-        String cantidadString = request.getParameter("cantidad");
+    public Talonario guardar(TalonarioDTO talonarioDTO, Long idTalonario) {
+        validarTalonarioDTO(talonarioDTO);
 
-        Assert.notNull(tipoTalonarioString, "tipoTalonarioString es un dato obligatorio.");
-        Assert.notNull(tipoTroqueladoTalonarioString, "tipoTroqueladoTalonarioString es un dato obligatorio.");
-        Assert.notNull(modoTalonarioString, "modoTalonarioString es un dato obligatorio.");
-        Assert.notNull(tipoColorTalonarioString, "tipoColorTalonarioString es un dato obligatorio.");
-        Assert.notNull(medidaTalonarioString, "medidaTalonarioString es un dato obligatorio.");
-        Assert.notNull(tipoPapelTalonarioString, "tipoPapelTalonarioString es un dato obligatorio.");
-        Assert.notNull(cantidadTalonarioString, " es un dato obligatorio.");
+        TipoTalonario tipoTalonario = opcionesTalonarioService.buscarTipoTalonarioPorId(talonarioDTO.getTipoTalonarioId());
+        TipoTroqueladoTalonario tipoTroqueladoTalonario = opcionesTalonarioService.buscarTipoTroqueladoTalonarioPorId(talonarioDTO.getTipoTroqueladoTalonarioId());
+        ModoTalonario modoTalonario = opcionesTalonarioService.buscarModoTalonarioPorId(talonarioDTO.getModoTalonarioId());
+        TipoColorTalonario tipoColorTalonario = opcionesTalonarioService.buscarTipoColorTalonarioPorId(talonarioDTO.getTipoColorTalonarioId());
+        MedidaTalonario medidaTalonario = opcionesTalonarioService.buscarMedidaTalonarioPorId(talonarioDTO.getMedidaTalonarioId());
+        TipoPapelTalonario tipoPapelTalonario = opcionesTalonarioService.buscarTipoPapelTalonarioPorId(talonarioDTO.getTipoPapelTalonarioId());
+        CantidadTalonario cantidadTalonario = opcionesTalonarioService.buscarCantidadTalonarioPorId(talonarioDTO.getCantidadTalonarioId());
 
-        TipoTalonario tipoTalonario = tipoTalonarioRepository.findById(Long.parseLong(tipoTalonarioString)).get();
-        TipoTroqueladoTalonario tipoTroqueladoTalonario = tipoTroqueladoTalonarioRepository.findById(Long.parseLong(tipoTroqueladoTalonarioString)).get();
-        ModoTalonario modoTalonario = modoTalonarioRepository.findById(Long.parseLong(modoTalonarioString)).get();
-        TipoColorTalonario tipoColorTalonario = tipoColorTalonarioRepository.findById(Long.parseLong(tipoColorTalonarioString)).get();
-        MedidaTalonario medidaTalonario = medidaTalonarioRepository.findById(Long.parseLong(medidaTalonarioString)).get();
-        TipoPapelTalonario tipoPapelTalonario = tipoPapelTalonarioRepository.findById(Long.parseLong(tipoPapelTalonarioString)).get();
-        CantidadTalonario cantidadTalonario = cantidadTalonarioRepository.findById(Long.parseLong(cantidadTalonarioString)).get();
+        Integer cantidad = talonarioDTO.getCantidad();
 
-        int cantidad;
-
-        if (cantidadTalonario.getId() != 5) {
-            cantidad = Integer.parseInt(cantidadTalonario.getCantidad());
-        } else {
-            cantidad = Integer.parseInt(cantidadString);
+        if (cantidad == null) {
+            cantidad = Integer.valueOf(cantidadTalonario.getCantidad());
         }
 
-        Talonario talonario = new Talonario();
-        talonario.setConNumerado(request.getParameter("conNumerado") != null);
-        talonario.setCantidadHojas(Integer.parseInt(request.getParameter("cantidadHojas")));
-        talonario.setDetalleNumerado(request.getParameter("detalleNumerado"));
-        talonario.setEsEncolado(request.getParameter("esEncolado") != null);
-        talonario.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
-        talonario.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
-        talonario.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
-        talonario.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        Talonario talonario = (idTalonario != null) ? talonarioRepository.findById(idTalonario).get() : new Talonario();
+        boolean adicionalDisenio = (idTalonario != null) ? talonario.isConAdicionalDisenio() : talonarioDTO.getConAdicionalDisenio();
+        boolean conNumerado = (idTalonario != null) ? talonario.isConNumerado() : talonarioDTO.getConNumerado();
+        boolean esEncolado = (idTalonario != null) ? talonario.isEsEncolado() : talonarioDTO.getEsEncolado();
+
+        talonario.setConNumerado(conNumerado);
+        talonario.setCantidadHojas(talonarioDTO.getCantidadHojas());
+        talonario.setDetalleNumerado(talonarioDTO.getDetalleNumerado());
+        talonario.setEsEncolado(esEncolado);
+        talonario.setMedidaPersonalizada(talonarioDTO.getMedidaPersonalizada());
+        talonario.setEnlaceArchivo(talonarioDTO.getEnlaceArchivo());
+        talonario.setConAdicionalDisenio(adicionalDisenio);
+        talonario.setInformacionAdicional(talonarioDTO.getInformacionAdicional());
         talonario.setTipoTalonario(tipoTalonario);
         talonario.setTipoTroqueladoTalonario(tipoTroqueladoTalonario);
         talonario.setModoTalonario(modoTalonario);
@@ -81,5 +56,15 @@ public class TalonarioService {
         talonario.setCantidad(cantidad);
 
         return talonarioRepository.save(talonario);
+    }
+
+    private void validarTalonarioDTO(TalonarioDTO talonarioDTO) {
+        Assert.notNull(talonarioDTO.getTipoTalonarioId(), "tipoTalonarioString es un dato obligatorio.");
+        Assert.notNull(talonarioDTO.getTipoTroqueladoTalonarioId(), "tipoTroqueladoTalonarioString es un dato obligatorio.");
+        Assert.notNull(talonarioDTO.getModoTalonarioId(), "modoTalonarioString es un dato obligatorio.");
+        Assert.notNull(talonarioDTO.getTipoColorTalonarioId(), "tipoColorTalonarioString es un dato obligatorio.");
+        Assert.notNull(talonarioDTO.getMedidaTalonarioId(), "medidaTalonarioString es un dato obligatorio.");
+        Assert.notNull(talonarioDTO.getTipoPapelTalonarioId(), "tipoPapelTalonarioString es un dato obligatorio.");
+        Assert.notNull(talonarioDTO.getCantidadTalonarioId(), " es un dato obligatorio.");
     }
 }

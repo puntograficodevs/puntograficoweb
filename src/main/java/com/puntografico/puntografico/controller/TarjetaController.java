@@ -1,8 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.TarjetaDTO;
 import com.puntografico.puntografico.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,33 +14,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@Controller @AllArgsConstructor
 public class TarjetaController {
 
-    @Autowired
-    private TarjetaService tarjetaService;
+    private final TarjetaService tarjetaService;
+    private final MedioPagoService medioPagoService;
+    private final OpcionesTarjetaService opcionesTarjetaService;
+    private final OrdenTrabajoService ordenTrabajoService;
+    private final OrdenTarjetaService ordenTarjetaService;
+    private final ProductoService productoService;
 
-    @Autowired
-    private MedioPagoService medioPagoService;
-
-    @Autowired
-    private OpcionesTarjetaService opcionesTarjetaService;
-
-    @Autowired
-    private OrdenTrabajoService ordenTrabajoService;
-
-    @Autowired
-    private OrdenTarjetaService ordenTarjetaService;
-
-    @GetMapping("/crear-odt-tarjeta")
-    public String verCrearOdtTarjeta(Model model, HttpSession session) {
+    @GetMapping({"/crear-odt-tarjeta", "/crear-odt-tarjeta/{idOrden}"})
+    public String verCrearOdtTarjeta(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
+        OrdenTarjeta ordenTarjeta = (idOrden != null) ? ordenTarjetaService.buscarPorOrdenId(idOrden) : null;
+        OrdenTrabajo ordenTrabajo = (ordenTarjeta != null) ? ordenTarjeta.getOrdenTrabajo() : new OrdenTrabajo();
+        Tarjeta tarjeta = (ordenTarjeta != null) ? ordenTarjeta.getTarjeta() : new Tarjeta();
 
         List<TipoPapelTarjeta> listaTipoPapelTarjeta = opcionesTarjetaService.buscarTodosTipoPapelTarjeta();
         List<TipoColorTarjeta> listaTipoColorTarjeta = opcionesTarjetaService.buscarTodosTipoColorTarjeta();
@@ -49,7 +44,9 @@ public class TarjetaController {
         List<CantidadTarjeta> listaCantidadTarjeta = opcionesTarjetaService.buscarTodosCantidadTarjeta();
         List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
-        model.addAttribute("tarjeta", new Tarjeta());
+        model.addAttribute("tarjeta", tarjeta);
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenTrabajo", ordenTrabajo);
         model.addAttribute("listaTipoPapelTarjeta", listaTipoPapelTarjeta);
         model.addAttribute("listaTipoColorTarjeta", listaTipoColorTarjeta);
         model.addAttribute("listaTipoFazTarjeta", listaTipoFazTarjeta);
@@ -66,7 +63,7 @@ public class TarjetaController {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
-            return "redirect:/"; // Si no hay sesión, lo manda al login
+            return "redirect:/";
         }
 
         model.addAttribute("empleado", empleado);
@@ -80,10 +77,36 @@ public class TarjetaController {
 
     @PostMapping("/api/creacion-tarjeta")
     public String creacionTarjeta(HttpServletRequest request) {
-        /*OrdenTrabajo ordenTrabajo = ordenTrabajoService.crear(request);
-        Tarjeta tarjeta = tarjetaService.crear(request);
-        OrdenTarjeta ordenTarjeta = ordenTarjetaService.crear(ordenTrabajo, tarjeta);
-        return "redirect:/mostrar-odt-tarjeta/" + ordenTarjeta.getId();*/
-        return null;
+        Long idOrden = productoService.buscarOrdenIdSiExiste(request.getParameter("idOrden"));
+
+        OrdenTarjeta ordenTarjetaExistente = (idOrden != null) ? ordenTarjetaService.buscarPorOrdenId(idOrden) : null;
+        Long idOrdenTrabajo = (ordenTarjetaExistente != null) ? ordenTarjetaExistente.getOrdenTrabajo().getId() : null;
+        Long idTarjeta = (ordenTarjetaExistente != null) ? ordenTarjetaExistente.getTarjeta().getId() : null;
+        Long idOrdenTarjeta = (ordenTarjetaExistente != null) ? ordenTarjetaExistente.getId() : null;
+
+        TarjetaDTO tarjetaDTO = armarTarjetaDTO(request);
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        Tarjeta tarjeta = tarjetaService.guardar(tarjetaDTO, idTarjeta);
+        OrdenTarjeta ordenTarjeta = ordenTarjetaService.guardar(ordenTrabajo, tarjeta, idOrdenTarjeta);
+
+        return "redirect:/mostrar-odt-tarjeta/" + ordenTarjeta.getId();
+    }
+
+    private TarjetaDTO armarTarjetaDTO(HttpServletRequest request) {
+        TarjetaDTO tarjetaDTO = new TarjetaDTO();
+        tarjetaDTO.setMedidaPersonalizada(request.getParameter("medidaPersonalizada"));
+        tarjetaDTO.setEnlaceArchivo(request.getParameter("enlaceArchivo"));
+        tarjetaDTO.setConAdicionalDisenio(request.getParameter("conAdicionalDisenio") != null);
+        tarjetaDTO.setInformacionAdicional(request.getParameter("informacionAdicional"));
+        tarjetaDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
+        tarjetaDTO.setTipoPapelTarjetaId(Long.parseLong(request.getParameter("tipoPapelTarjeta.id")));
+        tarjetaDTO.setTipoColorTarjetaId(Long.parseLong(request.getParameter("tipoColorTarjeta.id")));
+        tarjetaDTO.setTipoFazTarjetaId(Long.parseLong(request.getParameter("tipoFazTarjeta.id")));
+        tarjetaDTO.setTipoLaminadoTarjetaId(Long.parseLong(request.getParameter("tipoLaminadoTarjeta.id")));
+        tarjetaDTO.setMedidaTarjetaId(Long.parseLong(request.getParameter("medidaTarjeta.id")));
+        tarjetaDTO.setCantidadTarjetaId(Long.parseLong(request.getParameter("cantidadTarjeta.id")));
+
+        return tarjetaDTO;
     }
 }

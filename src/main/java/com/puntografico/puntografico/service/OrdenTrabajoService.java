@@ -53,6 +53,7 @@ public class OrdenTrabajoService {
         }
 
         boolean necesitaFactura = (idOrdenTrabajo != null) ? ordenTrabajo.isNecesitaFactura() : (request.getParameter("necesitaFactura") != null);
+        boolean esCuentaCorriente = (idOrdenTrabajo != null) ? ordenTrabajo.isEsCuentaCorriente() : (request.getParameter("esCuentaCorriente") != null);
 
         Empleado empleado = (Empleado) request.getSession().getAttribute("empleadoLogueado");
         ordenTrabajo.setEmpleado(empleado);
@@ -61,7 +62,7 @@ public class OrdenTrabajoService {
                 .orElseThrow(() -> new RuntimeException("Estado Orden no encontrado")));
         ordenTrabajo.setNombreCliente(request.getParameter("nombreCliente"));
         ordenTrabajo.setTelefonoCliente(request.getParameter("telefonoCliente"));
-        ordenTrabajo.setEsCuentaCorriente(request.getParameter("esCuentaCorriente") != null);
+        ordenTrabajo.setEsCuentaCorriente(esCuentaCorriente);
         ordenTrabajo.setNecesitaFactura(necesitaFactura);
         ordenTrabajo.setTipoProducto(request.getParameter("tipoProducto"));
 

@@ -16,11 +16,11 @@ public class OrdenTalonarioService {
 
     private final OrdenTalonarioRepository ordenTalonarioRepository;
 
-    public OrdenTalonario crear(OrdenTrabajo ordenTrabajo, Talonario talonario) {
+    public OrdenTalonario guardar(OrdenTrabajo ordenTrabajo, Talonario talonario, Long idOrdenTalonario) {
         Assert.notNull(ordenTrabajo, "Debe venir una orden de trabajo para enlazar.");
         Assert.notNull(talonario, "Debe venir un talonario para enlazar.");
 
-        OrdenTalonario ordenTalonario = new OrdenTalonario();
+        OrdenTalonario ordenTalonario = (idOrdenTalonario != null) ? ordenTalonarioRepository.findById(idOrdenTalonario).get() : new OrdenTalonario();
         ordenTalonario.setCantidad(talonario.getCantidad());
         ordenTalonario.setOrdenTrabajo(ordenTrabajo);
         ordenTalonario.setTalonario(talonario);
