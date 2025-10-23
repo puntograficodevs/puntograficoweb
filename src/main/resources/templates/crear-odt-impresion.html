@@ -170,29 +170,6 @@
           <input type="number" class="form-control" id="restaPrevio" th:value="${ordenTrabajo.resta}" readonly>
         </div>
       </div>
-
-      <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editarTotalModal">
-        Editar total
-      </button>
-
-      <div class="modal fade" id="editarTotalModal" tabindex="-1" aria-labelledby="editarTotalModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="editarTotalModalLabel">Editar Total</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body">
-              <label for="nuevoTotal" class="form-label">Total</label>
-              <input type="number" class="form-control" id="nuevoTotal" th:value="${ordenTrabajo.total}">
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-              <button type="button" class="btn btn-primary" id="guardarTotalModal">Guardar</button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="contenedor-datos-odt" th:if="${ordenTrabajo.id} == null">
