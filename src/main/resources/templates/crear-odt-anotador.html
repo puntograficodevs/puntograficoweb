@@ -107,15 +107,15 @@
       <h5 class="mt-4 datos-de-pago">Datos de Pago</h5>
       <div class="row mb-3">
         <div class="col-md-4">
-          <label for="total" class="form-label">Total *</label>
+          <label for="totalPrevio" class="form-label">Total *</label>
           <input type="number" class="form-control" id="totalPrevio" th:value="${ordenTrabajo.total}" readonly>
         </div>
         <div class="col-md-4">
-          <label for="abonado" class="form-label">Abonado *</label>
+          <label for="abonadoPrevio" class="form-label">Abonado *</label>
           <input type="number" class="form-control" id="abonadoPrevio" th:value="${ordenTrabajo.abonado}" readonly>
         </div>
         <div class="col-md-4">
-          <label for="resta" class="form-label">Resta</label>
+          <label for="restaPrevio" class="form-label">Resta</label>
           <input type="number" class="form-control" id="restaPrevio" th:value="${ordenTrabajo.resta}" readonly>
         </div>
       </div>
@@ -140,15 +140,15 @@
       </div>
       <div class="row mb-3">
         <div class="col-md-4">
-          <label for="total" class="form-label">Precio del producto *</label>
+          <label for="precioProducto" class="form-label">Precio del producto *</label>
           <input type="number" class="form-control" id="precioProducto" placeholder="0" required>
         </div>
         <div class="col-md-4">
-          <label for="total" class="form-label">Precio por diseño *</label>
+          <label for="precioDisenio" class="form-label">Precio por diseño *</label>
           <input type="number" class="form-control" id="precioDisenio" placeholder="0" readonly>
         </div>
         <div class="col-md-4">
-          <label for="total" class="form-label">Precio impuestos *</label>
+          <label for="precioImpuestos" class="form-label">Precio impuestos *</label>
           <input type="number" class="form-control" id="precioImpuestos" placeholder="0" readonly>
         </div>
       </div>
@@ -171,11 +171,11 @@
           <label class="form-label d-block">Medio de pago *</label>
           <div class="d-flex flex-wrap gap-3">
             <div th:each="medio : ${listaMediosDePago}" class="form-check mx-3">
-              <input class="form-check-input" type="radio"
+              <input id="medioPago" class="form-check-input" type="radio"
                      name="medioPago.id"
                      th:id="'medioPago-' + ${medio.id}"
                      th:value="${medio.id}" th:checked="${ordenTrabajo.medioPago != null} ? ${medio.id} == ${ordenTrabajo.medioPago.id} : false" required>
-              <label class="form-check-label" th:for="'medioPago-' + ${medio.id}" th:text="${medio.medioDePago}"></label>
+              <label for="medioPago" class="form-check-label" th:for="'medioPago-' + ${medio.id}" th:text="${medio.medioDePago}"></label>
             </div>
           </div>
         </div>

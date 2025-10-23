@@ -23,7 +23,7 @@ public class PagoService {
     private final MedioPagoRepository medioPagoRepository;
     private final OrdenTrabajoRepository ordenTrabajoRepository;
 
-    public Pago guardar(HttpServletRequest request, Long idOrdenTrabajo) {
+    public void guardar(HttpServletRequest request, Long idOrdenTrabajo) {
         MedioPago medioPago = obtenerMedioPagoDesdeRequest(request);
         Empleado empleado = obtenerEmpleadoDesdeReequest(request);
         int importe = obtenerImporteDesdeRequest(request);
@@ -36,7 +36,7 @@ public class PagoService {
         pago.setImporte(importe);
         pago.setOrdenTrabajo(ordenTrabajo);
 
-        return pagoRepository.save(pago);
+        pagoRepository.save(pago);
     }
 
     private MedioPago obtenerMedioPagoDesdeRequest(HttpServletRequest request) {

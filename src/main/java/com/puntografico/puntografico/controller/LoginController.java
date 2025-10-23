@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 
+@SuppressWarnings("ALL")
 @Controller
 public class LoginController {
 
@@ -28,7 +29,7 @@ public class LoginController {
 
         if (esEmpleadoValido) {
             Empleado empleado = empleadoService.traerEmpleadoPorUsername(username);
-            session.setAttribute("empleadoLogueado", empleado); // ← lo guardás en sesión
+            session.setAttribute("empleadoLogueado", empleado);
             return "redirect:/home";
         } else {
             model.addAttribute("error", true);
