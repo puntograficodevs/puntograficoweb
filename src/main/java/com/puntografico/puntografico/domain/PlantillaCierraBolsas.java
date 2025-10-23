@@ -2,8 +2,6 @@ package com.puntografico.puntografico.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.SQLQuery;
-
 import javax.persistence.*;
 
 @Entity

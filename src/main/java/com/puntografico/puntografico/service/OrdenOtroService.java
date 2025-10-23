@@ -1,6 +1,5 @@
 package com.puntografico.puntografico.service;
 
-import com.puntografico.puntografico.domain.OrdenAgenda;
 import com.puntografico.puntografico.domain.Otro;
 import com.puntografico.puntografico.domain.OrdenOtro;
 import com.puntografico.puntografico.domain.OrdenTrabajo;

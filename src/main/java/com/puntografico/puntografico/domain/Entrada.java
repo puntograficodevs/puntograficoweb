@@ -1,6 +1,5 @@
 package com.puntografico.puntografico.domain;
 
-import com.puntografico.puntografico.repository.MedidaEntradaRepository;
 import lombok.Getter;
 import lombok.Setter;
 

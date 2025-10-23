@@ -5,13 +5,10 @@ import com.puntografico.puntografico.domain.MedidaCuadernoAnillado;
 import com.puntografico.puntografico.domain.TipoTapaCuadernoAnillado;
 import com.puntografico.puntografico.dto.CuadernoAnilladoDTO;
 import com.puntografico.puntografico.repository.CuadernoAnilladoRepository;
-import com.puntografico.puntografico.repository.MedidaCuadernoAnilladoRepository;
-import com.puntografico.puntografico.repository.TipoTapaCuadernoAnilladoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service @Transactional @AllArgsConstructor

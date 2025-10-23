@@ -5,13 +5,9 @@ import com.puntografico.puntografico.domain.TipoCorteRotulacion;
 import com.puntografico.puntografico.domain.TipoRotulacion;
 import com.puntografico.puntografico.dto.RotulacionDTO;
 import com.puntografico.puntografico.repository.RotulacionRepository;
-import com.puntografico.puntografico.repository.TipoCorteRotulacionRepository;
-import com.puntografico.puntografico.repository.TipoRotulacionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service @Transactional @AllArgsConstructor

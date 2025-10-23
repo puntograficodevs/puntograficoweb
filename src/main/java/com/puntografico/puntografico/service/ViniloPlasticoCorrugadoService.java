@@ -3,13 +3,10 @@ package com.puntografico.puntografico.service;
 import com.puntografico.puntografico.domain.MedidaViniloPlasticoCorrugado;
 import com.puntografico.puntografico.domain.ViniloPlasticoCorrugado;
 import com.puntografico.puntografico.dto.ViniloPlasticoCorrugadoDTO;
-import com.puntografico.puntografico.repository.MedidaViniloPlasticoCorrugadoRepository;
 import com.puntografico.puntografico.repository.ViniloPlasticoCorrugadoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service @Transactional @AllArgsConstructor

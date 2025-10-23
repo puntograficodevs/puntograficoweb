@@ -1,7 +1,6 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
-import com.puntografico.puntografico.dto.PagoDTO;
 import com.puntografico.puntografico.repository.EstadoOrdenRepository;
 import com.puntografico.puntografico.repository.EstadoPagoRepository;
 import com.puntografico.puntografico.repository.MedioPagoRepository;
@@ -32,7 +31,7 @@ public class OrdenTrabajoService {
     private final PagoService pagoService;
 
     public OrdenTrabajo guardar(HttpServletRequest request, Long idOrdenTrabajo) {
-        OrdenTrabajo ordenTrabajo = (idOrdenTrabajo != null) ? ordenTrabajoRepository.findById(idOrdenTrabajo).get() : new OrdenTrabajo();
+        OrdenTrabajo ordenTrabajo = traerOrdenTrabajoSiCorresponde(idOrdenTrabajo);
 
         boolean necesitaFactura = (idOrdenTrabajo != null) ? ordenTrabajo.isNecesitaFactura() : (request.getParameter("necesitaFactura") != null);
         boolean esCuentaCorriente = (idOrdenTrabajo != null) ? ordenTrabajo.isEsCuentaCorriente() : (request.getParameter("esCuentaCorriente") != null);
@@ -58,6 +57,11 @@ public class OrdenTrabajoService {
 
         asignarValoresDelPagoSiCorresponde(ordenTrabajo, request);
         return ordenTrabajoRepository.save(ordenTrabajo);
+    }
+
+    private OrdenTrabajo traerOrdenTrabajoSiCorresponde(Long idOrdenTrabajo) {
+        return ordenTrabajoRepository.findById(idOrdenTrabajo)
+                .orElse(new OrdenTrabajo());
     }
 
     private void asignarValoresDelPagoSiCorresponde(OrdenTrabajo ordenTrabajo, HttpServletRequest request) {
@@ -237,6 +241,7 @@ public class OrdenTrabajoService {
             Long posibleId = Long.parseLong(datoOrden);
             ordenTrabajoRepository.findById(posibleId).ifPresent(ordenesEncontradas::add);
         } catch (NumberFormatException e) {
+            System.out.println("Error: " + e);
         }
 
         ordenesEncontradas.addAll(

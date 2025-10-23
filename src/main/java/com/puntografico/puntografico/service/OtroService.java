@@ -1,6 +1,5 @@
 package com.puntografico.puntografico.service;
 
-import com.puntografico.puntografico.domain.OrdenOtro;
 import com.puntografico.puntografico.domain.Otro;
 import com.puntografico.puntografico.domain.TipoColorOtro;
 import com.puntografico.puntografico.dto.OtroDTO;
@@ -8,7 +7,6 @@ import com.puntografico.puntografico.repository.OtroRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
 import javax.transaction.Transactional;
 
 @Service @Transactional @AllArgsConstructor

@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 public class PlantillaCarpetaSolapaService {
 
     public Long buscarIdCantidadCarpetaSolapa(int cantidad) {
-        Long idCantidadCarpetaSolapa;
+        long idCantidadCarpetaSolapa;
 
         if(cantidad < 50) {
             idCantidadCarpetaSolapa = 1L;

@@ -5,15 +5,10 @@ import com.puntografico.puntografico.domain.HojasMembreteadas;
 import com.puntografico.puntografico.domain.MedidaHojasMembreteadas;
 import com.puntografico.puntografico.domain.TipoColorHojasMembreteadas;
 import com.puntografico.puntografico.dto.HojasMembreteadasDTO;
-import com.puntografico.puntografico.repository.CantidadHojasMembreteadasRepository;
 import com.puntografico.puntografico.repository.HojasMembreteadasRepository;
-import com.puntografico.puntografico.repository.MedidaHojasMembreteadasRepository;
-import com.puntografico.puntografico.repository.TipoColorHojasMembreteadasRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Service @Transactional @AllArgsConstructor
