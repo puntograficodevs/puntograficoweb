@@ -24,6 +24,7 @@ public class TarjetaController {
     private final OrdenTrabajoService ordenTrabajoService;
     private final OrdenTarjetaService ordenTarjetaService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-tarjeta", "/crear-odt-tarjeta/{idOrden}"})
     public String verCrearOdtTarjeta(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -88,6 +89,7 @@ public class TarjetaController {
         TarjetaDTO tarjetaDTO = armarTarjetaDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         Tarjeta tarjeta = tarjetaService.guardar(tarjetaDTO, idTarjeta);
         OrdenTarjeta ordenTarjeta = ordenTarjetaService.guardar(ordenTrabajo, tarjeta, idOrdenTarjeta);
 

@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "orden_trabajo")
@@ -51,10 +53,6 @@ public class OrdenTrabajo {
     private String tipoProducto;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_medio_pago")
-    private MedioPago medioPago;
-
-    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_estado_pago")
     private EstadoPago estadoPago;
 
@@ -65,4 +63,7 @@ public class OrdenTrabajo {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_empleado")
     private Empleado empleado;
+
+    @OneToMany(mappedBy = "ordenTrabajo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Pago> pagos = new ArrayList<>();
 }

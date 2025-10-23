@@ -24,6 +24,7 @@ public class SelloAutomaticoController {
     private final SelloAutomaticoService selloAutomaticoService;
     private final OrdenSelloAutomaticoService ordenSelloAutomaticoService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-sello-automatico", "/crear-odt-sello-automatico/{idOrden}"})
     public String verCrearOdtSelloAutomatico(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -78,6 +79,7 @@ public class SelloAutomaticoController {
         SelloAutomaticoDTO selloAutomaticoDTO = armarSelloAutomaticoDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         SelloAutomatico selloAutomatico = selloAutomaticoService.guardar(selloAutomaticoDTO, idSelloAutomatico);
         OrdenSelloAutomatico ordenSelloAutomatico = ordenSelloAutomaticoService.guardar(ordenTrabajo, selloAutomatico, idOrdenSelloAutomatico);
 

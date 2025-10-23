@@ -22,14 +22,11 @@ import java.util.List;
 public class AnotadorController {
 
     private final MedioPagoService medioPagoService;
-
     private final OrdenAnotadorService ordenAnotadorService;
-
     private final OrdenTrabajoService ordenTrabajoService;
-
     private final AnotadorService anotadorService;
-
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
 
     @GetMapping({"/crear-odt-anotador", "/crear-odt-anotador/{idOrden}"})
@@ -83,6 +80,7 @@ public class AnotadorController {
         AnotadorDTO anotadorDTO = armarAnotadorDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         Anotador anotador = anotadorService.guardar(anotadorDTO, idAnotador);
         OrdenAnotador ordenAnotador = ordenAnotadorService.guardar(ordenTrabajo, anotador, idOrdenAnotador);
 

@@ -24,6 +24,7 @@ public class RotulacionController {
     private final RotulacionService rotulacionService;
     private final OrdenRotulacionService ordenRotulacionService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-rotulacion", "/crear-odt-rotulacion/{idOrden}"})
     public String verCrearOdtRotulacion(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -80,6 +81,7 @@ public class RotulacionController {
         RotulacionDTO rotulacionDTO = armarRotulacionDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         Rotulacion rotulacion = rotulacionService.guardar(rotulacionDTO, idRotulacion);
         OrdenRotulacion ordenRotulacion = ordenRotulacionService.guardar(ordenTrabajo, rotulacion, idOrdenRotulacion);
 

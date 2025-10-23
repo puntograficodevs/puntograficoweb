@@ -24,6 +24,7 @@ public class ImpresionController {
     private final ImpresionService impresionService;
     private final OrdenImpresionService ordenImpresionService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-impresion", "/crear-odt-impresion/{idOrden}"})
     public String verCrearOdtImpresion(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -88,6 +89,7 @@ public class ImpresionController {
         ImpresionDTO impresionDTO = armarImpresionDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         Impresion impresion = impresionService.guardar(impresionDTO, idImpresion);
         OrdenImpresion ordenImpresion = ordenImpresionService.guardar(ordenTrabajo, impresion, idOrdenImpresion);
 

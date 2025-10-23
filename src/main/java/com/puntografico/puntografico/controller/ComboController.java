@@ -24,6 +24,7 @@ public class ComboController {
     private final OpcionesComboService opcionesComboService;
     private final ComboService comboService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-combo", "/crear-odt-combo/{idOrden}"})
     public String verCrearOdtCombo(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -78,6 +79,7 @@ public class ComboController {
         ComboDTO comboDTO = armarComboDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         Combo combo = comboService.guardar(comboDTO, idCombo);
         OrdenCombo ordenCombo = ordenComboService.guardar(ordenTrabajo, combo, idOrdenCombo);
 

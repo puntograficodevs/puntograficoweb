@@ -24,6 +24,7 @@ public class CierraBolsasController {
     private final OrdenTrabajoService ordenTrabajoService;
     private final CierraBolsasService cierraBolsasService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-cierra-bolsas", "/crear-odt-cierra-bolsas/{idOrden}"})
     public String verCrearOdtCierraBolsas(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -82,6 +83,7 @@ public class CierraBolsasController {
         CierraBolsasDTO cierraBolsasDTO = armarCierraBolsasDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         CierraBolsas cierraBolsas = cierraBolsasService.guardar(cierraBolsasDTO, idCierraBolsas);
         OrdenCierraBolsas ordenCierraBolsas = ordenCierraBolsasService.guardar(ordenTrabajo, cierraBolsas, idOrdenCierraBolsas);
 

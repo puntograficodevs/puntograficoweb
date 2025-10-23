@@ -19,16 +19,12 @@ import java.util.List;
 public class EntradaController {
 
     private final OpcionesEntradaService opcionesEntradaService;
-
     private final MedioPagoService medioPagoService;
-
     private final OrdenTrabajoService ordenTrabajoService;
-
     private final EntradaService entradaService;
-
     private final OrdenEntradaService ordenEntradaService;
-
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-entrada", "/crear-odt-entrada/{idOrden}"})
     public String verCrearOdtEntrada(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -95,6 +91,7 @@ public class EntradaController {
         EntradaDTO entradaDTO = armarEntradaDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         Entrada entrada = entradaService.guardar(entradaDTO, idEntrada);
         OrdenEntrada ordenEntrada = ordenEntradaService.guardar(ordenTrabajo, entrada, idOrdenEntrada);
 

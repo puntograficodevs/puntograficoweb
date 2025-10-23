@@ -24,6 +24,7 @@ public class FlybannerController {
     private final FlybannerService flybannerService;
     private final OrdenFlybannerService ordenFlybannerService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-flybanner", "/crear-odt-flybanner/{idOrden}"})
     public String verCrearOdtFlybanner(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -84,6 +85,7 @@ public class FlybannerController {
         FlybannerDTO flybannerDTO = armarFlybannerDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         Flybanner flybanner = flybannerService.guardar(flybannerDTO, idFlybanner);
         OrdenFlybanner ordenFlybanner = ordenFlybannerService.guardar(ordenTrabajo, flybanner, idOrdenFlybanner);
 

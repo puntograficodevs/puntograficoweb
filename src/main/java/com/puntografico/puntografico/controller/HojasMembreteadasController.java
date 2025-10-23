@@ -24,6 +24,7 @@ public class HojasMembreteadasController {
     private final HojasMembreteadasService hojasMembreteadasService;
     private final OrdenHojasMembreteadasService ordenHojasMembreteadasService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-hojas-membreteadas", "/crear-odt-hojas-membreteadas/{idOrden}"})
     public String verCreadOdtHojasMembreteadas(Model model,
@@ -84,6 +85,7 @@ public class HojasMembreteadasController {
         HojasMembreteadasDTO hojasMembreteadasDTO = armarHojasMembreteadasDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         HojasMembreteadas hojasMembreteadas = hojasMembreteadasService.guardar(hojasMembreteadasDTO, idHojasMembreteadas);
         OrdenHojasMembreteadas ordenHojasMembreteadas = ordenHojasMembreteadasService.guardar(ordenTrabajo, hojasMembreteadas, idOrdenHojasMembreteadas);
 

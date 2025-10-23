@@ -10,23 +10,18 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller @AllArgsConstructor
 public class AgendaController {
 
     private final AgendaService agendaService;
-
     private final MedioPagoService medioPagoService;
-
     private final OpcionesAgendaService opcionesAgendaService;
-
     private final OrdenTrabajoService ordenTrabajoService;
-
     private final OrdenAgendaService ordenAgendaService;
-
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-agenda", "/crear-odt-agenda/{idOrden}"})
     public String verCrearOdtAgenda(
@@ -86,6 +81,7 @@ public class AgendaController {
         AgendaDTO agendaDTO = armarAgendaDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         Agenda agenda = agendaService.guardar(agendaDTO, idAgenda);
         OrdenAgenda ordenAgenda = ordenAgendaService.guardar(ordenTrabajo, agenda, idOrdenAgenda);
 

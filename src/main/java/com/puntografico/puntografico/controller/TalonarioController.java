@@ -24,6 +24,7 @@ public class TalonarioController {
     private final OrdenTrabajoService ordenTrabajoService;
     private final OrdenTalonarioService ordenTalonarioService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-talonario", "/crear-odt-talonario/{idOrden}"})
     public String verCrearOdtTalonario(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -90,6 +91,7 @@ public class TalonarioController {
         TalonarioDTO talonarioDTO = armarTalonarioDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         Talonario talonario = talonarioService.guardar(talonarioDTO, idTalonario);
         OrdenTalonario ordenTalonario = ordenTalonarioService.guardar(ordenTrabajo, talonario, idOrdenTalonario);
 

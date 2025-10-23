@@ -24,6 +24,7 @@ public class ViniloController {
     private final ViniloService viniloService;
     private final OrdenViniloService ordenViniloService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-vinilo", "/crear-odt-vinilo/{idOrden}"})
     public String verCrearOdtVinilo(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -86,6 +87,7 @@ public class ViniloController {
         ViniloDTO viniloDTO = armarViniloDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         Vinilo vinilo = viniloService.guardar(viniloDTO, idVinilo);
         OrdenVinilo ordenVinilo = ordenViniloService.guardar(ordenTrabajo, vinilo, idOrdenVinilo);
 

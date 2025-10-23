@@ -24,6 +24,7 @@ public class EtiquetaController {
     private final EtiquetaService etiquetaService;
     private final OrdenEtiquetaService ordenEtiquetaService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-etiqueta", "/crear-odt-etiqueta/{idOrden}"})
     public String verCrearOdtEtiqueta(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -88,6 +89,7 @@ public class EtiquetaController {
         EtiquetaDTO etiquetaDTO = armarEtiquetaDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         Etiqueta etiqueta = etiquetaService.guardar(etiquetaDTO, idEtiqueta);
         OrdenEtiqueta ordenEtiqueta = ordenEtiquetaService.guardar(ordenTrabajo, etiqueta, idOrdenEtiqueta);
 

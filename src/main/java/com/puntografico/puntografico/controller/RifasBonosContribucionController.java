@@ -24,6 +24,7 @@ public class RifasBonosContribucionController {
     private final RifasBonosContribucionService rifasBonosContribucionService;
     private final OrdenRifasBonosContribucionService ordenRifasBonosContribucionService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-rifas-bonos-contribucion", "/crear-odt-rifas-bonos-contribucion/{idOrden}"})
     public String verCrearOdtRifasBonosContribucion(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -82,6 +83,7 @@ public class RifasBonosContribucionController {
         RifasBonosContribucionDTO rifasBonosContribucionDTO = armarRifasBonosContribucionDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         RifasBonosContribucion rifasBonosContribucion = rifasBonosContribucionService.guardar(rifasBonosContribucionDTO, idRifasBonosContribucion);
         OrdenRifasBonosContribucion ordenRifasBonosContribucion = ordenRifasBonosContribucionService.guardar(ordenTrabajo, rifasBonosContribucion, idOrdenRifasBonosContribucion);
 

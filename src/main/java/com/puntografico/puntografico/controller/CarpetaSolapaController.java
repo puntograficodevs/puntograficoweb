@@ -19,16 +19,12 @@ import java.util.List;
 public class CarpetaSolapaController {
 
     private final OpcionesCarpetaSolapaService opcionesCarpetaSolapaService;
-
     private final MedioPagoService medioPagoService;
-
     private final OrdenTrabajoService ordenTrabajoService;
-
     private final CarpetaSolapaService carpetaSolapaService;
-
     private final OrdenCarpetaSolapaService ordenCarpetaSolapaService;
-
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-carpeta-solapa", "/crear-odt-carpeta-solapa/{idOrden}"})
     public String verCrearOdtCarpetaSolapa(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -84,6 +80,7 @@ public class CarpetaSolapaController {
         CarpetaSolapaDTO carpetaSolapaDTO = armarCarpetaSolapaDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         CarpetaSolapa carpetaSolapa = carpetaSolapaService.guardar(carpetaSolapaDTO, idCarpetaSolapa);
         OrdenCarpetaSolapa ordenCarpetaSolapa = ordenCarpetaSolapaService.guardar(ordenTrabajo, carpetaSolapa, idOrdenCarpetaSolapa);
 

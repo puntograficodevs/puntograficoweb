@@ -19,16 +19,12 @@ import java.util.List;
 public class CatalogoController {
 
     private final OpcionesCatalogoService opcionesCatalogoService;
-
     private final MedioPagoService medioPagoService;
-
     private final OrdenCatalogoService ordenCatalogoService;
-
     private final OrdenTrabajoService ordenTrabajoService;
-
     private final CatalogoService catalogoService;
-
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-catalogo", "/crear-odt-catalogo/{idOrden}"})
     public String verCrearOdtCatalogo(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -86,6 +82,7 @@ public class CatalogoController {
         CatalogoDTO catalogoDTO = armarCatalogoDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         Catalogo catalogo = catalogoService.guardar(catalogoDTO, idCatalogo);
         OrdenCatalogo ordenCatalogo = ordenCatalogoService.guardar(ordenTrabajo, catalogo, idOrdenCatalogo);
 

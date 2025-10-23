@@ -24,6 +24,7 @@ public class ViniloPlasticoCorrugadoController {
     private final ViniloPlasticoCorrugadoService viniloPlasticoCorrugadoService;
     private final OrdenViniloPlasticoCorrugadoService ordenViniloPlasticoCorrugadoService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-vinilo-plastico-corrugado", "/crear-odt-vinilo-plastico-corrugado/{idOrden}"})
     public String verCrearOdtViniloPlasticoCorrugado(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -78,6 +79,7 @@ public class ViniloPlasticoCorrugadoController {
         ViniloPlasticoCorrugadoDTO viniloPlasticoCorrugadoDTO = armarViniloPlasticoCorrugadoDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         ViniloPlasticoCorrugado viniloPlasticoCorrugado = viniloPlasticoCorrugadoService.guardar(viniloPlasticoCorrugadoDTO, idViniloPlasticoCorrugado);
         OrdenViniloPlasticoCorrugado ordenViniloPlasticoCorrugado = ordenViniloPlasticoCorrugadoService.guardar(ordenTrabajo, viniloPlasticoCorrugado, idOrdenViniloPlasticoCorrugado);
 

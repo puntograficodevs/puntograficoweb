@@ -24,6 +24,7 @@ public class LonaPublicitariaController {
     private final LonaPublicitariaService lonaPublicitariaService;
     private final OrdenLonaPublicitariaService ordenLonaPublicitariaService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-lona-publicitaria", "/crear-odt-lona-publicitaria/{idOrden}"})
     public String verCrearOdtLonaPublicitaria(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -80,6 +81,7 @@ public class LonaPublicitariaController {
         LonaPublicitariaDTO lonaPublicitariaDTO = armarLonaPubliciatariaDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         LonaPublicitaria lonaPublicitaria = lonaPublicitariaService.guardar(lonaPublicitariaDTO, idLonaPublicitaria);
         OrdenLonaPublicitaria ordenLonaPublicitaria = ordenLonaPublicitariaService.guardar(ordenTrabajo, lonaPublicitaria, idOrdenLonaPublicitaria);
 

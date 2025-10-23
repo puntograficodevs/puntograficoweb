@@ -24,6 +24,7 @@ public class SelloMaderaController {
     private final SelloMaderaService selloMaderaService;
     private final OrdenSelloMaderaService ordenSelloMaderaService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-sello-madera", "/crear-odt-sello-madera/{idOrden}"})
     public String verCrearOdtSelloMadera(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -78,6 +79,7 @@ public class SelloMaderaController {
         SelloMaderaDTO selloMaderaDTO = armarSelloMaderaDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         SelloMadera selloMadera = selloMaderaService.guardar(selloMaderaDTO, idSelloMadera);
         OrdenSelloMadera ordenSelloMadera = ordenSelloMaderaService.guardar(ordenTrabajo, selloMadera, idOrdenSelloMadera);
 

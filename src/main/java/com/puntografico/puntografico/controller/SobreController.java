@@ -24,6 +24,7 @@ public class SobreController {
     private final OrdenTrabajoService ordenTrabajoService;
     private final OrdenSobreService ordenSobreService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-sobre", "/crear-odt-sobre/{idOrden}"})
     public String verCrearOdtSobre(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -82,6 +83,7 @@ public class SobreController {
         SobreDTO sobreDTO = armarSobreDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         Sobre sobre = sobreService.guardar(sobreDTO, idSobre);
         OrdenSobre ordenSobre = ordenSobreService.guardar(ordenTrabajo, sobre, idOrdenSobre);
 

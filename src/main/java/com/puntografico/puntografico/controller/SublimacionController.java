@@ -24,6 +24,7 @@ public class SublimacionController {
     private final OrdenTrabajoService ordenTrabajoService;
     private final OrdenSublimacionService ordenSublimacionService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-sublimacion", "/crear-odt-sublimacion/{idOrden}"})
     public String verCrearOdtSublimacion(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -80,6 +81,7 @@ public class SublimacionController {
         SublimacionDTO sublimacionDTO = armarSublimacionDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         Sublimacion sublimacion = sublimacionService.guardar(sublimacionDTO, idSublimacion);
         OrdenSublimacion ordenSublimacion = ordenSublimacionService.guardar(ordenTrabajo, sublimacion, idOrdensublimacion);
 

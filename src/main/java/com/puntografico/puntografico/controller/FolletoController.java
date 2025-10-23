@@ -24,6 +24,7 @@ public class FolletoController {
     private final FolletoService folletoService;
     private final OrdenFolletoService ordenFolletoService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-folleto", "/crear-odt-folleto/{idOrden}"})
     public String verCrearOdtFolleto(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -82,13 +83,14 @@ public class FolletoController {
 
         OrdenFolleto ordenFolletoExistente = (idOrden != null) ? ordenFolletoService.buscarPorOrdenId(idOrden) : null;
         Long idOrdenTrabajo = (ordenFolletoExistente != null) ? ordenFolletoExistente.getOrdenTrabajo().getId() : null;
-        Long idFoleto = (ordenFolletoExistente != null) ? ordenFolletoExistente.getFolleto().getId() : null;
+        Long idFolleto = (ordenFolletoExistente != null) ? ordenFolletoExistente.getFolleto().getId() : null;
         Long idOrdenFolleto = (ordenFolletoExistente != null) ? ordenFolletoExistente.getId() : null;
 
         FolletoDTO folletoDTO = armarFolletoDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        Folleto folleto = folletoService.guardar(folletoDTO, idOrdenFolleto);
+        pagoService.guardar(request, idOrdenTrabajo);
+        Folleto folleto = folletoService.guardar(folletoDTO, idFolleto);
         OrdenFolleto ordenFolleto = ordenFolletoService.guardar(ordenTrabajo, folleto, idOrdenFolleto);
 
         return "redirect:/mostrar-odt-folleto/" + ordenFolleto.getId();

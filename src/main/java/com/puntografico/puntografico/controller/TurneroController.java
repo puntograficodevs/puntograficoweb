@@ -24,6 +24,7 @@ public class TurneroController {
     private final TurneroService turneroService;
     private final OrdenTurneroService ordenTurneroService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-turnero", "/crear-odt-turnero/{idOrden}"})
     public String verCreadOdtTurnero(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -82,6 +83,7 @@ public class TurneroController {
         TurneroDTO turneroDTO = armarTurneroDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         Turnero turnero = turneroService.guardar(turneroDTO, idTurnero);
         OrdenTurnero ordenTurnero = ordenTurneroService.guardar(ordenTrabajo, turnero, idOrdenTurnero);
 

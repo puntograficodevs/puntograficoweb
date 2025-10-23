@@ -24,6 +24,7 @@ public class OtroController {
     private final OtroService otroService;
     private final OrdenOtroService ordenOtroService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-otro", "/crear-odt-otro/{idOrden}"})
     public String verCrearOdtOtro(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -78,6 +79,7 @@ public class OtroController {
         OtroDTO otroDTO = armarOtroDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         Otro otro = otroService.guardar(otroDTO, idOtro);
         OrdenOtro ordenOtro = ordenOtroService.guardar(ordenTrabajo, otro, idOrdenOtro);
 

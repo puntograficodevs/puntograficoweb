@@ -1,6 +1,7 @@
 package com.puntografico.puntografico.service;
 
 import com.puntografico.puntografico.domain.*;
+import com.puntografico.puntografico.dto.PagoDTO;
 import com.puntografico.puntografico.repository.EstadoOrdenRepository;
 import com.puntografico.puntografico.repository.EstadoPagoRepository;
 import com.puntografico.puntografico.repository.MedioPagoRepository;
@@ -28,30 +29,10 @@ public class OrdenTrabajoService {
 
     private final EmpleadoService empleadoService;
 
+    private final PagoService pagoService;
+
     public OrdenTrabajo guardar(HttpServletRequest request, Long idOrdenTrabajo) {
         OrdenTrabajo ordenTrabajo = (idOrdenTrabajo != null) ? ordenTrabajoRepository.findById(idOrdenTrabajo).get() : new OrdenTrabajo();
-
-        boolean esCreacion = idOrdenTrabajo == null;
-        int total;
-        int abonado;
-        int resta;
-
-        if (esCreacion) {
-            total = Integer.parseInt(request.getParameter("total"));
-            abonado = Integer.parseInt(request.getParameter("abonado"));
-            resta = total - abonado;
-            String medioPagoIdStr = request.getParameter("medioPago.id");
-
-            asignarValoresDelPago(ordenTrabajo, total, abonado, resta);
-            asignarMedioPago(ordenTrabajo, medioPagoIdStr);
-        } else if (!esCreacion && (request.getParameter("nuevoTotal")) != null) {
-            Integer totalNuevo = Integer.parseInt(request.getParameter("nuevoTotal"));
-            total = totalNuevo != null ? totalNuevo : ordenTrabajo.getTotal();
-            abonado = ordenTrabajo.getAbonado();
-            resta = total - abonado;
-
-            asignarValoresDelPago(ordenTrabajo, total, abonado, resta);
-        }
 
         boolean necesitaFactura = (idOrdenTrabajo != null) ? ordenTrabajo.isNecesitaFactura() : (request.getParameter("necesitaFactura") != null);
         boolean esCuentaCorriente = (idOrdenTrabajo != null) ? ordenTrabajo.isEsCuentaCorriente() : (request.getParameter("esCuentaCorriente") != null);
@@ -75,18 +56,25 @@ public class OrdenTrabajoService {
         ordenTrabajo.setFechaEntrega(LocalDate.parse(request.getParameter("fechaEntrega")));
         ordenTrabajo.setHoraEntrega(request.getParameter("horaEntrega"));
 
+        asignarValoresDelPagoSiCorresponde(ordenTrabajo, request);
         return ordenTrabajoRepository.save(ordenTrabajo);
     }
 
-    private void asignarValoresDelPago(OrdenTrabajo ordenTrabajo, int total, int abonado, int resta) {
-        ordenTrabajo.setTotal(total);
-        ordenTrabajo.setAbonado(abonado);
-        ordenTrabajo.setResta(resta);
+    private void asignarValoresDelPagoSiCorresponde(OrdenTrabajo ordenTrabajo, HttpServletRequest request) {
+        if (ordenTrabajo.getId() == null) {
+            int abonado = Integer.parseInt(request.getParameter("abonado"));
+            int total = Integer.parseInt(request.getParameter("total"));
+            ordenTrabajo.setAbonado(abonado);
+            ordenTrabajo.setTotal(total);
+            ordenTrabajo.setResta(total - abonado);
 
-        asignarEstadoPago(ordenTrabajo, total, abonado, resta);
+            asignarEstadoPago(ordenTrabajo, total, abonado);
+        }
     }
 
-    private void asignarEstadoPago(OrdenTrabajo ordenTrabajo, int total, int abonado, int resta) {
+    private void asignarEstadoPago(OrdenTrabajo ordenTrabajo, int total, int abonado) {
+        int resta = total - abonado;
+
         if (total == abonado) {
             ordenTrabajo.setEstadoPago(estadoPagoRepository.findById(3L)
                     .orElseThrow(() -> new RuntimeException("Estado Pago no encontrado")));
@@ -96,16 +84,6 @@ public class OrdenTrabajoService {
         } else {
             ordenTrabajo.setEstadoPago(estadoPagoRepository.findById(1L)
                     .orElseThrow(() -> new RuntimeException("Estado Pago no encontrado")));
-        }
-    }
-
-    private void asignarMedioPago(OrdenTrabajo ordenTrabajo, String medioPagoDesdeRequest) {
-        if (medioPagoDesdeRequest != null && !medioPagoDesdeRequest.isBlank()) {
-            Long medioPagoId = Long.parseLong(medioPagoDesdeRequest);
-            ordenTrabajo.setMedioPago(medioPagoRepository.findById(medioPagoId)
-                    .orElseThrow(() -> new RuntimeException("Medio de pago no encontrado")));
-        } else {
-            throw new RuntimeException("Medio de pago es obligatorio");
         }
     }
 

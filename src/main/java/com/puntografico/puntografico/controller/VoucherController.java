@@ -24,6 +24,7 @@ public class VoucherController {
     private final VoucherService voucherService;
     private final OrdenVoucherService ordenVoucherService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-voucher", "/crear-odt-voucher/{idOrden}"})
     public String verCrearOdtVoucher(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -84,6 +85,7 @@ public class VoucherController {
         VoucherDTO voucherDTO = armarVoucherDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         Voucher voucher = voucherService.guardar(voucherDTO, idVoucher);
         OrdenVoucher ordenVoucher = ordenVoucherService.guardar(ordenTrabajo, voucher, idOrdenVoucher);
 

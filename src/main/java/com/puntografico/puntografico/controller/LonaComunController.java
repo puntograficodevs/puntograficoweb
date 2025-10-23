@@ -24,6 +24,7 @@ public class LonaComunController {
     private final LonaComunService lonaComunService;
     private final OrdenLonaComunService ordenLonaComunService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-lona-comun", "/crear-odt-lona-comun/{idOrden}"})
     public String verCrearOdtLonaComun(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -80,6 +81,7 @@ public class LonaComunController {
         LonaComunDTO lonaComunDTO = armarLonaComunDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         LonaComun lonaComun = lonaComunService.guardar(lonaComunDTO, idLonaComun);
         OrdenLonaComun ordenLonaComun = ordenLonaComunService.guardar(ordenTrabajo, lonaComun, idOrdenLonaComoun);
 

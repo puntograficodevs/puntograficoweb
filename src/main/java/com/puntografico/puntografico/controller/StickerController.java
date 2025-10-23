@@ -24,6 +24,7 @@ public class StickerController {
     private final OrdenTrabajoService ordenTrabajoService;
     private final OrdenStickerService ordenStickerService;
     private final ProductoService productoService;
+    private final PagoService pagoService;
 
     @GetMapping({"/crear-odt-sticker", "/crear-odt-sticker/{idOrden}"})
     public String verCrearOdtSticker(Model model, HttpSession session, @PathVariable(required = false) Long idOrden) {
@@ -82,6 +83,7 @@ public class StickerController {
         StickerDTO stickerDTO = armarStickerDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, idOrdenTrabajo);
         Sticker sticker = stickerService.guardar(stickerDTO, idSticker);
         OrdenSticker ordenSticker = ordenStickerService.guardar(ordenTrabajo, sticker, idOrdenSticker);
 
