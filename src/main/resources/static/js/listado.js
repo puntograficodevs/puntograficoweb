@@ -233,7 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
                     <p><strong>Abonado: </strong>$${orden.ordenTrabajo.abonado}</p>
                     <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
-                    <p><strong>Medio de pago: </strong>${orden.ordenTrabajo.medioPago.medioDePago}</p>
                     <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
                     <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
                 </div>
@@ -283,7 +282,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${orden.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -343,7 +341,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${orden.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -403,7 +400,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${orden.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -466,7 +462,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${orden.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -556,7 +551,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${orden.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -637,7 +631,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${orden.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -716,7 +709,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${orden.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -795,7 +787,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${orden.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -870,7 +861,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${orden.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -936,7 +926,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${orden.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1004,7 +993,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${orden.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1073,7 +1061,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${orden.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1140,7 +1127,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${orden.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1213,7 +1199,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${ordenLonaPublicitaria.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenLonaPublicitaria.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${ordenLonaPublicitaria.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${ordenLonaPublicitaria.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${ordenLonaPublicitaria.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenLonaPublicitaria.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1274,7 +1259,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${ordenOtro.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenOtro.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${ordenOtro.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${ordenOtro.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${ordenOtro.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenOtro.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1328,7 +1312,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${ordenRifasBonosContribucion.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenRifasBonosContribucion.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${ordenRifasBonosContribucion.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${ordenRifasBonosContribucion.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${ordenRifasBonosContribucion.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenRifasBonosContribucion.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1392,7 +1375,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${ordenRotulacion.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenRotulacion.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${ordenRotulacion.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${ordenRotulacion.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${ordenRotulacion.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenRotulacion.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1449,7 +1431,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${ordenSelloAutomatico.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenSelloAutomatico.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${ordenSelloAutomatico.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${ordenSelloAutomatico.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${ordenSelloAutomatico.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenSelloAutomatico.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1506,7 +1487,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${ordenSelloAutomaticoEscolar.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenSelloAutomaticoEscolar.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${ordenSelloAutomaticoEscolar.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${ordenSelloAutomaticoEscolar.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${ordenSelloAutomaticoEscolar.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenSelloAutomaticoEscolar.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1565,7 +1545,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${ordenSelloMadera.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenSelloMadera.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${ordenSelloMadera.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${ordenSelloMadera.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${ordenSelloMadera.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenSelloMadera.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1622,7 +1601,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${ordenSobre.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenSobre.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${ordenSobre.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${ordenSobre.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${ordenSobre.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenSobre.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1677,7 +1655,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${ordenSticker.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenSticker.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${ordenSticker.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${ordenSticker.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${ordenSticker.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenSticker.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1728,7 +1705,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${ordenSublimacion.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenSublimacion.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${ordenSublimacion.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${ordenSublimacion.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${ordenSublimacion.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenSublimacion.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1782,7 +1758,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${ordenTalonario.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenTalonario.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${ordenTalonario.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${ordenTalonario.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${ordenTalonario.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenTalonario.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1846,7 +1821,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${ordenTarjeta.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenTarjeta.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${ordenTarjeta.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${ordenTarjeta.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${ordenTarjeta.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenTarjeta.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1908,7 +1882,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${ordenTurnero.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenTurnero.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${ordenTurnero.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${ordenTurnero.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${ordenTurnero.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenTurnero.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1968,7 +1941,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${ordenVinilo.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenVinilo.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${ordenVinilo.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${ordenVinilo.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${ordenVinilo.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenVinilo.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -2029,7 +2001,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${ordenViniloDeCorte.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenViniloDeCorte.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${ordenViniloDeCorte.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${ordenViniloDeCorte.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${ordenViniloDeCorte.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenViniloDeCorte.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -2095,7 +2066,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
               <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
-              <p><strong>Medio de pago: </strong>${orden.ordenTrabajo.medioPago.medioDePago}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -2148,7 +2118,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <p><strong>Total: </strong>$${ordenVoucher.ordenTrabajo.total}</p>
             <p><strong>Entrega: </strong>$${ordenVoucher.ordenTrabajo.abonado}</p>
             <p class="pago-restante"><strong>Restante: </strong>$${ordenVoucher.ordenTrabajo.resta}</p>
-            <p><strong>Medio de pago: </strong>${ordenVoucher.ordenTrabajo.medioPago.medioDePago}</p>
             <p><strong>Necesita factura: </strong>${ordenVoucher.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
             <p><strong>Vendedor/a: </strong>${ordenVoucher.ordenTrabajo.empleado.nombre}</p>
           </div>
@@ -2247,7 +2216,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error de red:', error));
     }
-
     function cambiarEstadoAEnProceso(ordenId) {
         fetch(`/api/orden/cambiar-a-en-proceso/${ordenId}`, {
             method: 'POST',
@@ -2264,7 +2232,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error de red:', error));
     }
-
     function cambiarEstadoAListaParaRetirar(ordenId) {
         fetch(`/api/orden/cambiar-a-lista-para-retirar/${ordenId}`, {
             method: 'POST',
@@ -2281,7 +2248,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error de red:', error));
     }
-
     function cambiarEstadoARetirada(ordenId) {
         fetch(`/api/orden/cambiar-a-retirada/${ordenId}`, {
             method: 'POST',
@@ -2298,7 +2264,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error de red:', error));
     }
-
     function cambiarEstadoaSinHacer(ordenId) {
         fetch(`/api/orden/cambiar-a-sin-hacer/${ordenId}`, {
             method: 'POST',
@@ -2316,44 +2281,11 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error('Error de red:', error));
     }
 
-    // CAMBIO DE PAGO
-    document.querySelectorAll('.btn-marcar-abonado').forEach(boton => {
-        boton.addEventListener('click', () => {
-            const confirmar = confirm("¡ADVERTENCIA! Estás confirmando que el pedido fue abonado en su totalidad. ¿Deseas continuar?");
-            if (!confirmar) {
-                return;
-            }
-
-            document.getElementById('spinner-overlay').style.display = 'flex';
-            const ordenId = boton.dataset.idorden;
-            cambiarEstadoAAbonado(ordenId);
-        });
-    });
-
-    function cambiarEstadoAAbonado(ordenId) {
-        fetch(`/api/orden/cambiar-a-abonado/${ordenId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                window.location.reload();
-            } else {
-                console.error('Error al cambiar estado de pago');
-            }
-        })
-        .catch(error => console.error('Error de red:', error));
-    }
-
     const select = document.getElementById('selector-producto');
       const form = document.getElementById('formulario-selector-producto');
 
       select.addEventListener('change', () => {
-        // Mostrar el spinner
         document.getElementById('spinner-overlay').style.display = 'flex';
-        // Enviar el formulario
         form.submit();
       });
 });

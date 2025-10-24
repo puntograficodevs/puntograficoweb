@@ -83,7 +83,7 @@ public class TurneroController {
         TurneroDTO turneroDTO = armarTurneroDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         Turnero turnero = turneroService.guardar(turneroDTO, idTurnero);
         OrdenTurnero ordenTurnero = ordenTurneroService.guardar(ordenTrabajo, turnero, idOrdenTurnero);
 

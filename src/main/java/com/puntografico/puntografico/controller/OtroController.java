@@ -79,7 +79,7 @@ public class OtroController {
         OtroDTO otroDTO = armarOtroDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         Otro otro = otroService.guardar(otroDTO, idOtro);
         OrdenOtro ordenOtro = ordenOtroService.guardar(ordenTrabajo, otro, idOrdenOtro);
 

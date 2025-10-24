@@ -81,7 +81,7 @@ public class CuadernoAnilladoController {
         CuadernoAnilladoDTO cuadernoAnilladoDTO = armarCuadernoAnilladoDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         CuadernoAnillado cuadernoAnillado = cuadernoAnilladoService.guardar(cuadernoAnilladoDTO, idCuadernoAnillado);
         OrdenCuadernoAnillado ordenCuadernoAnillado = ordenCuadernoAnilladoService.guardar(ordenTrabajo, cuadernoAnillado, idOrdenCuadernoAnillado);
 

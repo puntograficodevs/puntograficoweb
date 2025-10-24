@@ -40,7 +40,7 @@ public class PagoService {
     }
 
     private MedioPago obtenerMedioPagoDesdeRequest(HttpServletRequest request) {
-        Long idMedioPago = Long.parseLong(request.getParameter("medioPago.id"));
+        Long idMedioPago = Long.parseLong(request.getParameter("medioPagoId"));
         return medioPagoRepository.findById(idMedioPago).get();
     }
 

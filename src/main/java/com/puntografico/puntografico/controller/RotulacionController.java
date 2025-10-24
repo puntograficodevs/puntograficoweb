@@ -81,7 +81,7 @@ public class RotulacionController {
         RotulacionDTO rotulacionDTO = armarRotulacionDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         Rotulacion rotulacion = rotulacionService.guardar(rotulacionDTO, idRotulacion);
         OrdenRotulacion ordenRotulacion = ordenRotulacionService.guardar(ordenTrabajo, rotulacion, idOrdenRotulacion);
 

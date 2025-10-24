@@ -204,7 +204,7 @@
                                    name="medioPago.id"
                                    th:id="'medioPago-' + ${medio.id}"
                                    th:value="${medio.id}"
-                                   th:checked="${ordenTrabajo.medioPago != null} ? ${medio.id} == ${ordenTrabajo.medioPago.id} : false" required>
+                                   required>
                             <label for="medioPago" class="form-check-label" th:for="'medioPago-' + ${medio.id}" th:text="${medio.medioDePago}"></label>
                         </div>
                     </div>

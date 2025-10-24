@@ -82,7 +82,7 @@ public class CatalogoController {
         CatalogoDTO catalogoDTO = armarCatalogoDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         Catalogo catalogo = catalogoService.guardar(catalogoDTO, idCatalogo);
         OrdenCatalogo ordenCatalogo = ordenCatalogoService.guardar(ordenTrabajo, catalogo, idOrdenCatalogo);
 

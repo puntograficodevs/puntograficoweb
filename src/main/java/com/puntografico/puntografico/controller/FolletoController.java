@@ -89,7 +89,7 @@ public class FolletoController {
         FolletoDTO folletoDTO = armarFolletoDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         Folleto folleto = folletoService.guardar(folletoDTO, idFolleto);
         OrdenFolleto ordenFolleto = ordenFolletoService.guardar(ordenTrabajo, folleto, idOrdenFolleto);
 

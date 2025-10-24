@@ -78,7 +78,7 @@ public class SelloAutomaticoEscolarController {
         SelloAutomaticoEscolarDTO selloAutomaticoEscolarDTO = armarSelloAutomaticoEscolarDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         SelloAutomaticoEscolar selloAutomaticoEscolar = selloAutomaticoEscolarService.guardar(selloAutomaticoEscolarDTO, idSelloAutomaticoEscolar);
         OrdenSelloAutomaticoEscolar ordenSelloAutomaticoEscolar = ordenSelloAutomaticoEscolarService.guardar(ordenTrabajo, selloAutomaticoEscolar, idOrdenSelloAutomaticoEscolar);
 

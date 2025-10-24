@@ -81,7 +81,7 @@ public class LonaPublicitariaController {
         LonaPublicitariaDTO lonaPublicitariaDTO = armarLonaPubliciatariaDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         LonaPublicitaria lonaPublicitaria = lonaPublicitariaService.guardar(lonaPublicitariaDTO, idLonaPublicitaria);
         OrdenLonaPublicitaria ordenLonaPublicitaria = ordenLonaPublicitariaService.guardar(ordenTrabajo, lonaPublicitaria, idOrdenLonaPublicitaria);
 

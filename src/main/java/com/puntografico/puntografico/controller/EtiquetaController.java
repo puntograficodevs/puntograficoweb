@@ -89,7 +89,7 @@ public class EtiquetaController {
         EtiquetaDTO etiquetaDTO = armarEtiquetaDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         Etiqueta etiqueta = etiquetaService.guardar(etiquetaDTO, idEtiqueta);
         OrdenEtiqueta ordenEtiqueta = ordenEtiquetaService.guardar(ordenTrabajo, etiqueta, idOrdenEtiqueta);
 

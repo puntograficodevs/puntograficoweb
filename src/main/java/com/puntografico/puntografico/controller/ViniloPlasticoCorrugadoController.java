@@ -79,7 +79,7 @@ public class ViniloPlasticoCorrugadoController {
         ViniloPlasticoCorrugadoDTO viniloPlasticoCorrugadoDTO = armarViniloPlasticoCorrugadoDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         ViniloPlasticoCorrugado viniloPlasticoCorrugado = viniloPlasticoCorrugadoService.guardar(viniloPlasticoCorrugadoDTO, idViniloPlasticoCorrugado);
         OrdenViniloPlasticoCorrugado ordenViniloPlasticoCorrugado = ordenViniloPlasticoCorrugadoService.guardar(ordenTrabajo, viniloPlasticoCorrugado, idOrdenViniloPlasticoCorrugado);
 

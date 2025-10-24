@@ -19,19 +19,18 @@ import java.util.*;
 public class OrdenTrabajoService {
 
     private final OrdenTrabajoRepository ordenTrabajoRepository;
-
     private final EstadoOrdenRepository estadoOrdenRepository;
-
     private final EstadoPagoRepository estadoPagoRepository;
-
     private final MedioPagoRepository medioPagoRepository;
-
     private final EmpleadoService empleadoService;
-
     private final PagoService pagoService;
 
     public OrdenTrabajo guardar(HttpServletRequest request, Long idOrdenTrabajo) {
-        OrdenTrabajo ordenTrabajo = traerOrdenTrabajoSiCorresponde(idOrdenTrabajo);
+        OrdenTrabajo ordenTrabajo = new OrdenTrabajo();
+
+        if (idOrdenTrabajo != null) {
+            ordenTrabajo = ordenTrabajoRepository.findById(idOrdenTrabajo).get();
+        }
 
         boolean necesitaFactura = (idOrdenTrabajo != null) ? ordenTrabajo.isNecesitaFactura() : (request.getParameter("necesitaFactura") != null);
         boolean esCuentaCorriente = (idOrdenTrabajo != null) ? ordenTrabajo.isEsCuentaCorriente() : (request.getParameter("esCuentaCorriente") != null);
@@ -57,11 +56,6 @@ public class OrdenTrabajoService {
 
         asignarValoresDelPagoSiCorresponde(ordenTrabajo, request);
         return ordenTrabajoRepository.save(ordenTrabajo);
-    }
-
-    private OrdenTrabajo traerOrdenTrabajoSiCorresponde(Long idOrdenTrabajo) {
-        return ordenTrabajoRepository.findById(idOrdenTrabajo)
-                .orElse(new OrdenTrabajo());
     }
 
     private void asignarValoresDelPagoSiCorresponde(OrdenTrabajo ordenTrabajo, HttpServletRequest request) {
@@ -265,5 +259,20 @@ public class OrdenTrabajoService {
     public void eliminar(Long id) {
         Assert.notNull(id, "El id no puede ser nulo");
         ordenTrabajoRepository.deleteById(id);
+    }
+
+    public void actualizarTotalAbonado(Long id) {
+        Assert.notNull(id, "El id de la orden de trabajo a actualizar no puede ser nulo.");
+        OrdenTrabajo ordenTrabajo = ordenTrabajoRepository.findById(id).get();
+        int totalAPagar = ordenTrabajo.getTotal();
+
+        int totalAbonado = ordenTrabajo.getPagos()
+                .stream()
+                .mapToInt(Pago::getImporte)
+                .sum();
+
+        ordenTrabajo.setAbonado(totalAbonado);
+        ordenTrabajo.setResta(totalAPagar - totalAbonado);
+        asignarEstadoPago(ordenTrabajo, totalAPagar, totalAbonado);
     }
 }

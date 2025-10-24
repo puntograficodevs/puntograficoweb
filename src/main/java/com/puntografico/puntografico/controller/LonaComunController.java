@@ -81,7 +81,7 @@ public class LonaComunController {
         LonaComunDTO lonaComunDTO = armarLonaComunDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         LonaComun lonaComun = lonaComunService.guardar(lonaComunDTO, idLonaComun);
         OrdenLonaComun ordenLonaComun = ordenLonaComunService.guardar(ordenTrabajo, lonaComun, idOrdenLonaComoun);
 

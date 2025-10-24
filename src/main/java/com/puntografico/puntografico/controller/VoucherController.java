@@ -85,7 +85,7 @@ public class VoucherController {
         VoucherDTO voucherDTO = armarVoucherDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         Voucher voucher = voucherService.guardar(voucherDTO, idVoucher);
         OrdenVoucher ordenVoucher = ordenVoucherService.guardar(ordenTrabajo, voucher, idOrdenVoucher);
 

@@ -91,7 +91,7 @@ public class TalonarioController {
         TalonarioDTO talonarioDTO = armarTalonarioDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         Talonario talonario = talonarioService.guardar(talonarioDTO, idTalonario);
         OrdenTalonario ordenTalonario = ordenTalonarioService.guardar(ordenTrabajo, talonario, idOrdenTalonario);
 

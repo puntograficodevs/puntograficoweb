@@ -85,7 +85,7 @@ public class FlybannerController {
         FlybannerDTO flybannerDTO = armarFlybannerDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         Flybanner flybanner = flybannerService.guardar(flybannerDTO, idFlybanner);
         OrdenFlybanner ordenFlybanner = ordenFlybannerService.guardar(ordenTrabajo, flybanner, idOrdenFlybanner);
 

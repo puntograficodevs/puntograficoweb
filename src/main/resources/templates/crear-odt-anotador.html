@@ -174,7 +174,7 @@
               <input id="medioPago" class="form-check-input" type="radio"
                      name="medioPago.id"
                      th:id="'medioPago-' + ${medio.id}"
-                     th:value="${medio.id}" th:checked="${ordenTrabajo.medioPago != null} ? ${medio.id} == ${ordenTrabajo.medioPago.id} : false" required>
+                     th:value="${medio.id}" required>
               <label for="medioPago" class="form-check-label" th:for="'medioPago-' + ${medio.id}" th:text="${medio.medioDePago}"></label>
             </div>
           </div>

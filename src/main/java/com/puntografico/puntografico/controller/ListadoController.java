@@ -1,7 +1,9 @@
 package com.puntografico.puntografico.controller;
 
 import com.puntografico.puntografico.domain.Empleado;
+import com.puntografico.puntografico.domain.MedioPago;
 import com.puntografico.puntografico.domain.OrdenTrabajo;
+import com.puntografico.puntografico.service.MedioPagoService;
 import com.puntografico.puntografico.service.OrdenTrabajoService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import java.util.List;
 public class ListadoController {
 
     private final OrdenTrabajoService ordenTrabajoService;
+    private final MedioPagoService medioPagoService;
 
     @GetMapping("/listado")
     public String listado(HttpSession session, Model model, @RequestParam(required = false) String tipoProducto) {
@@ -34,6 +37,7 @@ public class ListadoController {
         List<OrdenTrabajo> ordenesCorregir = ordenTrabajoService.buscarEstadoCorregir(empleado, tipoProducto);
         List<OrdenTrabajo> ordenesEnProceso = ordenTrabajoService.buscarEstadoEnProceso(empleado, tipoProducto);
         List<OrdenTrabajo> ordenesListaParaRetirar = ordenTrabajoService.buscarEstadoListaParaRetirar(empleado, tipoProducto);
+        List<MedioPago> listaMediosDePago = medioPagoService.buscarTodos();
 
         model.addAttribute("empleado", empleado);
         model.addAttribute("ordenesSinHacer", ordenesSinHacer);
@@ -41,6 +45,7 @@ public class ListadoController {
         model.addAttribute("ordenesEnProceso", ordenesEnProceso);
         model.addAttribute("ordenesListaParaRetirar", ordenesListaParaRetirar);
         model.addAttribute("tipoProducto", tipoProducto);
+        model.addAttribute("listaMediosDePago", listaMediosDePago);
 
         return "listado";
     }

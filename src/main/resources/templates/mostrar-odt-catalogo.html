@@ -43,7 +43,6 @@
         <p><strong>Total: </strong>$<span th:text="${ordenCatalogo.ordenTrabajo.total}"></span></p>
         <p><strong>Entrega: </strong>$<span th:text="${ordenCatalogo.ordenTrabajo.abonado}"></span></p>
         <p class="pago-restante"><strong>Restante: </strong>$<span th:text="${ordenCatalogo.ordenTrabajo.resta}"></span></p>
-        <p><strong>Medio de pago: </strong><span th:text="${ordenCatalogo.ordenTrabajo.medioPago.medioDePago}"></span></p>
         <p><strong>Necesita factura: </strong><span th:text="${ordenCatalogo.ordenTrabajo.necesitaFactura} ? 'Sí' : 'No'"></span></p>
         <p><strong>Vendedor/a: </strong><span th:text="${ordenCatalogo.ordenTrabajo.empleado.nombre}"></span></p>
       </div>

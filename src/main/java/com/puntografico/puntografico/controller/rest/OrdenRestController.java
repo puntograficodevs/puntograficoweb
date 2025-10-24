@@ -444,10 +444,4 @@ public class OrdenRestController {
         ordenTrabajoService.cambiarEstadoASinHacer(ordenId);
         return ResponseEntity.ok().build();
     }
-
-    @PostMapping("/cambiar-a-abonado/{ordenId}")
-    public ResponseEntity<Void> cambiarAAbonado(@PathVariable Long ordenId) {
-        ordenTrabajoService.cambiarAAbonado(ordenId);
-        return ResponseEntity.ok().build();
-    }
 }

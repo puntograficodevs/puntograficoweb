@@ -79,7 +79,7 @@ public class ComboController {
         ComboDTO comboDTO = armarComboDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         Combo combo = comboService.guardar(comboDTO, idCombo);
         OrdenCombo ordenCombo = ordenComboService.guardar(ordenTrabajo, combo, idOrdenCombo);
 

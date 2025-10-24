@@ -87,7 +87,7 @@ public class ViniloController {
         ViniloDTO viniloDTO = armarViniloDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         Vinilo vinilo = viniloService.guardar(viniloDTO, idVinilo);
         OrdenVinilo ordenVinilo = ordenViniloService.guardar(ordenTrabajo, vinilo, idOrdenVinilo);
 

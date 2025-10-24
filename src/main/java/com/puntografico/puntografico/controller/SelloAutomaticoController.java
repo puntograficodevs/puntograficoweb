@@ -79,7 +79,7 @@ public class SelloAutomaticoController {
         SelloAutomaticoDTO selloAutomaticoDTO = armarSelloAutomaticoDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         SelloAutomatico selloAutomatico = selloAutomaticoService.guardar(selloAutomaticoDTO, idSelloAutomatico);
         OrdenSelloAutomatico ordenSelloAutomatico = ordenSelloAutomaticoService.guardar(ordenTrabajo, selloAutomatico, idOrdenSelloAutomatico);
 

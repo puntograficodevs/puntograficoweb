@@ -77,7 +77,7 @@ public class AnotadorController {
         AnotadorDTO anotadorDTO = armarAnotadorDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         Anotador anotador = anotadorService.guardar(anotadorDTO, idAnotador);
         OrdenAnotador ordenAnotador = ordenAnotadorService.guardar(ordenTrabajo, anotador, idOrdenAnotador);
 

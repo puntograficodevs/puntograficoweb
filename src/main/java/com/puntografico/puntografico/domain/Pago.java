@@ -1,5 +1,6 @@
 package com.puntografico.puntografico.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,5 +33,6 @@ public class Pago {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_orden_trabajo")
+    @JsonIgnore
     private OrdenTrabajo ordenTrabajo;
 }

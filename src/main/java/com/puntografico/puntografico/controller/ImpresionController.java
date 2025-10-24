@@ -89,7 +89,7 @@ public class ImpresionController {
         ImpresionDTO impresionDTO = armarImpresionDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         Impresion impresion = impresionService.guardar(impresionDTO, idImpresion);
         OrdenImpresion ordenImpresion = ordenImpresionService.guardar(ordenTrabajo, impresion, idOrdenImpresion);
 

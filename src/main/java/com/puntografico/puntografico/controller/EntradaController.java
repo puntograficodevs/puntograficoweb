@@ -91,7 +91,7 @@ public class EntradaController {
         EntradaDTO entradaDTO = armarEntradaDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         Entrada entrada = entradaService.guardar(entradaDTO, idEntrada);
         OrdenEntrada ordenEntrada = ordenEntradaService.guardar(ordenTrabajo, entrada, idOrdenEntrada);
 

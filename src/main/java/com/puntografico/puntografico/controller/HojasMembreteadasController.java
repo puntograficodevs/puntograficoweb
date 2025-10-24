@@ -85,7 +85,7 @@ public class HojasMembreteadasController {
         HojasMembreteadasDTO hojasMembreteadasDTO = armarHojasMembreteadasDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         HojasMembreteadas hojasMembreteadas = hojasMembreteadasService.guardar(hojasMembreteadasDTO, idHojasMembreteadas);
         OrdenHojasMembreteadas ordenHojasMembreteadas = ordenHojasMembreteadasService.guardar(ordenTrabajo, hojasMembreteadas, idOrdenHojasMembreteadas);
 

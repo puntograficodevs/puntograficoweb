@@ -81,7 +81,7 @@ public class SublimacionController {
         SublimacionDTO sublimacionDTO = armarSublimacionDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         Sublimacion sublimacion = sublimacionService.guardar(sublimacionDTO, idSublimacion);
         OrdenSublimacion ordenSublimacion = ordenSublimacionService.guardar(ordenTrabajo, sublimacion, idOrdensublimacion);
 

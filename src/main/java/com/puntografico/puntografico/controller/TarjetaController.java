@@ -89,7 +89,7 @@ public class TarjetaController {
         TarjetaDTO tarjetaDTO = armarTarjetaDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         Tarjeta tarjeta = tarjetaService.guardar(tarjetaDTO, idTarjeta);
         OrdenTarjeta ordenTarjeta = ordenTarjetaService.guardar(ordenTrabajo, tarjeta, idOrdenTarjeta);
 

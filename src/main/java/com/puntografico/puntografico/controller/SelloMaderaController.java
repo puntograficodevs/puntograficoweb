@@ -79,7 +79,7 @@ public class SelloMaderaController {
         SelloMaderaDTO selloMaderaDTO = armarSelloMaderaDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         SelloMadera selloMadera = selloMaderaService.guardar(selloMaderaDTO, idSelloMadera);
         OrdenSelloMadera ordenSelloMadera = ordenSelloMaderaService.guardar(ordenTrabajo, selloMadera, idOrdenSelloMadera);
 

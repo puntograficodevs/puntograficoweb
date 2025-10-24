@@ -81,7 +81,7 @@ public class AgendaController {
         AgendaDTO agendaDTO = armarAgendaDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         Agenda agenda = agendaService.guardar(agendaDTO, idAgenda);
         OrdenAgenda ordenAgenda = ordenAgendaService.guardar(ordenTrabajo, agenda, idOrdenAgenda);
 

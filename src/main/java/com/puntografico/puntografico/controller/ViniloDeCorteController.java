@@ -79,7 +79,7 @@ public class ViniloDeCorteController {
         ViniloDeCorteDTO viniloDeCorteDTO = armarViniloDeCorteDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         ViniloDeCorte viniloDeCorte = viniloDeCorteService.guardar(viniloDeCorteDTO, idViniloDeCorte);
         OrdenViniloDeCorte ordenViniloDeCorte = ordenViniloDeCorteService.guardar(ordenTrabajo, viniloDeCorte, idOrdenViniloDeCorte);
 

@@ -83,7 +83,7 @@ public class StickerController {
         StickerDTO stickerDTO = armarStickerDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         Sticker sticker = stickerService.guardar(stickerDTO, idSticker);
         OrdenSticker ordenSticker = ordenStickerService.guardar(ordenTrabajo, sticker, idOrdenSticker);
 

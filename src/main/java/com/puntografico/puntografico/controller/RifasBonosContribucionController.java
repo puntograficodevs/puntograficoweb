@@ -83,7 +83,7 @@ public class RifasBonosContribucionController {
         RifasBonosContribucionDTO rifasBonosContribucionDTO = armarRifasBonosContribucionDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         RifasBonosContribucion rifasBonosContribucion = rifasBonosContribucionService.guardar(rifasBonosContribucionDTO, idRifasBonosContribucion);
         OrdenRifasBonosContribucion ordenRifasBonosContribucion = ordenRifasBonosContribucionService.guardar(ordenTrabajo, rifasBonosContribucion, idOrdenRifasBonosContribucion);
 

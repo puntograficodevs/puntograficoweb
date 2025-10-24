@@ -80,7 +80,7 @@ public class CarpetaSolapaController {
         CarpetaSolapaDTO carpetaSolapaDTO = armarCarpetaSolapaDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         CarpetaSolapa carpetaSolapa = carpetaSolapaService.guardar(carpetaSolapaDTO, idCarpetaSolapa);
         OrdenCarpetaSolapa ordenCarpetaSolapa = ordenCarpetaSolapaService.guardar(ordenTrabajo, carpetaSolapa, idOrdenCarpetaSolapa);
 

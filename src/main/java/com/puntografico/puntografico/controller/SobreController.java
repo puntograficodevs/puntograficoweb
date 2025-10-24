@@ -83,7 +83,7 @@ public class SobreController {
         SobreDTO sobreDTO = armarSobreDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         Sobre sobre = sobreService.guardar(sobreDTO, idSobre);
         OrdenSobre ordenSobre = ordenSobreService.guardar(ordenTrabajo, sobre, idOrdenSobre);
 

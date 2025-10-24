@@ -83,7 +83,7 @@ public class CierraBolsasController {
         CierraBolsasDTO cierraBolsasDTO = armarCierraBolsasDTO(request);
 
         OrdenTrabajo ordenTrabajo = ordenTrabajoService.guardar(request, idOrdenTrabajo);
-        pagoService.guardar(request, idOrdenTrabajo);
+        pagoService.guardar(request, ordenTrabajo.getId());
         CierraBolsas cierraBolsas = cierraBolsasService.guardar(cierraBolsasDTO, idCierraBolsas);
         OrdenCierraBolsas ordenCierraBolsas = ordenCierraBolsasService.guardar(ordenTrabajo, cierraBolsas, idOrdenCierraBolsas);
 
