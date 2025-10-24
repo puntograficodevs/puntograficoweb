@@ -31,7 +31,7 @@
                             <label th:for="'medioPagoId-' + ${idOrden}" class="form-label">Medio de pago *</label>
                             <select class="form-select"
                                     th:id="'medioPagoId-' + ${idOrden}"
-                                    name="medioPagoId" required>
+                                    name="medioPago.id" required>
                                 <option value="" selected disabled>Seleccionar...</option>
                                 <option th:each="medioPago : ${listaMediosDePago}"
                                         th:value="${medioPago.id}"
