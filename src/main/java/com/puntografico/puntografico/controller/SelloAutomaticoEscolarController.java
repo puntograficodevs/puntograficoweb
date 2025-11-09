@@ -104,9 +104,12 @@ public class SelloAutomaticoEscolarController {
     @DeleteMapping("/api/eliminar-orden-sello-automatico-escolar/{idOrden}")
     public void eliminarOrdenSelloAutomaticoEscolar(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenSelloAutomaticoEscolar ordenSelloAutomaticoEscolar = ordenSelloAutomaticoEscolarService.buscarPorOrdenId(idOrden);
+        Long idOrdenSelloAutomaticoEscolar = ordenSelloAutomaticoEscolar.getId();
+        Long idOrdenTrabajo = ordenSelloAutomaticoEscolar.getOrdenTrabajo().getId();
+        Long idSelloAutomaticoEscolar = ordenSelloAutomaticoEscolar.getSelloAutomaticoEscolar().getId();
 
-        ordenSelloAutomaticoEscolarService.eliminar(ordenSelloAutomaticoEscolar.getId());
-        ordenTrabajoService.eliminar(ordenSelloAutomaticoEscolar.getOrdenTrabajo().getId());
-        selloAutomaticoEscolarService.eliminar(ordenSelloAutomaticoEscolar.getSelloAutomaticoEscolar().getId());
+        ordenSelloAutomaticoEscolarService.eliminar(idOrdenSelloAutomaticoEscolar);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        selloAutomaticoEscolarService.eliminar(idSelloAutomaticoEscolar);
     }
 }

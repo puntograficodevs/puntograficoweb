@@ -115,9 +115,12 @@ public class ImpresionController {
     @DeleteMapping("/api/eliminar-orden-impresion/{idOrden}")
     public void eliminarOrdenImpresion(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenImpresion ordenImpresion = ordenImpresionService.buscarPorOrdenId(idOrden);
+        Long idOrdenImpresion = ordenImpresion.getId();
+        Long idOrdenTrabajo = ordenImpresion.getOrdenTrabajo().getId();
+        Long idImpresion = ordenImpresion.getImpresion().getId();
 
-        ordenImpresionService.eliminar(ordenImpresion.getId());
-        ordenTrabajoService.eliminar(ordenImpresion.getOrdenTrabajo().getId());
-        ordenImpresionService.eliminar(ordenImpresion.getImpresion().getId());
+        ordenImpresionService.eliminar(idOrdenImpresion);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        impresionService.eliminar(idImpresion);
     }
 }

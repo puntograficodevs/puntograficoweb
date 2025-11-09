@@ -106,9 +106,12 @@ public class CuadernoAnilladoController {
     @DeleteMapping("/api/eliminar-orden-cuaderno-anillado/{idOrden}")
     public void eliminarOrdenCuadernoAnillado(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenCuadernoAnillado ordenCuadernoAnillado = ordenCuadernoAnilladoService.buscarPorOrdenId(idOrden);
+        Long idOrdenCuadernoAnillado = ordenCuadernoAnillado.getId();
+        Long idOrdenTrabajo = ordenCuadernoAnillado.getOrdenTrabajo().getId();
+        Long idCuadernoAnillado = ordenCuadernoAnillado.getCuadernoAnillado().getId();
 
-        ordenCuadernoAnilladoService.eliminar(ordenCuadernoAnillado.getId());
-        ordenTrabajoService.eliminar(ordenCuadernoAnillado.getOrdenTrabajo().getId());
-        cuadernoAnilladoService.eliminar(ordenCuadernoAnillado.getCuadernoAnillado().getId());
+        ordenCuadernoAnilladoService.eliminar(idOrdenCuadernoAnillado);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        cuadernoAnilladoService.eliminar(idCuadernoAnillado);
     }
 }

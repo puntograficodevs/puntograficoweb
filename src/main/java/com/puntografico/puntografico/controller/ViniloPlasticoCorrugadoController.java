@@ -102,9 +102,12 @@ public class ViniloPlasticoCorrugadoController {
     @DeleteMapping("/api/eliminar-orden-vinilo-plastico-corrugado/{idOrden}")
     public void eliminarOrdenEtiqueta(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenViniloPlasticoCorrugado ordenViniloPlasticoCorrugado = ordenViniloPlasticoCorrugadoService.buscarPorOrdenId(idOrden);
+        Long idOrdenViniloPlasticoCorrugado = ordenViniloPlasticoCorrugado.getId();
+        Long idOrdenTrabajo = ordenViniloPlasticoCorrugado.getOrdenTrabajo().getId();
+        Long idViniloPlasticoCorrugado = ordenViniloPlasticoCorrugado.getViniloPlasticoCorrugado().getId();
 
-        ordenViniloPlasticoCorrugadoService.eliminar(ordenViniloPlasticoCorrugado.getId());
-        ordenTrabajoService.eliminar(ordenViniloPlasticoCorrugado.getOrdenTrabajo().getId());
-        viniloPlasticoCorrugadoService.eliminar(ordenViniloPlasticoCorrugado.getViniloPlasticoCorrugado().getId());
+        ordenViniloPlasticoCorrugadoService.eliminar(idOrdenViniloPlasticoCorrugado);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        viniloPlasticoCorrugadoService.eliminar(idViniloPlasticoCorrugado);
     }
 }

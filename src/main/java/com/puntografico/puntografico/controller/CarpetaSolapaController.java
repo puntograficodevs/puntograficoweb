@@ -103,9 +103,12 @@ public class CarpetaSolapaController {
     @DeleteMapping("/api/eliminar-orden-carpeta-solapa/{idOrden}")
     public void eliminarOrdenCarpetaSolapa(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenCarpetaSolapa ordenCarpetaSolapa = ordenCarpetaSolapaService.buscarPorOrdenId(idOrden);
+        Long idOrdenCarpetaSolapa = ordenCarpetaSolapa.getId();
+        Long idOrdenTrabajo = ordenCarpetaSolapa.getOrdenTrabajo().getId();
+        Long idCarpetaSolapa = ordenCarpetaSolapa.getCarpetaSolapa().getId();
 
-        ordenCarpetaSolapaService.eliminar(ordenCarpetaSolapa.getId());
-        ordenTrabajoService.eliminar(ordenCarpetaSolapa.getOrdenTrabajo().getId());
-        carpetaSolapaService.eliminar(ordenCarpetaSolapa.getCarpetaSolapa().getId());
+        ordenCarpetaSolapaService.eliminar(idOrdenCarpetaSolapa);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        carpetaSolapaService.eliminar(idCarpetaSolapa);
     }
 }

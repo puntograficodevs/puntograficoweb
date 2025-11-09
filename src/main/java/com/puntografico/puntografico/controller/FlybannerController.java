@@ -109,9 +109,12 @@ public class FlybannerController {
     @DeleteMapping("/api/eliminar-orden-flybanner/{idOrden}")
     public void eliminarOrdenFlybanner(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenFlybanner ordenFlybanner = ordenFlybannerService.buscarPorOrdenId(idOrden);
+        Long idOrdenFlybanner = ordenFlybanner.getId();
+        Long idOrdenTrabajo = ordenFlybanner.getOrdenTrabajo().getId();
+        Long idFlybanner = ordenFlybanner.getFlybanner().getId();
 
-        ordenFlybannerService.eliminar(ordenFlybanner.getId());
-        ordenTrabajoService.eliminar(ordenFlybanner.getOrdenTrabajo().getId());
-        flybannerService.eliminar(ordenFlybanner.getFlybanner().getId());
+        ordenFlybannerService.eliminar(idOrdenFlybanner);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        flybannerService.eliminar(idFlybanner);
     }
 }

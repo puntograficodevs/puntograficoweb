@@ -103,9 +103,12 @@ public class SublimacionController {
     @DeleteMapping("/api/eliminar-orden-sublimacion/{idOrden}")
     public void eliminarOrdenSublimacion(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenSublimacion ordenSublimacion = ordenSublimacionService.buscarPorOrdenId(idOrden);
+        Long idOrdenSublimacion = ordenSublimacion.getId();
+        Long idOrdenTrabajo = ordenSublimacion.getOrdenTrabajo().getId();
+        Long idSublimacion = ordenSublimacion.getSublimacion().getId();
 
-        ordenSublimacionService.eliminar(ordenSublimacion.getId());
-        ordenTrabajoService.eliminar(ordenSublimacion.getOrdenTrabajo().getId());
-        sublimacionService.eliminar(ordenSublimacion.getSublimacion().getId());
+        ordenSublimacionService.eliminar(idOrdenSublimacion);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        sublimacionService.eliminar(idSublimacion);
     }
 }

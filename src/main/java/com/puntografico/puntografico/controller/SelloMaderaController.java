@@ -104,9 +104,12 @@ public class SelloMaderaController {
     @DeleteMapping("/api/eliminar-orden-sello-madera/{idOrden}")
     public void eliminarOrdenSelloMadera(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenSelloMadera ordenSelloMadera = ordenSelloMaderaService.buscarPorOrdenId(idOrden);
+        Long idOrdenSelloMadera = ordenSelloMadera.getId();
+        Long idOrdenTrabajo = ordenSelloMadera.getOrdenTrabajo().getId();
+        Long idSelloMadera = ordenSelloMadera.getSelloMadera().getId();
 
-        ordenSelloMaderaService.eliminar(ordenSelloMadera.getId());
-        ordenTrabajoService.eliminar(ordenSelloMadera.getOrdenTrabajo().getId());
-        selloMaderaService.eliminar(ordenSelloMadera.getSelloMadera().getId());
+        ordenSelloMaderaService.eliminar(idOrdenSelloMadera);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        selloMaderaService.eliminar(idSelloMadera);
     }
 }

@@ -116,9 +116,12 @@ public class TarjetaController {
     @DeleteMapping("/api/eliminar-orden-tarjeta/{idOrden}")
     public void eliminarOrdenTarjeta(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenTarjeta ordenTarjeta = ordenTarjetaService.buscarPorOrdenId(idOrden);
+        Long idOrdenTarjeta = ordenTarjeta.getId();
+        Long idOrdenTrabajo = ordenTarjeta.getOrdenTrabajo().getId();
+        Long idTarjeta = ordenTarjeta.getTarjeta().getId();
 
-        ordenTarjetaService.eliminar(ordenTarjeta.getId());
-        ordenTrabajoService.eliminar(ordenTarjeta.getOrdenTrabajo().getId());
-        tarjetaService.eliminar(ordenTarjeta.getTarjeta().getId());
+        ordenTarjetaService.eliminar(idOrdenTarjeta);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        tarjetaService.eliminar(idTarjeta);
     }
 }

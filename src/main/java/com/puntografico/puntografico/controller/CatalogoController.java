@@ -105,9 +105,12 @@ public class CatalogoController {
     @DeleteMapping("/api/eliminar-orden-catalogo/{idOrden}")
     public void eliminarOrdenCatalogo(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenCatalogo ordenCatalogo = ordenCatalogoService.buscarPorOrdenId(idOrden);
+        Long idOrdenCatalogo = ordenCatalogo.getId();
+        Long idOrdenTrabajo = ordenCatalogo.getOrdenTrabajo().getId();
+        Long idCatalogo = ordenCatalogo.getCatalogo().getId();
 
-        ordenCatalogoService.eliminar(ordenCatalogo.getId());
-        ordenTrabajoService.eliminar(ordenCatalogo.getOrdenTrabajo().getId());
-        catalogoService.eliminar(ordenCatalogo.getCatalogo().getId());
+        ordenCatalogoService.eliminar(idOrdenCatalogo);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        catalogoService.eliminar(idCatalogo);
     }
 }

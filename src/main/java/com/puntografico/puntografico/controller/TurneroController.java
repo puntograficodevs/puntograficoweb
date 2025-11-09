@@ -108,9 +108,12 @@ public class TurneroController {
     @DeleteMapping("/api/eliminar-orden-turnero/{idOrden}")
     public void eliminarOrdenTurnero(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenTurnero ordenTurnero = ordenTurneroService.buscarPorOrdenId(idOrden);
+        Long idOrdenTurnero = ordenTurnero.getId();
+        Long idOrdenTrabajo = ordenTurnero.getOrdenTrabajo().getId();
+        Long idTurnero = ordenTurnero.getTurnero().getId();
 
-        ordenTurneroService.eliminar(ordenTurnero.getId());
-        ordenTrabajoService.eliminar(ordenTurnero.getOrdenTrabajo().getId());
-        turneroService.eliminar(ordenTurnero.getTurnero().getId());
+        ordenTurneroService.eliminar(idOrdenTurnero);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        turneroService.eliminar(idTurnero);
     }
 }

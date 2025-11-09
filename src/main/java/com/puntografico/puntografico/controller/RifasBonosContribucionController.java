@@ -110,9 +110,12 @@ public class RifasBonosContribucionController {
     @DeleteMapping("/api/eliminar-orden-rifa-bono-contribucion/{idOrden}")
     public void eliminarOrdenRifaBonoContribucion(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenRifasBonosContribucion ordenRifasBonosContribucion = ordenRifasBonosContribucionService.buscarPorOrdenId(idOrden);
+        Long idOrdenRifasBonosContribucion = ordenRifasBonosContribucion.getId();
+        Long idOrdenTrabajo = ordenRifasBonosContribucion.getOrdenTrabajo().getId();
+        Long idRifasBonosContribucion = ordenRifasBonosContribucion.getRifasBonosContribucion().getId();
 
-        ordenRifasBonosContribucionService.eliminar(ordenRifasBonosContribucion.getId());
-        ordenTrabajoService.eliminar(ordenRifasBonosContribucion.getOrdenTrabajo().getId());
-        rifasBonosContribucionService.eliminar(ordenRifasBonosContribucion.getRifasBonosContribucion().getId());
+        ordenRifasBonosContribucionService.eliminar(idOrdenRifasBonosContribucion);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        rifasBonosContribucionService.eliminar(idRifasBonosContribucion);
     }
 }

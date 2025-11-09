@@ -116,9 +116,12 @@ public class FolletoController {
     @DeleteMapping("/api/eliminar-orden-folleto/{idOrden}")
     public void eliminarOrdenFolleto(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenFolleto ordenFolleto = ordenFolletoService.buscarPorOrdenId(idOrden);
+        Long idOrdenFolleto = ordenFolleto.getId();
+        Long idOrdenTrabajo = ordenFolleto.getOrdenTrabajo().getId();
+        Long idFolleto = ordenFolleto.getFolleto().getId();
 
-        ordenFolletoService.eliminar(ordenFolleto.getId());
-        ordenTrabajoService.eliminar(ordenFolleto.getOrdenTrabajo().getId());
-        folletoService.eliminar(ordenFolleto.getFolleto().getId());
+        ordenFolletoService.eliminar(idOrdenFolleto);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        folletoService.eliminar(idFolleto);
     }
 }

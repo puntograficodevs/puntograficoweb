@@ -101,9 +101,12 @@ public class OtroController {
     @DeleteMapping("/api/eliminar-orden-otro/{idOrden}")
     public void eliminarOrdenOtro(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenOtro ordenOtro = ordenOtroService.buscarPorOrdenId(idOrden);
+        Long idOrdenOtro = ordenOtro.getId();
+        Long idOrdenTrabajo = ordenOtro.getOrdenTrabajo().getId();
+        Long idOtro = ordenOtro.getOtro().getId();
 
-        ordenOtroService.eliminar(ordenOtro.getId());
-        ordenTrabajoService.eliminar(ordenOtro.getOrdenTrabajo().getId());
-        otroService.eliminar(ordenOtro.getOtro().getId());
+        ordenOtroService.eliminar(idOrdenOtro);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        otroService.eliminar(idOtro);
     }
 }

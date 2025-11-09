@@ -107,9 +107,12 @@ public class SobreController {
     @DeleteMapping("/api/eliminar-orden-sobre/{idOrden}")
     public void eliminarOrdenSobre(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenSobre ordenSobre = ordenSobreService.buscarPorOrdenId(idOrden);
+        Long idOrdenSobre = ordenSobre.getId();
+        Long idOrdenTrabajo = ordenSobre.getOrdenTrabajo().getId();
+        Long idSobre = ordenSobre.getSobre().getId();
 
-        ordenSobreService.eliminar(ordenSobre.getId());
-        ordenTrabajoService.eliminar(ordenSobre.getOrdenTrabajo().getId());
-        sobreService.eliminar(ordenSobre.getSobre().getId());
+        ordenSobreService.eliminar(idOrdenSobre);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        sobreService.eliminar(idSobre);
     }
 }

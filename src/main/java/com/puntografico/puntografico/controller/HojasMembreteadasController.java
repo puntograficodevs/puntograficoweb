@@ -110,9 +110,12 @@ public class HojasMembreteadasController {
     @DeleteMapping("/api/eliminar-orden-hojas-membreteadas/{idOrden}")
     public void eliminarOrdenHojasMembreteadas(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenHojasMembreteadas ordenHojasMembreteadas = ordenHojasMembreteadasService.buscarPorOrdenId(idOrden);
+        Long idOrdenHojasMembreteadas = ordenHojasMembreteadas.getId();
+        Long idOrdenTrabajo = ordenHojasMembreteadas.getOrdenTrabajo().getId();
+        Long idHojasMembreteadas = ordenHojasMembreteadas.getHojasMembreteadas().getId();
 
-        ordenHojasMembreteadasService.eliminar(ordenHojasMembreteadas.getId());
-        ordenTrabajoService.eliminar(ordenHojasMembreteadas.getOrdenTrabajo().getId());
-        hojasMembreteadasService.eliminar(ordenHojasMembreteadas.getHojasMembreteadas().getId());
+        ordenHojasMembreteadasService.eliminar(idOrdenHojasMembreteadas);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        hojasMembreteadasService.eliminar(idHojasMembreteadas);
     }
 }

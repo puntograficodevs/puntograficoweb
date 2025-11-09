@@ -111,9 +111,12 @@ public class VoucherController {
     @DeleteMapping("/api/eliminar-orden-voucher/{idOrden}")
     public void eliminarOrdenVoucher(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenVoucher ordenVoucher = ordenVoucherService.buscarPorOrdenId(idOrden);
+        Long idOrdenVoucher = ordenVoucher.getId();
+        Long idOrdenTrabajo = ordenVoucher.getOrdenTrabajo().getId();
+        Long idVoucher = ordenVoucher.getVoucher().getId();
 
-        ordenVoucherService.eliminar(ordenVoucher.getId());
-        ordenTrabajoService.eliminar(ordenVoucher.getOrdenTrabajo().getId());
-        voucherService.eliminar(ordenVoucher.getVoucher().getId());
+        ordenVoucherService.eliminar(idOrdenVoucher);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        voucherService.eliminar(idVoucher);
     }
 }

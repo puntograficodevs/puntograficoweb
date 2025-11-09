@@ -109,9 +109,12 @@ public class LonaComunController {
     @DeleteMapping("/api/eliminar-orden-lona-comun/{idOrden}")
     public void eliminarOrdenLonaComun(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenLonaComun ordenLonaComun = ordenLonaComunService.buscarPorOrdenId(idOrden);
+        Long idOrdenLonaComun = ordenLonaComun.getId();
+        Long idOrdenTrabajo = ordenLonaComun.getOrdenTrabajo().getId();
+        Long idLonaComun = ordenLonaComun.getLonaComun().getId();
 
-        ordenLonaComunService.eliminar(ordenLonaComun.getId());
-        ordenTrabajoService.eliminar(ordenLonaComun.getOrdenTrabajo().getId());
-        lonaComunService.eliminar(ordenLonaComun.getLonaComun().getId());
+        ordenLonaComunService.eliminar(idOrdenLonaComun);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        lonaComunService.eliminar(idLonaComun);
     }
 }

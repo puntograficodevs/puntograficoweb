@@ -107,9 +107,12 @@ public class RotulacionController {
     @DeleteMapping("/api/eliminar-orden-rotulacion/{idOrden}")
     public void eliminarOrdenRotulacion(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenRotulacion ordenRotulacion = ordenRotulacionService.buscarPorOrdenId(idOrden);
+        Long idOrdenRotulacion = ordenRotulacion.getId();
+        Long idOrdenTrabajo = ordenRotulacion.getOrdenTrabajo().getId();
+        Long idRotulacion = ordenRotulacion.getRotulacion().getId();
 
-        ordenRotulacionService.eliminar(ordenRotulacion.getId());
-        ordenTrabajoService.eliminar(ordenRotulacion.getOrdenTrabajo().getId());
-        rotulacionService.eliminar(ordenRotulacion.getRotulacion().getId());
+        ordenRotulacionService.eliminar(idOrdenRotulacion);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        rotulacionService.eliminar(idRotulacion);
     }
 }

@@ -100,9 +100,12 @@ public class ComboController {
     @DeleteMapping("/api/eliminar-orden-combo/{idOrden}")
     public void eliminarOrdenCombo(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenCombo ordenCombo = ordenComboService.buscarPorOrdenId(idOrden);
+        Long idOrdenCombo = ordenCombo.getId();
+        Long idOrdenTrabajo = ordenCombo.getOrdenTrabajo().getId();
+        Long idCombo = ordenCombo.getCombo().getId();
 
-        ordenComboService.eliminar(ordenCombo.getId());
-        ordenTrabajoService.eliminar(ordenCombo.getOrdenTrabajo().getId());
-        comboService.eliminar(ordenCombo.getCombo().getId());
+        ordenComboService.eliminar(idOrdenCombo);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        comboService.eliminar(idCombo);
     }
 }

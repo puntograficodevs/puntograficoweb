@@ -107,9 +107,12 @@ public class StickerController {
     @DeleteMapping("/api/eliminar-orden-sticker/{idOrden}")
     public void eliminarOrdenSticker(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenSticker ordenSticker = ordenStickerService.buscarPorOrdenId(idOrden);
+        Long idOrdenSticker = ordenSticker.getId();
+        Long idOrdenTrabajo = ordenSticker.getOrdenTrabajo().getId();
+        Long idSticker = ordenSticker.getSticker().getId();
 
-        ordenStickerService.eliminar(ordenSticker.getId());
-        ordenTrabajoService.eliminar(ordenSticker.getOrdenTrabajo().getId());
-        stickerService.eliminar(ordenSticker.getSticker().getId());
+        ordenStickerService.eliminar(idOrdenSticker);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        stickerService.eliminar(idSticker);
     }
 }

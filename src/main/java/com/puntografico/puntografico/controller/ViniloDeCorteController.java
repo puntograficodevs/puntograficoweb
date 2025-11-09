@@ -105,9 +105,12 @@ public class ViniloDeCorteController {
     @DeleteMapping("/api/eliminar-orden-vinilo-de-corte/{idOrden}")
     public void eliminarOrdenViniloDeCorte(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenViniloDeCorte ordenViniloDeCorte = ordenViniloDeCorteService.buscarPorOrdenId(idOrden);
+        Long idOrdenViniloDeCorte = ordenViniloDeCorte.getId();
+        Long idOrdenTrabajo = ordenViniloDeCorte.getOrdenTrabajo().getId();
+        Long idViniloDeCorte = ordenViniloDeCorte.getViniloDeCorte().getId();
 
-        ordenViniloDeCorteService.eliminar(ordenViniloDeCorte.getId());
-        ordenTrabajoService.eliminar(ordenViniloDeCorte.getOrdenTrabajo().getId());
-        viniloDeCorteService.eliminar(ordenViniloDeCorte.getViniloDeCorte().getId());
+        ordenViniloDeCorteService.eliminar(idOrdenViniloDeCorte);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        viniloDeCorteService.eliminar(idViniloDeCorte);
     }
 }

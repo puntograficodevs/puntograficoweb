@@ -123,9 +123,12 @@ public class TalonarioController {
     @DeleteMapping("/api/eliminar-orden-talonario/{idOrden}")
     public void eliminarOrdenTalonario(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenTalonario ordenTalonario = ordenTalonarioService.buscarPorOrdenId(idOrden);
+        Long idOrdenTalonario = ordenTalonario.getId();
+        Long idOrdenTrabajo = ordenTalonario.getOrdenTrabajo().getId();
+        Long idTalonario = ordenTalonario.getTalonario().getId();
 
-        ordenTalonarioService.eliminar(ordenTalonario.getId());
-        ordenTrabajoService.eliminar(ordenTalonario.getOrdenTrabajo().getId());
-        talonarioService.eliminar(ordenTalonario.getTalonario().getId());
+        ordenTalonarioService.eliminar(idOrdenTalonario);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        talonarioService.eliminar(idTalonario);
     }
 }

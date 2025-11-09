@@ -119,9 +119,12 @@ public class EntradaController {
     @DeleteMapping("/api/eliminar-orden-entrada/{idOrden}")
     public void eliminarOrdenEntrada(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenEntrada ordenEntrada = ordenEntradaService.buscarPorOrdenId(idOrden);
+        Long idOrdenEntrada = ordenEntrada.getId();
+        Long idOrdenTrabajo = ordenEntrada.getOrdenTrabajo().getId();
+        Long idEntrada = ordenEntrada.getEntrada().getId();
 
-        ordenEntradaService.eliminar(ordenEntrada.getId());
-        ordenTrabajoService.eliminar(ordenEntrada.getOrdenTrabajo().getId());
-        entradaService.eliminar(ordenEntrada.getEntrada().getId());
+        ordenEntradaService.eliminar(idOrdenEntrada);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        entradaService.eliminar(idEntrada);
     }
 }

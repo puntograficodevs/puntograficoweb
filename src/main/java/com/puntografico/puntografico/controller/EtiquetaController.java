@@ -118,9 +118,12 @@ public class EtiquetaController {
     @DeleteMapping("/api/eliminar-orden-etiqueta/{idOrden}")
     public void eliminarOrdenEtiqueta(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenEtiqueta ordenEtiqueta = ordenEtiquetaService.buscarPorOrdenId(idOrden);
+        Long idOrdenEtiqueta = ordenEtiqueta.getId();
+        Long idOrdenTrabajo = ordenEtiqueta.getOrdenTrabajo().getId();
+        Long idEtiqueta = ordenEtiqueta.getEtiqueta().getId();
 
-        ordenEtiquetaService.eliminar(ordenEtiqueta.getId());
-        ordenTrabajoService.eliminar(ordenEtiqueta.getOrdenTrabajo().getId());
-        etiquetaService.eliminar(ordenEtiqueta.getEtiqueta().getId());
+        ordenEtiquetaService.eliminar(idOrdenEtiqueta);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        etiquetaService.eliminar(idEtiqueta);
     }
 }

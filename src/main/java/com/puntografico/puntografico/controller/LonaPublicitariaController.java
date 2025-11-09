@@ -109,9 +109,12 @@ public class LonaPublicitariaController {
     @DeleteMapping("/api/eliminar-orden-lona-publicitaria/{idOrden}")
     public void eliminarOrdenLonaPublicitaria(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenLonaPublicitaria ordenLonaPublicitaria = ordenLonaPublicitariaService.buscarPorOrdenId(idOrden);
+        Long idOrdenLonaPublicitaria = ordenLonaPublicitaria.getId();
+        Long idOrdenTrabajo = ordenLonaPublicitaria.getOrdenTrabajo().getId();
+        Long idLonaPublicitaria = ordenLonaPublicitaria.getLonaPublicitaria().getId();
 
-        ordenLonaPublicitariaService.eliminar(ordenLonaPublicitaria.getId());
-        ordenTrabajoService.eliminar(ordenLonaPublicitaria.getOrdenTrabajo().getId());
-        ordenLonaPublicitariaService.eliminar(ordenLonaPublicitaria.getLonaPublicitaria().getId());
+        ordenLonaPublicitariaService.eliminar(idOrdenLonaPublicitaria);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        lonaPublicitariaService.eliminar(idLonaPublicitaria);
     }
 }

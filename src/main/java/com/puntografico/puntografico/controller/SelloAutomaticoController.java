@@ -106,9 +106,12 @@ public class SelloAutomaticoController {
     @DeleteMapping("/api/eliminar-orden-sello-automatico/{idOrden}")
     public void eliminarOrdenSelloAutomatico(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenSelloAutomatico ordenSelloAutomatico = ordenSelloAutomaticoService.buscarPorOrdenId(idOrden);
+        Long idOrdenSelloAutomatico = ordenSelloAutomatico.getId();
+        Long idOrdenTrabajo = ordenSelloAutomatico.getOrdenTrabajo().getId();
+        Long idSelloAutomatico = ordenSelloAutomatico.getSelloAutomatico().getId();
 
-        ordenSelloAutomaticoService.eliminar(ordenSelloAutomatico.getId());
-        ordenTrabajoService.eliminar(ordenSelloAutomatico.getOrdenTrabajo().getId());
-        selloAutomaticoService.eliminar(ordenSelloAutomatico.getSelloAutomatico().getId());
+        ordenSelloAutomaticoService.eliminar(idOrdenSelloAutomatico);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        selloAutomaticoService.eliminar(idSelloAutomatico);
     }
 }

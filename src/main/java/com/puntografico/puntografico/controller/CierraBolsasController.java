@@ -107,9 +107,12 @@ public class CierraBolsasController {
     @DeleteMapping("/api/eliminar-orden-cierra-bolsas/{idOrden}")
     public void eliminarOrdenCierraBolsas(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenCierraBolsas ordenCierraBolsas = ordenCierraBolsasService.buscarPorOrdenId(idOrden);
+        Long idOrdenCierraBolsas = ordenCierraBolsas.getId();
+        Long idOrdenTrabajo = ordenCierraBolsas.getOrdenTrabajo().getId();
+        Long idCierraBolsas = ordenCierraBolsas.getCierraBolsas().getId();
 
-        ordenCierraBolsasService.eliminar(ordenCierraBolsas.getId());
-        ordenTrabajoService.eliminar(ordenCierraBolsas.getOrdenTrabajo().getId());
-        cierraBolsasService.eliminar(ordenCierraBolsas.getCierraBolsas().getId());
+        ordenCierraBolsasService.eliminar(idOrdenCierraBolsas);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        cierraBolsasService.eliminar(idCierraBolsas);
     }
 }

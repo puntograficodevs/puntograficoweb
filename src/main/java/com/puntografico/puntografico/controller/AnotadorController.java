@@ -101,9 +101,12 @@ public class AnotadorController {
     @DeleteMapping("/api/eliminar-orden-anotador/{idOrden}")
     public void eliminarOrdenAnotador(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenAnotador ordenAnotador = ordenAnotadorService.buscarPorOrdenId(idOrden);
+        Long idOrdenAnotador = ordenAnotador.getId();
+        Long idOrdenTrabajo = ordenAnotador.getOrdenTrabajo().getId();
+        Long idAnotador = ordenAnotador.getAnotador().getId();
 
-        ordenAnotadorService.eliminar(ordenAnotador.getId());
-        ordenTrabajoService.eliminar(ordenAnotador.getOrdenTrabajo().getId());
-        anotadorService.eliminar(ordenAnotador.getAnotador().getId());
+        ordenAnotadorService.eliminar(idOrdenAnotador);
+        ordenTrabajoService.eliminar(idOrdenTrabajo);
+        anotadorService.eliminar(idAnotador);
     }
 }
