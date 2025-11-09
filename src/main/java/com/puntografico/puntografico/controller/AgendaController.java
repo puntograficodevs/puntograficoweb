@@ -107,8 +107,8 @@ public class AgendaController {
     public void eliminarOrdenAgenda(Model model, HttpSession session, @PathVariable Long idOrden) {
         OrdenAgenda ordenAgenda = ordenAgendaService.buscarPorOrdenId(idOrden);
 
-        ordenAgendaService.eliminar(ordenAgenda.getId());
         ordenTrabajoService.eliminar(ordenAgenda.getOrdenTrabajo().getId());
         agendaService.eliminar(ordenAgenda.getAgenda().getId());
+        ordenAgendaService.eliminar(ordenAgenda.getId());
     }
 }
