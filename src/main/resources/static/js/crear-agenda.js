@@ -25,10 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
       precioImpuestosInput.value = 0;
       totalInput.value = 0;
       restaInput.value = 0;
-      abonadoInput.value = 0;
 
       // Toggles
-      const toggleFechaMuestra = document.getElementById('toggleFechaMuestra');
+      let toggleFechaMuestra = document.getElementById('toggleFechaMuestra');
       const fechaMuestraRow = document.getElementById('fechaMuestraRow');
       toggleFechaMuestra.addEventListener('change', () => {
           fechaMuestraRow.classList.toggle('d-none', !toggleFechaMuestra.checked);
@@ -114,6 +113,21 @@ document.addEventListener('DOMContentLoaded', () => {
         totalInput.value = total;
         restaInput.value = resta;
         precioProductoInput.value = precioProducto;
+
+        revisarSiAbonadoEstaBien();
+      }
+
+      function revisarSiAbonadoEstaBien() {
+          const total = parseFloat(totalInput.value) || 0;
+          const abonado = parseFloat(abonadoInput.value) || 0;
+
+          if (abonado > total) {
+            abonadoInput.classList.add('is-invalid');
+            restaInput.classList.add('is-invalid');
+          } else {
+            abonadoInput.classList.remove('is-invalid');
+            restaInput.classList.remove('is-invalid');
+          }
       }
 
       // Escuchamos cambios en todos los inputs

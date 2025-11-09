@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="toggleFechaMuestra" th:checked="${ordenTrabajo.fechaMuestra != null}">
+                        <input type="checkbox" class="form-check-input" id="toggleFechaMuestra" name="toggleFechaMuestra" th:checked="${ordenTrabajo.fechaMuestra != null}">
                         <label class="form-check-label" for="toggleFechaMuestra">¿Muestra?</label>
                     </div>
                 </div>
@@ -121,7 +121,7 @@
             <div class="row mb-3">
                 <div class="col-md-12">
                     <label for="agenda-informacion-adicional" class="form-label">Información adicional</label>
-                    <textarea class="form-control" name="informacionAdicional" th:value="${agenda.informacionAdicional}" id="agenda-informacion-adicional" rows="1" placeholder="Inserte aquí más info."></textarea>
+                    <input class="form-control" name="informacionAdicional" th:value="${agenda.informacionAdicional}" id="agenda-informacion-adicional" rows="1" placeholder="Inserte aquí más info."/>
                 </div>
             </div>
             <div class="row mb-3">
@@ -132,42 +132,24 @@
             </div>
         </div>
 
-        <div class="contenedor-datos-odt" th:if="${ordenTrabajo.id}">
-            <h5 class="mt-4 datos-de-pago">Datos de Pago</h5>
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    <label for="totalPrevio" class="form-label">Total *</label>
-                    <input type="number" class="form-control" id="totalPrevio" th:value="${ordenTrabajo.total}" readonly>
-                </div>
-                <div class="col-md-4">
-                    <label for="abonadoPrevio" class="form-label">Abonado *</label>
-                    <input type="number" class="form-control" id="abonadoPrevio" th:value="${ordenTrabajo.abonado}" readonly>
-                </div>
-                <div class="col-md-4">
-                    <label for="restaPrevio" class="form-label">Resta</label>
-                    <input type="number" class="form-control" id="restaPrevio" th:value="${ordenTrabajo.resta}" readonly>
-                </div>
-            </div>
-        </div>
-
-        <div class="contenedor-datos-odt" th:if="${ordenTrabajo.id} == null">
+        <div class="contenedor-datos-odt">
             <!-- DATOS DE PAGO -->
             <h5 class="mt-4 datos-de-pago">Datos de Pago</h5>
             <div class="row mb-3">
                 <div class="col-md-6 d-flex align-items-end">
                     <div class="form-check">
-                        <input class="form-check-input" name="conAdicionalDisenio" type="checkbox" id="agenda-con-adicional-disenio">
+                        <input class="form-check-input" name="conAdicionalDisenio" type="checkbox" id="agenda-con-adicional-disenio" th:checked="${agenda.conAdicionalDisenio}">
                         <label class="form-check-label" for="agenda-con-adicional-disenio">Adicional diseño</label>
                     </div>
                 </div>
                 <div class="col-md-6 d-flex align-items-end">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura">
+                        <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura" th:checked="${ordenTrabajo.necesitaFactura}">
                         <label class="form-check-label" for="necesitaFactura">¿Necesita factura?</label>
                     </div>
                 </div>
             </div>
-            <div class="row mb-3">
+            <div class="row mb-3" th:classappend="${ordenTrabajo.id} != null ? 'd-none' : ''">
                 <div class="col-md-4">
                     <label for="precioProducto" class="form-label">Precio del producto *</label>
                     <input type="number" class="form-control" id="precioProducto" placeholder="0" required>
@@ -184,15 +166,15 @@
             <div class="row mb-3">
                 <div class="col-md-4">
                     <label for="total" class="form-label">Total *</label>
-                    <input type="number" class="form-control" name="total" id="total" placeholder="0" readonly>
+                    <input type="number" class="form-control" name="total" id="total" placeholder="0" th:readonly="${ordenTrabajo} == null">
                 </div>
                 <div class="col-md-4">
                     <label for="abonado" class="form-label">Abonado *</label>
-                    <input type="number" class="form-control" name="abonado" id="abonado" placeholder="0" required>
+                    <input type="number" class="form-control" name="abonado" id="abonado" th:value="${ordenTrabajo.abonado}" placeholder="0" required>
                 </div>
                 <div class="col-md-4">
                     <label for="resta" class="form-label">Resta</label>
-                    <input type="number" class="form-control" name="resta" id="resta"readonly>
+                    <input type="number" class="form-control" name="resta" id="resta" readonly>
                 </div>
             </div>
             <div class="row mb-3">
@@ -204,8 +186,12 @@
                                    name="medioPago.id"
                                    th:id="'medioPago-' + ${medio.id}"
                                    th:value="${medio.id}"
+                                   th:checked="${!#lists.isEmpty(ordenTrabajo.pagos) and medio.id == ordenTrabajo.pagos[ordenTrabajo.pagos.size() - 1].medioPago.id}"
                                    required>
-                            <label for="medioPago" class="form-check-label" th:for="'medioPago-' + ${medio.id}" th:text="${medio.medioDePago}"></label>
+                            <label for="medioPago" class="form-check-label"
+                                   th:for="'medioPago-' + ${medio.id}"
+                                   th:text="${medio.medioDePago}"></label>
+
                         </div>
                     </div>
                 </div>

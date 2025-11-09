@@ -26,17 +26,22 @@ public class AgendaService {
         TipoTapaAgenda tipoTapaAgenda = opcionesAgendaService.buscarTipoTapaAgendaPorId(agendaDTO.getTipoTapaAgendaId());
 
         Agenda agenda = (idAgenda != null) ? agendaRepository.findById(idAgenda).get() : new Agenda();
-        boolean adicionalDisenio = (idAgenda != null) ? agenda.isConAdicionalDisenio() : agendaDTO.getConAdicionalDisenio();
+        boolean adicionalDisenio = agendaDTO.getConAdicionalDisenio();
 
         agenda.setCantidadHojas(agendaDTO.getCantidadHojas());
         agenda.setMedida(agendaDTO.getMedida());
         agenda.setTipoTapaAgenda(tipoTapaAgenda);
-        agenda.setTipoTapaPersonalizada(agendaDTO.getTipoTapaPersonalizada());
         agenda.setTipoColorAgenda(tipoColorAgenda);
         agenda.setEnlaceArchivo(agendaDTO.getEnlaceArchivo());
         agenda.setInformacionAdicional(agendaDTO.getInformacionAdicional());
         agenda.setCantidad(agendaDTO.getCantidad());
         agenda.setConAdicionalDisenio(adicionalDisenio);
+
+        if (tipoTapaAgenda.getTipo().equalsIgnoreCase("otra")) {
+            agenda.setTipoTapaPersonalizada(agendaDTO.getTipoTapaPersonalizada());
+        } else {
+            agenda.setTipoTapaPersonalizada(null);
+        }
 
         return agendaRepository.save(agenda);
     }

@@ -32,8 +32,8 @@ public class OrdenTrabajoService {
             ordenTrabajo = ordenTrabajoRepository.findById(idOrdenTrabajo).get();
         }
 
-        boolean necesitaFactura = (idOrdenTrabajo != null) ? ordenTrabajo.isNecesitaFactura() : (request.getParameter("necesitaFactura") != null);
-        boolean esCuentaCorriente = (idOrdenTrabajo != null) ? ordenTrabajo.isEsCuentaCorriente() : (request.getParameter("esCuentaCorriente") != null);
+        boolean necesitaFactura = request.getParameter("necesitaFactura") != null;
+        boolean esCuentaCorriente = request.getParameter("esCuentaCorriente") != null;
 
         Empleado empleado = (Empleado) request.getSession().getAttribute("empleadoLogueado");
         ordenTrabajo.setEmpleado(empleado);
@@ -47,40 +47,48 @@ public class OrdenTrabajoService {
         ordenTrabajo.setTipoProducto(request.getParameter("tipoProducto"));
 
         String fechaMuestraStr = request.getParameter("fechaMuestra");
-        if (fechaMuestraStr != null && !fechaMuestraStr.isBlank()) {
+        String toggleFechaMuestra = request.getParameter("toggleFechaMuestra"); // el checkbox
+
+        if (toggleFechaMuestra == null) {
+            ordenTrabajo.setFechaMuestra(null);
+        } else if (fechaMuestraStr != null && !fechaMuestraStr.isBlank()) {
             ordenTrabajo.setFechaMuestra(LocalDate.parse(fechaMuestraStr));
         }
 
         ordenTrabajo.setFechaEntrega(LocalDate.parse(request.getParameter("fechaEntrega")));
         ordenTrabajo.setHoraEntrega(request.getParameter("horaEntrega"));
 
-        asignarValoresDelPagoSiCorresponde(ordenTrabajo, request);
+        asignarValoresDelPago(ordenTrabajo, request);
         return ordenTrabajoRepository.save(ordenTrabajo);
     }
 
-    private void asignarValoresDelPagoSiCorresponde(OrdenTrabajo ordenTrabajo, HttpServletRequest request) {
-        if (ordenTrabajo.getId() == null) {
+    private void asignarValoresDelPago(OrdenTrabajo ordenTrabajo, HttpServletRequest request) {
+
             int abonado = Integer.parseInt(request.getParameter("abonado"));
             int total = Integer.parseInt(request.getParameter("total"));
             ordenTrabajo.setAbonado(abonado);
             ordenTrabajo.setTotal(total);
-            ordenTrabajo.setResta(total - abonado);
+
+            if ((total - abonado) > 0) {
+                ordenTrabajo.setResta(total - abonado);
+            } else {
+                ordenTrabajo.setResta(0);
+            }
 
             asignarEstadoPago(ordenTrabajo, total, abonado);
-        }
     }
 
     private void asignarEstadoPago(OrdenTrabajo ordenTrabajo, int total, int abonado) {
-        int resta = total - abonado;
+        int resta = ordenTrabajo.getResta();
 
-        if (total == abonado) {
+        if (resta == 0) {
             ordenTrabajo.setEstadoPago(estadoPagoRepository.findById(3L)
                     .orElseThrow(() -> new RuntimeException("Estado Pago no encontrado")));
-        } else if (resta != 0) {
-            ordenTrabajo.setEstadoPago(estadoPagoRepository.findById(2L)
+        } else if (abonado == 0) {
+            ordenTrabajo.setEstadoPago(estadoPagoRepository.findById(1L)
                     .orElseThrow(() -> new RuntimeException("Estado Pago no encontrado")));
         } else {
-            ordenTrabajo.setEstadoPago(estadoPagoRepository.findById(1L)
+            ordenTrabajo.setEstadoPago(estadoPagoRepository.findById(2L)
                     .orElseThrow(() -> new RuntimeException("Estado Pago no encontrado")));
         }
     }
@@ -258,7 +266,14 @@ public class OrdenTrabajoService {
 
     public void eliminar(Long id) {
         Assert.notNull(id, "El id no puede ser nulo");
+        eliminarPagosAsociados(id);
         ordenTrabajoRepository.deleteById(id);
+    }
+
+    private void eliminarPagosAsociados(Long id) {
+        OrdenTrabajo ordenTrabajo = ordenTrabajoRepository.findById(id).get();
+        List<Pago> pagos = ordenTrabajo.getPagos();
+        pagos.forEach(pago -> pagoService.eliminar(pago.getId()));
     }
 
     public void actualizarTotalAbonado(Long id) {

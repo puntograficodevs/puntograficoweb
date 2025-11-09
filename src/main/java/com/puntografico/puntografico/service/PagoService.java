@@ -9,10 +9,12 @@ import com.puntografico.puntografico.repository.OrdenTrabajoRepository;
 import com.puntografico.puntografico.repository.PagoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @Transactional
@@ -50,5 +52,10 @@ public class PagoService {
 
     private int obtenerImporteDesdeRequest(HttpServletRequest request) {
         return Integer.parseInt(request.getParameter("abonado"));
+    }
+
+    public void eliminar(Long id) {
+        Assert.notNull(id, "El id no puede ser nulo");
+        pagoRepository.deleteById(id);
     }
 }

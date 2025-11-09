@@ -51,3 +51,8 @@ h5 {
 .col-md-12 .form-label {
     margin-bottom: 1em !important;
 }
+
+.is-invalid {
+  border: 2px solid #dc3545 !important; /* rojo Bootstrap */
+  background-color: #ffe6e6;
+}
