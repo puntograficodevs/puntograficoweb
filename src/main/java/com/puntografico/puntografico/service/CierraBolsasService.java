@@ -23,7 +23,8 @@ public class CierraBolsasService {
         validarCierraBolsasDTO(cierraBolsasDTO);
 
         CierraBolsas cierraBolsas = new CierraBolsas();
-        boolean adicionalDisenio = (idCierraBolsas != null) ? cierraBolsas.isConAdicionalDisenio() : cierraBolsasDTO.getConAdicionalDisenio();
+        boolean adicionalDisenio = cierraBolsasDTO.getConAdicionalDisenio();
+
         TipoTroqueladoCierraBolsas tipoTroqueladoCierraBolsas = opcionesCierraBolsasService.buscarTipoTroqueladoCierraBolsasPorId(cierraBolsasDTO.getTipoTroqueladoCierraBolsasId());
         MedidaCierraBolsas medidaCierraBolsas = opcionesCierraBolsasService.buscarMedidaCierraBolsasPorId(cierraBolsasDTO.getMedidaCierraBolsasId());
         CantidadCierraBolsas cantidadCierraBolsas = opcionesCierraBolsasService.buscarCantidadCierraBolsasPorId(cierraBolsasDTO.getCantidadCierraBolsasId());
@@ -35,12 +36,17 @@ public class CierraBolsasService {
 
         cierraBolsas.setTipoTroqueladoCierraBolsas(tipoTroqueladoCierraBolsas);
         cierraBolsas.setMedidaCierraBolsas(medidaCierraBolsas);
-        cierraBolsas.setMedidaPersonalizada(cierraBolsasDTO.getMedidaPersonalizada());
         cierraBolsas.setCantidadCierraBolsas(cantidadCierraBolsas);
         cierraBolsas.setCantidad(cantidad);
         cierraBolsas.setEnlaceArchivo(cierraBolsasDTO.getEnlaceArchivo());
         cierraBolsas.setConAdicionalDisenio(adicionalDisenio);
         cierraBolsas.setInformacionAdicional(cierraBolsasDTO.getInformacionAdicional());
+
+        if (medidaCierraBolsas.getMedida().equalsIgnoreCase("otra")) {
+            cierraBolsas.setMedidaPersonalizada(cierraBolsasDTO.getMedidaPersonalizada());
+        } else {
+            cierraBolsas.setMedidaPersonalizada(null);
+        }
 
         return cierraBolsasRepository.save(cierraBolsas);
     }
