@@ -19,11 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const cantidadHojasInput = document.getElementById('agenda-cantidad-hojas');
       const cantidadAgendasInput = document.getElementById('agenda-cantidad');
 
+      alert("el valor del input de total si no se sobreescribe es " + totalInput.value);
+      const totalInicial = totalInput.value;
 
       // Inicializamos valores visibles
       precioDisenioInput.value = 0;
       precioImpuestosInput.value = 0;
-      totalInput.value = 0;
+      //totalInput.value = 0;
       restaInput.value = 0;
 
       // Toggles
@@ -91,12 +93,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Total inicial con impuesto
-        let total = subtotal + impuestoFactura;
+        let total = (totalInicial != 0) ? totalInicial : subtotal + impuestoFactura;
 
         // Recargo por crédito
         const medioPagoSeleccionado = document.querySelector('input[name="medioPago.id"]:checked');
         let recargoCreditoMonto = 0;
-        if (medioPagoSeleccionado && Number(medioPagoSeleccionado.value) === 2) {
+        if ((medioPagoSeleccionado && Number(medioPagoSeleccionado.value) === 2) && !(totalInicial != 0)) {
           recargoCreditoMonto = Math.ceil(total * recargoCredito);
           total += recargoCreditoMonto;
         }
@@ -113,8 +115,6 @@ document.addEventListener('DOMContentLoaded', () => {
         totalInput.value = total;
         restaInput.value = resta;
         precioProductoInput.value = precioProducto;
-
-        revisarSiAbonadoEstaBien();
       }
 
       function revisarSiAbonadoEstaBien() {
@@ -128,6 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
             abonadoInput.classList.remove('is-invalid');
             restaInput.classList.remove('is-invalid');
           }
+
+          restaInput.value = total - abonado;
       }
 
       // Escuchamos cambios en todos los inputs
@@ -135,7 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
       cantidadAgendasInput.addEventListener('input', calcularPrecio);
       adicionalCheckbox.addEventListener('change', calcularPrecio);
       necesitaFacturaCheckbox.addEventListener('change', calcularPrecio);
-      abonadoInput.addEventListener('input', calcularPrecio);
+      abonadoInput.addEventListener('input', revisarSiAbonadoEstaBien);
+      totalInput.addEventListener('input', revisarSiAbonadoEstaBien);
       radiosMedioPago.forEach(radio => radio.addEventListener('change', calcularPrecio));
       cantidadHojasInput.addEventListener('input', () => {
         resetearPrecio();

@@ -166,7 +166,7 @@
             <div class="row mb-3">
                 <div class="col-md-4">
                     <label for="total" class="form-label">Total *</label>
-                    <input type="number" class="form-control" name="total" id="total" placeholder="0" th:readonly="${ordenTrabajo} == null">
+                    <input type="number" class="form-control" name="total" id="total" th:value="${ordenTrabajo.total}" placeholder="0" th:readonly="${ordenTrabajo.id} == null">
                 </div>
                 <div class="col-md-4">
                     <label for="abonado" class="form-label">Abonado *</label>
