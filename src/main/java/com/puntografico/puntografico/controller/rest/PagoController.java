@@ -19,7 +19,7 @@ public class PagoController {
     public String guardarPago(HttpServletRequest request) {
         Long idOrdenTrabajo = Long.parseLong(request.getParameter("idOrden"));
         pagoService.guardar(request, idOrdenTrabajo);
-        ordenTrabajoService.actualizarTotalAbonado(idOrdenTrabajo);
+        ordenTrabajoService.actualizarTotalAbonado(request);
 
         return "redirect:/listado";
     }

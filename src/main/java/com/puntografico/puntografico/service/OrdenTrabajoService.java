@@ -276,15 +276,15 @@ public class OrdenTrabajoService {
         pagos.forEach(pago -> pagoService.eliminar(pago.getId()));
     }
 
-    public void actualizarTotalAbonado(Long id) {
-        Assert.notNull(id, "El id de la orden de trabajo a actualizar no puede ser nulo.");
-        OrdenTrabajo ordenTrabajo = ordenTrabajoRepository.findById(id).get();
-        int totalAPagar = ordenTrabajo.getTotal();
+    public void actualizarTotalAbonado(HttpServletRequest request) {
+        Long idOrdenTrabajo = Long.parseLong(request.getParameter("idOrden"));
+        OrdenTrabajo ordenTrabajo = ordenTrabajoRepository.findById(idOrdenTrabajo).get();
 
-        int totalAbonado = ordenTrabajo.getPagos()
-                .stream()
-                .mapToInt(Pago::getImporte)
-                .sum();
+        int totalAPagar = ordenTrabajo.getTotal();
+        int abonadoPreviamente = ordenTrabajo.getAbonado();
+        int abonadoEnTransaccion = Integer.parseInt(request.getParameter("abonado"));
+
+        int totalAbonado = abonadoPreviamente + abonadoEnTransaccion;
 
         ordenTrabajo.setAbonado(totalAbonado);
         ordenTrabajo.setResta(totalAPagar - totalAbonado);
