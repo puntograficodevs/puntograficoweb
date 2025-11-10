@@ -19,7 +19,7 @@ public class AnotadorService {
         validarDTO(anotadorDTO);
 
         Anotador anotador = (idAnotador != null) ? anotadorRepository.findById(idAnotador).get() : new Anotador();
-        boolean adicionalDisenio = (idAnotador != null) ? anotador.isConAdicionalDisenio() : anotadorDTO.getConAdicionalDisenio();
+        boolean adicionalDisenio = anotadorDTO.getConAdicionalDisenio();
 
         anotador.setCantidadHojas(anotadorDTO.getCantidadHojas());
         anotador.setMedida(anotadorDTO.getMedida());
