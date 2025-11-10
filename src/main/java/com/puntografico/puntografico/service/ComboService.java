@@ -23,7 +23,7 @@ public class ComboService {
         TipoCombo tipoCombo = opcionesComboService.buscarTipoComboPorId(comboDTO.getTipoComboId());
 
         Combo combo = (idCombo != null) ? comboRepository.findById(idCombo).get() : new Combo();
-        boolean adicionalDisenio = (idCombo != null) ? combo.isConAdicionalDisenio() : comboDTO.getConAdicionalDisenio();
+        boolean adicionalDisenio = comboDTO.getConAdicionalDisenio();
 
         combo.setEnlaceArchivo(comboDTO.getEnlaceArchivo());
         combo.setConAdicionalDisenio(adicionalDisenio);
