@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const cantidadHojasInput = document.getElementById('agenda-cantidad-hojas');
       const cantidadAgendasInput = document.getElementById('agenda-cantidad');
 
-      alert("el valor del input de total si no se sobreescribe es " + totalInput.value);
       const totalInicial = totalInput.value;
 
       // Inicializamos valores visibles
