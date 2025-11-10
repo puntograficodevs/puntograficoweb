@@ -27,7 +27,7 @@ public class CarpetaSolapaService {
         TipoFazCarpetaSolapa tipoFazCarpetaSolapa = opcionesCarpetaSolapaService.buscarTipoFazCarpetaSolapaPorId(carpetaSolapaDTO.getTipoFazCarpetaSolapaId());
 
         CarpetaSolapa carpetaSolapa = (idCarpetaSolapa != null) ? carpetaSolapaRepository.findById(idCarpetaSolapa).get() : new CarpetaSolapa();
-        boolean adicionalDisenio = (idCarpetaSolapa != null) ? carpetaSolapa.isConAdicionalDisenio() : carpetaSolapaDTO.getConAdicionalDisenio();
+        boolean adicionalDisenio = carpetaSolapaDTO.getConAdicionalDisenio();
 
         carpetaSolapa.setTipoPapel(carpetaSolapaDTO.getTipoPapel());
         carpetaSolapa.setCantidad(carpetaSolapaDTO.getCantidad());
