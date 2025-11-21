@@ -25,7 +25,7 @@ public class FlybannerService {
         TipoBaseFlybanner tipoBaseFlybanner = opcionesFlybannerService.buscarTipoBaseFlybannerPorId(flybannerDTO.getTipoBaseFlybannerId());
 
         Flybanner flybanner = (idFlybanner != null) ? flybannerRepository.findById(idFlybanner).get() : new Flybanner();
-        boolean adicionalDisenio = (idFlybanner != null) ? flybanner.isConAdicionalDisenio() : flybannerDTO.getConAdicionalDisenio();
+        boolean adicionalDisenio = flybannerDTO.getConAdicionalDisenio();
 
         flybanner.setTipoFazFlybanner(tipoFazFlybanner);
         flybanner.setAlturaFlybanner(alturaFlybanner);

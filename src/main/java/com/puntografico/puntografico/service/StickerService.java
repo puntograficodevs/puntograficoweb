@@ -31,9 +31,8 @@ public class StickerService {
         }
 
         Sticker sticker = (idSticker != null) ? stickerRepository.findById(idSticker).get() : new Sticker();
-        boolean adicionalDisenio = (idSticker != null) ? sticker.isConAdicionalDisenio() : stickerDTO.getConAdicionalDisenio();
+        boolean adicionalDisenio = stickerDTO.getConAdicionalDisenio();
 
-        sticker.setMedidaPersonalizada(stickerDTO.getMedidaPersonalizada());
         sticker.setEnlaceArchivo(stickerDTO.getEnlaceArchivo());
         sticker.setConAdicionalDisenio(adicionalDisenio);
         sticker.setInformacionAdicional(stickerDTO.getInformacionAdicional());
@@ -41,6 +40,12 @@ public class StickerService {
         sticker.setCantidadSticker(cantidadSticker);
         sticker.setMedidaSticker(medidaSticker);
         sticker.setCantidad(cantidad);
+
+        if (medidaSticker.getMedida().equalsIgnoreCase("otra")) {
+            sticker.setMedidaPersonalizada(stickerDTO.getMedidaPersonalizada());
+        } else {
+            sticker.setMedidaPersonalizada(null);
+        }
 
         return stickerRepository.save(sticker);
     }

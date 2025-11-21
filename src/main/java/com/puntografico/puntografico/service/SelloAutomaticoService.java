@@ -23,8 +23,8 @@ public class SelloAutomaticoService {
         ModeloSelloAutomatico modeloSelloAutomatico = opcionesSelloAutomaticoService.buscarModeloSelloAutomaticoPorId(selloAutomaticoDTO.getModeloSelloAutomaticoId());
 
         SelloAutomatico selloAutomatico = (idSelloAutomatico != null) ? selloAutomaticoRepository.findById(idSelloAutomatico).get() : new SelloAutomatico();
-        boolean esParticular = (idSelloAutomatico != null) ? selloAutomatico.isEsParticular() : selloAutomaticoDTO.getEsParticular();
-        boolean esProfesional = (idSelloAutomatico != null) ? selloAutomatico.isEsProfesional() : selloAutomaticoDTO.getEsProfesional();
+        boolean esParticular = selloAutomaticoDTO.getEsParticular();
+        boolean esProfesional = selloAutomaticoDTO.getEsProfesional();
 
         selloAutomatico.setEsProfesional(esProfesional);
         selloAutomatico.setEsParticular(esParticular);

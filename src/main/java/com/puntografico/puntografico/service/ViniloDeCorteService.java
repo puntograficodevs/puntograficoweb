@@ -23,10 +23,10 @@ public class ViniloDeCorteService {
         TraeMaterialVinilo traeMaterialVinilo = opcionesViniloDeCorteService.buscarTraeMaterialViniloPorId(viniloDeCorteDTO.getTraeMaterialViniloId());
 
         ViniloDeCorte viniloDeCorte = (idViniloDeCorte != null) ? viniloDeCorteRepository.findById(idViniloDeCorte).get() : new ViniloDeCorte();
-        boolean adicionalDisenio = (idViniloDeCorte != null) ? viniloDeCorte.isConAdicionalDisenio() : viniloDeCorteDTO.getConAdicionalDisenio();
-        boolean esPromocional = (idViniloDeCorte != null) ? viniloDeCorte.isEsPromocional() : viniloDeCorteDTO.getEsPromocional();
-        boolean esOracal = (idViniloDeCorte != null) ? viniloDeCorte.isEsOracal() : viniloDeCorteDTO.getEsOracal();
-        boolean conColocacion = (idViniloDeCorte != null) ? viniloDeCorte.isConColocacion() : viniloDeCorteDTO.getConColocacion();
+        boolean adicionalDisenio = viniloDeCorteDTO.getConAdicionalDisenio();
+        boolean esPromocional = viniloDeCorteDTO.getEsPromocional();
+        boolean esOracal = viniloDeCorteDTO.getEsOracal();
+        boolean conColocacion = viniloDeCorteDTO.getConColocacion();
 
         viniloDeCorte.setEsPromocional(esPromocional);
         viniloDeCorte.setEsOracal(esOracal);

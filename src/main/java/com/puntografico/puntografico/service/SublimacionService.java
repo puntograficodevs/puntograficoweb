@@ -30,7 +30,7 @@ public class SublimacionService {
         }
 
         Sublimacion sublimacion = (idSublimacion != null) ? sublimacionRepository.findById(idSublimacion).get() : new Sublimacion();
-        boolean adicionalDisenio = (idSublimacion != null) ? sublimacion.isConAdicionalDisenio() : sublimacionDTO.getConAdicionalDisenio();
+        boolean adicionalDisenio = sublimacionDTO.getConAdicionalDisenio();
 
         sublimacion.setEnlaceArchivo(sublimacionDTO.getEnlaceArchivo());
         sublimacion.setConAdicionalDisenio(adicionalDisenio);

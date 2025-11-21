@@ -24,7 +24,7 @@ public class SelloAutomaticoEscolarService {
         ModeloSelloAutomaticoEscolar modeloSelloAutomaticoEscolar = opcionesSelloAutomaticoEscolarService.buscarModeloSelloAutomaticoEscolarPorId(selloAutomaticoEscolarDTO.getModeloSelloAutomaticoEscolarId());
 
         SelloAutomaticoEscolar selloAutomaticoEscolar = (idSelloAutomaticoEscolar != null) ? selloAutomaticoEscolarRepository.findById(idSelloAutomaticoEscolar).get() : new SelloAutomaticoEscolar();
-        boolean adicionalDisenio = (idSelloAutomaticoEscolar != null) ? selloAutomaticoEscolar.isConAdicionalDisenio() : selloAutomaticoEscolarDTO.getConAdicionalDisenio();
+        boolean adicionalDisenio = selloAutomaticoEscolarDTO.getConAdicionalDisenio();
 
         selloAutomaticoEscolar.setTextoLineaUno(selloAutomaticoEscolarDTO.getTextoLineaUno());
         selloAutomaticoEscolar.setTextoLineaDos(selloAutomaticoEscolarDTO.getTextoLineaDos());

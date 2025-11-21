@@ -34,15 +34,14 @@ public class TalonarioService {
         }
 
         Talonario talonario = (idTalonario != null) ? talonarioRepository.findById(idTalonario).get() : new Talonario();
-        boolean adicionalDisenio = (idTalonario != null) ? talonario.isConAdicionalDisenio() : talonarioDTO.getConAdicionalDisenio();
-        boolean conNumerado = (idTalonario != null) ? talonario.isConNumerado() : talonarioDTO.getConNumerado();
-        boolean esEncolado = (idTalonario != null) ? talonario.isEsEncolado() : talonarioDTO.getEsEncolado();
+        boolean adicionalDisenio = talonarioDTO.getConAdicionalDisenio();
+        boolean conNumerado = talonarioDTO.getConNumerado();
+        boolean esEncolado = talonarioDTO.getEsEncolado();
 
         talonario.setConNumerado(conNumerado);
         talonario.setCantidadHojas(talonarioDTO.getCantidadHojas());
         talonario.setDetalleNumerado(talonarioDTO.getDetalleNumerado());
         talonario.setEsEncolado(esEncolado);
-        talonario.setMedidaPersonalizada(talonarioDTO.getMedidaPersonalizada());
         talonario.setEnlaceArchivo(talonarioDTO.getEnlaceArchivo());
         talonario.setConAdicionalDisenio(adicionalDisenio);
         talonario.setInformacionAdicional(talonarioDTO.getInformacionAdicional());
@@ -54,6 +53,12 @@ public class TalonarioService {
         talonario.setTipoPapelTalonario(tipoPapelTalonario);
         talonario.setCantidadTalonario(cantidadTalonario);
         talonario.setCantidad(cantidad);
+
+        if (medidaTalonario.getMedida().equalsIgnoreCase("otra")) {
+            talonario.setMedidaPersonalizada(talonarioDTO.getMedidaPersonalizada());
+        } else {
+            talonario.setMedidaPersonalizada(null);
+        }
 
         return talonarioRepository.save(talonario);
     }

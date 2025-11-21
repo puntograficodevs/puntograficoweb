@@ -25,16 +25,15 @@ public class LonaComunService {
         TipoLonaComun tipoLonaComun = opcionesLonaComunService.buscarTipoLonaComunPorId(lonaComunDTO.getTipoLonaComunId());
 
         LonaComun lonaComun = (idLonaComun != null) ? lonaComunRepository.findById(idLonaComun).get() :  new LonaComun();
-        boolean conOjales = (idLonaComun != null) ? lonaComun.isConOjales() : lonaComunDTO.getConOjales();
-        boolean conOjalesConRefuerzo = (idLonaComun != null) ? lonaComun.isConOjalesConRefuerzo() : lonaComunDTO.getConOjalesConRefuerzo();
-        boolean conBolsillos = (idLonaComun != null) ? lonaComun.isConBolsillos() : lonaComunDTO.getConBolsillos();
-        boolean conDemasiaParaTensado = (idLonaComun != null) ? lonaComun.isConDemasiaParaTensado() : lonaComunDTO.getConDemasiaParaTensado();
-        boolean conSolapado = (idLonaComun != null) ? lonaComun.isConSolapado() : lonaComunDTO.getConSolapado();
-        boolean adicionalDisenio = (idLonaComun != null) ? lonaComun.isConAdicionalDisenio() : lonaComunDTO.getConAdicionalDisenio();
+        boolean conOjales = lonaComunDTO.getConOjales();
+        boolean conOjalesConRefuerzo = lonaComunDTO.getConOjalesConRefuerzo();
+        boolean conBolsillos =  lonaComunDTO.getConBolsillos();
+        boolean conDemasiaParaTensado = lonaComunDTO.getConDemasiaParaTensado();
+        boolean conSolapado = lonaComunDTO.getConSolapado();
+        boolean adicionalDisenio = lonaComunDTO.getConAdicionalDisenio();
 
         lonaComun.setMedidaLonaComun(medidaLonaComun);
         lonaComun.setTipoLonaComun(tipoLonaComun);
-        lonaComun.setMedidaPersonalizada(lonaComunDTO.getMedidaPersonalizada());
         lonaComun.setConOjales(conOjales);
         lonaComun.setConOjalesConRefuerzo(conOjalesConRefuerzo);
         lonaComun.setConBolsillos(conBolsillos);
@@ -44,6 +43,12 @@ public class LonaComunService {
         lonaComun.setEnlaceArchivo(lonaComunDTO.getEnlaceArchivo());
         lonaComun.setInformacionAdicional(lonaComunDTO.getInformacionAdicional());
         lonaComun.setCantidad(lonaComunDTO.getCantidad());
+
+        if (medidaLonaComun.getMedida().equalsIgnoreCase("otra")) {
+            lonaComun.setMedidaPersonalizada(lonaComunDTO.getMedidaPersonalizada());
+        } else {
+            lonaComun.setMedidaPersonalizada(null);
+        }
 
         return lonaComunRepository.save(lonaComun);
     }

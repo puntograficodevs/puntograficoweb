@@ -46,7 +46,7 @@
         </div>
         <div class="col-md-2 d-flex align-items-end">
           <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="toggleFechaMuestra" th:checked="${ordenTrabajo.fechaMuestra != null}">
+            <input type="checkbox" class="form-check-input" id="toggleFechaMuestra" name="toggleFechaMuestra" th:checked="${ordenTrabajo.fechaMuestra != null}">
             <label class="form-check-label" for="toggleFechaMuestra">¿Muestra?</label>
           </div>
         </div>
@@ -89,7 +89,7 @@
       <div class="row mb-3">
         <div class="col-md-12">
           <label for="sublimacion-informacion-adicional" class="form-label">Información adicional</label>
-          <textarea class="form-control" th:value="${sublimacion.informacionAdicional}" name="informacionAdicional" id="sublimacion-informacion-adicional" rows="1" placeholder="Inserte aquí más info."></textarea>
+          <input class="form-control" th:value="${sublimacion.informacionAdicional}" name="informacionAdicional" id="sublimacion-informacion-adicional" rows="1" placeholder="Inserte aquí más info."/>
         </div>
       </div>
       <div class="row mb-3">
@@ -113,45 +113,27 @@
       </div>
     </div>
 
-    <div class="contenedor-datos-odt" th:if="${ordenTrabajo.id}">
-      <h5 class="mt-4 datos-de-pago">Datos de Pago</h5>
-      <div class="row mb-3">
-        <div class="col-md-4">
-          <label for="total" class="form-label">Total *</label>
-          <input type="number" class="form-control" id="totalPrevio" th:value="${ordenTrabajo.total}" readonly>
-        </div>
-        <div class="col-md-4">
-          <label for="abonado" class="form-label">Abonado *</label>
-          <input type="number" class="form-control" id="abonadoPrevio" th:value="${ordenTrabajo.abonado}" readonly>
-        </div>
-        <div class="col-md-4">
-          <label for="resta" class="form-label">Resta</label>
-          <input type="number" class="form-control" id="restaPrevio" th:value="${ordenTrabajo.resta}" readonly>
-        </div>
-      </div>
-    </div>
-
-    <div class="contenedor-datos-odt" th:if="${ordenTrabajo.id} == null">
+    <div class="contenedor-datos-odt">
       <!-- DATOS DE PAGO -->
       <h5 class="mt-4 datos-de-pago">Datos de Pago</h5>
       <div class="row mb-3">
         <div class="col-md-6 d-flex align-items-end">
           <div class="form-check">
-            <input class="form-check-input" name="conAdicionalDisenio" type="checkbox" id="sublimacion-con-adicional-disenio">
+            <input class="form-check-input" name="conAdicionalDisenio" type="checkbox" id="sublimacion-con-adicional-disenio" th:checked="${sublimacion.conAdicionalDisenio}">
             <label class="form-check-label" for="sublimacion-con-adicional-disenio">Adicional diseño</label>
           </div>
         </div>
         <div class="col-md-6 d-flex align-items-end">
           <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura">
+            <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura" th:checked="${ordenTrabajo.necesitaFactura}">
             <label class="form-check-label" for="necesitaFactura">¿Necesita factura?</label>
           </div>
         </div>
       </div>
-      <div class="row mb-3">
+      <div class="row mb-3" th:classappend="${ordenTrabajo.id} != null ? 'd-none' : ''">
         <div class="col-md-4">
           <label for="total" class="form-label">Precio del producto *</label>
-          <input type="number" class="form-control" id="precioProducto" placeholder="0" required>
+          <input type="number" class="form-control" id="precioProducto" placeholder="0" th:required="${ordenTrabajo.id} == null">
         </div>
         <div class="col-md-4">
           <label for="total" class="form-label">Precio por diseño *</label>
@@ -166,11 +148,11 @@
       <div class="row mb-3">
         <div class="col-md-4">
           <label for="total" class="form-label">Total *</label>
-          <input type="number" class="form-control" name="total" id="total" placeholder="0" readonly>
+          <input type="number" class="form-control" name="total" id="total" placeholder="0" th:value="${ordenTrabajo.total}" th:readonly="${ordenTrabajo.id} == null">
         </div>
         <div class="col-md-4">
           <label for="abonado" class="form-label">Abonado *</label>
-          <input type="number" class="form-control" name="abonado" id="abonado" placeholder="0" required>
+          <input type="number" class="form-control" name="abonado" id="abonado" placeholder="0" th:value="${ordenTrabajo.abonado}" required>
         </div>
         <div class="col-md-4">
           <label for="resta" class="form-label">Resta</label>
@@ -182,11 +164,15 @@
           <label class="form-label d-block">Medio de pago *</label>
           <div class="d-flex flex-wrap gap-3">
             <div th:each="medio : ${listaMediosDePago}" class="form-check mx-3">
-              <input class="form-check-input" type="radio"
+              <input id="medioPago" class="form-check-input" type="radio"
                      name="medioPago.id"
                      th:id="'medioPago-' + ${medio.id}"
-                     th:value="${medio.id}" required>
-              <label class="form-check-label" th:for="'medioPago-' + ${medio.id}" th:text="${medio.medioDePago}"></label>
+                     th:value="${medio.id}"
+                     th:checked="${!#lists.isEmpty(ordenTrabajo.pagos) and medio.id == ordenTrabajo.pagos[ordenTrabajo.pagos.size() - 1].medioPago.id}"
+                     required>
+              <label for="medioPago" class="form-check-label"
+                     th:for="'medioPago-' + ${medio.id}"
+                     th:text="${medio.medioDePago}"></label>
             </div>
           </div>
         </div>
@@ -199,31 +185,6 @@
     </div>
   </form>
 </div>
-
-<script>
-  document.getElementById('guardarTotalModal').addEventListener('click', function() {
-      // Tomar valor del modal
-      const nuevoTotal = document.getElementById('nuevoTotal').value;
-
-      // Crear input hidden o actualizar si ya existe
-      let inputHidden = document.querySelector('input[name="nuevoTotal"]');
-      if (!inputHidden) {
-          inputHidden = document.createElement('input');
-          inputHidden.type = 'hidden';
-          inputHidden.name = 'nuevoTotal';
-          document.querySelector('form').appendChild(inputHidden);
-      }
-      inputHidden.value = nuevoTotal;
-
-      // Cerrar modal
-      const modalEl = document.getElementById('editarTotalModal');
-      const modal = bootstrap.Modal.getInstance(modalEl);
-      modal.hide();
-
-      // Enviar formulario
-      document.querySelector('form').submit();
-  });
-</script>
 
 <script th:src="@{/js/crear-sublimacion.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>

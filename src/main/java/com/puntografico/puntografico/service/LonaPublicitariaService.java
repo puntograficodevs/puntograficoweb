@@ -23,13 +23,13 @@ public class LonaPublicitariaService {
         TipoLonaPublicitaria tipoLonaPublicitaria = opcionesLonaPublicitariaService.buscarTipoLonaPublicitariaPorId(lonaPublicitariaDTO.getTipoLonaPublicitariaId());
 
         LonaPublicitaria lonaPublicitaria = (idLonaPublicitaria != null) ? lonaPublicitariaRepository.findById(idLonaPublicitaria).get() : new LonaPublicitaria();
-        boolean conAdicionalPortabanner = (idLonaPublicitaria != null) ? lonaPublicitaria.isConAdicionalPortabanner() : lonaPublicitariaDTO.getConAdicionalPortabanner();
-        boolean conOjales = (idLonaPublicitaria != null) ? lonaPublicitaria.isConOjales() : lonaPublicitariaDTO.getConOjales();
-        boolean conOjalesConRefuerzo = (idLonaPublicitaria != null) ? lonaPublicitaria.isConOjalesConRefuerzo() : lonaPublicitariaDTO.getConOjalesConRefuerzo();
-        boolean conBolsillos = (idLonaPublicitaria != null) ? lonaPublicitaria.isConBolsillos() : lonaPublicitariaDTO.getConBolsillos();
-        boolean conDemasiaParaTensado = (idLonaPublicitaria != null) ? lonaPublicitaria.isConDemasiaParaTensado() : lonaPublicitariaDTO.getConDemasiaParaTensado();
-        boolean conSolapado = (idLonaPublicitaria != null) ? lonaPublicitaria.isConSolapado() : lonaPublicitariaDTO.getConSolapado();
-        boolean adicionalDisenio = (idLonaPublicitaria != null) ? lonaPublicitaria.isConAdicionalDisenio() : lonaPublicitariaDTO.getConAdicionalDisenio();
+        boolean conAdicionalPortabanner = lonaPublicitariaDTO.getConAdicionalPortabanner();
+        boolean conOjales = lonaPublicitariaDTO.getConOjales();
+        boolean conOjalesConRefuerzo = lonaPublicitariaDTO.getConOjalesConRefuerzo();
+        boolean conBolsillos = lonaPublicitariaDTO.getConBolsillos();
+        boolean conDemasiaParaTensado = lonaPublicitariaDTO.getConDemasiaParaTensado();
+        boolean conSolapado = lonaPublicitariaDTO.getConSolapado();
+        boolean adicionalDisenio = lonaPublicitariaDTO.getConAdicionalDisenio();
 
 
         lonaPublicitaria.setMedidaLonaPublicitaria(medidaLonaPublicitaria);

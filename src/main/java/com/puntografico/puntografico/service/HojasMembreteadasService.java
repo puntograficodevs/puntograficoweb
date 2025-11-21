@@ -31,9 +31,8 @@ public class HojasMembreteadasService {
         }
 
         HojasMembreteadas hojasMembreteadas = (idHojasMembreteadas != null) ? hojasMembreteadasRepository.findById(idHojasMembreteadas).get() : new HojasMembreteadas();
-        boolean adicionalDisenio = (idHojasMembreteadas != null) ? hojasMembreteadas.isConAdicionalDisenio() : hojasMembreteadasDTO.getConAdicionalDisenio();
+        boolean adicionalDisenio = hojasMembreteadasDTO.getConAdicionalDisenio();
 
-        hojasMembreteadas.setMedidaPersonalizada(hojasMembreteadasDTO.getMedidaPersonalizada());
         hojasMembreteadas.setCantidadHojas(hojasMembreteadasDTO.getCantidadHojas());
         hojasMembreteadas.setEnlaceArchivo(hojasMembreteadasDTO.getEnlaceArchivo());
         hojasMembreteadas.setConAdicionalDisenio(adicionalDisenio);
@@ -42,6 +41,12 @@ public class HojasMembreteadasService {
         hojasMembreteadas.setTipoColorHojasMembreteadas(tipoColorHojasMembreteadas);
         hojasMembreteadas.setCantidadHojasMembreteadas(cantidadHojasMembreteadas);
         hojasMembreteadas.setCantidad(cantidad);
+
+        if (medidaHojasMembreteadas.getMedida().equalsIgnoreCase("otra")) {
+            hojasMembreteadas.setMedidaPersonalizada(hojasMembreteadasDTO.getMedidaPersonalizada());
+        } else {
+            hojasMembreteadas.setMedidaPersonalizada(null);
+        }
 
         return hojasMembreteadasRepository.save(hojasMembreteadas);
     }

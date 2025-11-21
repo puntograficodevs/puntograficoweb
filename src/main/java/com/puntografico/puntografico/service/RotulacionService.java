@@ -23,9 +23,8 @@ public class RotulacionService {
         TipoCorteRotulacion tipoCorteRotulacion = opcionesRotulacionService.buscarTipoCorteRotulacionPorId(rotulacionDTO.getTipoCorteRotulacionId());
 
         Rotulacion rotulacion = (idRotulacion != null) ? rotulacionRepository.findById(idRotulacion).get() : new Rotulacion();
-        boolean esLaminado = (idRotulacion != null) ? rotulacion.isEsLaminado() : rotulacionDTO.getEsLaminado();
-        boolean adicionalDisenio = (idRotulacion != null) ? rotulacion.isConAdicionalDisenio() : rotulacionDTO.getConAdicionalDisenio();
-
+        boolean esLaminado = rotulacionDTO.getEsLaminado();
+        boolean adicionalDisenio = rotulacionDTO.getConAdicionalDisenio();
 
         rotulacion.setEsLaminado(esLaminado);
         rotulacion.setHorarioRotulacion(rotulacionDTO.getHorarioRotulacion());

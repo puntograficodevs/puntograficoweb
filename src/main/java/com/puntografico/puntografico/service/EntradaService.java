@@ -32,9 +32,9 @@ public class EntradaService {
         }
 
         Entrada entrada = (idEntrada != null) ? entradaRepository.findById(idEntrada).get() : new Entrada();
-        boolean adicionalDisenio = (idEntrada != null) ? entrada.isConAdicionalDisenio() : entradaDTO.getConAdicionalDisenio();
+        boolean adicionalDisenio = entradaDTO.getConAdicionalDisenio();
 
-        entrada.setMedidaPersonalizada(entradaDTO.getMedidaPersonalizada());
+        //entrada.setMedidaPersonalizada(entradaDTO.getMedidaPersonalizada());
         entrada.setEnlaceArchivo(entradaDTO.getEnlaceArchivo());
         entrada.setConAdicionalDisenio(adicionalDisenio);
         entrada.setInformacionAdicional(entradaDTO.getInformacionAdicional());
@@ -46,6 +46,12 @@ public class EntradaService {
         entrada.setNumeradoEntrada(numeradoEntrada);
         entrada.setTerminacionEntrada(terminacionEntrada);
         entrada.setCantidad(cantidad);
+
+        if (medidaEntrada.getMedida().equalsIgnoreCase("otra")) {
+            entrada.setMedidaPersonalizada(entradaDTO.getMedidaPersonalizada());
+        } else {
+            entrada.setMedidaPersonalizada(null);
+        }
 
         return entradaRepository.save(entrada);
     }

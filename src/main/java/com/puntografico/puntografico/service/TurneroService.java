@@ -29,9 +29,8 @@ public class TurneroService {
         }
 
         Turnero turnero = (idTurnero != null) ? turneroRepository.findById(idTurnero).get() : new Turnero();
-        boolean adicionalDisenio = (idTurnero != null) ? turnero.isConAdicionalDisenio() : turneroDTO.getConAdicionalDisenio();
+        boolean adicionalDisenio = turneroDTO.getConAdicionalDisenio();
 
-        turnero.setMedidaPersonalizada(turneroDTO.getMedidaPersonalizada());
         turnero.setCantidadHojas(turneroDTO.getCantidadHojas());
         turnero.setEnlaceArchivo(turneroDTO.getEnlaceArchivo());
         turnero.setConAdicionalDisenio(adicionalDisenio);
@@ -40,6 +39,12 @@ public class TurneroService {
         turnero.setTipoColorTurnero(tipoColorTurnero);
         turnero.setCantidadTurnero(cantidadTurnero);
         turnero.setCantidad(cantidad);
+
+        if (medidaTurnero.getMedida().equalsIgnoreCase("otra")) {
+            turnero.setMedidaPersonalizada(turneroDTO.getMedidaPersonalizada());
+        } else {
+            turnero.setMedidaPersonalizada(null);
+        }
 
         return turneroRepository.save(turnero);
     }

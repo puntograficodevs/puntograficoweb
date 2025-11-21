@@ -33,9 +33,8 @@ public class TarjetaService {
         }
 
         Tarjeta tarjeta = (idTarjeta != null) ? tarjetaRepository.findById(idTarjeta).get() : new Tarjeta();
-        boolean adicionalDisenio = (idTarjeta != null) ? tarjeta.isConAdicionalDisenio() : tarjetaDTO.getConAdicionalDisenio();
+        boolean adicionalDisenio = tarjetaDTO.getConAdicionalDisenio();
 
-        tarjeta.setMedidaPersonalizada(tarjetaDTO.getMedidaPersonalizada());
         tarjeta.setEnlaceArchivo(tarjetaDTO.getEnlaceArchivo());
         tarjeta.setConAdicionalDisenio(adicionalDisenio);
         tarjeta.setInformacionAdicional(tarjetaDTO.getInformacionAdicional());
@@ -46,6 +45,12 @@ public class TarjetaService {
         tarjeta.setMedidaTarjeta(medidaTarjeta);
         tarjeta.setCantidadTarjeta(cantidadTarjeta);
         tarjeta.setCantidad(cantidad);
+
+        if (medidaTarjeta.getMedida().equalsIgnoreCase("otra")) {
+            tarjeta.setMedidaPersonalizada(tarjetaDTO.getMedidaPersonalizada());
+        } else {
+            tarjeta.setMedidaPersonalizada(null);
+        }
 
         return tarjetaRepository.save(tarjeta);
     }

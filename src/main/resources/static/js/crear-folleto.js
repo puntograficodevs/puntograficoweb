@@ -20,16 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const radiosTamanio = document.querySelectorAll('input[name="tamanioHojaFolleto.id"]');
       const radiosTipo = document.querySelectorAll('input[name="tipoFolleto.id"]');
       const radiosCantidad = document.querySelectorAll('input[name="cantidadFolleto.id"]');
+      const totalInicial = totalInput.value;
 
       // Inicializamos valores visibles
       precioDisenioInput.value = 0;
       precioImpuestosInput.value = 0;
-      totalInput.value = 0;
       restaInput.value = 0;
-      abonadoInput.value = 0;
 
       // Toggles
-      const toggleFechaMuestra = document.getElementById('toggleFechaMuestra');
+      let toggleFechaMuestra = document.getElementById('toggleFechaMuestra');
       const fechaMuestraRow = document.getElementById('fechaMuestraRow');
       toggleFechaMuestra.addEventListener('change', () => {
           fechaMuestraRow.classList.toggle('d-none', !toggleFechaMuestra.checked);
@@ -102,12 +101,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Total inicial con impuesto
-        let total = subtotal + impuestoFactura;
+        let total = (totalInicial != 0) ? totalInicial : subtotal + impuestoFactura;
 
         // Recargo por crédito
         const medioPagoSeleccionado = document.querySelector('input[name="medioPago.id"]:checked');
         let recargoCreditoMonto = 0;
-        if (medioPagoSeleccionado && Number(medioPagoSeleccionado.value) === 2) {
+        if ((medioPagoSeleccionado && Number(medioPagoSeleccionado.value) === 2) && !(totalInicial != 0)) {
           recargoCreditoMonto = Math.ceil(total * recargoCredito);
           total += recargoCreditoMonto;
         }
@@ -126,11 +125,27 @@ document.addEventListener('DOMContentLoaded', () => {
         precioProductoInput.value = precioProducto;
       }
 
+      function revisarSiAbonadoEstaBien() {
+          const total = parseFloat(totalInput.value) || 0;
+          const abonado = parseFloat(abonadoInput.value) || 0;
+
+          if (abonado > total) {
+            abonadoInput.classList.add('is-invalid');
+            restaInput.classList.add('is-invalid');
+          } else {
+            abonadoInput.classList.remove('is-invalid');
+            restaInput.classList.remove('is-invalid');
+          }
+
+      	restaInput.value = total - abonado;
+      }
+
       // Escuchamos cambios en todos los inputs
       precioProductoInput.addEventListener('input', calcularPrecio);
       adicionalCheckbox.addEventListener('change', calcularPrecio);
       necesitaFacturaCheckbox.addEventListener('change', calcularPrecio);
-      abonadoInput.addEventListener('input', calcularPrecio);
+      abonadoInput.addEventListener('input', revisarSiAbonadoEstaBien);
+      totalInput.addEventListener('input', revisarSiAbonadoEstaBien);
       radiosMedioPago.forEach(radio => radio.addEventListener('change', calcularPrecio));
       radiosPapel.forEach(radio => radio.addEventListener('change', () => {
         resetearPrecio();

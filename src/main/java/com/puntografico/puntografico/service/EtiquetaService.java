@@ -32,11 +32,10 @@ public class EtiquetaService {
         }
 
         Etiqueta etiqueta = (idEtiqueta != null) ? etiquetaRepository.findById(idEtiqueta).get() : new Etiqueta();
-        boolean conPerforacionAdicional = (idEtiqueta != null) ? etiqueta.isConPerforacionAdicional() : etiquetaDTO.getConPerforacionAdicional();
-        boolean conMarcaAdicional = (idEtiqueta != null) ? etiqueta.isConMarcaAdicional() : etiquetaDTO.getConMarcaAdicional();
-        boolean adicionalDisenio = (idEtiqueta != null) ? etiqueta.isConAdicionalDisenio() : etiquetaDTO.getConAdicionalDisenio();
+        boolean conPerforacionAdicional = etiquetaDTO.getConPerforacionAdicional();
+        boolean conMarcaAdicional = etiquetaDTO.getConMarcaAdicional();
+        boolean adicionalDisenio = etiquetaDTO.getConAdicionalDisenio();
 
-        etiqueta.setMedidaPersonalizada(etiquetaDTO.getMedidaPersonalizada());
         etiqueta.setConPerforacionAdicional(conPerforacionAdicional);
         etiqueta.setConMarcaAdicional(conMarcaAdicional);
         etiqueta.setEnlaceArchivo(etiquetaDTO.getEnlaceArchivo());
@@ -49,6 +48,12 @@ public class EtiquetaService {
         etiqueta.setCantidadEtiqueta(cantidadEtiqueta);
         etiqueta.setMedidaEtiqueta(medidaEtiqueta);
         etiqueta.setCantidad(cantidad);
+
+        if (medidaEtiqueta.getMedida().equalsIgnoreCase("otra")) {
+            etiqueta.setMedidaPersonalizada(etiquetaDTO.getMedidaPersonalizada());
+        } else {
+            etiqueta.setMedidaPersonalizada(null);
+        }
 
         return etiquetaRepository.save(etiqueta);
     }

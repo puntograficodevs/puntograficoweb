@@ -27,7 +27,7 @@ public class ImpresionService {
         CantidadImpresion cantidadImpresion = opcionesImpresionService.buscarCantidadImpresionPorId(impresionDTO.getCantidadImpresionId());
 
         Impresion impresion = (idImpresion != null) ? impresionRepository.findById(idImpresion).get() : new Impresion();
-        boolean esAnillado = (idImpresion != null) ? impresion.isEsAnillado() : impresionDTO.getEsAnillado();
+        boolean esAnillado = impresionDTO.getEsAnillado();
 
         impresion.setEsAnillado(esAnillado);
         impresion.setEnlaceArchivo(impresionDTO.getEnlaceArchivo());

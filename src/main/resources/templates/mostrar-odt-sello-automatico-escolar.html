@@ -65,7 +65,6 @@
                     <a th:unless="${ordenSelloAutomaticoEscolar.selloAutomaticoEscolar.textoLineaTres == ''}"
                        th:text="${ordenSelloAutomaticoEscolar.selloAutomaticoEscolar.textoLineaTres}"></a>
                 </p>
-                <p><strong>Con adicional diseño: </strong><span th:text="${ordenSelloAutomaticoEscolar.selloAutomaticoEscolar.conAdicionalDisenio} ? 'Sí' : 'No'"></span></p>
                 <p><strong>Enlace al archivo: </strong>
                     <span th:if="${ordenSelloAutomaticoEscolar.selloAutomaticoEscolar.enlaceArchivo == ''}"> - </span>
                     <a th:unless="${ordenSelloAutomaticoEscolar.selloAutomaticoEscolar.enlaceArchivo == ''}"

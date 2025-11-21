@@ -22,16 +22,21 @@ public class ViniloPlasticoCorrugadoService {
         MedidaViniloPlasticoCorrugado medidaViniloPlasticoCorrugado = opcionesViniloPlasticoCorrugadoService.buscarMedidaViniloPlasticoCorrugadoPorId(viniloPlasticoCorrugadoDTO.getMedidaViniloPlasticoCorrugadoId());
 
         ViniloPlasticoCorrugado viniloPlasticoCorrugado = (idViniloPlasticoCorrugado != null) ? viniloPlasticoCorrugadoRepository.findById(idViniloPlasticoCorrugado).get() : new ViniloPlasticoCorrugado();
-        boolean adicionalDisenio = (idViniloPlasticoCorrugado != null) ? viniloPlasticoCorrugado.isConAdicionalDisenio() : viniloPlasticoCorrugadoDTO.getConAdicionalDisenio();
-        boolean conOjales = (idViniloPlasticoCorrugado != null) ? viniloPlasticoCorrugado.isConOjales() : viniloPlasticoCorrugadoDTO.getConOjales();
+        boolean adicionalDisenio = viniloPlasticoCorrugadoDTO.getConAdicionalDisenio();
+        boolean conOjales = viniloPlasticoCorrugadoDTO.getConOjales();
 
-        viniloPlasticoCorrugado.setMedidaPersonalizada(viniloPlasticoCorrugadoDTO.getMedidaPersonalizada());
         viniloPlasticoCorrugado.setConOjales(conOjales);
         viniloPlasticoCorrugado.setEnlaceArchivo(viniloPlasticoCorrugadoDTO.getEnlaceArchivo());
         viniloPlasticoCorrugado.setConAdicionalDisenio(adicionalDisenio);
         viniloPlasticoCorrugado.setInformacionAdicional(viniloPlasticoCorrugadoDTO.getInformacionAdicional());
         viniloPlasticoCorrugado.setMedidaViniloPlasticoCorrugado(medidaViniloPlasticoCorrugado);
         viniloPlasticoCorrugado.setCantidad(viniloPlasticoCorrugadoDTO.getCantidad());
+
+        if (medidaViniloPlasticoCorrugado.getMedida().equalsIgnoreCase("otra")) {
+            viniloPlasticoCorrugado.setMedidaPersonalizada(viniloPlasticoCorrugadoDTO.getMedidaPersonalizada());
+        } else {
+            viniloPlasticoCorrugado.setMedidaPersonalizada(null);
+        }
 
         return viniloPlasticoCorrugadoRepository.save(viniloPlasticoCorrugado);
     }

@@ -25,10 +25,8 @@ public class CuadernoAnilladoService {
         MedidaCuadernoAnillado medidaCuadernoAnillado = opcionesCuadernoAnilladoService.buscarMedidaCuadernoAnilladoPorId(cuadernoAnilladoDTO.getMedidaCuadernoAnilladoId());
 
         CuadernoAnillado cuadernoAnillado = (idCuadernoAnillado != null) ? cuadernoAnilladoRepository.findById(idCuadernoAnillado).get() : new CuadernoAnillado();
-        boolean adicionalDisenio = (idCuadernoAnillado != null) ? cuadernoAnillado.isConAdicionalDisenio() : cuadernoAnilladoDTO.getConAdicionalDisenio();
+        boolean adicionalDisenio = cuadernoAnilladoDTO.getConAdicionalDisenio();
 
-        cuadernoAnillado.setMedidaPersonalizada(cuadernoAnilladoDTO.getMedidaPersonalizada());
-        cuadernoAnillado.setTipoTapaPersonalizada(cuadernoAnilladoDTO.getTipoTapaPersonalizada());
         cuadernoAnillado.setCantidadHojas(cuadernoAnilladoDTO.getCantidadHojas());
         cuadernoAnillado.setEnlaceArchivo(cuadernoAnilladoDTO.getEnlaceArchivo());
         cuadernoAnillado.setConAdicionalDisenio(adicionalDisenio);
@@ -36,6 +34,18 @@ public class CuadernoAnilladoService {
         cuadernoAnillado.setCantidad(cuadernoAnilladoDTO.getCantidad());
         cuadernoAnillado.setTipoTapaCuadernoAnillado(tipoTapaCuadernoAnillado);
         cuadernoAnillado.setMedidaCuadernoAnillado(medidaCuadernoAnillado);
+
+        if (medidaCuadernoAnillado.getMedida().equalsIgnoreCase("otra")) {
+            cuadernoAnillado.setMedidaPersonalizada(cuadernoAnilladoDTO.getMedidaPersonalizada());
+        } else {
+            cuadernoAnillado.setMedidaPersonalizada(null);
+        }
+
+        if (tipoTapaCuadernoAnillado.getTipo().equalsIgnoreCase("otra")) {
+            cuadernoAnillado.setTipoTapaPersonalizada(cuadernoAnilladoDTO.getTipoTapaPersonalizada());
+        } else {
+            cuadernoAnillado.setTipoTapaPersonalizada(null);
+        }
 
         return cuadernoAnilladoRepository.save(cuadernoAnillado);
     }

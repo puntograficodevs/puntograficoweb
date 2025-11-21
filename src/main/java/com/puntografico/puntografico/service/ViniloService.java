@@ -32,9 +32,8 @@ public class ViniloService {
         }
 
         Vinilo vinilo = (idVinilo != null) ? viniloRepository.findById(idVinilo).get() : new Vinilo();
-        boolean adicionalDisenio = (idVinilo != null) ? vinilo.isConAdicionalDisenio() : viniloDTO.getConAdicionalDisenio();
+        boolean adicionalDisenio = viniloDTO.getConAdicionalDisenio();
 
-        vinilo.setMedidaPersonalizada(viniloDTO.getMedidaPersonalizada());
         vinilo.setEnlaceArchivo(viniloDTO.getEnlaceArchivo());
         vinilo.setConAdicionalDisenio(adicionalDisenio);
         vinilo.setInformacionAdicional(viniloDTO.getInformacionAdicional());
@@ -44,6 +43,12 @@ public class ViniloService {
         vinilo.setMedidaVinilo(medidaVinilo);
         vinilo.setCantidadVinilo(cantidadVinilo);
         vinilo.setCantidad(cantidad);
+
+        if (medidaVinilo.getMedida().equalsIgnoreCase("otra")) {
+            vinilo.setMedidaPersonalizada(viniloDTO.getMedidaPersonalizada());
+        } else {
+            vinilo.setMedidaPersonalizada(null);
+        }
 
         return viniloRepository.save(vinilo);
     }

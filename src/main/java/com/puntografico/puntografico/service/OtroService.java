@@ -22,7 +22,7 @@ public class OtroService {
         TipoColorOtro tipoColorOtro = opcionesOtroService.buscarTipoColorOtroPorId(otroDTO.getTipoColorOtroId());
 
         Otro otro = (idOtro != null) ? otroRepository.findById(idOtro).get() : new Otro();
-        boolean adicionalDisenio = (idOtro != null) ? otro.isConAdicionalDisenio() : otroDTO.getConAdicionalDisenio();
+        boolean adicionalDisenio = otroDTO.getConAdicionalDisenio();
 
         otro.setMedida(otroDTO.getMedida());
         otro.setEnlaceArchivo(otroDTO.getEnlaceArchivo());

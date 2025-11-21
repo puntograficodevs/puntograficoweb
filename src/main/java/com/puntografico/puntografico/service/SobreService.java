@@ -32,9 +32,8 @@ public class SobreService {
         }
 
         Sobre sobre = (idSobre != null) ? sobreRepository.findById(idSobre).get() : new Sobre();
-        boolean adicionalDisenio = (idSobre != null) ? sobre.isConAdicionalDisenio() : sobreDTO.getConAdicionalDisenio();
+        boolean adicionalDisenio = sobreDTO.getConAdicionalDisenio();
 
-        sobre.setMedidaPersonalizada(sobreDTO.getMedidaPersonalizada());
         sobre.setEnlaceArchivo(sobreDTO.getEnlaceArchivo());
         sobre.setConAdicionalDisenio(adicionalDisenio);
         sobre.setInformacionAdicional(sobreDTO.getInformacionAdicional());
@@ -42,6 +41,12 @@ public class SobreService {
         sobre.setTipoColorSobre(tipoColorSobre);
         sobre.setCantidadSobre(cantidadSobre);
         sobre.setCantidad(cantidad);
+
+        if (medidaSobre.getMedida().equalsIgnoreCase("otra")) {
+            sobre.setMedidaPersonalizada(sobreDTO.getMedidaPersonalizada());
+        } else {
+            sobre.setMedidaPersonalizada(null);
+        }
 
         return sobreRepository.save(sobre);
     }

@@ -32,8 +32,8 @@ public class FolletoService {
         }
 
         Folleto folleto = (idFolleto != null) ? folletoRepository.findById(idFolleto).get() : new Folleto();
-        boolean adicionalDisenio = (idFolleto != null) ? folleto.isConAdicionalDisenio() : folletoDTO.getConAdicionalDisenio();
-        boolean conPlegado = (idFolleto != null) ? folleto.isConPlegado() : folletoDTO.getConPlegado();
+        boolean adicionalDisenio = folletoDTO.getConAdicionalDisenio();
+        boolean conPlegado = folletoDTO.getConPlegado();
 
         folleto.setConPlegado(conPlegado);
         folleto.setEnlaceArchivo(folletoDTO.getEnlaceArchivo());

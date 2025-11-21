@@ -29,10 +29,8 @@ public class VoucherService {
         }
 
         Voucher voucher = (idVoucher != null) ? voucherRepository.findById(idVoucher).get() : new Voucher();
-        boolean adicionalDisenio = (idVoucher != null) ? voucher.isConAdicionalDisenio() : voucherDTO.getConAdicionalDisenio();
+        boolean adicionalDisenio = voucherDTO.getConAdicionalDisenio();
 
-        voucher.setTipoPapelPersonalizado(voucherDTO.getTipoPapelPersonalizado());
-        voucher.setMedidaPersonalizada(voucherDTO.getMedidaPersonalizada());
         voucher.setEnlaceArchivo(voucherDTO.getEnlaceArchivo());
         voucher.setConAdicionalDisenio(adicionalDisenio);
         voucher.setInformacionAdicional(voucherDTO.getInformacionAdicional());
@@ -41,6 +39,12 @@ public class VoucherService {
         voucher.setTipoFazVoucher(tipoFazVoucher);
         voucher.setCantidadVoucher(cantidadVoucher);
         voucher.setCantidad(cantidad);
+
+        if (tipoPapelVoucher.getTipo().equalsIgnoreCase("otro")) {
+            voucher.setTipoPapelPersonalizado(voucherDTO.getTipoPapelPersonalizado());
+        } else {
+            voucher.setTipoPapelPersonalizado(null);
+        }
 
         return voucherRepository.save(voucher);
     }

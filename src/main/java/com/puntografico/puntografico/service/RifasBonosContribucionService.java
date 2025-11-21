@@ -26,9 +26,9 @@ public class RifasBonosContribucionService {
         TipoColorRifa tipoColorRifa = opcionesRifasContribucionService.buscarTipoColorRifaPorId(rifasBonosContribucionDTO.getTipoColorRifaId());
 
         RifasBonosContribucion rifasBonosContribucion = (idRifasBonosContribucion != null) ? rifasBonosContribucionRepository.findById(idRifasBonosContribucion).get() : new RifasBonosContribucion();
-        boolean adicionalDisenio = (idRifasBonosContribucion != null) ? rifasBonosContribucion.isConAdicionalDisenio() : rifasBonosContribucionDTO.getConAdicionalDisenio();
-        boolean conNumerado = (idRifasBonosContribucion != null) ? rifasBonosContribucion.isConNumerado() : rifasBonosContribucionDTO.getConNumerado();
-        boolean conEncolado = (idRifasBonosContribucion != null) ? rifasBonosContribucion.isConEncolado() : rifasBonosContribucionDTO.getConEncolado();
+        boolean adicionalDisenio = rifasBonosContribucionDTO.getConAdicionalDisenio();
+        boolean conNumerado = rifasBonosContribucionDTO.getConNumerado();
+        boolean conEncolado = rifasBonosContribucionDTO.getConEncolado();
 
         rifasBonosContribucion.setConNumerado(conNumerado);
         rifasBonosContribucion.setDetalleNumerado(rifasBonosContribucionDTO.getDetalleNumerado());

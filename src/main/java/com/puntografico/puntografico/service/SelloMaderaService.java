@@ -23,10 +23,9 @@ public class SelloMaderaService {
         TamanioSelloMadera tamanioSelloMadera = opcionesSelloMaderaService.buscarTamanioSelloMaderaPorId(selloMaderaDTO.getTamanioSelloMaderaId());
 
         SelloMadera selloMadera = (idSelloMadera != null) ? selloMaderaRepository.findById(idSelloMadera).get() : new SelloMadera();
-        boolean adicionalPerilla = (idSelloMadera != null) ? selloMadera.isConAdicionalPerilla() : selloMaderaDTO.getConAdicionalPerilla();
-        boolean adicionalDisenio = (idSelloMadera != null) ? selloMadera.isConAdicionalDisenio() : selloMaderaDTO.getConAdicionalDisenio();
+        boolean adicionalPerilla = selloMaderaDTO.getConAdicionalPerilla();
+        boolean adicionalDisenio = selloMaderaDTO.getConAdicionalDisenio();
 
-        selloMadera.setTamanioPersonalizado(selloMaderaDTO.getTamanioPersonalizado());
         selloMadera.setConAdicionalPerilla(adicionalPerilla);
         selloMadera.setDetalleSello(selloMaderaDTO.getDetalleSello());
         selloMadera.setTipografiaLineaUno(selloMaderaDTO.getTipografiaLineaUno());
@@ -35,6 +34,12 @@ public class SelloMaderaService {
         selloMadera.setInformacionAdicional(selloMaderaDTO.getInformacionAdicional());
         selloMadera.setTamanioSelloMadera(tamanioSelloMadera);
         selloMadera.setCantidad(selloMaderaDTO.getCantidad());
+
+        if (tamanioSelloMadera.getTamanio().equalsIgnoreCase("otra")) {
+            selloMadera.setTamanioPersonalizado(selloMaderaDTO.getTamanioPersonalizado());
+        } else {
+            selloMadera.setTamanioPersonalizado(null);
+        }
 
         return selloMaderaRepository.save(selloMadera);
     }
