@@ -17,45 +17,95 @@
   <form method="post" action="/api/creacion-impresion">
     <!-- DATOS DEL CLIENTE -->
     <div class="contenedor-datos-odt">
-      <h5 class="mt-4 datos-del-cliente">Datos del Cliente</h5>
+      <h5 class="mt-4 datos-del-cliente">
+        Datos del Cliente
+      </h5>
       <div class="row mb-3">
         <div class="col-md-6">
-          <label for="nombreCliente" class="form-label">Nombre del cliente *</label>
-          <input type="text" class="form-control" name="nombreCliente" id="nombreCliente" th:value="${ordenTrabajo.nombreCliente}" placeholder="Ej: Juan Pérez" required>
+          <label for="nombreCliente" class="form-label">
+            Nombre del cliente *
+          </label>
+          <input type="text"
+                 class="form-control"
+                 name="nombreCliente"
+                 id="nombreCliente"
+                 th:value="${ordenTrabajo.nombreCliente}"
+                 placeholder="Ej: Juan Pérez"
+                 required>
         </div>
         <div class="col-md-4">
-          <label for="telefonoCliente" class="form-label">Teléfono del cliente *</label>
-          <input type="text" class="form-control" name="telefonoCliente" id="telefonoCliente" th:value="${ordenTrabajo.telefonoCliente}" placeholder="Ej: 1123952892" required>
+          <label for="telefonoCliente" class="form-label">
+            Teléfono del cliente *
+          </label>
+          <input type="number"
+                 class="form-control"
+                 name="telefonoCliente"
+                 id="telefonoCliente"
+                 th:value="${ordenTrabajo.telefonoCliente}"
+                 placeholder="Ej: 1123952892"
+                 required>
         </div>
         <div class="col-md-2 d-flex align-items-end">
           <div class="form-check">
-            <input type="checkbox" class="form-check-input" name="esCuentaCorriente" id="esCuentaCorriente" th:checked="${ordenTrabajo.esCuentaCorriente}">
-            <label class="form-check-label" for="esCuentaCorriente">¿CC?</label>
+            <input type="checkbox"
+                   class="form-check-input"
+                   name="esCuentaCorriente"
+                   id="esCuentaCorriente"
+                   th:checked="${ordenTrabajo.esCuentaCorriente}">
+            <label class="form-check-label" for="esCuentaCorriente">
+              ¿CC?
+            </label>
           </div>
         </div>
       </div>
 
       <div class="row mb-3">
         <div class="col-md-6">
-          <label for="fechaEntrega" class="form-label">Fecha de entrega *</label>
-          <input type="date" class="form-control" name="fechaEntrega" id="fechaEntrega" th:value="${ordenTrabajo.fechaEntrega}" required>
+          <label for="fechaEntrega" class="form-label">
+            Fecha de entrega *
+          </label>
+          <input type="date"
+                 class="form-control"
+                 name="fechaEntrega"
+                 id="fechaEntrega"
+                 th:value="${ordenTrabajo.fechaEntrega}"
+                 required>
         </div>
         <div class="col-md-4">
-          <label for="horaEntrega" class="form-label">Hora de entrega</label>
-          <input type="text" class="form-control" name="horaEntrega" id="horaEntrega" th:value="${ordenTrabajo.horaEntrega}" placeholder="Ej: 11:30 pm">
+          <label for="horaEntrega" class="form-label">
+            Hora de entrega
+          </label>
+          <input type="text"
+                 class="form-control"
+                 name="horaEntrega"
+                 id="horaEntrega"
+                 th:value="${ordenTrabajo.horaEntrega}"
+                 placeholder="Ej: 11:30">
         </div>
         <div class="col-md-2 d-flex align-items-end">
           <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="toggleFechaMuestra" name="toggleFechaMuestra" th:checked="${ordenTrabajo.fechaMuestra != null}">
-            <label class="form-check-label" for="toggleFechaMuestra">¿Muestra?</label>
+            <input type="checkbox"
+                   class="form-check-input"
+                   id="toggleFechaMuestra"
+                   name="toggleFechaMuestra"
+                   th:checked="${ordenTrabajo.fechaMuestra != null}">
+            <label class="form-check-label" for="toggleFechaMuestra">
+              ¿Muestra?
+            </label>
           </div>
         </div>
       </div>
 
       <div class="row mb-3" th:classappend="${ordenTrabajo.fechaMuestra != null} ? '' : 'd-none'" id="fechaMuestraRow">
         <div class="col-md-6">
-          <label for="fechaMuestra" class="form-label">Fecha de muestra</label>
-          <input type="date" class="form-control" name="fechaMuestra" id="fechaMuestra" th:value="${ordenTrabajo.fechaMuestra}">
+          <label for="fechaMuestra" class="form-label">
+            Fecha de muestra
+          </label>
+          <input type="date"
+                 class="form-control"
+                 name="fechaMuestra"
+                 id="fechaMuestra"
+                 th:value="${ordenTrabajo.fechaMuestra}">
         </div>
       </div>
     </div>
@@ -65,15 +115,24 @@
     <input type="hidden" name="idOrden" th:value="${ordenTrabajo != null ? ordenTrabajo.id : ''}">
 
     <div class="contenedor-datos-odt">
-      <h5 class="mt-4 datos-del-producto">Datos del Producto</h5>
+      <h5 class="mt-4 datos-del-producto">
+        Datos del Producto
+      </h5>
       <div class="row mb-3">
         <div class="col-md-12">
-          <label class="form-label">Tipo de papel *</label>
+          <label class="form-label">
+            Tipo de papel *
+          </label>
           <div class="d-flex flex-wrap gap-3">
             <div th:each="tipo : ${listaTipoPapelImpresion}" class="form-check">
-              <input class="form-check-input tipo-radio" type="radio" name="tipoPapelImpresion.id"
-                     th:id="'tipo-' + ${tipo.id}" th:value="${tipo.id}" th:data-papel="${tipo.tipo}"
-                     th:checked="${impresion.tipoPapelImpresion != null} ? ${tipo.id} == ${impresion.tipoPapelImpresion.id} : false" required>
+              <input class="form-check-input tipo-radio"
+                     type="radio"
+                     name="tipoPapelImpresion.id"
+                     th:id="'tipo-' + ${tipo.id}"
+                     th:value="${tipo.id}"
+                     th:data-papel="${tipo.tipo}"
+                     th:checked="${impresion.tipoPapelImpresion != null} ? ${tipo.id} == ${impresion.tipoPapelImpresion.id} : false"
+                     required>
               <label class="form-check-label" th:for="'tipo-' + ${tipo.id}" th:text="${tipo.tipo}"></label>
             </div>
           </div>
@@ -81,12 +140,19 @@
       </div>
       <div class="row mb-3">
         <div class="col-md-12">
-          <label class="form-label">Tamaño de hoja *</label>
+          <label class="form-label">
+            Tamaño de hoja *
+          </label>
           <div class="d-flex flex-wrap gap-3">
             <div th:each="tamanio : ${listaTamanioHojaImpresion}" class="form-check">
-              <input class="form-check-input tipo-radio" type="radio" name="tamanioHojaImpresion.id"
-                     th:id="'tamanio-' + ${tamanio.id}" th:value="${tamanio.id}" th:data-tamanio="${tamanio.tamanio}"
-                     th:checked="${impresion.tamanioHojaImpresion != null} ? ${tamanio.id} == ${impresion.tamanioHojaImpresion.id} : false" required>
+              <input class="form-check-input tipo-radio"
+                     type="radio"
+                     name="tamanioHojaImpresion.id"
+                     th:id="'tamanio-' + ${tamanio.id}"
+                     th:value="${tamanio.id}"
+                     th:data-tamanio="${tamanio.tamanio}"
+                     th:checked="${impresion.tamanioHojaImpresion != null} ? ${tamanio.id} == ${impresion.tamanioHojaImpresion.id} : false"
+                     required>
               <label class="form-check-label" th:for="'tamanio-' + ${tamanio.id}" th:text="${tamanio.tamanio}"></label>
             </div>
           </div>
@@ -94,12 +160,19 @@
       </div>
       <div class="row mb-3">
         <div class="col-md-12">
-          <label class="form-label">Tipo de color *</label>
+          <label class="form-label">
+            Tipo de color *
+          </label>
           <div class="d-flex flex-wrap gap-3">
             <div th:each="tipo : ${listaTipoColorImpresion}" class="form-check">
-              <input class="form-check-input tipo-radio" type="radio" name="tipoColorImpresion.id"
-                     th:id="'tipo-' + ${tipo.id}" th:value="${tipo.id}" th:data-color="${tipo.tipo}"
-                     th:checked="${impresion.tipoColorImpresion != null} ? ${tipo.id} == ${impresion.tipoColorImpresion.id} : false" required>
+              <input class="form-check-input tipo-radio"
+                     type="radio"
+                     name="tipoColorImpresion.id"
+                     th:id="'tipo-' + ${tipo.id}"
+                     th:value="${tipo.id}"
+                     th:data-color="${tipo.tipo}"
+                     th:checked="${impresion.tipoColorImpresion != null} ? ${tipo.id} == ${impresion.tipoColorImpresion.id} : false"
+                     required>
               <label class="form-check-label" th:for="'tipo-' + ${tipo.id}" th:text="${tipo.tipo}"></label>
             </div>
           </div>
@@ -107,12 +180,19 @@
       </div>
       <div class="row mb-3">
         <div class="col-md-12">
-          <label class="form-label">Tipo de faz *</label>
+          <label class="form-label">
+            Tipo de faz *
+          </label>
           <div class="d-flex flex-wrap gap-3">
             <div th:each="tipo : ${listaTipoFazImpresion}" class="form-check">
-              <input class="form-check-input tipo-radio" type="radio" name="tipoFazImpresion.id"
-                     th:id="'tipo-' + ${tipo.id}" th:value="${tipo.id}" th:data-folleto="${tipo.tipo}"
-                     th:checked="${impresion.tipoFazImpresion != null} ? ${tipo.id} == ${impresion.tipoFazImpresion.id} : false" required>
+              <input class="form-check-input tipo-radio"
+                     type="radio"
+                     name="tipoFazImpresion.id"
+                     th:id="'tipo-' + ${tipo.id}"
+                     th:value="${tipo.id}"
+                     th:data-folleto="${tipo.tipo}"
+                     th:checked="${impresion.tipoFazImpresion != null} ? ${tipo.id} == ${impresion.tipoFazImpresion.id} : false"
+                     required>
               <label class="form-check-label" th:for="'tipo-' + ${tipo.id}" th:text="${tipo.tipo}"></label>
             </div>
           </div>
@@ -120,12 +200,19 @@
       </div>
       <div class="row mb-3">
         <div class="col-md-12">
-          <label class="form-label">Tipo de impresión *</label>
+          <label class="form-label">
+            Tipo de impresión *
+          </label>
           <div class="d-flex flex-wrap gap-3">
             <div th:each="tipo : ${listaTipoImpresion}" class="form-check">
-              <input class="form-check-input tipo-radio" type="radio" name="tipoImpresion.id"
-                     th:id="'tipo-' + ${tipo.id}" th:value="${tipo.id}" th:data-folleto="${tipo.tipo}"
-                     th:checked="${impresion.tipoImpresion != null} ? ${tipo.id} == ${impresion.tipoImpresion.id} : false" required>
+              <input class="form-check-input tipo-radio"
+                     type="radio"
+                     name="tipoImpresion.id"
+                     th:id="'tipo-' + ${tipo.id}"
+                     th:value="${tipo.id}"
+                     th:data-folleto="${tipo.tipo}"
+                     th:checked="${impresion.tipoImpresion != null} ? ${tipo.id} == ${impresion.tipoImpresion.id} : false"
+                     required>
               <label class="form-check-label" th:for="'tipo-' + ${tipo.id}" th:text="${tipo.tipo}"></label>
             </div>
           </div>
@@ -133,23 +220,45 @@
       </div>
       <div class="row mb-3">
         <div class="col-md-12">
-          <label for="impresion-enlace-archivo" class="form-label">Enlace del Archivo</label>
-          <input type="url" class="form-control" name="enlaceArchivo" th:value="${impresion.enlaceArchivo}" id="impresion-enlace-archivo" placeholder="Ej: http://drive.google.com/archivo.pdf">
+          <label for="impresion-enlace-archivo" class="form-label">
+            Enlace del Archivo
+          </label>
+          <input type="url"
+                 class="form-control"
+                 name="enlaceArchivo"
+                 th:value="${impresion.enlaceArchivo}"
+                 id="impresion-enlace-archivo"
+                 placeholder="Ej: http://drive.google.com/archivo.pdf">
         </div>
       </div>
       <div class="row mb-3">
         <div class="col-md-12">
-          <label for="impresion-informacion-adicional" class="form-label">Información adicional</label>
-          <input class="form-control" name="informacionAdicional" th:value="${impresion.informacionAdicional}" id="impresion-informacion-adicional" rows="1" placeholder="Inserte aquí más info."/>
+          <label for="impresion-informacion-adicional" class="form-label">
+            Información adicional
+          </label>
+          <input class="form-control"
+                 name="informacionAdicional"
+                 th:value="${impresion.informacionAdicional}"
+                 id="impresion-informacion-adicional"
+                 rows="1"
+                 placeholder="Inserte aquí más info."/>
         </div>
       </div>
       <div class="row mb-3">
         <div class="col-md-12">
           <div class="mt-2">
-            <label for="cantidad" class="form-label">Cantidad de <b>páginas</b> *</label>
-            <input type="number" class="form-control" th:value="${impresion.cantidad}" name="cantidad" id="cantidad" placeholder="0">
+            <label for="cantidad" class="form-label">
+              Cantidad de <b>páginas</b> *
+            </label>
+            <input type="number"
+                   class="form-control"
+                   th:value="${impresion.cantidad}"
+                   name="cantidad"
+                   id="cantidad"
+                   placeholder="0">
           </div>
-          <input type="hidden" name="cantidadImpresion.id"
+          <input type="hidden"
+                 name="cantidadImpresion.id"
                  th:value="${impresion.cantidadImpresion != null ? impresion.cantidadImpresion.id : ''}"
                  id="cantidadImpresionId">
         </div>
@@ -158,55 +267,113 @@
 
     <div class="contenedor-datos-odt">
       <!-- DATOS DE PAGO -->
-      <h5 class="mt-4 datos-de-pago">Datos de Pago</h5>
+      <h5 class="mt-4 datos-de-pago">
+        Datos de Pago
+      </h5>
       <div class="row mb-3">
         <div class="col-md-6 d-flex align-items-end">
           <div class="form-check">
-            <input class="form-check-input" name="esAnillado" type="checkbox" id="impresion-es-anillado" th:checked="${impresion.esAnillado}">
-            <label class="form-check-label" for="impresion-es-anillado">¿Anillado?</label>
+            <input class="form-check-input"
+                   name="esAnillado"
+                   type="checkbox"
+                   id="impresion-es-anillado"
+                   th:checked="${impresion.esAnillado}">
+            <label class="form-check-label" for="impresion-es-anillado">
+              ¿Anillado?
+            </label>
           </div>
         </div>
         <div class="col-md-6 d-flex align-items-end">
           <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="necesitaFactura" name="necesitaFactura" th:checked="${ordenTrabajo.necesitaFactura}">
-            <label class="form-check-label" for="necesitaFactura">¿Necesita factura?</label>
+            <input type="checkbox"
+                   class="form-check-input"
+                   id="necesitaFactura"
+                   name="necesitaFactura"
+                   th:checked="${ordenTrabajo.necesitaFactura}">
+            <label class="form-check-label" for="necesitaFactura">
+              ¿Necesita factura?
+            </label>
           </div>
         </div>
       </div>
       <div class="row mb-3" th:classappend="${ordenTrabajo.id} != null ? 'd-none' : ''">
         <div class="col-md-4">
-          <label for="total" class="form-label">Precio del producto *</label>
-          <input type="number" class="form-control" id="precioProducto" placeholder="0" th:required="${ordenTrabajo.id} == null">
+          <label for="total" class="form-label">
+            Precio del producto *
+          </label>
+          <input type="number"
+                 class="form-control"
+                 id="precioProducto"
+                 placeholder="0"
+                 th:required="${ordenTrabajo.id} == null">
         </div>
         <div class="col-md-4">
-            <label for="total" class="form-label">Precio por anillado *</label>
-            <input type="number" class="form-control" id="precioAnillado" placeholder="0" th:required="${ordenTrabajo.id} == null">
+            <label for="total" class="form-label">
+              Precio por anillado *
+            </label>
+            <input type="number"
+                   class="form-control"
+                   id="precioAnillado"
+                   placeholder="0"
+                   th:required="${ordenTrabajo.id} == null">
         </div>
         <div class="col-md-4">
-          <label for="total" class="form-label">Precio impuestos *</label>
-          <input type="number" class="form-control" id="precioImpuestos" placeholder="0" readonly>
+          <label for="total" class="form-label">
+            Precio impuestos *
+          </label>
+          <input type="number"
+                 class="form-control"
+                 id="precioImpuestos"
+                 placeholder="0"
+                 readonly>
         </div>
       </div>
       <div class="row mb-6">
         <div class="col-md-4">
-          <label for="total" class="form-label">Total *</label>
-          <input type="number" class="form-control" name="total" id="total" placeholder="0" th:value="${ordenTrabajo.total}" th:readonly="${ordenTrabajo.id} == null">
+          <label for="total" class="form-label">
+            Total *
+          </label>
+          <input type="number"
+                 class="form-control"
+                 name="total"
+                 id="total"
+                 placeholder="0"
+                 th:value="${ordenTrabajo.total}"
+                 th:readonly="${ordenTrabajo.id} == null">
         </div>
         <div class="col-md-4">
-          <label for="abonado" class="form-label">Abonado *</label>
-          <input type="number" class="form-control" name="abonado" id="abonado" placeholder="0" th:value="${ordenTrabajo.abonado}" required>
+          <label for="abonado" class="form-label">
+            Abonado *
+          </label>
+          <input type="number"
+                 class="form-control"
+                 name="abonado"
+                 id="abonado"
+                 placeholder="0"
+                 th:value="${ordenTrabajo.abonado}"
+                 required>
         </div>
         <div class="col-md-4">
-          <label for="resta" class="form-label">Resta</label>
-          <input type="number" class="form-control" name="resta" id="resta" readonly>
+          <label for="resta" class="form-label">
+            Resta
+          </label>
+          <input type="number"
+                 class="form-control"
+                 name="resta"
+                 id="resta"
+                 readonly>
         </div>
       </div>
       <div class="row mb-3 mt-3">
         <div class="col-md-12">
-          <label class="form-label d-block">Medio de pago *</label>
+          <label class="form-label d-block">
+            Medio de pago *
+          </label>
           <div class="d-flex flex-wrap gap-3">
             <div th:each="medio : ${listaMediosDePago}" class="form-check mx-3">
-              <input id="medioPago" class="form-check-input" type="radio"
+              <input id="medioPago"
+                     class="form-check-input"
+                     type="radio"
                      name="medioPago.id"
                      th:id="'medioPago-' + ${medio.id}"
                      th:value="${medio.id}"
