@@ -70,7 +70,7 @@
                 <p><strong>Información adicional: </strong><span th:text="${ordenLonaPublicitaria.lonaPublicitaria.informacionAdicional} == '' ? ' - ' : ${ordenLonaPublicitaria.lonaPublicitaria.informacionAdicional}"></span></p>
                 <hr class="divider">
                 <p><strong>Fecha de entrega: </strong><span th:text="${fechaEntrega}"></span>
-                <p th:if="${ordenLonaPublicitaria.ordenTrabajo.horaEntrega} != ''"><strong>Hora de entrega: </strong><span th:text="${ordenLonaPublicitaria.ordenTrabajo.horaEntrega}"></span></p>
+                <p th:if="${ordenLonaPublicitaria.ordenTrabajo.horaEntrega} != ''"><strong>Hora de entrega: </strong><span th:text="${ordenLonaPublicitaria.ordenTrabajo.horaEntrega}"></span> hs.</p>
                 <p th:if="${ordenLonaPublicitaria.ordenTrabajo.fechaMuestra}"><strong>Fecha de muestra: </strong><span th:text="${fechaMuestra}"></span></p>
                 <p><strong>Cantidad: </strong><span th:text="${ordenLonaPublicitaria.lonaPublicitaria.cantidad}"></span></p>
             </div>

@@ -69,7 +69,7 @@
         <p><strong>Información adicional: </strong><span th:text="${ordenSticker.sticker.informacionAdicional} == '' ? ' - ' : ${ordenSticker.sticker.informacionAdicional}"></span></p>
         <hr class="divider">
         <p><strong>Fecha de entrega: </strong><span th:text="${fechaEntrega}"></span>
-        <p th:if="${ordenSticker.ordenTrabajo.horaEntrega} != ''"><strong>Hora de entrega: </strong><span th:text="${ordenSticker.ordenTrabajo.horaEntrega}"></span></p>
+        <p th:if="${ordenSticker.ordenTrabajo.horaEntrega} != ''"><strong>Hora de entrega: </strong><span th:text="${ordenSticker.ordenTrabajo.horaEntrega}"></span> hs.</p>
         <p th:if="${ordenSticker.ordenTrabajo.fechaMuestra}"><strong>Fecha de muestra: </strong><span th:text="${fechaMuestra}"></span></p>
         <p><strong>Cantidad de productos: </strong><span th:text="${ordenSticker.sticker.cantidad}"></span></p>
       </div>

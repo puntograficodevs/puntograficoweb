@@ -66,7 +66,7 @@
                 <p><strong>Información adicional: </strong><span th:text="${ordenFlybanner.flybanner.informacionAdicional} == '' ? ' - ' : ${ordenFlybanner.flybanner.informacionAdicional}"></span></p>
                 <hr class="divider">
                 <p><strong>Fecha de entrega: </strong><span th:text="${fechaEntrega}"></span>
-                <p th:if="${ordenFlybanner.ordenTrabajo.horaEntrega} != ''"><strong>Hora de entrega: </strong><span th:text="${ordenFlybanner.ordenTrabajo.horaEntrega}"></span></p>
+                <p th:if="${ordenFlybanner.ordenTrabajo.horaEntrega} != ''"><strong>Hora de entrega: </strong><span th:text="${ordenFlybanner.ordenTrabajo.horaEntrega}"></span> hs.</p>
                 <p th:if="${ordenFlybanner.ordenTrabajo.fechaMuestra}"><strong>Fecha de muestra: </strong><span th:text="${fechaMuestra}"></span></p>
                 <p><strong>Cantidad de productos: </strong><span th:text="${ordenFlybanner.flybanner.cantidad}"></span></p>
             </div>

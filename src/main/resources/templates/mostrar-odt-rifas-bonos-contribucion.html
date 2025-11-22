@@ -73,7 +73,7 @@
         <p><strong>Información adicional: </strong><span th:text="${ordenRifasBonosContribucion.rifasBonosContribucion.informacionAdicional} == '' ? ' - ' : ${ordenRifasBonosContribucion.rifasBonosContribucion.informacionAdicional}"></span></p>
         <hr class="divider">
         <p><strong>Fecha de entrega: </strong><span th:text="${fechaEntrega}"></span>
-        <p th:if="${ordenRifasBonosContribucion.ordenTrabajo.horaEntrega} != ''"><strong>Hora de entrega: </strong><span th:text="${ordenRifasBonosContribucion.ordenTrabajo.horaEntrega}"></span></p>
+        <p th:if="${ordenRifasBonosContribucion.ordenTrabajo.horaEntrega} != ''"><strong>Hora de entrega: </strong><span th:text="${ordenRifasBonosContribucion.ordenTrabajo.horaEntrega}"></span> hs.</p>
         <p th:if="${ordenRifasBonosContribucion.ordenTrabajo.fechaMuestra}"><strong>Fecha de muestra: </strong><span th:text="${fechaMuestra}"></span></p>
         <p><strong>Cantidad: </strong><span th:text="${ordenRifasBonosContribucion.rifasBonosContribucion.cantidad}"></span></p>
       </div>

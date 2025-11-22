@@ -67,7 +67,7 @@
         <p><strong>Información adicional: </strong><span th:text="${ordenImpresion.impresion.informacionAdicional} == '' ? ' - ' : ${ordenImpresion.impresion.informacionAdicional}"></span></p>
         <hr class="divider">
         <p><strong>Fecha de entrega: </strong><span th:text="${fechaEntrega}"></span>
-        <p th:if="${ordenImpresion.ordenTrabajo.horaEntrega} != ''"><strong>Hora de entrega: </strong><span th:text="${ordenImpresion.ordenTrabajo.horaEntrega}"></span></p>
+        <p th:if="${ordenImpresion.ordenTrabajo.horaEntrega} != ''"><strong>Hora de entrega: </strong><span th:text="${ordenImpresion.ordenTrabajo.horaEntrega}"></span> hs.</p>
         <p th:if="${ordenImpresion.ordenTrabajo.fechaMuestra}"><strong>Fecha de muestra: </strong><span th:text="${fechaMuestra}"></span></p>
         <p><strong>Cantidad de páginas: </strong><span th:text="${ordenImpresion.impresion.cantidad}"></span></p>
       </div>

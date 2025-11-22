@@ -72,7 +72,7 @@
         <p><strong>Información adicional: </strong><span th:text="${ordenAgenda.agenda.informacionAdicional} == '' ? ' - ' : ${ordenAgenda.agenda.informacionAdicional}"></span></p>
         <hr class="divider">
         <p><strong>Fecha de entrega: </strong><span th:text="${fechaEntrega}"></span>
-        <p th:if="${ordenAgenda.ordenTrabajo.horaEntrega} != ''"><strong>Hora de entrega: </strong><span th:text="${ordenAgenda.ordenTrabajo.horaEntrega}"></span></p>
+        <p th:if="${ordenAgenda.ordenTrabajo.horaEntrega} != ''"><strong>Hora de entrega: </strong><span th:text="${ordenAgenda.ordenTrabajo.horaEntrega}"></span> hs.</p>
         <p th:if="${ordenAgenda.ordenTrabajo.fechaMuestra}"><strong>Fecha de muestra: </strong><span th:text="${fechaMuestra}"></span></p>
         <p><strong>Cantidad de productos: </strong><span th:text="${ordenAgenda.agenda.cantidad}"></span></p>
       </div>

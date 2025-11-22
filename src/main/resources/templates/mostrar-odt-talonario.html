@@ -76,7 +76,7 @@
         <p><strong>Información adicional: </strong><span th:text="${ordenTalonario.talonario.informacionAdicional} == '' ? ' - ' : ${ordenTalonario.talonario.informacionAdicional}"></span></p>
         <hr class="divider">
         <p><strong>Fecha de entrega: </strong><span th:text="${fechaEntrega}"></span>
-        <p th:if="${ordenTalonario.ordenTrabajo.horaEntrega} != ''"><strong>Hora de entrega: </strong><span th:text="${ordenTalonario.ordenTrabajo.horaEntrega}"></span></p>
+        <p th:if="${ordenTalonario.ordenTrabajo.horaEntrega} != ''"><strong>Hora de entrega: </strong><span th:text="${ordenTalonario.ordenTrabajo.horaEntrega}"></span> hs.</p>
         <p th:if="${ordenTalonario.ordenTrabajo.fechaMuestra}"><strong>Fecha de muestra: </strong><span th:text="${fechaMuestra}"></span></p>
         <p><strong>Cantidad de productos: </strong><span th:text="${ordenTalonario.talonario.cantidad}"></span></p>
       </div>

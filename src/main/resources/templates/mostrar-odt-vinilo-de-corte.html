@@ -72,7 +72,7 @@
         <p><strong>Información adicional: </strong><span th:text="${ordenViniloDeCorte.viniloDeCorte.informacionAdicional} == '' ? ' - ' : ${ordenViniloDeCorte.viniloDeCorte.informacionAdicional}"></span></p>
         <hr class="divider">
         <p><strong>Fecha de entrega: </strong><span th:text="${fechaEntrega}"></span>
-        <p th:if="${ordenViniloDeCorte.ordenTrabajo.horaEntrega} != ''"><strong>Hora de entrega: </strong><span th:text="${ordenViniloDeCorte.ordenTrabajo.horaEntrega}"></span></p>
+        <p th:if="${ordenViniloDeCorte.ordenTrabajo.horaEntrega} != ''"><strong>Hora de entrega: </strong><span th:text="${ordenViniloDeCorte.ordenTrabajo.horaEntrega}"></span> hs.</p>
         <p th:if="${ordenViniloDeCorte.ordenTrabajo.fechaMuestra}"><strong>Fecha de muestra: </strong><span th:text="${fechaMuestra}"></span></p>
         <p><strong>Cantidad de productos: </strong><span th:text="${ordenViniloDeCorte.viniloDeCorte.cantidad}"></span></p>
       </div>
