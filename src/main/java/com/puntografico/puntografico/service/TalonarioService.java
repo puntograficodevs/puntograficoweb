@@ -29,7 +29,7 @@ public class TalonarioService {
 
         Integer cantidad = talonarioDTO.getCantidad();
 
-        if (cantidad == null) {
+        if (cantidad == null || cantidad == 0) {
             cantidad = Integer.valueOf(cantidadTalonario.getCantidad());
         }
 

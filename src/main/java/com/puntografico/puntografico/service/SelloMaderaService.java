@@ -35,7 +35,7 @@ public class SelloMaderaService {
         selloMadera.setTamanioSelloMadera(tamanioSelloMadera);
         selloMadera.setCantidad(selloMaderaDTO.getCantidad());
 
-        if (tamanioSelloMadera.getTamanio().equalsIgnoreCase("otra")) {
+        if (tamanioSelloMadera.getTamanio().equalsIgnoreCase("otro")) {
             selloMadera.setTamanioPersonalizado(selloMaderaDTO.getTamanioPersonalizado());
         } else {
             selloMadera.setTamanioPersonalizado(null);

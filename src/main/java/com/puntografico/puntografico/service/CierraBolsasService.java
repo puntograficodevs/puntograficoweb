@@ -30,7 +30,7 @@ public class CierraBolsasService {
         CantidadCierraBolsas cantidadCierraBolsas = opcionesCierraBolsasService.buscarCantidadCierraBolsasPorId(cierraBolsasDTO.getCantidadCierraBolsasId());
         Integer cantidad = cierraBolsasDTO.getCantidad();
 
-        if (cantidad == null) {
+        if (cantidad == null || cantidad == 0) {
             cantidad = Integer.valueOf(cantidadCierraBolsas.getCantidad());
         }
 

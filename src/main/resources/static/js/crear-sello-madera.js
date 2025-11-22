@@ -38,7 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
       radiosTamanio.forEach(radio => {
         radio.addEventListener('change', () => {
           const label = document.querySelector(`label[for="${radio.id}"]`);
-          const esOtro = label?.textContent.trim().toLowerCase() === 'otro';
+          const texto = label?.textContent.trim().toLowerCase();
+          const esOtro = texto === 'otro';
           tamanioInputRow.classList.toggle('d-none', !esOtro);
         });
       });

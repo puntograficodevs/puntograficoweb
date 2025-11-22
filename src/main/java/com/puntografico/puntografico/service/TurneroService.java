@@ -24,7 +24,7 @@ public class TurneroService {
         CantidadTurnero cantidadTurnero = opcionesTurneroService.buscarCantidadTurneroPorId(turneroDTO.getCantidadTurneroId());
         Integer cantidad = turneroDTO.getCantidad();
 
-        if (cantidad == null) {
+        if (cantidad == null || cantidad == 0) {
             cantidad = Integer.valueOf(cantidadTurnero.getCantidad());
         }
 

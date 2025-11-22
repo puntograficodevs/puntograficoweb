@@ -27,14 +27,13 @@ public class EntradaService {
         TerminacionEntrada terminacionEntrada = opcionesEntradaService.buscarTerminacionEntradaPorId(entradaDTO.getTerminacionEntradaId());
         Integer cantidad = entradaDTO.getCantidad();
 
-        if (cantidad == null) {
+        if (cantidad == null || cantidad == 0) {
             cantidad = Integer.valueOf(cantidadEntrada.getCantidad());
         }
 
         Entrada entrada = (idEntrada != null) ? entradaRepository.findById(idEntrada).get() : new Entrada();
         boolean adicionalDisenio = entradaDTO.getConAdicionalDisenio();
 
-        //entrada.setMedidaPersonalizada(entradaDTO.getMedidaPersonalizada());
         entrada.setEnlaceArchivo(entradaDTO.getEnlaceArchivo());
         entrada.setConAdicionalDisenio(adicionalDisenio);
         entrada.setInformacionAdicional(entradaDTO.getInformacionAdicional());

@@ -28,7 +28,7 @@ public class TarjetaService {
 
         Integer cantidad = tarjetaDTO.getCantidad();
 
-        if (cantidad == null) {
+        if (cantidad == null || cantidad == 0) {
             cantidad = Integer.valueOf(cantidadTarjeta.getCantidad());
         }
 

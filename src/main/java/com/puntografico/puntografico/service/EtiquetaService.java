@@ -27,7 +27,7 @@ public class EtiquetaService {
         MedidaEtiqueta medidaEtiqueta = opcionesEtiquetaService.buscarMedidaEtiquetaPorId(etiquetaDTO.getMedidaEtiquetaId());
         Integer cantidad = etiquetaDTO.getCantidad();
 
-        if (cantidad == null) {
+        if (cantidad == null || cantidad == 0) {
             cantidad = Integer.valueOf(cantidadEtiqueta.getCantidad());
         }
 

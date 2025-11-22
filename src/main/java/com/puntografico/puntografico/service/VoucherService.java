@@ -24,7 +24,7 @@ public class VoucherService {
         CantidadVoucher cantidadVoucher = opcionesVoucherService.buscarCantidadVoucherPorId(voucherDTO.getCantidadVoucherId());
         Integer cantidad = voucherDTO.getCantidad();
 
-        if (cantidad == null) {
+        if (cantidad == null || cantidad == 0) {
             cantidad = Integer.valueOf(cantidadVoucher.getCantidad());
         }
 
@@ -39,6 +39,12 @@ public class VoucherService {
         voucher.setTipoFazVoucher(tipoFazVoucher);
         voucher.setCantidadVoucher(cantidadVoucher);
         voucher.setCantidad(cantidad);
+
+        if (medidaVoucher.getMedida().equalsIgnoreCase("otra")) {
+            voucher.setMedidaPersonalizada(voucherDTO.getMedidaPersonalizada());
+        } else {
+            voucher.setMedidaPersonalizada(null);
+        }
 
         if (tipoPapelVoucher.getTipo().equalsIgnoreCase("otro")) {
             voucher.setTipoPapelPersonalizado(voucherDTO.getTipoPapelPersonalizado());

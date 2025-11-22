@@ -27,7 +27,7 @@ public class SobreService {
 
         Integer cantidad = sobreDTO.getCantidad();
 
-        if (cantidad == null) {
+        if (cantidad == null || cantidad == 0) {
             cantidad = Integer.valueOf(cantidadSobre.getCantidad());
         }
 
