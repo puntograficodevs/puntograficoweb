@@ -62,11 +62,16 @@ public class SobreController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
-
         OrdenSobre ordenSobre = ordenSobreService.buscarPorId(ordenSobreId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenSobre.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenSobre.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenSobre.getOrdenTrabajo().getFechaPedido());
 
+        model.addAttribute("empleado", empleado);
         model.addAttribute("ordenSobre", ordenSobre);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-sobre";
     }

@@ -68,11 +68,16 @@ public class TarjetaController {
             return "redirect:/";
         }
 
-        model.addAttribute("empleado", empleado);
-
         OrdenTarjeta ordenTarjeta = ordenTarjetaService.buscarPorId(ordenTarjetaId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenTarjeta.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenTarjeta.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenTarjeta.getOrdenTrabajo().getFechaPedido());
 
+        model.addAttribute("empleado", empleado);
         model.addAttribute("ordenTarjeta", ordenTarjeta);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-tarjeta";
     }

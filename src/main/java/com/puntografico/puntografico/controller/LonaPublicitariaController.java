@@ -60,11 +60,16 @@ public class LonaPublicitariaController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
-
         OrdenLonaPublicitaria ordenLonaPublicitaria = ordenLonaPublicitariaService.buscarPorId(ordenLonaPublicitariaId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenLonaPublicitaria.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenLonaPublicitaria.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenLonaPublicitaria.getOrdenTrabajo().getFechaPedido());
 
+        model.addAttribute("empleado", empleado);
         model.addAttribute("ordenLonaPublicitaria", ordenLonaPublicitaria);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-lona-publicitaria";
     }

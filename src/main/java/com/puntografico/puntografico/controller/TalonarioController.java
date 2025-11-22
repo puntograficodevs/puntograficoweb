@@ -70,11 +70,16 @@ public class TalonarioController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
-
         OrdenTalonario ordenTalonario = ordenTalonarioService.buscarPorId(ordenTalonarioId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenTalonario.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenTalonario.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenTalonario.getOrdenTrabajo().getFechaPedido());
 
+        model.addAttribute("empleado", empleado);
         model.addAttribute("ordenTalonario", ordenTalonario);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-talonario";
     }

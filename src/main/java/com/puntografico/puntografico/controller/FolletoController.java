@@ -68,11 +68,16 @@ public class FolletoController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
-
         OrdenFolleto ordenFolleto = ordenFolletoService.buscarPorId(ordenFolletoId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenFolleto.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenFolleto.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenFolleto.getOrdenTrabajo().getFechaPedido());
 
+        model.addAttribute("empleado", empleado);
         model.addAttribute("ordenFolleto", ordenFolleto);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-folleto";
     }

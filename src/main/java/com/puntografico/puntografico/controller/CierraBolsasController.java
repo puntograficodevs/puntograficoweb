@@ -62,11 +62,16 @@ public class CierraBolsasController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-
         OrdenCierraBolsas ordenCierraBolsas = ordenCierraBolsasService.buscarPorId(ordenCierraBolsasId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenCierraBolsas.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenCierraBolsas.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenCierraBolsas.getOrdenTrabajo().getFechaPedido());
 
         model.addAttribute("empleado", empleado);
         model.addAttribute("ordenCierraBolsas", ordenCierraBolsas);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-cierra-bolsas";
     }

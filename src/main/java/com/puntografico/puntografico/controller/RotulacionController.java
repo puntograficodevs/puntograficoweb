@@ -60,11 +60,16 @@ public class RotulacionController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
-
         OrdenRotulacion ordenRotulacion = ordenRotulacionService.buscarPorId(ordenRotulacionId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenRotulacion.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenRotulacion.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenRotulacion.getOrdenTrabajo().getFechaPedido());
 
+        model.addAttribute("empleado", empleado);
         model.addAttribute("ordenRotulacion", ordenRotulacion);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-rotulacion";
     }

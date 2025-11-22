@@ -68,11 +68,16 @@ public class EtiquetaController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
-
         OrdenEtiqueta ordenEtiqueta = ordenEtiquetaService.buscarPorId(ordenEtiquetaId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenEtiqueta.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenEtiqueta.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenEtiqueta.getOrdenTrabajo().getFechaPedido());
 
+        model.addAttribute("empleado", empleado);
         model.addAttribute("ordenEtiqueta", ordenEtiqueta);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-etiqueta";
     }

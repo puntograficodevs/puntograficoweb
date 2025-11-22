@@ -39,7 +39,7 @@
       <div class="card mb-3 border contenedor-datos-orden-impresion ">
         <h6>Datos del pago</h6>
         <hr class="divider">
-        <p><strong>Pedido: </strong><span th:text="${ordenViniloPlasticoCorrugado.ordenTrabajo.fechaPedido}"></span></p>
+        <p><strong>Pedido: </strong><span th:text="${fechaPedido}"></span></p>
         <p><strong>Total: </strong>$<span th:text="${ordenViniloPlasticoCorrugado.ordenTrabajo.total}"></span></p>
         <p><strong>Entrega: </strong>$<span th:text="${ordenViniloPlasticoCorrugado.ordenTrabajo.abonado}"></span></p>
         <p class="pago-restante"><strong>Restante: </strong>$<span th:text="${ordenViniloPlasticoCorrugado.ordenTrabajo.resta}"></span></p>
@@ -68,9 +68,9 @@
         </p>
         <p><strong>Información adicional: </strong><span th:text="${ordenViniloPlasticoCorrugado.viniloPlasticoCorrugado.informacionAdicional} == '' ? ' - ' : ${ordenViniloPlasticoCorrugado.viniloPlasticoCorrugado.informacionAdicional}"></span></p>
         <hr class="divider">
-        <p><strong>Fecha de entrega: </strong><span th:text="${ordenViniloPlasticoCorrugado.ordenTrabajo.fechaEntrega}"></span>
+        <p><strong>Fecha de entrega: </strong><span th:text="${fechaEntrega}"></span>
         <p th:if="${ordenViniloPlasticoCorrugado.ordenTrabajo.horaEntrega} != ''"><strong>Hora de entrega: </strong><span th:text="${ordenViniloPlasticoCorrugado.ordenTrabajo.horaEntrega}"></span></p>
-        <p th:if="${ordenViniloPlasticoCorrugado.ordenTrabajo.fechaMuestra}"><strong>Fecha de muestra: </strong><span th:text="${ordenViniloPlasticoCorrugado.ordenTrabajo.fechaMuestra}"></span></p>
+        <p th:if="${ordenViniloPlasticoCorrugado.ordenTrabajo.fechaMuestra}"><strong>Fecha de muestra: </strong><span th:text="${fechaMuestra}"></span></p>
         <p><strong>Cantidad de productos: </strong><span th:text="${ordenViniloPlasticoCorrugado.viniloPlasticoCorrugado.cantidad}"></span></p>
       </div>
     </div>

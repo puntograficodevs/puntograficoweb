@@ -60,11 +60,16 @@ public class SublimacionController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
-
         OrdenSublimacion ordenSublimacion = ordenSublimacionService.buscarPorId(ordenSublimacionId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenSublimacion.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenSublimacion.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenSublimacion.getOrdenTrabajo().getFechaPedido());
 
+        model.addAttribute("empleado", empleado);
         model.addAttribute("ordenSublimacion", ordenSublimacion);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-sublimacion";
     }

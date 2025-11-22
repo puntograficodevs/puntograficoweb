@@ -58,11 +58,16 @@ public class ViniloPlasticoCorrugadoController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
-
         OrdenViniloPlasticoCorrugado ordenViniloPlasticoCorrugado = ordenViniloPlasticoCorrugadoService.buscarPorId(ordenViniloPlasticoCorrugadoId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenViniloPlasticoCorrugado.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenViniloPlasticoCorrugado.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenViniloPlasticoCorrugado.getOrdenTrabajo().getFechaPedido());
 
+        model.addAttribute("empleado", empleado);
         model.addAttribute("ordenViniloPlasticoCorrugado", ordenViniloPlasticoCorrugado);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-vinilo-plastico-corrugado";
     }

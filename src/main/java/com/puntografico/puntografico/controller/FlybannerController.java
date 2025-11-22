@@ -64,11 +64,16 @@ public class FlybannerController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
-
         OrdenFlybanner ordenFlybanner = ordenFlybannerService.buscarPorId(ordenFlybannerId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenFlybanner.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenFlybanner.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenFlybanner.getOrdenTrabajo().getFechaPedido());
 
+        model.addAttribute("empleado", empleado);
         model.addAttribute("ordenFlybanner", ordenFlybanner);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-flybanner";
     }

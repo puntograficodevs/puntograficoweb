@@ -39,7 +39,7 @@
       <div class="card mb-3 border contenedor-datos-orden-impresion ">
         <h6>Datos del pago</h6>
         <hr class="divider">
-        <p><strong>Pedido: </strong><span th:text="${ordenSelloAutomatico.ordenTrabajo.fechaPedido}"></span></p>
+        <p><strong>Pedido: </strong><span th:text="${fechaPedido}"></span></p>
         <p><strong>Total: </strong>$<span th:text="${ordenSelloAutomatico.ordenTrabajo.total}"></span></p>
         <p><strong>Entrega: </strong>$<span th:text="${ordenSelloAutomatico.ordenTrabajo.abonado}"></span></p>
         <p class="pago-restante"><strong>Restante: </strong>$<span th:text="${ordenSelloAutomatico.ordenTrabajo.resta}"></span></p>
@@ -80,9 +80,9 @@
         </p>
         <p><strong>Información adicional: </strong><span th:text="${ordenSelloAutomatico.selloAutomatico.informacionAdicional} == '' ? ' - ' : ${ordenSelloAutomatico.selloAutomatico.informacionAdicional}"></span></p>
         <hr class="divider">
-        <p><strong>Fecha de entrega: </strong><span th:text="${ordenSelloAutomatico.ordenTrabajo.fechaEntrega}"></span></p>
+        <p><strong>Fecha de entrega: </strong><span th:text="${fechaEntrega}"></span></p>
         <p th:if="${ordenSelloAutomatico.ordenTrabajo.horaEntrega} != ''"><strong>Hora de entrega: </strong><span th:text="${ordenSelloAutomatico.ordenTrabajo.horaEntrega}"></span></p>
-        <p th:if="${ordenSelloAutomatico.ordenTrabajo.fechaMuestra}"><strong>Fecha de muestra: </strong><span th:text="${ordenSelloAutomatico.ordenTrabajo.fechaMuestra}"></span></p>
+        <p th:if="${ordenSelloAutomatico.ordenTrabajo.fechaMuestra}"><strong>Fecha de muestra: </strong><span th:text="${fechaMuestra}"></span></p>
         <p><strong>Cantidad: </strong><span th:text="${ordenSelloAutomatico.selloAutomatico.cantidad}"></span></p>
       </div>
     </div>

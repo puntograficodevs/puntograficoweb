@@ -58,11 +58,16 @@ public class ViniloDeCorteController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
-
         OrdenViniloDeCorte ordenViniloDeCorte = ordenViniloDeCorteService.buscarPorId(ordenViniloDeCorteId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenViniloDeCorte.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenViniloDeCorte.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenViniloDeCorte.getOrdenTrabajo().getFechaPedido());
 
+        model.addAttribute("empleado", empleado);
         model.addAttribute("ordenViniloDeCorte", ordenViniloDeCorte);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-vinilo-de-corte";
     }

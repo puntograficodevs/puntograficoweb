@@ -61,9 +61,15 @@ public class CarpetaSolapaController {
         }
 
         OrdenCarpetaSolapa ordenCarpetaSolapa = ordenCarpetaSolapaService.buscarPorId(ordenCarpetaSolapaId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenCarpetaSolapa.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenCarpetaSolapa.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenCarpetaSolapa.getOrdenTrabajo().getFechaPedido());
 
         model.addAttribute("empleado", empleado);
         model.addAttribute("ordenCarpetaSolapa", ordenCarpetaSolapa);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-carpeta-solapa";
     }

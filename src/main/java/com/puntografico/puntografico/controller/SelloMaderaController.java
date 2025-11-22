@@ -58,11 +58,16 @@ public class SelloMaderaController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
-
         OrdenSelloMadera ordenSelloMadera = ordenSelloMaderaService.buscarPorId(ordenSelloMaderaId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenSelloMadera.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenSelloMadera.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenSelloMadera.getOrdenTrabajo().getFechaPedido());
 
+        model.addAttribute("empleado", empleado);
         model.addAttribute("ordenSelloMadera", ordenSelloMadera);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-sello-madera";
     }

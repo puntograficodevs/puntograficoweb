@@ -59,14 +59,19 @@ public class RifasBonosContribucionController {
         Empleado empleado = (Empleado) session.getAttribute("empleadoLogueado");
 
         if (empleado == null) {
-            return "redirect:/"; // Si no hay sesión, lo manda al login
+            return "redirect:/";
         }
 
-        model.addAttribute("empleado", empleado);
-
         OrdenRifasBonosContribucion ordenRifasBonosContribucion = ordenRifasBonosContribucionService.buscarPorId(ordenRifasBonosContribucionId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenRifasBonosContribucion.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenRifasBonosContribucion.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenRifasBonosContribucion.getOrdenTrabajo().getFechaPedido());
 
+        model.addAttribute("empleado", empleado);
         model.addAttribute("ordenRifasBonosContribucion", ordenRifasBonosContribucion);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-rifas-bonos-contribucion";
     }

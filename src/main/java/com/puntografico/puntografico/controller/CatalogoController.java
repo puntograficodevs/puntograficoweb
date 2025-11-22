@@ -61,11 +61,16 @@ public class CatalogoController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-
         OrdenCatalogo ordenCatalogo = ordenCatalogoService.buscarPorId(ordenCatalogoId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenCatalogo.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenCatalogo.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenCatalogo.getOrdenTrabajo().getFechaPedido());
 
         model.addAttribute("empleado", empleado);
         model.addAttribute("ordenCatalogo", ordenCatalogo);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-catalogo";
     }

@@ -64,11 +64,16 @@ public class HojasMembreteadasController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
-
         OrdenHojasMembreteadas ordenHojasMembreteadas = ordenHojasMembreteadasService.buscarPorId(ordenHojasMembreteadasId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenHojasMembreteadas.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenHojasMembreteadas.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenHojasMembreteadas.getOrdenTrabajo().getFechaPedido());
 
+        model.addAttribute("empleado", empleado);
         model.addAttribute("ordenHojasMembreteadas", ordenHojasMembreteadas);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-hojas-membreteadas";
     }

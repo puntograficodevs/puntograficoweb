@@ -39,7 +39,7 @@
       <div class="card mb-3 border contenedor-datos-orden-impresion ">
         <h6>Datos del pago</h6>
         <hr class="divider">
-        <p><strong>Pedido: </strong><span th:text="${ordenVoucher.ordenTrabajo.fechaPedido}"></span></p>
+        <p><strong>Pedido: </strong><span th:text="${fechaPedido}"></span></p>
         <p><strong>Total: </strong>$<span th:text="${ordenVoucher.ordenTrabajo.total}"></span></p>
         <p><strong>Entrega: </strong>$<span th:text="${ordenVoucher.ordenTrabajo.abonado}"></span></p>
         <p class="pago-restante"><strong>Restante: </strong>$<span th:text="${ordenVoucher.ordenTrabajo.resta}"></span></p>
@@ -74,9 +74,9 @@
         </p>
         <p><strong>Información adicional: </strong><span th:text="${ordenVoucher.voucher.informacionAdicional} == '' ? ' - ' : ${ordenVoucher.voucher.informacionAdicional}"></span></p>
         <hr class="divider">
-        <p><strong>Fecha de entrega: </strong><span th:text="${ordenVoucher.ordenTrabajo.fechaEntrega}"></span>
+        <p><strong>Fecha de entrega: </strong><span th:text="${fechaEntrega}"></span>
         <p th:if="${ordenVoucher.ordenTrabajo.horaEntrega} != ''"><strong>Hora de entrega: </strong><span th:text="${ordenVoucher.ordenTrabajo.horaEntrega}"></span></p>
-        <p th:if="${ordenVoucher.ordenTrabajo.fechaMuestra}"><strong>Fecha de muestra: </strong><span th:text="${ordenVoucher.ordenTrabajo.fechaMuestra}"></span></p>
+        <p th:if="${ordenVoucher.ordenTrabajo.fechaMuestra}"><strong>Fecha de muestra: </strong><span th:text="${fechaMuestra}"></span></p>
         <p><strong>Cantidad de productos: </strong><span th:text="${ordenVoucher.voucher.cantidad}"></span></p>
       </div>
     </div>

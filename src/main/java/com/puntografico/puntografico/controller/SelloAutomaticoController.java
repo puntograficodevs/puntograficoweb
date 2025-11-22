@@ -58,11 +58,16 @@ public class SelloAutomaticoController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
-
         OrdenSelloAutomatico ordenSelloAutomatico = ordenSelloAutomaticoService.buscarPorId(ordenSelloAutomaticoId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenSelloAutomatico.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenSelloAutomatico.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenSelloAutomatico.getOrdenTrabajo().getFechaPedido());
 
+        model.addAttribute("empleado", empleado);
         model.addAttribute("ordenSelloAutomatico", ordenSelloAutomatico);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-sello-automatico";
     }

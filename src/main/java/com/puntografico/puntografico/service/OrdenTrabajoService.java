@@ -12,6 +12,7 @@ import org.springframework.util.Assert;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -289,5 +290,11 @@ public class OrdenTrabajoService {
         ordenTrabajo.setAbonado(totalAbonado);
         ordenTrabajo.setResta(totalAPagar - totalAbonado);
         asignarEstadoPago(ordenTrabajo, totalAPagar, totalAbonado);
+    }
+
+    public String formatearFecha(LocalDate fechaAFormatear) {
+        DateTimeFormatter formatoDeseado = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        return fechaAFormatear != null ? fechaAFormatear.format(formatoDeseado) : null;
     }
 }

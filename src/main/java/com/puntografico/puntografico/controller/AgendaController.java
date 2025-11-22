@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller @AllArgsConstructor
@@ -62,9 +64,15 @@ public class AgendaController {
         }
 
         OrdenAgenda ordenAgenda = ordenAgendaService.buscarPorId(ordenAgendaId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenAgenda.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenAgenda.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenAgenda.getOrdenTrabajo().getFechaPedido());
 
         model.addAttribute("empleado", empleado);
         model.addAttribute("ordenAgenda", ordenAgenda);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-agenda";
     }

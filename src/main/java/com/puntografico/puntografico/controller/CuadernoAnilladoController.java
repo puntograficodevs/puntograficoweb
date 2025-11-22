@@ -60,11 +60,16 @@ public class CuadernoAnilladoController {
             return "redirect:/"; // Si no hay sesión, lo manda al login
         }
 
-        model.addAttribute("empleado", empleado);
-
         OrdenCuadernoAnillado ordenCuadernoAnillado = ordenCuadernoAnilladoService.buscarPorId(ordenCuadernoAnilladoId);
+        String fechaEntrega = ordenTrabajoService.formatearFecha(ordenCuadernoAnillado.getOrdenTrabajo().getFechaEntrega());
+        String fechaMuestra = ordenTrabajoService.formatearFecha(ordenCuadernoAnillado.getOrdenTrabajo().getFechaMuestra());
+        String fechaPedido = ordenTrabajoService.formatearFecha(ordenCuadernoAnillado.getOrdenTrabajo().getFechaPedido());
 
-        model.addAttribute("ordenCuadernoAnillado", ordenCuadernoAnillado);
+        model.addAttribute("empleado", empleado);
+        model.addAttribute("ordenCombo", ordenCuadernoAnillado);
+        model.addAttribute("fechaEntrega", fechaEntrega);
+        model.addAttribute("fechaMuestra", fechaMuestra);
+        model.addAttribute("fechaPedido", fechaPedido);
 
         return "mostrar-odt-cuaderno-anillado";
     }
