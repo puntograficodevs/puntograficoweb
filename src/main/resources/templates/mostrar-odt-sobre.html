@@ -42,7 +42,6 @@
         <p><strong>Pedido: </strong><span th:text="${fechaPedido}"></span></p>
         <p><strong>Total: </strong>$<span th:text="${ordenSobre.ordenTrabajo.total}"></span></p>
         <p><strong>Entrega: </strong>$<span th:text="${ordenSobre.ordenTrabajo.abonado}"></span></p>
-        <p class="pago-restante"><strong>Restante: </strong>$<span th:text="${ordenSobre.ordenTrabajo.resta}"></span></p>
         <p><strong>Necesita factura: </strong><span th:text="${ordenSobre.ordenTrabajo.necesitaFactura} ? 'Sí' : 'No'"></span></p>
         <p><strong>Vendedor/a: </strong><span th:text="${ordenSobre.ordenTrabajo.empleado.nombre}"></span></p>
       </div>
@@ -73,6 +72,11 @@
         <p th:if="${ordenSobre.ordenTrabajo.fechaMuestra}"><strong>Fecha de muestra: </strong><span th:text="${fechaMuestra}"></span></p>
         <p><strong>Cantidad de productos: </strong><span th:text="${ordenSobre.sobre.cantidad}"></span></p>
       </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="card mb-3 border contenedor-datos-orden-impresion">
+      <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $<span th:text="${ordenSobre.ordenTrabajo.resta}"></span></p>
     </div>
   </div>
   <div th:replace="fragments/footer-odt :: footer-odt"></div>

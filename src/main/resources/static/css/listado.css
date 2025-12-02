@@ -8,6 +8,9 @@ body {
 
 .falta-abonar {
     color: #e52987;
+    font-family: 'Lemon Milk';
+    margin: 8px;
+    text-align: center;
 }
 
 p {

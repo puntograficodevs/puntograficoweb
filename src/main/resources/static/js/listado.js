@@ -232,7 +232,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p><strong>Pedido: </strong>${orden.ordenTrabajo.fechaPedido}</p>
                     <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
                     <p><strong>Abonado: </strong>$${orden.ordenTrabajo.abonado}</p>
-                    <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
                     <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
                     <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
                 </div>
@@ -262,6 +261,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p><strong>Cantidad de productos: </strong>${orden.agenda.cantidad}</p>
                 </div>
             </div>
+            <div class="col-12">
+                <div class="card mb-3 border contenedor-datos-orden-impresion">
+                    <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${orden.ordenTrabajo.resta}</p>
+                </div>
+            </div>
         </div>`;
     }
     function renderOrdenAnotador(orden) {
@@ -281,7 +285,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${orden.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -320,6 +323,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de productos: </strong>${orden.anotador.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+              <div class="card mb-3 border contenedor-datos-orden-impresion">
+                  <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${orden.ordenTrabajo.resta}</p>
+              </div>
+          </div>
         </div>
       `;
     }
@@ -340,7 +348,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${orden.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -379,6 +386,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de productos: </strong>${orden.carpetaSolapa.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${orden.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -399,7 +411,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${orden.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -438,6 +449,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de productos: </strong>${orden.catalogo.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${orden.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -461,7 +477,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${orden.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -515,6 +530,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de productos: </strong>${orden.cierraBolsas.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${orden.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -550,7 +570,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${orden.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -597,6 +616,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de productos: </strong>${orden.combo.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${orden.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -630,7 +654,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${orden.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -680,6 +703,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de productos: </strong>${orden.cuadernoAnillado.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${orden.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -708,7 +736,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${orden.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -758,6 +785,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de productos: </strong>${orden.entrada.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${orden.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -786,7 +818,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${orden.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -837,6 +868,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de productos: </strong>${orden.etiqueta.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${orden.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -860,7 +896,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${orden.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -902,6 +937,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de productos: </strong>${orden.flybanner.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${orden.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -925,7 +965,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${orden.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -969,6 +1008,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de productos: </strong>${orden.folleto.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${orden.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -992,7 +1036,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${orden.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1037,6 +1080,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de productos: </strong>${orden.hojasMembreteadas.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${orden.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -1060,7 +1108,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${orden.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1103,6 +1150,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de copias: </strong>${orden.impresion.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${orden.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -1126,7 +1178,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${orden.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1175,6 +1226,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad: </strong>${orden.lonaComun.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${orden.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -1198,7 +1254,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${ordenLonaPublicitaria.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${ordenLonaPublicitaria.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenLonaPublicitaria.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${ordenLonaPublicitaria.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${ordenLonaPublicitaria.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenLonaPublicitaria.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1235,6 +1290,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad: </strong>${producto.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${ordenLonaPublicitaria.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -1258,7 +1318,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${ordenOtro.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${ordenOtro.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenOtro.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${ordenOtro.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${ordenOtro.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenOtro.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1288,6 +1347,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad: </strong>${producto.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${ordenOtro.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -1311,7 +1375,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${ordenRifasBonosContribucion.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${ordenRifasBonosContribucion.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenRifasBonosContribucion.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${ordenRifasBonosContribucion.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${ordenRifasBonosContribucion.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenRifasBonosContribucion.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1351,6 +1414,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad: </strong>${producto.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${ordenRifasBonosContribucion.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -1374,7 +1442,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${ordenRotulacion.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${ordenRotulacion.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenRotulacion.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${ordenRotulacion.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${ordenRotulacion.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenRotulacion.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1407,6 +1474,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad: </strong>${producto.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${ordenRotulacion.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -1430,7 +1502,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${ordenSelloAutomatico.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${ordenSelloAutomatico.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenSelloAutomatico.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${ordenSelloAutomatico.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${ordenSelloAutomatico.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenSelloAutomatico.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1463,6 +1534,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad: </strong>${sello.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${ordenSelloAutomatico.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -1486,7 +1562,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${ordenSelloAutomaticoEscolar.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${ordenSelloAutomaticoEscolar.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenSelloAutomaticoEscolar.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${ordenSelloAutomaticoEscolar.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${ordenSelloAutomaticoEscolar.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenSelloAutomaticoEscolar.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1517,6 +1592,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad: </strong>${sello.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${ordenSelloAutomaticoEscolar.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -1544,7 +1624,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${ordenSelloMadera.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${ordenSelloMadera.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenSelloMadera.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${ordenSelloMadera.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${ordenSelloMadera.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenSelloMadera.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1571,6 +1650,11 @@ document.addEventListener('DOMContentLoaded', () => {
               ${ordenSelloMadera.ordenTrabajo.horaEntrega ? `<p><strong>Hora de entrega: </strong>${ordenSelloMadera.ordenTrabajo.horaEntrega}</p>` : ''}
               ${ordenSelloMadera.ordenTrabajo.fechaMuestra ? `<p><strong>Fecha de muestra: </strong>${ordenSelloMadera.ordenTrabajo.fechaMuestra}</p>` : ''}
               <p><strong>Cantidad: </strong>${sello.cantidad}</p>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${ordenSelloMadera.ordenTrabajo.resta}</p>
             </div>
           </div>
         </div>
@@ -1600,7 +1684,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${ordenSobre.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${ordenSobre.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenSobre.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${ordenSobre.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${ordenSobre.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenSobre.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1625,6 +1708,11 @@ document.addEventListener('DOMContentLoaded', () => {
               ${ordenSobre.ordenTrabajo.horaEntrega ? `<p><strong>Hora de entrega: </strong>${ordenSobre.ordenTrabajo.horaEntrega}</p>` : ''}
               ${ordenSobre.ordenTrabajo.fechaMuestra ? `<p><strong>Fecha de muestra: </strong>${ordenSobre.ordenTrabajo.fechaMuestra}</p>` : ''}
               <p><strong>Cantidad de productos: </strong>${sobre.cantidad}</p>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${ordenSobre.ordenTrabajo.resta}</p>
             </div>
           </div>
         </div>
@@ -1654,7 +1742,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${ordenSticker.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${ordenSticker.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenSticker.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${ordenSticker.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${ordenSticker.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenSticker.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1681,6 +1768,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de productos: </strong>${sticker.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${ordenSticker.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -1704,7 +1796,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${ordenSublimacion.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${ordenSublimacion.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenSublimacion.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${ordenSublimacion.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${ordenSublimacion.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenSublimacion.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1734,6 +1825,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de productos: </strong>${sublimacion.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${ordenSublimacion.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -1757,7 +1853,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${ordenTalonario.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${ordenTalonario.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenTalonario.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${ordenTalonario.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${ordenTalonario.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenTalonario.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1797,6 +1892,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de productos: </strong>${talonario.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${ordenTalonario.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -1820,7 +1920,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${ordenTarjeta.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${ordenTarjeta.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenTarjeta.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${ordenTarjeta.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${ordenTarjeta.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenTarjeta.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1858,6 +1957,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de productos: </strong>${tarjeta.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${ordenTarjeta.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -1881,7 +1985,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${ordenTurnero.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${ordenTurnero.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenTurnero.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${ordenTurnero.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${ordenTurnero.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenTurnero.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1917,6 +2020,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de productos: </strong>${turnero.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${ordenTurnero.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -1940,7 +2048,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${ordenVinilo.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${ordenVinilo.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenVinilo.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${ordenVinilo.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${ordenVinilo.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenVinilo.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -1977,6 +2084,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de productos: </strong>${vinilo.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${ordenVinilo.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -2000,7 +2112,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${ordenViniloDeCorte.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${ordenViniloDeCorte.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${ordenViniloDeCorte.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${ordenViniloDeCorte.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${ordenViniloDeCorte.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${ordenViniloDeCorte.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -2039,6 +2150,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de productos: </strong>${vinilo.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${ordenViniloDeCorte.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -2065,7 +2181,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Pedido: </strong>${orden.ordenTrabajo.fechaPedido}</p>
               <p><strong>Total: </strong>$${orden.ordenTrabajo.total}</p>
               <p><strong>Entrega: </strong>$${orden.ordenTrabajo.abonado}</p>
-              <p class="pago-restante"><strong>Restante: </strong>$${orden.ordenTrabajo.resta}</p>
               <p><strong>Necesita factura: </strong>${orden.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
               <p><strong>Vendedor/a: </strong>${orden.ordenTrabajo.empleado.nombre}</p>
             </div>
@@ -2096,6 +2211,11 @@ document.addEventListener('DOMContentLoaded', () => {
               <p><strong>Cantidad de productos: </strong>${vinilo.cantidad}</p>
             </div>
           </div>
+          <div class="col-12">
+            <div class="card mb-3 border contenedor-datos-orden-impresion">
+                <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${orden.ordenTrabajo.resta}</p>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -2117,7 +2237,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <p><strong>Pedido: </strong>${ordenVoucher.ordenTrabajo.fechaPedido}</p>
             <p><strong>Total: </strong>$${ordenVoucher.ordenTrabajo.total}</p>
             <p><strong>Entrega: </strong>$${ordenVoucher.ordenTrabajo.abonado}</p>
-            <p class="pago-restante"><strong>Restante: </strong>$${ordenVoucher.ordenTrabajo.resta}</p>
             <p><strong>Necesita factura: </strong>${ordenVoucher.ordenTrabajo.necesitaFactura ? 'Sí' : 'No'}</p>
             <p><strong>Vendedor/a: </strong>${ordenVoucher.ordenTrabajo.empleado.nombre}</p>
           </div>
@@ -2138,6 +2257,11 @@ document.addEventListener('DOMContentLoaded', () => {
             ${ordenVoucher.ordenTrabajo.horaEntrega ? `<p><strong>Hora de entrega: </strong>${ordenVoucher.ordenTrabajo.horaEntrega}</p>` : ''}
             ${ordenVoucher.ordenTrabajo.fechaMuestra ? `<p><strong>Fecha de muestra: </strong>${ordenVoucher.ordenTrabajo.fechaMuestra}</p>` : ''}
             <p><strong>Cantidad de productos: </strong>${ordenVoucher.voucher.cantidad}</p>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="card mb-3 border contenedor-datos-orden-impresion">
+              <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $${ordenVoucher.ordenTrabajo.resta}</p>
           </div>
         </div>
       </div>

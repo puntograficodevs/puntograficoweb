@@ -42,7 +42,6 @@
         <p><strong>Pedido: </strong><span th:text="${fechaPedido}"></span></p>
         <p><strong>Total: </strong>$<span th:text="${ordenRifasBonosContribucion.ordenTrabajo.total}"></span></p>
         <p><strong>Entrega: </strong>$<span th:text="${ordenRifasBonosContribucion.ordenTrabajo.abonado}"></span></p>
-        <p class="pago-restante"><strong>Restante: </strong>$<span th:text="${ordenRifasBonosContribucion.ordenTrabajo.resta}"></span></p>
         <p><strong>Necesita factura: </strong><span th:text="${ordenRifasBonosContribucion.ordenTrabajo.necesitaFactura} ? 'Sí' : 'No'"></span></p>
         <p><strong>Vendedor/a: </strong><span th:text="${ordenRifasBonosContribucion.ordenTrabajo.empleado.nombre}"></span></p>
       </div>
@@ -77,6 +76,11 @@
         <p th:if="${ordenRifasBonosContribucion.ordenTrabajo.fechaMuestra}"><strong>Fecha de muestra: </strong><span th:text="${fechaMuestra}"></span></p>
         <p><strong>Cantidad: </strong><span th:text="${ordenRifasBonosContribucion.rifasBonosContribucion.cantidad}"></span></p>
       </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="card mb-3 border contenedor-datos-orden-impresion">
+      <p class="pago-restante d-flex justify-content-center align-items-center mb-0">Restante: $<span th:text="${ordenRifasBonosContribucion.ordenTrabajo.resta}"></span></p>
     </div>
   </div>
   <div th:replace="fragments/footer-odt :: footer-odt"></div>

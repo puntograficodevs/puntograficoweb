@@ -204,7 +204,7 @@
           <li>Fecha de entrega: <span th:text="${orden.fechaEntrega}"></span></li>
           <li th:if="${orden.horaEntrega} != ''">Hora de entrega: <span th:text="${orden.horaEntrega}"></span></li>
           <b><p>Total: $<span th:text="${orden.total}"></span></p></b>
-          <b th:if="${orden.resta != 0}"><p class="falta-abonar">: $<span th:text="${orden.resta}"></span></p></b>
+          <b th:if="${orden.resta != 0}"><p class="falta-abonar">Falta abonar: $<span th:text="${orden.resta}"></span></p></b>
           <div class="row mt-2">
               <div class="col-md-12 m-0">
                 <button class="btn btn-success pasar-corregido-btn btn-cambio-estado"
