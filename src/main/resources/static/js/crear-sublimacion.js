@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     precioProducto = precioUnitario;
                     precioProductoInput.readOnly = true;
                 } else {
-                    const cantidad = parseInt(cantidadSublimacionesInput.value, 10) || 0;
+                    const cantidad = parseInt(cantidadSublimacionesInput.value, 10) || 1;
                     precioProducto = precioUnitario * cantidad;
                     precioProductoInput.readOnly = true;
                 }
