@@ -412,7 +412,7 @@
                  readonly>
         </div>
       </div>
-      <div class="row mb-3">
+      <div class="row mb-3" th:classappend="${ordenTrabajo.id} != null ? 'd-none' : ''">
         <div class="col-md-12">
           <label class="form-label d-block">
             Medio de pago *
