@@ -126,8 +126,8 @@
           </label>
           <div class="d-flex flex-wrap gap-3">
             <div th:each="tipo : ${listaTipoColorTurnero}" class="form-check">
-              <input class="form-check-input tipo-radio" t
-                     ype="radio"
+              <input class="form-check-input tipo-radio"
+                     type="radio"
                      name="tipoColorTurnero.id"
                      th:id="'tipo-' + ${tipo.id}"
                      th:value="${tipo.id}"
