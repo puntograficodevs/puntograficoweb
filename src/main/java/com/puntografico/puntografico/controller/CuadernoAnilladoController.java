@@ -66,7 +66,7 @@ public class CuadernoAnilladoController {
         String fechaPedido = ordenTrabajoService.formatearFecha(ordenCuadernoAnillado.getOrdenTrabajo().getFechaPedido());
 
         model.addAttribute("empleado", empleado);
-        model.addAttribute("ordenCombo", ordenCuadernoAnillado);
+        model.addAttribute("ordenCuadernoAnillado", ordenCuadernoAnillado);
         model.addAttribute("fechaEntrega", fechaEntrega);
         model.addAttribute("fechaMuestra", fechaMuestra);
         model.addAttribute("fechaPedido", fechaPedido);
