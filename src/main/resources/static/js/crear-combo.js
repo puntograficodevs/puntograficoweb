@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
       precioDisenioInput.value = 0;
       precioImpuestosInput.value = 0;
       restaInput.value = 0;
-      cantidadCombosInput.value = 1;
 
       // Toggles
       let toggleFechaMuestra = document.getElementById('toggleFechaMuestra');
