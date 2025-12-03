@@ -26,7 +26,7 @@ public class HojasMembreteadasService {
         CantidadHojasMembreteadas cantidadHojasMembreteadas = opcionesHojasMembreteadasService.buscarCantidadHojasMembreteadasPorId(hojasMembreteadasDTO.getCantidadHojasMembreteadasId());
         Integer cantidad = hojasMembreteadasDTO.getCantidad();
 
-        if (cantidad == null || cantidad == 0) {
+        if (cantidad == null || cantidad == 0 || cantidadHojasMembreteadas.getId() != 4) {
             cantidad = Integer.valueOf(cantidadHojasMembreteadas.getCantidad());
         }
 

@@ -25,7 +25,7 @@ public class SublimacionService {
 
         Integer cantidad = sublimacionDTO.getCantidad();
 
-        if (cantidad == null || cantidad == 0) {
+        if (cantidad == null || cantidad == 0 || cantidadSublimacion.getId() != 6) {
             cantidad = Integer.valueOf(cantidadSublimacion.getCantidad());
         }
 

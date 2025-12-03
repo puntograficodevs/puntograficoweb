@@ -27,7 +27,7 @@ public class FolletoService {
 
         Integer cantidad = folletoDTO.getCantidad();
 
-        if (cantidad == null || cantidad == 0) {
+        if (cantidad == null || cantidad == 0 || cantidadFolleto.getId() != 9) {
             cantidad = Integer.valueOf(cantidadFolleto.getCantidad());
         }
 

@@ -24,7 +24,7 @@ public class VoucherService {
         CantidadVoucher cantidadVoucher = opcionesVoucherService.buscarCantidadVoucherPorId(voucherDTO.getCantidadVoucherId());
         Integer cantidad = voucherDTO.getCantidad();
 
-        if (cantidad == null || cantidad == 0) {
+        if (cantidad == null || cantidad == 0 || cantidadVoucher.getId() != 4) {
             cantidad = Integer.valueOf(cantidadVoucher.getCantidad());
         }
 

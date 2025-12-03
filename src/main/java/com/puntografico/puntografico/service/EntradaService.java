@@ -27,7 +27,7 @@ public class EntradaService {
         TerminacionEntrada terminacionEntrada = opcionesEntradaService.buscarTerminacionEntradaPorId(entradaDTO.getTerminacionEntradaId());
         Integer cantidad = entradaDTO.getCantidad();
 
-        if (cantidad == null || cantidad == 0) {
+        if (cantidad == null || cantidad == 0 || cantidadEntrada.getId() != 7) {
             cantidad = Integer.valueOf(cantidadEntrada.getCantidad());
         }
 

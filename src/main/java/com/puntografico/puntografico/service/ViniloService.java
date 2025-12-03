@@ -27,7 +27,7 @@ public class ViniloService {
         CantidadVinilo cantidadVinilo = opcionesViniloService.buscarCantidadViniloPorId(viniloDTO.getCantidadViniloId());
         Integer cantidad = viniloDTO.getCantidad();
 
-        if (cantidad == null || cantidad == 0) {
+        if (cantidad == null || cantidad == 0 || cantidadVinilo.getId() != 3) {
             cantidad = Integer.valueOf(cantidadVinilo.getCantidad());
         }
 
