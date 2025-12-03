@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const medioPagoSeleccionado = document.querySelector('input[name="medioPago.id"]:checked');
     let recargoCreditoMonto = 0;
     if ((medioPagoSeleccionado && Number(medioPagoSeleccionado.value) === 2) && !(totalInicial != 0)) {
-      recargoCreditoMonto = total * recargoCredito;
+      recargoCreditoMonto = Math.ceil(total * recargoCredito);
       total += recargoCreditoMonto;
     }
 
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const abonado = parseInt(abonadoInput.value, 10) || 0;
 
     // Resta
-    const resta = total - abonado;
+    const resta = Math.ceil(total - abonado);
 
     // Actualizamos inputs visibles
     precioDisenioInput.value = precioDisenioActual;
