@@ -52,6 +52,8 @@ public class OrdenTrabajo {
     @Column(nullable = false)
     private String tipoProducto;
 
+    private String correccion;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_estado_pago")
     private EstadoPago estadoPago;

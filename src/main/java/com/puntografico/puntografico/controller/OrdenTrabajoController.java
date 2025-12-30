@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -28,5 +30,13 @@ public class OrdenTrabajoController {
         return "crear-orden";
     }
 
+    @PostMapping("/api/orden/pedir-correccion")
+    public String guardarCorreccion(HttpServletRequest request) {
+        Long idOrdenTrabajo = Long.parseLong(request.getParameter("idOrden"));
+        String correccion = request.getParameter("correccion");
+        ordenTrabajoService.guardarCorreccion(idOrdenTrabajo, correccion);
+        ordenTrabajoService.cambiarEstadoACorregir(idOrdenTrabajo);
 
+        return "redirect:/listado";
+    }
 }

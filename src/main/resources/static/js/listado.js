@@ -2269,13 +2269,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // CAMBIOS DE ESTADO
-    document.querySelectorAll('.corregir-btn').forEach(boton => {
+    /*document.querySelectorAll('.corregir-btn').forEach(boton => {
         boton.addEventListener('click', () => {
             document.getElementById('spinner-overlay').style.display = 'flex';
             const ordenId = boton.dataset.idorden;
             cambiarEstadoACorregir(ordenId);
         });
-    });
+    });*/
 
     document.querySelectorAll('.pasar-en-proceso-btn').forEach(boton => {
         boton.addEventListener('click', () => {

@@ -297,4 +297,13 @@ public class OrdenTrabajoService {
 
         return fechaAFormatear != null ? fechaAFormatear.format(formatoDeseado) : null;
     }
+
+    public void guardarCorreccion(Long idOrden, String correccion) {
+        Assert.notNull(idOrden, "El id no puede venir nulo.");
+        Assert.notNull(correccion, "La corrección no puede venir vacía.");
+
+        OrdenTrabajo ordenTrabajo = ordenTrabajoRepository.findById(idOrden).get();
+        ordenTrabajo.setCorreccion(correccion);
+        ordenTrabajoRepository.save(ordenTrabajo);
+    }
 }
